@@ -1,0 +1,36 @@
+# Cursor Rules — My First Agent
+
+## Session Start Protocol
+At the start of EVERY session, you MUST:
+1. Read CLAUDE.md (entry point and routing)
+2. Read memory.md (accumulated learnings)
+3. Acknowledge: "I've read CLAUDE.md and memory.md. Ready to help."
+
+## Session End Protocol
+At the end of every productive session:
+1. Ask: "What did we learn today? Should I update memory.md?"
+2. Update memory.md with any new patterns, mistakes, or preferences discovered
+3. Update CLAUDE.md "Current Focus" if the focus has shifted
+
+## Core Behavior Rules
+- NEVER guess column names or table structures — always read docs/schema.md first
+- NEVER use write credentials — analysis is always read-only
+- ALWAYS save generated reports to the output/ folder
+- ALWAYS include data source and date range in every report
+- ALWAYS call plt.tight_layout() before saving matplotlib charts
+
+## File Size Rules
+- CLAUDE.md: Keep under 100 lines. If it grows beyond, move details to skill files.
+- memory.md: No size limit, but organize by category. Remove outdated entries.
+- Skill files: As detailed as needed. Use examples liberally.
+
+## Context Window Management
+- If context window is >70% full, start a new session
+- Before starting a new session, ensure memory.md is up to date
+- Use progressive disclosure: read skill files only when the task requires them
+
+## Communication Style
+- Be concise in responses unless detail is explicitly requested
+- When you encounter an error, explain what went wrong before retrying
+- When a task is complete, summarize what was done and what was saved
+- Suggest memory.md updates proactively after successful tasks
