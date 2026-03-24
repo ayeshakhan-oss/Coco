@@ -1,0 +1,84 @@
+AYESHA  
+NADEEM  
+Wah Cantt, Pakistan                  
+Data Analyst & AI Developer                                                                              03249866918 | ayeshanadeem2408@gmail.com 
+Computer Science undergraduate Last year (Last Semester) at COMSATS University Islamabad with a strong 
+academic record (CGPA: 3.34) and hands-on experience in data analytics, backend development, and applied machine 
+learning. Proficient in building data-driven applications, RESTful APIs, and analytical dashboards using Python, Flask, 
+FastAPI, and Power BI. Demonstrated ability to work across the full development lifecycle from data preprocessing 
+and modeling to deployment and visualization. Research-oriented mindset with a strong interest in artificial 
+intelligence, scientific computing, and collaborative, high-impact technical projects.  
+EXPERIENCE  
+Data Analytics Intern 
+ELevvo Pathways 
+JULY 2025 | Remote 
+• Cleaned, processed, and analyzed sales and survey datasets to extract actionable insights and trends. 
+• Designed interactive Power BI dashboards for retail performance analysis and decision support. 
+• Conducted customer segmentation using RFM analysis to identify loyal, potential, and at-risk 
+• customer groups. 
+ 
+ 
+Digital Marketing Intern 
+RozMarrah | August 2024 | Remote 
+• 
+Managed content scheduling and engagement strategies across multiple social media platforms. 
+• 
+Analyzed engagement metrics to inform campaign optimization and growth strategies. 
+ 
+Web Development Intern 
+Infotech Solutions | 2025 
+• Designed and implemented Flask-based REST APIs with JWT authentication for secure user 
+access. 
+• Developed a complete CRUD-based library management system using SQLite, including 
+search and HTML UI. 
+• Implemented speech-to-text transcription services and ChatGPT-powered Q&A functionality 
+ 
+EDUCATION  
+BACHELORS IN COMPUTER SCIENCE (ONGOING)   
+COMSATS UNIVERSITY ISLAMABAD 
+08/2022 – PRESENT | CURRENT CGPA: 3.34   
+ 
+SKILLS  
+• Programming Languages: Python, JavaScript, TypeScript 
+• Backend & Web: Flask, FastAPI, Next.js, HTML, CSS 
+• Data Science & AI: Pandas, NumPy, Matplotlib, scikit-learn, RapidMiner 
+• Tools & Platforms: Git, GitHub, Jupyter Notebook, Power BI, Tableau, Poetry 
+• Soft Skills: Communication, Teamwork, Critical Thinking, Problem Solving, Leadership,    
+Technical Documentation 
+PROJECTS  
+• Online E-commerce Platform with Database Integration  Designed a database-backed web 
+platform supporting product management and transactions. 
+• Health Status Prediction Using Classification Models Trained and evaluated classification and 
+regression models in Python. 
+• Network Error Detection Schemes (C++) Implemented and analyzed error detection techniques 
+in computer networks. 
+• Social Media Console Application (C++) Built an object-oriented console application 
+demonstrating file handling and modular design. 
+• Video Game Sales Analytics Dashboard Created an interactive Power BI dashboard analyzing 
+sales by genre, platform, and region. 
+• Smart Waste Management Mobile Application (Ongoing) Developing a Flutter-based app 
+with real-time bin mapping and an AI-powered backend to predict waste bin fill levels and waste 
+types. 
+ 
+ 
+CERTIFICATIONS & COURSES  
+ 
+• Python for AI – DeepLearning.AI   
+• Generative AI for Everyone – DeepLearning.AI   
+• Prompt Engineering – Coursera   
+• Introduction to Web Development – Coursera   
+• Google Project Management– Google | Coursera 
+ 
+LEADERSHIP & ACTIVITIES  
+ General Secretary – COMSATS Literary Society (CLS) 
+• 
+Managed society operations, coordinated events, and oversaw financial activities. 
+General Member – ACM Student Chapter 
+• 
+Contributed to organizing technical seminars, workshops, and competitions. 
+ 
+ACHIEVEMENTS 
+• Winner - Excite Cup 2025 (Technical Trivia Competition, CUST Islamabad) 
+• Winner - COMBITS 2025 (Technical Trivia Competition, CUI Attock Campus) 
+• Recognized for Exemplary Leadership for two consecutive years 
+ 

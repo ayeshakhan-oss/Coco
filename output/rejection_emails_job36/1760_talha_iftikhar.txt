@@ -1,0 +1,37 @@
+*** PILOT — DO NOT SEND YET ***
+[CATEGORY: B]
+================================================================================
+
+Subject: Re: Your Application for Field Coordinator, Research & Impact Studies
+
+Hi Talha,
+
+Thank you so much for applying to the Field Coordinator role at Taleemabad. I genuinely appreciated reviewing your profile, and I want to be honest and thoughtful with you about where things stand.
+
+First, let me be clear: your technical foundation is genuinely strong. Your background in data science, Python programming, and machine learning — especially the work you've done on projects like your AI-powered travel platform and the electric load forecasting system — shows real technical depth and the ability to work with complex systems. That's not something to downplay. The fact that you're building meaningful projects while still completing your degree speaks to genuine initiative.
+
+Here's where I need to be direct with you, though, and I want to do this with respect for your time and potential.
+
+The Field Coordinator role we're hiring for is fundamentally different from the technical work on your CV. It's not a data science or engineering position — it's an operational field coordination role. Let me explain what that means in practice, because I think it's important you understand the gap clearly.
+
+This role lives in the field. The person in this position spends significant time in government schools across Islamabad, Rawalpindi, and beyond. They're directly managing enumerators (the people collecting survey data), observing them work, catching quality issues in real-time, pushing back on survey firms when standards slip, and coordinating with school administrators and district officials face-to-face. It's about operational discipline, vendor management, and the kind of on-ground problem-solving that happens when a sampling plan gets disrupted or an enumerator isn't following protocols.
+
+Looking at your CV, your professional experience so far has been in technical internships — Python development at Protect Lab and data science work at Digital Empowerment Network. Both are valuable, but they're desk-based or lab-based technical roles. There's no evidence of field coordination experience, third-party vendor management, or direct team oversight in an implementation context. You haven't managed enumerators, overseen survey operations, or handled the kind of government coordination this role demands.
+
+The minimum requirement is 1–3 years in field research, M&E (monitoring & evaluation), or education program implementation. You're currently an intern with expected graduation in 2026. That's not a judgment — it's just a different stage of your career than what this particular role needs right now.
+
+I also want to flag something about the salary expectation. You've indicated PKR 100,000, but this is a 24-month field coordinator contract, and the market rate for someone with the required 1–3 years of field experience is typically higher. That might be worth researching as you move forward.
+
+**Here's what I genuinely think:**
+
+You're building a solid technical skill set. If you're interested in the EdTech or development sector long-term, consider deliberately seeking out roles that blend your technical background with field experience. A data analyst role within an implementation team, or even an enumerator supervisor position that bridges technical and operational work, could be excellent next steps. That kind of hybrid experience would make you genuinely valuable to organizations like ours.
+
+We're growing across multiple teams at Taleemabad, and we hire regularly. As your career develops and you add field coordination or program implementation experience to your resume, I'd encourage you to apply again — whether for impact roles, data roles, or something else that aligns with your experience at that point. We also sometimes hire research assistants and data support roles, so keep an eye on our careers page.
+
+Thank you again for your interest in Taleemabad. I mean that genuinely — applying takes courage, and we genuinely do read every application carefully.
+
+Warm regards,
+
+Team Taleemabad
+
+Coco — AI Assistant | Taleemabad Talent Acquisition

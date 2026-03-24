@@ -1,0 +1,137 @@
+Muhammad Naeem 
+Backend Developer 
+ naeembangash57@gmail.com 
+ 
+ https://github.com/naeem57 
+ +923059155957 
+ 
+SUMMARY 
+Backend Developer with 1 year of professional experience at Blockmob Labs, specializing in Node.js 
+and NestJS. Skilled in building scalable, secure, and efficient backend solutions, APIs, and real-time 
+features. Successfully contributed to multiple projects, including Gaya Wallet, Iltezam fundraising 
+platform, and Evox blockchain-based property website. Strong understanding of backend 
+architecture, database design, and blockchain integrations, with a focus on delivering clean, 
+maintainable code and optimized performance. 
+ 
+EXPERIENCE 
+Backend Developer 
+Blockmob Labs | Islamabad​
+September 2024 - 
+Present 
+Developed and maintained backend systems using Node.js and NestJS, ensuring scalability, security, 
+and performance.​
+ 
+Designed and implemented RESTful APIs and integrated third-party services for seamless 
+functionality across platforms.​
+ 
+Worked with databases (MongoDB, PostgreSQL) for schema design, query optimization, and data 
+integrity.​
+ 
+Built real-time features using WebSockets/Socket.io for live chat and notifications.​
+ 
+Implemented authentication, authorization, and role-based access control for secure applications.​
+ 
+Additionally, gained hands-on experience with Django REST Framework for building and integrating 
+RESTful APIs in smaller projects. 
+. 
+ 
+ 
+PROJECTS 
+Gaya Wallet  
+Contributed as a backend developer, building and optimizing core modules of the digital wallet 
+application. Designed and implemented multiple APIs and features, including: 
+●​ Insurance Module & Admin Panel – developed APIs for insurance management, payment 
+handling, and admin control.​
+ 
+●​ Social Links Integration – enabled users to connect and manage their social profiles within the 
+platform.​
+ 
+●​ Tasks & Points Reward System – built task management APIs with a reward mechanism for 
+user engagement.​
+ 
+●​ Dollar-Cost Averaging (DCA) – implemented DCA investment logic with history tracking for 
+crypto assets.​
+ 
+●​ Notifications Service – developed real-time notifications using Socket.io to keep users updated 
+on transactions, rewards, and insurance status. 
+. 
+Live Link: https://chromewebstore.google.com/detail/gaya-wallet/jafcnkgjohihjfmepbibneldbgfnhaoo 
+ 
+Iltezam 
+Developed and managed backend APIs to power the platform’s course and learning management 
+features, ensuring smooth user experience and scalability. Key contributions include: 
+●​ Course Management APIs – created endpoints to add, update, publish, and manage courses.​
+ 
+●​ Enrollment & Progress Tracking – built APIs to handle student enrollment, display enrolled 
+students, and track course progress.​
+ 
+●​ Course Completion & Certification – implemented logic for course completion validation and 
+automated certificate assignment upon successful completion.​
+ 
+●​ Notification APIs – developed APIs to send real-time updates and alerts for course activities and 
+user engagement. 
+ 
+Live Link: https://magnus-webapp.vercel.app/SignIn 
+ 
+ 
+Evox Blockchain Real Estate Platform 
+Contributed to the backend development of a blockchain-powered property management platform, 
+ensuring secure and transparent real estate operations. Key responsibilities included: 
+●​ Property Management APIs – developed APIs to publish and manage property listings with 
+blockchain verification.​
+ 
+●​ Project Management APIs – built endpoints to create and manage real estate projects.​
+ 
+●​ Real-Time Chat System – implemented chat APIs using Socket.io, enabling seamless 
+communication between admins and developers.​
+ 
+●​ Notification APIs – created real-time notifications to keep users updated on property status, 
+messages, and project activities. 
+ 
+ 
+Django REST Framework Experience 
+Developed multiple backend projects using Django REST Framework, including CRUD-based 
+e-commerce APIs, social media application APIs, and a Twitter clone. Focused on designing 
+modular and scalable API architectures with proper authentication, user management, and data 
+validation. Implemented features such as user registration and login, product management, 
+posting and commenting functionality, and media handling. Gained strong understanding of 
+serializers, viewsets, permissions, and relational database integration with PostgreSQL. 
+Emphasized writing clean, reusable, and well-documented code while following RESTful best 
+practices and version control workflows using Git and GitHub. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  EDUCATION 
+Bachelor of Science in Software 
+Engineering 
+Iqra National University Peshawar 
+ 
+SKILLS 
+Backend Development: Node.js, NestJS, 
+Django Restframework, RESTful APIs, 
+WebSockets (Socket.io)​
+ 
+Databases: MongoDB, PostgreSQL, Sqlite​
+ 
+Tools & Platforms: Git, GitHub, Docker, 
+Redis​
+ 
+System Design: API architecture, 
+real-time notifications, chat systems, 
+authentication & authorization​
+ 
+Other: Microservices, Payment Integration, 
+Notifications, Course & Property 
+Management Systems 
+ 
+                                                      
+2020-2024

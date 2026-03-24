@@ -1,0 +1,120 @@
+HAMNA NOOR 
+• +923335884693 • noorhamna174@gmail.com • Murshad town Khanna Kak st#3 h#24 rwp                         
+• https://www.linkedin.com/in/hamnanoor/ 
+​
+   EDUCATION   ​
+  
+Machine Learning   
+Bytewise Fellowship 
+          June 2024- Sep 2024 
+BSc. Electrical Engineering (3.2/4. 0) 
+National University of Computer and Emerging Technology (NUCES)   
+Islamabad, Pakistan.   
+              2018 - 2022 
+ 
+Pre-engineering (928/1100) 
+Punjab Group of Colleges 
+Islamabad Pakistan.   
+Matriculation (967/1100)                                                                                  
+Siddeeq Public School  
+              2016 - 2018 
+        2016 
+​
+   WORK EXPERIENCE   ​
+  
+STEAM Trainer 
+LearnOBots 
+ 
+●​ Conducted training sessions for different age groups 
+●​ Designed and debugged various projects 
+●​
+Developed different projects as part of the R&D department 
+ 
+    June 2024-present 
+Fellowship Committee Coordinator          
+APrIGF  
+●​ Assess the knowledge level of mentees in specific 
+areas of IGF and adopt mentorship strategies 
+accordingly. 
+●​ Review and prioritize key sessions that align with 
+mentees' objectives and interests. 
+ 
+                                                         
+Sep 23-present 
+ 
+Mentor 
+APrIGF 2023 mentorship program 
+●​ Assess the knowledge level of mentees in specific areas 
+of IGF and adopt mentorship strategies accordingly. 
+●​ Review and prioritize key sessions that align with 
+mentees' objectives and interests. 
+●​ Prioritise key sessions that align with mentees' 
+objectives and interests. 
+Jul 2023-Aug 
+2023 
+ 
+ 
+ 
+Visiting Scholar 
+Centre for Quantum Technologies, NUS, Singapore 
+●​ Assisted in the design and testing of the GM APD circuit. 
+●​
+Research and development of the Avalanche photon detector 
+circuit. 
+ 
+   
+Nov 2022 –Feb 2023 
+ 
+ 
+ 
+ 
+​
+   ACADEMIC PROJECTS AND REPORTS   ​
+ 
+●​ RoboSoccer  
+Performed extensive debugging and design iterations to enhance performance and reliability. 
+●​ Battle Bots 
+Troubleshot and optimized BattleBots by debugging system issues. 
+●​ Goalpost and goal-checking mechanism for RoboSoccer. 
+Keeps track of goals for both teams and monitors false goals. 
+●​ IoT-based beehive monitoring system: 
+Beehive parameters (weight, bee sound, temperature, and humidity) are measured 
+and analysed using ESP32 and sent to the database for analysis and remote monitoring. 
+●​ Regulated DC voltage from AC: 
+ AC source converted into a regulated 5V DC using a bridge rectifier. 
+●​ Geiger Mode Avalanche Photon Detector: 
+Worked on testing and analysis on APD with active quenching, reset, and temperature 
+control circuitry. 
+●​ Audio signal transmitter and receiver: 
+ ​
+The audio signal is encoded, sent to the channel, and received using the heterodyne 
+receiver.  
+​
+   TECHNICAL SKILLS   ​
+ 
+●​ PCB Design: Design and etching of PCB boards on Kicad.  
+●​ Software: Proteus, MATLAB, Arduino, Visual Studio, AutoCAD 
+●​ MS Office: Word, Excel, PowerPoint, Project, Visio 
+●​ Programming: C, C++, Python, SQL, machine learning,  
+●​ WordPress: HTML, CSS, PHP 
+●​ Microcontrollers & Programmable Boards: ESP, Arduino, ATmega32 
+ 
+ 
+​
+   PROFESSIONAL AFFILIATIONS​
+ 
+●​ The Internet Society – Islamabad chapter:  Sep 2019 – present  
+●​ APrIGF Muli stakeholder Steering Group (MSG): 2022-present 
+​
+   ACHIEVEMENTS   ​
+ 
+●​ Attended APSIG (Asia Pacific School on Internet Governance) 2021 Fellowship held in 
+Sri Lanka. 
+●​ APIGA 2022 fellow 
+●​ Fellow at APNIC 54 (Asia Pacific Network Information Centre) and Yigf 2022 
+fellowship program (Singapore). 
+​
+   CERTIFICATIONS ​
+ 
+●​ Shaping the Internet: history & future | ISOC 
+●​ Introduction to the Internet of Things | CISCO Networking Academy

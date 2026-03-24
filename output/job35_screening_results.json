@@ -1,0 +1,4621 @@
+[
+  {
+    "app_id": 1514,
+    "cand_id": 1262,
+    "email": "sehrish.irfaan@gmail.com",
+    "score": 97.5,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 4 hi/4 lo | RA work: Yes | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 4,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1729,
+    "cand_id": 1397,
+    "email": "jawadmarwat47@gmail.com",
+    "score": 97.5,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 4 hi/4 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 4,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1445,
+    "cand_id": 1205,
+    "email": "faryalafridi4@gmail.com",
+    "score": 95.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 4 hi/2 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 4,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1569,
+    "cand_id": 1296,
+    "email": "rabiya.baloch.31@gmail.com",
+    "score": 93.8,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/4 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1899,
+    "cand_id": 1521,
+    "email": "link2hassanyasar@gmail.com",
+    "score": 93.8,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/3 lo | RA work: Yes | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1369,
+    "cand_id": 1148,
+    "email": "hassanzafar8004474@gmail.com",
+    "score": 92.5,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 4 hi/4 lo | RA work: Yes | Thesis: Yes | UNICEF exposure",
+    "dims": {
+      "functional": 4,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1592,
+    "cand_id": 880,
+    "email": "junaidjadee912@gmail.com",
+    "score": 92.5,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/4 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1730,
+    "cand_id": 1404,
+    "email": "ijlalhaider882@gmail.com",
+    "score": 91.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/4 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1734,
+    "cand_id": 1407,
+    "email": "zashirsyed@gmail.com",
+    "score": 91.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/3 lo | RA work: Yes | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1771,
+    "cand_id": 1425,
+    "email": "wasifmehdi550@gmail.com",
+    "score": 91.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/5 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1902,
+    "cand_id": 1422,
+    "email": "sidraishfaq@gmail.com",
+    "score": 91.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | IFPRI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1649,
+    "cand_id": 1345,
+    "email": "manalshah2002@gmail.com",
+    "score": 90.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: Yes | Thesis: Yes | TALEEMABAD exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1663,
+    "cand_id": 1357,
+    "email": "zeeshanali.gzr55@gmail.com",
+    "score": 90.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/2 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1820,
+    "cand_id": 1462,
+    "email": "n.muhammadrafay@gmail.com",
+    "score": 90.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/0 lo | RA work: Yes | Thesis: No | DEVELOPMENT ECONOMICS experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1829,
+    "cand_id": 199,
+    "email": "burhanhassan384@gmail.com",
+    "score": 90.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/5 lo | RA work: Yes | Thesis: No | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1512,
+    "cand_id": 1260,
+    "email": "usman11socio51@gmail.com",
+    "score": 88.8,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 2 hi/2 lo | RA work: Yes | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1532,
+    "cand_id": 1273,
+    "email": "muqqadas2001@gmail.com",
+    "score": 88.8,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 3 hi/4 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1550,
+    "cand_id": 1283,
+    "email": "alyhnz1140@gmail.com",
+    "score": 88.8,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1665,
+    "cand_id": 1358,
+    "email": "zainabch579@gmail.com",
+    "score": 87.5,
+    "tier": "Tier A",
+    "summary": "Tools: Excel | Methods: 3 hi/2 lo | RA work: Yes | Thesis: Yes | PIDE experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1402,
+    "cand_id": 1179,
+    "email": "abshatasaawar321@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 3 hi/2 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1456,
+    "cand_id": 1214,
+    "email": "shahid.kaamal@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes | IPA  experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1487,
+    "cand_id": 1240,
+    "email": "i220673@nu.edu.pk",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1534,
+    "cand_id": 1274,
+    "email": "neno.farman@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/3 lo | RA work: Yes | Thesis: Yes | USAID exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1641,
+    "cand_id": 1340,
+    "email": "wajiha.rehberali@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/3 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1696,
+    "cand_id": 1380,
+    "email": "noorfatimaj77730@gmail.con",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/2 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1765,
+    "cand_id": 1420,
+    "email": "hajraali5@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/3 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1490,
+    "cand_id": 1242,
+    "email": "mzainulhaq81@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1725,
+    "cand_id": 1401,
+    "email": "mzaqau@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1848,
+    "cand_id": 1484,
+    "email": "huzaifamazhar8@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1854,
+    "cand_id": 1489,
+    "email": "aabdullah.studies@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/6 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1855,
+    "cand_id": 1490,
+    "email": "sairashakoor3@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1880,
+    "cand_id": 1508,
+    "email": "nabhia.asghar@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1944,
+    "cand_id": 1552,
+    "email": "mariamrehman681@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1945,
+    "cand_id": 1552,
+    "email": "mariamrehman681@gmail.com",
+    "score": 85.0,
+    "tier": "Tier A",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1558,
+    "cand_id": 1290,
+    "email": "hadiyahshaheen01@gmail.com",
+    "score": 83.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 4 hi/2 lo | RA work: No | Thesis: Yes | CERP experience",
+    "dims": {
+      "functional": 4,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1417,
+    "cand_id": 165,
+    "email": "kaynatsyeda4@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/4 lo | RA work: Yes | Thesis: No | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1429,
+    "cand_id": 1195,
+    "email": "noorscheherazade@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 3 hi/1 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1478,
+    "cand_id": 1233,
+    "email": "sadich61@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 3 hi/4 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1488,
+    "cand_id": 1241,
+    "email": "qasee.khundian@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes | AGA KHAN exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1774,
+    "cand_id": 1428,
+    "email": "fatimachohan110@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1778,
+    "cand_id": 1432,
+    "email": "gulqazi28@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1863,
+    "cand_id": 1497,
+    "email": "hanniya400@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1883,
+    "cand_id": 1510,
+    "email": "naziaalam2295@gmail.com",
+    "score": 82.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/5 lo | RA work: Yes | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1397,
+    "cand_id": 1175,
+    "email": "uroojiftikhar214@gmail.com",
+    "score": 81.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/4 lo | RA work: No | Thesis: Yes | GIZ exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1703,
+    "cand_id": 1385,
+    "email": "basitalee77@gmail.com",
+    "score": 81.2,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1841,
+    "cand_id": 1478,
+    "email": "huma.jehangir@outlook.com",
+    "score": 81.2,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | UNICEF exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1888,
+    "cand_id": 1514,
+    "email": "hamza.abbasi.analytics@gmail.com",
+    "score": 81.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1404,
+    "cand_id": 1181,
+    "email": "hassam.mughal125@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1562,
+    "cand_id": 1293,
+    "email": "fatimaaroob0@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1627,
+    "cand_id": 1334,
+    "email": "naima.memoon55@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | AKESP exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1628,
+    "cand_id": 1334,
+    "email": "naima.memoon55@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | AKESP exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1878,
+    "cand_id": 1507,
+    "email": "rameezwasif1@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1933,
+    "cand_id": 1546,
+    "email": "asadkhanjadoon.ece@gmail.com",
+    "score": 80.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1530,
+    "cand_id": 1271,
+    "email": "nayyarabbasfccu@hotmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1692,
+    "cand_id": 1377,
+    "email": "mnisarqasim@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1701,
+    "cand_id": 1383,
+    "email": "mahnoorhasan122@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1757,
+    "cand_id": 1416,
+    "email": "daniyalnaeem2377@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 4 hi/4 lo | RA work: Yes | Thesis: No",
+    "dims": {
+      "functional": 4,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1804,
+    "cand_id": 1449,
+    "email": "mahnooraltaf6@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/2 lo | RA work: Yes | Thesis: Yes | PIDE experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1931,
+    "cand_id": 1544,
+    "email": "sufyanzamir123@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 3 hi/5 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1373,
+    "cand_id": 1152,
+    "email": "alizay.babar12@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/4 lo | RA work: No | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1504,
+    "cand_id": 1253,
+    "email": "Shabbir.dani@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/4 lo | RA work: Yes | Thesis: Yes | AGA KHAN exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1596,
+    "cand_id": 1313,
+    "email": "Mamoona.safeer1997@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1684,
+    "cand_id": 1374,
+    "email": "rabiabasri0006@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: Yes | Thesis: No | DEVELOPMENT ECONOMICS experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1753,
+    "cand_id": 1415,
+    "email": "usmanumar646@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1761,
+    "cand_id": 1418,
+    "email": "hoorulain54@gmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1799,
+    "cand_id": 637,
+    "email": "Naveediqbals@hotmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: Yes | Thesis: No | UNICEF exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1949,
+    "cand_id": 1554,
+    "email": "malik_maria99@hotmail.com",
+    "score": 77.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1368,
+    "cand_id": 1147,
+    "email": "usamaaijaz707@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1572,
+    "cand_id": 1298,
+    "email": "asnamukhtar01@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/2 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1679,
+    "cand_id": 1368,
+    "email": "abdulsubhangormani@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1732,
+    "cand_id": 73,
+    "email": "sumerafrugal@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1768,
+    "cand_id": 1211,
+    "email": "usmanahmaddenin@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 0 hi/3 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1782,
+    "cand_id": 1436,
+    "email": "sohailkhattak1010@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/4 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1816,
+    "cand_id": 1459,
+    "email": "durenayab349@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/0 lo | RA work: Yes | Thesis: No | UNDP exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1918,
+    "cand_id": 1532,
+    "email": "nasirshigri001@gmail.com",
+    "score": 76.2,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 1 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1452,
+    "cand_id": 1212,
+    "email": "nailaahmed1992@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/2 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1736,
+    "cand_id": 1408,
+    "email": "khanhamad16307@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1758,
+    "cand_id": 1417,
+    "email": "talhaiftykhar458@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1772,
+    "cand_id": 1426,
+    "email": "kainatmunir1203@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1777,
+    "cand_id": 1431,
+    "email": "rahimaomar321@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1947,
+    "cand_id": 1553,
+    "email": "daniyahnoor@gmail.com",
+    "score": 75.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1666,
+    "cand_id": 1359,
+    "email": "paniala751@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1670,
+    "cand_id": 1363,
+    "email": "javeria.jalil@hotmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 2 hi/3 lo | RA work: No | Thesis: Yes | DEVELOPMENT ECONOMICS experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1719,
+    "cand_id": 1396,
+    "email": "ahmed.aamer91827@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1759,
+    "cand_id": 1123,
+    "email": "mahrukh.waqar55@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1852,
+    "cand_id": 1488,
+    "email": "usmankonosuba@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1894,
+    "cand_id": 1517,
+    "email": "tajhusssain.qau@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1920,
+    "cand_id": 1533,
+    "email": "humairchauhdary@gmail.com",
+    "score": 73.8,
+    "tier": "Tier B",
+    "summary": "Tools: Excel | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 4,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1399,
+    "cand_id": 294,
+    "email": "mzainmob@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1438,
+    "cand_id": 1202,
+    "email": "hammasahmadkhan58@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1474,
+    "cand_id": 1230,
+    "email": "rajasohailahmedkhan708@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1763,
+    "cand_id": 1419,
+    "email": "muhammadmustafakhan549@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/3 lo | RA work: No | Thesis: Yes | PIDE experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1800,
+    "cand_id": 1446,
+    "email": "sarfrazsofia@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 2 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1831,
+    "cand_id": 1471,
+    "email": "hamzadilshad23@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1928,
+    "cand_id": 1541,
+    "email": "zohaib.iftikhar132000@gmail.com",
+    "score": 72.5,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1531,
+    "cand_id": 1272,
+    "email": "Shaheer_SE@proton.me",
+    "score": 72.2,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1529,
+    "cand_id": 1270,
+    "email": "m.afzal36@yahoo.com",
+    "score": 71.2,
+    "tier": "Tier B",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/2 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1571,
+    "cand_id": 1297,
+    "email": "sartaj.daulat@gmail.com",
+    "score": 71.2,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/2 lo | RA work: No | Thesis: Yes | AGA KHAN exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1741,
+    "cand_id": 1411,
+    "email": "m.zulqarnain910@gmail.com",
+    "score": 71.2,
+    "tier": "Tier B",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | TCF exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1412,
+    "cand_id": 1185,
+    "email": "laibaahmed938@gmail.com",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1801,
+    "cand_id": 1447,
+    "email": "ms.242604546@imsciences.edu.pk",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1821,
+    "cand_id": 1463,
+    "email": "ayeshanadeem2408@gmail.com",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1828,
+    "cand_id": 1469,
+    "email": "shahzadbilal418@gmail.com",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1908,
+    "cand_id": 1526,
+    "email": "aqsabaig12345@gmail.com",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 5 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 4,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1909,
+    "cand_id": 1526,
+    "email": "aqsabaig12345@gmail.com",
+    "score": 70.0,
+    "tier": "Tier B",
+    "summary": "Tools: Stata/R/Python | Methods: 5 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 4,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1378,
+    "cand_id": 1156,
+    "email": "saniastch@outlook.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1463,
+    "cand_id": 1222,
+    "email": "aminaasim38@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1498,
+    "cand_id": 1249,
+    "email": "muzurazee121@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1520,
+    "cand_id": 1266,
+    "email": "obaidahmed373@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1522,
+    "cand_id": 1265,
+    "email": "imamatahir5@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/3 lo | RA work: Yes | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1548,
+    "cand_id": 1282,
+    "email": "aniladad786@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/2 lo | RA work: Yes | Thesis: No | AGA KHAN exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1790,
+    "cand_id": 1439,
+    "email": "mokhan.2173@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/4 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1824,
+    "cand_id": 1466,
+    "email": "ssc.eisha.191094@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/0 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1901,
+    "cand_id": 983,
+    "email": "raiyaanjhamid@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1953,
+    "cand_id": 1557,
+    "email": "aliyabukhari123@gmail.com",
+    "score": 68.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: Yes | Thesis: Yes | UNICEF exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1427,
+    "cand_id": 1193,
+    "email": "iqraparvez2005@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1446,
+    "cand_id": 391,
+    "email": "ijazhisham1@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1539,
+    "cand_id": 1277,
+    "email": "ambroali161@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/3 lo | RA work: Yes | Thesis: No | AGA KHAN exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1787,
+    "cand_id": 1144,
+    "email": "aliizaffaar@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1458,
+    "cand_id": 1217,
+    "email": "ahmadali.uom2021@gmail.com",
+    "score": 66.3,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1476,
+    "cand_id": 1232,
+    "email": "drfarrukhbds@gmail.com",
+    "score": 66.3,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/2 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1500,
+    "cand_id": 1250,
+    "email": "syedtahaahmedtabrez@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1565,
+    "cand_id": 115,
+    "email": "mahroosha.sal@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: Yes | Thesis: No | UNDP exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1575,
+    "cand_id": 1301,
+    "email": "zalankhan657@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1632,
+    "cand_id": 1338,
+    "email": "noorulezzahkhan@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1707,
+    "cand_id": 1387,
+    "email": "sanaumair09@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1459,
+    "cand_id": 1218,
+    "email": "jahangiranwar.ja@gmail.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/2 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1574,
+    "cand_id": 1300,
+    "email": "khansufian58@gmail.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1589,
+    "cand_id": 1310,
+    "email": "hooria.khan773@gmail.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1770,
+    "cand_id": 1424,
+    "email": "nawalazamkhan@gmail.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1822,
+    "cand_id": 1464,
+    "email": "iarslankhalidd@gmail.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1892,
+    "cand_id": 1516,
+    "email": "asmaeffendi96@outlook.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 3 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1900,
+    "cand_id": 1522,
+    "email": "taqdees.f@yahoo.com",
+    "score": 65.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1642,
+    "cand_id": 1341,
+    "email": "mutiurrehman004@gmail.com",
+    "score": 63.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1492,
+    "cand_id": 1244,
+    "email": "taqdeesjaved91@gmail.com",
+    "score": 63.7,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1554,
+    "cand_id": 1287,
+    "email": "alirazasafdar1855@gmail.com",
+    "score": 63.7,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1615,
+    "cand_id": 1326,
+    "email": "urooj.mukhtaar@gmail.com",
+    "score": 63.7,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1375,
+    "cand_id": 1153,
+    "email": "sidrasaeed2811@gmail.com",
+    "score": 62.5,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/2 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1419,
+    "cand_id": 1189,
+    "email": "abbasiismail08@gmail.com",
+    "score": 62.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1493,
+    "cand_id": 1245,
+    "email": "haseebbaig990@gmail.com",
+    "score": 62.5,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/3 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1616,
+    "cand_id": 1327,
+    "email": "ad7772230@gmail.com",
+    "score": 62.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1796,
+    "cand_id": 1444,
+    "email": "maryamarshadmemon@gmail.com",
+    "score": 62.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1390,
+    "cand_id": 1168,
+    "email": "atiqifatima4@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1516,
+    "cand_id": 1264,
+    "email": "huzaifa.rehman2694@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1586,
+    "cand_id": 1308,
+    "email": "foziasadaf704@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1675,
+    "cand_id": 1367,
+    "email": "aminajabin229@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1728,
+    "cand_id": 1402,
+    "email": "amara.naqui4@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1814,
+    "cand_id": 1457,
+    "email": "ahmadalik2018@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 3 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1395,
+    "cand_id": 1173,
+    "email": "majidaziz210@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1599,
+    "cand_id": 1304,
+    "email": "zainabsajjad122@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | EDTECH exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1710,
+    "cand_id": 1390,
+    "email": "nidaali1120@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No | AGA KHAN exposure",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1715,
+    "cand_id": 1394,
+    "email": "mustafa911khan@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1843,
+    "cand_id": 965,
+    "email": "dr.syedazahwashah@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1377,
+    "cand_id": 1155,
+    "email": "mohibali0702@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/3 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1396,
+    "cand_id": 1174,
+    "email": "hadiaakram104@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1400,
+    "cand_id": 1177,
+    "email": "osaffir@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1443,
+    "cand_id": 1206,
+    "email": "tatheerakbar123@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1509,
+    "cand_id": 1257,
+    "email": "yasmeennisar27@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/4 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1523,
+    "cand_id": 1267,
+    "email": "amjadfatima190@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/2 lo | RA work: Yes | Thesis: Yes",
+    "dims": {
+      "functional": 1,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1634,
+    "cand_id": 1339,
+    "email": "midhatfatima22@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/2 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1733,
+    "cand_id": 1406,
+    "email": "marukhsundhu@gmail.com",
+    "score": 58.8,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 2 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1391,
+    "cand_id": 1169,
+    "email": "iffatzameer3@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1416,
+    "cand_id": 1188,
+    "email": "hirasayyad718@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1433,
+    "cand_id": 1198,
+    "email": "ayesha6zahid@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1511,
+    "cand_id": 1259,
+    "email": "asmamalik24@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | UNICEF exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1524,
+    "cand_id": 1268,
+    "email": "hirakainat386@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 2 hi/2 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1631,
+    "cand_id": 1337,
+    "email": "okashachangwani@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 3 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 3,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1672,
+    "cand_id": 1365,
+    "email": "ghauriatwork@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1776,
+    "cand_id": 1430,
+    "email": "mishaalshah27@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1830,
+    "cand_id": 1470,
+    "email": "laibahayat2002@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1838,
+    "cand_id": 1476,
+    "email": "wardaghafoor215@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1882,
+    "cand_id": 1509,
+    "email": "nazrahila.21@gmail.com",
+    "score": 57.5,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/2 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1423,
+    "cand_id": 1191,
+    "email": "aqsagul3122@gmail.com",
+    "score": 56.2,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1462,
+    "cand_id": 1221,
+    "email": "ahmarhaseeb@gmail.com",
+    "score": 56.2,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1486,
+    "cand_id": 1239,
+    "email": "writetomidrees@gmail.com",
+    "score": 56.2,
+    "tier": "Tier C",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1844,
+    "cand_id": 1480,
+    "email": "Muhammadbilalshahid2003@gmail.com",
+    "score": 56.2,
+    "tier": "Tier C",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1411,
+    "cand_id": 1186,
+    "email": "rameesha.hafeez@outlook.com",
+    "score": 55.0,
+    "tier": "Tier C",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1705,
+    "cand_id": 1386,
+    "email": "imtessals@gmail.com",
+    "score": 55.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 1 hi/2 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1735,
+    "cand_id": 150,
+    "email": "muhammadwasim50575@gmail.com",
+    "score": 55.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: Yes | Thesis: Yes | TALEEMABAD exposure",
+    "dims": {
+      "functional": 1,
+      "outcomes": 4,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1810,
+    "cand_id": 1453,
+    "email": "aimanbehzad2001@gmail.com",
+    "score": 55.0,
+    "tier": "Tier C",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: Yes | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1859,
+    "cand_id": 1493,
+    "email": "ullahrahim246@yahoo.com",
+    "score": 54.2,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: Yes | Thesis: Yes | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1371,
+    "cand_id": 1150,
+    "email": "shzdnadeem@gmail.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1394,
+    "cand_id": 1172,
+    "email": "abidhussain740662@gmail.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1555,
+    "cand_id": 1286,
+    "email": "shaheenshagufta73@yahoo.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1682,
+    "cand_id": 1372,
+    "email": "suhailmustafa2006@gmail.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 3,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1842,
+    "cand_id": 1479,
+    "email": "khushala.rahman1@gmail.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/2 lo | RA work: No | Thesis: Yes | WORLD BANK experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1868,
+    "cand_id": 1501,
+    "email": "ayesha.khan@taleemabad.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1537,
+    "cand_id": 1276,
+    "email": "zainabazhar361@gmail.com",
+    "score": 52.5,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1773,
+    "cand_id": 1427,
+    "email": "anjumakbar25@gmail.com",
+    "score": 52.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1409,
+    "cand_id": 96,
+    "email": "fatimarida711@gmail.com",
+    "score": 51.3,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1410,
+    "cand_id": 96,
+    "email": "fatimarida711@gmail.com",
+    "score": 51.3,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/3 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1449,
+    "cand_id": 1209,
+    "email": "tehreemaly90@gmail.com",
+    "score": 51.2,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1748,
+    "cand_id": 992,
+    "email": "usmanshabbirchouhan@gmail.com",
+    "score": 51.2,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1780,
+    "cand_id": 1434,
+    "email": "sarrosh.fatima@stat.qau.edu.pk",
+    "score": 51.2,
+    "tier": "No-Hire",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1370,
+    "cand_id": 1149,
+    "email": "mishaq998@outlook.com",
+    "score": 50.0,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1428,
+    "cand_id": 1194,
+    "email": "syedm.mesumabbas@gmail.com",
+    "score": 50.0,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1793,
+    "cand_id": 1325,
+    "email": "sumbalkhan6699@gmail.com",
+    "score": 50.0,
+    "tier": "No-Hire",
+    "summary": "Tools: SPSS/SQL/Tableau | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1846,
+    "cand_id": 1482,
+    "email": "toobazar96@gmail.com",
+    "score": 50.0,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1724,
+    "cand_id": 1400,
+    "email": "qanitasamreen@gmail.com",
+    "score": 48.9,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1836,
+    "cand_id": 1475,
+    "email": "hunzausman66@gmail.com",
+    "score": 48.9,
+    "tier": "No-Hire",
+    "summary": "Tools: Stata/R/Python | Methods: 1 hi/1 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1560,
+    "cand_id": 1292,
+    "email": "samiullahjamali007@gmail.com",
+    "score": 48.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1646,
+    "cand_id": 1342,
+    "email": "ahaleem7222@gmail.com",
+    "score": 47.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1746,
+    "cand_id": 1414,
+    "email": "khanzadahayat7@gmail.com",
+    "score": 47.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | TCF exposure",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1886,
+    "cand_id": 1513,
+    "email": "amnarashid44@gmail.com",
+    "score": 47.5,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: No | WORLD BANK experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1914,
+    "cand_id": 1529,
+    "email": "amna86329@gmail.com",
+    "score": 47.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1385,
+    "cand_id": 1163,
+    "email": "ahmademan29@gmail.com",
+    "score": 46.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1483,
+    "cand_id": 1237,
+    "email": "raoasfandraheel@gmail.com",
+    "score": 46.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1635,
+    "cand_id": 482,
+    "email": "daud.anissa@yahoo.com",
+    "score": 46.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: No | TEACH FOR PAKISTAN exposure",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1668,
+    "cand_id": 1361,
+    "email": "Hafsaamir2002@gmail.com",
+    "score": 46.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/2 lo | RA work: No | Thesis: Yes",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1510,
+    "cand_id": 1258,
+    "email": "aftabrania0@gmail.com",
+    "score": 45.0,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1609,
+    "cand_id": 1320,
+    "email": "fatimatuzaharaawais@gmail.com",
+    "score": 45.0,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: Yes | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1832,
+    "cand_id": 1472,
+    "email": "mkhaliluafbrw@gmail.com",
+    "score": 45.0,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1461,
+    "cand_id": 1220,
+    "email": "mubashirtufail786@gmail.com",
+    "score": 43.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1505,
+    "cand_id": 1254,
+    "email": "aeman8466@gmail.com",
+    "score": 43.8,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1551,
+    "cand_id": 1284,
+    "email": "sabasarfraz610@gmail.com",
+    "score": 43.6,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 4,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1414,
+    "cand_id": 1187,
+    "email": "saeedahmed4288@gmail.com",
+    "score": 42.5,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1464,
+    "cand_id": 1223,
+    "email": "javeriazahra215@gmail.com",
+    "score": 42.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/2 lo | RA work: No | Thesis: No | IGI experience",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1876,
+    "cand_id": 1506,
+    "email": "awaisrariaz722@gmail.com",
+    "score": 42.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1610,
+    "cand_id": 1322,
+    "email": "bahlkani72649@yahoo.com",
+    "score": 41.4,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/1 lo | RA work: No | Thesis: No | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1568,
+    "cand_id": 1295,
+    "email": "khantareensabah@gmail.co.",
+    "score": 40.4,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1870,
+    "cand_id": 42,
+    "email": "ayesharazakhan406@gmail.com",
+    "score": 40.4,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 1 hi/0 lo | RA work: No | Thesis: No | TALEEMABAD exposure | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1578,
+    "cand_id": 855,
+    "email": "rida.zanib97@gmail.com",
+    "score": 40.0,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/3 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1629,
+    "cand_id": 1336,
+    "email": "javeria17f@gmail.com",
+    "score": 40.0,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1392,
+    "cand_id": 1170,
+    "email": "zm.zunain@gmail.com",
+    "score": 38.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: Yes | Thesis: No | UNDP exposure | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 3,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1813,
+    "cand_id": 1456,
+    "email": "eeman.s.a13@gmail.com",
+    "score": 38.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1685,
+    "cand_id": 1373,
+    "email": "afiraannis6@gmail.com",
+    "score": 37.5,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1686,
+    "cand_id": 1373,
+    "email": "afiraannis6@gmail.com",
+    "score": 37.5,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 1 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1881,
+    "cand_id": 317,
+    "email": "mahnoor.iqbal0009@gmail.com",
+    "score": 37.5,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1651,
+    "cand_id": 1347,
+    "email": "naziahayat92@gmail.com",
+    "score": 37.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1922,
+    "cand_id": 1535,
+    "email": "rehmaimran66@gmail.com",
+    "score": 37.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1654,
+    "cand_id": 1349,
+    "email": "kaziadilmemon702@gmail.com",
+    "score": 36.1,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1737,
+    "cand_id": 1409,
+    "email": "aqilms@hotmail.com",
+    "score": 36.1,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 3,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1845,
+    "cand_id": 1481,
+    "email": "iqrazar32@gmail.com",
+    "score": 35.1,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1913,
+    "cand_id": 1528,
+    "email": "maryam.umar2011@gmail.com",
+    "score": 35.1,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: Yes | Thesis: Yes | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 4,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1384,
+    "cand_id": 1162,
+    "email": "sohailbaloch18592@gmail.com",
+    "score": 33.8,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/1 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1466,
+    "cand_id": 1224,
+    "email": "saadburney10@gmail.com",
+    "score": 32.9,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: No | Thesis: No | UNDP exposure | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1382,
+    "cand_id": 1160,
+    "email": "syalikazmi@gmail.com",
+    "score": 31.2,
+    "tier": "No-Hire",
+    "summary": "Tools: Excel | Methods: 0 hi/0 lo | RA work: No | Thesis: No",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1502,
+    "cand_id": 1252,
+    "email": "nimrabaqir43@gmail.com",
+    "score": 30.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 3,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1595,
+    "cand_id": 1312,
+    "email": "saba.shahwani999@gmail.com",
+    "score": 30.8,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1467,
+    "cand_id": 1225,
+    "email": "hamnaasim63@gmail.com",
+    "score": 27.6,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1506,
+    "cand_id": 1255,
+    "email": "mahamh1708@gmail.com",
+    "score": 27.6,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/1 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1934,
+    "cand_id": 1547,
+    "email": "lyllaaslam127@gmail.com",
+    "score": 26.6,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1818,
+    "cand_id": 1460,
+    "email": "zaybeequreshi@gmail.com",
+    "score": 25.5,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | IGI experience | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1388,
+    "cand_id": 1166,
+    "email": "8099.saraali@gmail.com",
+    "score": 24.4,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1860,
+    "cand_id": 1494,
+    "email": "sabamanzoor909@gmail.com",
+    "score": 23.4,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1937,
+    "cand_id": 1494,
+    "email": "sabamanzoor909@gmail.com",
+    "score": 23.4,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 1835,
+    "cand_id": 1474,
+    "email": "ashaqbari@gmail.com",
+    "score": 21.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: Yes | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 2,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1689,
+    "cand_id": 1376,
+    "email": "rmukhtar450@gmail.com",
+    "score": 20.2,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1472,
+    "cand_id": 1228,
+    "email": "nayabammara17@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1475,
+    "cand_id": 1231,
+    "email": "hamzali77710@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1623,
+    "cand_id": 1332,
+    "email": "shajianaqvi26@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1652,
+    "cand_id": 1348,
+    "email": "talhakhan225588@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1697,
+    "cand_id": 1381,
+    "email": "hakeemusama007@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1929,
+    "cand_id": 1542,
+    "email": "hamzaimrankhan1122@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1939,
+    "cand_id": 1550,
+    "email": "haniamir55@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1954,
+    "cand_id": 1558,
+    "email": "asabbasi303@gmail.com",
+    "score": 20.0,
+    "tier": "No-Hire",
+    "summary": "Red flag: unrelated professional background",
+    "dims": {}
+  },
+  {
+    "app_id": 1535,
+    "cand_id": 1275,
+    "email": "unzishqammer@gmail.com",
+    "score": 17.0,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 1",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1473,
+    "cand_id": 1229,
+    "email": "usmankht2@gmail.com",
+    "score": 16.3,
+    "tier": "No-Hire",
+    "summary": "Tools: No tools mentioned | Methods: 0 hi/0 lo | RA work: No | Thesis: No | MISSING MH: 2",
+    "dims": {
+      "functional": 0,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1367,
+    "cand_id": 1146,
+    "email": "abdullaharif2004@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1420,
+    "cand_id": 1190,
+    "email": "aqsa-gul-704a3a261@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1434,
+    "cand_id": 1199,
+    "email": "mehwish-rani@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1436,
+    "cand_id": 1200,
+    "email": "raania-nur@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1439,
+    "cand_id": 1203,
+    "email": "qasim-shah-58224113a@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1440,
+    "cand_id": 1204,
+    "email": "adeel-arif-gujjar@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1457,
+    "cand_id": 1216,
+    "email": "muhammad-hammad-hassan-qureshi-950590207@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1469,
+    "cand_id": 1227,
+    "email": "syed-khizar-ali-shah-8571a3235@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1470,
+    "cand_id": 1226,
+    "email": "ghazanfar-zaidi-b51487291@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1479,
+    "cand_id": 1234,
+    "email": "afaq-ahmad-8b0628284@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1567,
+    "cand_id": 1294,
+    "email": "sabeen-aftab-52b689186@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1573,
+    "cand_id": 1299,
+    "email": "asna-mukhtar@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1598,
+    "cand_id": 1314,
+    "email": "peria-aizaz-87172b216@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1612,
+    "cand_id": 1324,
+    "email": "meeshafalik@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1621,
+    "cand_id": 1331,
+    "email": "zeeshan-malik-4b736a234@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1638,
+    "cand_id": 1197,
+    "email": "usman-ahmedkhan@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1645,
+    "cand_id": 1343,
+    "email": "hareem-moin-khattak-6400362b6@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1661,
+    "cand_id": 1355,
+    "email": "joveriashafiq@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1673,
+    "cand_id": 1366,
+    "email": "zara-sarwar05@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1712,
+    "cand_id": 1392,
+    "email": "ahmed-aamir-04382b316@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1717,
+    "cand_id": 1395,
+    "email": "mshahwaizakram@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1742,
+    "cand_id": 1412,
+    "email": "emaan-fatima-9467a62b9@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1743,
+    "cand_id": 991,
+    "email": "muhammad-usman-shabbir@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1744,
+    "cand_id": 1413,
+    "email": "hayat-ahmad-khan-jalali-4105a52a3@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1745,
+    "cand_id": 1235,
+    "email": "kamranali89@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1754,
+    "cand_id": 1197,
+    "email": "usman-ahmedkhan@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1785,
+    "cand_id": 1437,
+    "email": "sohail-ahmad525@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1792,
+    "cand_id": 1441,
+    "email": "hadia-akram-078670219@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1798,
+    "cand_id": 1445,
+    "email": "syed-naveed-iqbal-8a43b716@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1862,
+    "cand_id": 1496,
+    "email": "saiqa-hussain-135b65388@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1865,
+    "cand_id": 1496,
+    "email": "saiqa-hussain-135b65388@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1873,
+    "cand_id": 1503,
+    "email": "samreen-durrani-2a710b150@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1891,
+    "cand_id": 1515,
+    "email": "rida-azam-@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  }
+]

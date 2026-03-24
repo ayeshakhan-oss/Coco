@@ -1,0 +1,6 @@
+credentials.json
+token.json
+token_gmail.json
+__pycache__/
+*.pyc
+Temp/

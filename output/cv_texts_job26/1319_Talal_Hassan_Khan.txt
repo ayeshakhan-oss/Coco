@@ -1,0 +1,98 @@
+APP ID: 1319
+NAME: Talal Hassan Khan
+EMAIL: thk2590810@gmail.com
+APPLIED: 2026-02-22 13:43:58.711253
+LOCATION: Islamabad 
+================================================================================
+
+TA LA L H A SSA N  K H A N   Software Engineer
+talalhassankhan2003@gmail.com
+Islamabad, Pakistan
+talalhassankhan.vercel.app03192590810
+linkedin.com/in/talalhassankhan
+github.com/talalhassankhan18
+PROFILE
+Software Engineering graduate with hands-on experience in designing and developing responsive web applications
+using the MERN stack, Next.js, and Node.js. Skilled in crafting intuitive UI/UX designs with Figma and building efficient
+backend APIs. Adaptable, quick learner, and passionate about creating user-centered digital solutions.
+EDUCATION
+09/2021 – 07/2025
+Wah CanttBachelor of Science in Software Engineering, 
+COMSATS University Islamabad, WAH CAMPUS
+CGPA - 3.83
+07/2019 – 07/2021
+Wah CanttIntermediate in Computer Science (F.Sc - Computer Science), 
+F.G. Degree College for Men, Wah Cantt
+993/1100 - Grade A+ 
+04/2017 – 06/2019 Matriculation in Computer Science, Government Boys High School Fatehullah, Attock
+896/1100 - Grade A
+PROFESSIONAL EXPERIENCE
+07/2025 – Present
+Wah Cantt, PakistanUI UX DESIGNER, QuipSol
+Redesigning outdated client websites into modern, user-friendly, and responsive interfaces, 
+following the latest design principles and best practices.
+•Revamped legacy websites to align with modern UI/UX trends.
+•Created responsive layouts ensuring optimal performance across devices.
+•Improved navigation and usability to enhance user experience.
+•Collaborated with developers to ensure seamless design-to-code implementation.
+09/2024 – 04/2025
+Sargodha, PakistanUI UX DESIGNER, HiSkyTech
+Honed UI/UX skills by designing user-centered interfaces, collaborating with teams, and 
+enhancing user satisfaction through feedback and prototyping.
+•Designed and prototyped user interfaces for multiple projects using modern design tools
+•Conducted user research and usability testing to refine design solutions
+•Collaborated with developers to ensure seamless implementation of designs
+•Created wireframes and high-fidelity mockups to present to stakeholders
+07/2024 – 08/2024
+Islamabad, PakistanMachine Learning Intern, CodexCue Software Solutions
+As a Machine Learning Intern at CodeXCue Software Solutions, I have worked on several 
+cutting-edge projects:
+•Built an intelligent tip prediction model, achieving up to 85% accuracy, helping users make 
+better financial decisions.
+•Improved spam detection accuracy to 92% by combining hyperparameter tuning with 
+advanced preprocessing techniques.
+•Developed a dynamic car price prediction model with 90% accuracy, offering valuable 
+insights for potential buyers.
+•Created a laptop price estimation tool delivering up to 88% accuracy, ensuring precise and 
+reliable evaluations for users.
+PROJECTS
+09/2024 – 06/2025 SALONSPHERE, Final Year Project
+•Tech Stack: Next.js, Tailwind CSS, TypeScript, Node.js, MongoDB, Vercel, Git. Built a scalable 
+full-stack web platform serving as a digital hub for salons and products. 
+•Key features include real-time salon service bookings, appointment scheduling, vendor 
+registration, Stripe payment integration, and an AI chatbot for personalized support. 
+Designed to streamline salon services for both customers and vendors.
+salonsphere.vercel.app
+09/2023 – 01/2024 QUICKLIFT, A RIDE SHARING APP UI/UX DESIGN
+•A low-fare ride-sharing app UI focused on simplicity and user accessibility.
+•Designed a full app interface including onboarding, ride selection, tracking, and payment 
+flows.
+•Created wireframes, interactive prototypes, and high-fidelity designs using Figma
+QuickLIft Prototype
+02/2024 – 07/2024 SNAPLEADS, A LEAD MANAGEMENT DASHBOARD UI/UX DESIGN
+•A lead management dashboard UI for monitoring campaigns, agents, and conversions
+•Created a structured, data-driven dashboard layout to streamline lead tracking workflows
+•Designed user-friendly interfaces for KPIs, campaign creation, analytics, and agent panels in 
+Figma
+SNAPLEADS Prototype
+09/2024 – 12/2024 CRYPT2CALL, UI/UX DESIGN PROJECT FOR A SECURE COMMUNICATION APP
+•Designed the interface for Crypt2Call, an encrypted voice and messaging app.
+•Created wireframes, prototypes, and high-fidelity designs for authentication, chat, calls, 
+status updates, communities, and user settings using Figma
+Crypt2Call Prototype
+06/2025 – Present LAWYERS CASE DIARY, MERN STACK
+•Developed a web-based system enabling lawyers to efficiently manage and track legal cases 
+with real-time updates on court dates, case progress, and client details.
+•Enhanced workflow accuracy and user experience through seamless data handling and an 
+intuitive, user-friendly interface.
+SKILLS
+UI/UX & Design Tools:
+Figma (wireframing and high-fidelity UI design), Adobe 
+Illustrator, Adobe Photoshop.
+Backend Development:
+Node.js (built RESTful APIs and handled server-side 
+logic) Express.js, MongoDB, Payment Integration.Frontend Development:
+HTML, CSS, JavaScript, React.js, Next.js
+INTERESTS
+— crafting intuitive user experiences, building responsive web applications, and exploring emerging design and
+development trends.

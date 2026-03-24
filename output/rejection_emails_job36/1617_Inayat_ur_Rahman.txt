@@ -1,0 +1,35 @@
+*** PILOT — DO NOT SEND YET ***
+[CATEGORY: B]
+================================================================================
+
+Subject: Re: Your Application for Field Coordinator, Research & Impact Studies
+
+Hi Inayat,
+
+Thank you so much for applying to Taleemabad. I genuinely read through your CV and I want to give you honest feedback because I think that's more respectful than a generic rejection.
+
+First, I want to acknowledge something real: you've built a solid career in quality assurance and process management. Your work as a QA Lead at Systems Limited and your current role as Senior IT Business Analyst at Stewart Pakistan shows you understand systems, standards, and the importance of catching errors before they become bigger problems. That attention to detail—flagging deficiencies, ensuring compliance with policies, conducting training—these are genuinely valuable skills. I can see you take your work seriously.
+
+Here's where I need to be direct with you, though: this particular role—Field Coordinator for Research & Impact Studies—requires a very specific type of experience that your background doesn't quite align with, and I want to explain why rather than leave you wondering.
+
+The Field Coordinator role is fundamentally about operational field management in education research. It's hands-on, decentralized work: managing enumerators (surveyors) conducting fieldwork in government schools, quality-checking their data in real-time, problem-solving when sampling plans slip, coordinating with district education departments and school principals, traveling to remote areas, and making judgment calls in the field when things don't go to plan. The person in this role needs to have *managed a team of field workers* doing surveys or M&E activities, or implemented education programs with on-ground execution components. They need to have felt the friction of field realities—delayed school access, incomplete surveys, data quality issues in real time—and solved for those.
+
+Looking at your CV, your experience has been primarily in desk-based, structured environments: quality assurance of documents, data entry, software quality testing, and office-based training. These are important roles, but they're quite different from field coordination. There's no mention of fieldwork experience, managing survey teams, or working directly in schools or communities. The leap from your current context to managing 20+ enumerators across government schools in Islamabad/Rawalpindi is a significant one.
+
+Additionally, the Field Coordinator role requires someone who can push back when standards slip—who can say "no, that sampling approach doesn't match the plan, let's fix it" to external partners and senior stakeholders. That confidence often comes from having done this type of work before and understanding *why* the standards matter. I don't see that specific experience on your profile.
+
+I also want to be transparent about something else: your CV has some formatting inconsistencies and a few typos (like "Rahaman" in the header vs "Rahman" elsewhere, and some software names that seem garbled in the IT Exposure section). In a research role where precision and clarity matter enormously, these small details can sometimes signal whether someone's worked in environments where those standards are non-negotiable. I'm mentioning this not to be nitpicky, but because it's the kind of thing that came through as I reviewed your application alongside the role requirements.
+
+That said—and I mean this genuinely—I don't think you're in the wrong industry. Taleemabad is growing, and we have roles coming up in operations, business process management, and quality assurance where your IT and QA background would be directly valuable. If you're interested in EdTech and in contributing to education in Pakistan, I'd encourage you to keep an eye on our careers page or reach out in a few months when we're hiring for roles that sit more naturally with your skill set.
+
+Your MSc in Economics is also an interesting asset—you have quantitative training that could be useful in the right context within our organization.
+
+I appreciate you taking the time to apply, and I genuinely hope this feedback is helpful rather than discouraging. We're building something meaningful here at Taleemabad, and people who care about doing things *right*—which your QA background suggests you do—matter to us.
+
+Take care, Inayat.
+
+Warm regards,
+
+Team Taleemabad
+
+Coco — AI Assistant | Taleemabad Talent Acquisition

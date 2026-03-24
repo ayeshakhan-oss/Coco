@@ -1,0 +1,113 @@
+ABDUL BASIT
+SQA Engineer
++923278678597
+Linkedin: https://www.linkedin.com/in/abdul-basit-bashir/
+Email: nowbasit602@gmail.com
+SUMMARY
+Results-driven Results-driven and detail-oriented SQA Automation Engineer with strong expertise in automated
+testing, manual testing, API testing, and software quality assurance. Proficient in industry-leading tools and
+frameworks including Selenium WebDriver, JUnit 5, Serenity BDD (Screenplay), Playwright, Cypress, and Postman.
+Skilled in implementing scalable CI/CD pipelines using Jenkins and GitHub Actions, and performing database
+validations with SQL and PgAdmin. Adept at identifying defects, optimizing system reliability, and enhancing user
+experience through structured testing processes. Well-versed in SDLC and STLC methodologies and highly
+collaborative within Agile/Scrum environments. Committed to delivering high-quality, high-performing software
+aligned with business objectives and industry best practices.
+WORKEXPERIENCE
+SQA Engineer | Emumba Pvt Ltd | Oct 2024 – March 2025
+Gained hands-on experience in automated and manual testing enhancing understanding of industry workflows
+and remote collaboration.
+Assisted in testing web applications built with JavaScript, Java, Cucumber, and Serenity frameworks, ensuring
+functionality and stability.
+Developed and executed automated test cases for various application features, improving test efficiency.
+Collaborated with cross-functional teams to refine business models and test strategies for better product quality.
+Explored debugging techniques and issue resolution approaches to enhance software reliability.
+Tech Instructor | Computer Teacher — IOH College | Feb2023 – Aug 2024
+• Taught Computer Science fundamentals, IT skills, and basic programming concepts.
+• Guided students in technology awareness, coding basics, and digital literacy.
+• Managed classroom activities, assessments, and student mentorship.
+• Helped students engage with modern tech learning environments and STEM concepts.
+SKILLS
+Technical skills
+
+Selenium WebDriver
+
+JavaScript / TypeScript
+
+API Testing (Postman, REST Assured)
+
+SQL, PgAdmin
+
+Java
+
+JUnit
+
+GitHub
+
+Python (Basic)
+
+Scrum, STLC
+
+CI/CD Tools: Jenkins, GitHub Actions
+
+Docker Basics
+
+Serenity BDD (Screenplay)
+
+Manual Testing
+
+Playwright
+
+Cypress
+EDUCATION
+Bachelorsof Science in SoftwareEngineering | IQRA University Islamabad (2019- 2023)
+PROJECTS
+Automated Web Testing using Selenium, JUnit, and Selenium Grid
+Developed an automated test suite for a web-based e-commerce platform using Selenium WebDriver, JUnit, and Java.
+Configured and executed tests on Selenium Grid to support cross-browser testing on Firefox and Chrome.
+Implemented parameterized test execution using JSON data sources for login credentials.
+Automated key test scenarios, including login validation, cart operations (adding/removing items from product,
+checkout, and details pages), purchase flow, cart persistence across sessions, and sorting functionality.
+Automated Testing of Weather Shopper using Cucumber, Selenium, and Java
+Developedan automated test suite for a dynamic web applicationusing Cucumber, Selenium WebDriver, JUnit, and Java.
+Designed and implemented test cases based on application tooltips, ensuring thorough validation of expected behaviors.
+Utilized Cucumber feature files to define test scenarios in a structured, BDD (Behavior-Driven Development) format.
+Configured and executed parallel test execution to optimize performance and efficiency.
+Integrated Selenium Grid to enable cross-browser testing and ensure platform independence.
+Implemented robust assertions and error-handling mechanisms to improve test reliability and maintainability.
+Provided detailed documentation on test case definitions, setup instructions, and execution steps.
+Maven Test Automation with Serenity
+Developed a structured Maven-based test automation framework using Serenity BDD, Selenium, and JUnit.
+Configured and managed dependencies to ensure smooth integration and execution.
+Automated key test scenarios, maintaining clarity, readability, and adaptability to changing requirements.
+Implemented robust debugging and error-handling for test stability and reliability.
+Provided concise documentation on setup, execution, and troubleshooting.
+E-commerce Platform Test Automation
+Automated key user journeys including login, product search, cart management, and checkout workflows.
+Conducted extensive cross-browser testing across Chrome, Firefox, and Edge for seamless user experience.
+Integrated automated tests into Jenkins CI/CD pipelines ensuring quick feedback on build quality.
+Collaborated closely with product teams to enhance test strategies and ensure feature reliability.
+Test Automation Framework Development
+• Designed a scalable and modular automation framework from scratch using Selenium WebDriver and Java.
+• Implemented Page Object Model (POM) design pattern for better test maintainability.
+• Integrated test reporting using Extent Reports and Allure Reports.
+• Incorporated CI/CD integration with Jenkins for automatic test execution.
+• Created detailed documentation for setup, execution, and maintenance of the framework.
+API Testing Framework Development
+• Built robust API automation frameworks using Postman and Newman CLI to validate RESTful APIs.
+• Automated key workflows including authentication, CRUD operations, and data validation tests.
+• Integrated API testing with GitHub Actions for continuous integration and faster deployment cycles.
+• Conducted load and stress testing on critical APIs using JMeter to ensure performance stability.
+• Provided detailed API coverage reports improving defect identification at early stages.
+Bug Tracking System – Functional and Regression Test Automation
+• Designed and implemented automated test cases for a web-based bug tracking tool used by QA teams.
+• Covered core functionalities including bug reporting, status tracking, user role management, and dashboard validation.
+• Used Selenium WebDriver with Java and TestNG for regression testing of critical workflows.
+• Validated database entries using SQL queries to ensure data integrity after updates and deletions.
+• Contributed to refining test cases based on real-world bug lifecycle scenarios.
+Online Banking Website – Basic Test Automation
+Automated basic test cases like login, fund transfer, and checking balance.
+Used Selenium WebDriver with Java to write simple test scripts.
+Checked if buttons, links, and navigation work properly.
+Created a basic test report showing pass/fail results.
+Ran tests on Chrome and Firefox browsers.
+Tested forms with valid and invalid inputs.

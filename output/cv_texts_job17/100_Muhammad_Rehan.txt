@@ -1,0 +1,115 @@
+Muhammad Rehan   
+  
+muhammadrehan3024@gmail.com | +966562544930 | Riyadh, Saudi Arabia   
+Linkedin | Github   
+  
+AI Engineer & Trainer with 2+ years of experience in Machine Learning, Data Science, Generative AI and Low 
+code/No code AI tools. Proficient in mobile app development and UI/UX design, with expertise in integrating AI 
+into scalable, intelligent, and cloud-enabled solutions. Experienced in delivering AI and Data Science training 
+programs, mentoring students and professionals, and building AI-powered educational platforms. 
+  
+Experience  
+  
+  Lead AI Trainer – K-12 AI Bootcamp  
+​
+    atomcamp Arabia, Jazan   ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+July 2025 – August 2025  
+●​Led the K-12 AI Bootcamp, empowering school students with AI literacy and future-ready skills..  
+●​Delivered a 4-week, hands-on program where students built practical AI projects including chatbots, 
+computer vision tools, mini-games, and workflow automations. 
+●​Designed the curriculum to align with MCIT’s vision for AI education in Saudi Arabia. 
+●​Taught core AI concepts through project-based learning, instilling problem-solving and innovation skills. 
+●​Introduced students to no-code/low-code AI platforms (Mocha AI, Teachable Machine, Roboflow, Replit, 
+n8n, ElevenLabs). 
+ 
+ 
+  Co-Trainer – Mobile Development Training Program  
+​
+    ELM Company, Madinah    ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+Feb 2025 – April 2025  
+●​Mentoring Computer Science graduates in Android and Flutter development during a 3-month intensive 
+training.  
+●​Designed and delivered lessons on app architecture, API integration, and UI best practices.  
+ 
+        Ai Engineer  
+         atomcamp, Islamabad  ​ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+​​
+       July 2024 – present  
+●​ Developed Ai powered Teaching Assistant for atomcamp’s LMS.  
+●​ Integrated generative AI and chatbot functionalities across multiple products.  
+●​ Working as a flutter developer on multiple mobile applications.  
+●​ Worked on a sentiment analysis project in collaboration with UNDP.  
+●​ Delivered training sessions in multiple Upskill Bootcamps.  
+ 
+        Trainer Assistant – Data Science Bootcamp ​​
+​
+​
+​
+​
+    January 2023 – June 2023 
+         atomcamp, Islamabad  ​ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+ ​
+  
+●​ Mentored 100+ students on Python, PowerBI, Tableau, and SQL.  
+●​ Assisted in assignments, project reviews, and hands-on workshops.  
+●​ Used tools like PowerBI, Tableau, SQL, and Python for teaching purposes.  
+​
+   
+         Data Science & Business Analytics Intern  
+          ​The Sparks Foundation (TSF), Singapore   ​
+ ​
+ ​
+ ​
+ ​
+ ​
+Apr 2022 – May 2022  
+●​Applied ML algorithms on publicly available datasets.  
+●​Built dashboards and data visualizations using Tableau and Python Matplotlib.  
+  
+Key Projects:  
+●​AI Teaching Assistant – Integrated chatbots into LMS and deployed on Replit  
+●​Plant Disease Detection App – Image classification using ML models.  
+●​Multimodal Image Captioning & Translation – Built using BLIP model.  
+●​Deepfake Image Detection System – Trained a deep learning model to identify deepfake images.  
+●​Honeybee vs. Bumblebee Image Classifier – Computer vision model for bees classification.  
+●​PDF Insights Chatbot – Extracts and summarizes PDF content.  
+  
+Technical Skills   
+          
+●​Programming Languages: Python, C++, C, C#, HTML, CSS, Dart  
+●​Databases: PostgreSQL, SQL, Firebase  
+●​Data Analysis Tools: Tableau, Power Bi, Excel  
+●​Frameworks: PyTorch, TensorFlow, Langchain  
+   
+Certifications   
+   
+●​Data Analyst in SQL, Intermediate SQL, Introduction to Tableau, Understanding Data Science from 
+Datacamp   
+●​AWS certified cloud practitioner from Udemy   
+●​Ai for everyone from Coursera   
+●​Elements of Ai from Class Central

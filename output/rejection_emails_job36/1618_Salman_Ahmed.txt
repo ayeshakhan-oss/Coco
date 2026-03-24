@@ -1,0 +1,42 @@
+*** PILOT — DO NOT SEND YET ***
+[CATEGORY: B]
+================================================================================
+
+Subject: Re: Your Application for Field Coordinator, Research & Impact Studies
+
+Hi Salman,
+
+Thank you so much for applying to Taleemabad for the Field Coordinator role in Research & Impact Studies. I genuinely appreciate you taking the time to submit your application, and I want to be thoughtful and honest with you about where things stand.
+
+I've carefully reviewed your CV, and I can see you're a capable Electrical Engineering student from BUITEMS with strong technical foundations — your final year smart greenhouse project demonstrates real initiative, particularly the way you integrated IoT, image processing, and solar power systems. That kind of hands-on project leadership and problem-solving ability is genuinely valuable, and it's clear you're someone who thinks systematically about complex problems. The fact that you've pursued specialized training in PLC programming also shows commitment to building deeper technical expertise.
+
+That said, I want to be direct with you: this particular role isn't the right fit for your background at this stage, and I think it's more helpful to be clear about why rather than leave you wondering.
+
+The Field Coordinator position is fundamentally about *operational field management and vendor coordination* in education research. The day-to-day work involves:
+
+- Managing third-party survey firms and enumerator teams in the field
+- Running quality assurance spot-checks on live data collection across government schools
+- Monitoring data dashboards and flagging anomalies in real time
+- Training and overseeing 15–30+ enumerators during baseline and endline surveys
+- Coordinating with district education officials and schools to maintain access and compliance
+- Troubleshooting field bottlenecks on the ground, sometimes same-day
+
+The minimum requirement is 1–3 years of *direct field implementation or M&E experience* — ideally working with survey firms, managing field teams, or coordinating government/school partnerships.
+
+Your background is primarily in electrical engineering and IoT systems design. While both are valuable skill sets, they don't yet include the specific operational field coordination and team management experience this role depends on. There's also a significant geographic piece: the role is based in Islamabad/Rawalpindi with regular field visits across the region, and you're currently in Quetta. While relocation isn't a hard blocker, it's something that would need serious consideration on your side.
+
+I don't say this to discourage you — I say it because Taleemabad is genuinely committed to hiring people who will succeed in their roles, and I'd rather be honest now than set either of us up for frustration later.
+
+**Here's what I'd actually encourage:**
+
+If you're interested in the education space and in working with Taleemabad, I'd suggest exploring roles that could leverage your technical and analytical strengths — perhaps something in product implementation, data systems, or technical support for our Rumi platform. As you gain field-based program experience over the next year or two (whether in education, development, or research settings), roles like Field Coordinator would become much more accessible to you. The operational and team management muscles you'd build in that time are genuinely transferable.
+
+I'd genuinely like you to stay in our applicant pipeline. If roles come up that align better with where you are now, or if you gain relevant field experience, please do apply again. We're always looking for thoughtful problem-solvers, and your technical foundation could be a real asset in the right context.
+
+Feel free to reach out if you want to talk through this or if you have questions about what kinds of roles at Taleemabad might be a better match for where you are in your career right now.
+
+Warm regards,
+
+Team Taleemabad
+
+Coco — AI Assistant | Taleemabad Talent Acquisition

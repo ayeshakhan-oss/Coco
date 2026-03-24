@@ -1,0 +1,734 @@
+[
+  {
+    "app_id": 1315,
+    "cand_id": 1098,
+    "name": "Danyal Haroon",
+    "email": "danyalharoon@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Discipline: Ux Design | Qual research: 1 hi/0 lo | AI tools: Prompt eng/LLM | Writing: 2 hi | Org: IDEO",
+    "dims": {
+      "functional": 3,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 3,
+      "hard_skills": 4,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1318,
+    "cand_id": 1101,
+    "name": "Hulalah Khan",
+    "email": "hulalahk@gmail.com",
+    "score": 86.2,
+    "tier": "Tier A",
+    "summary": "Discipline: Anthropology | Qual research: 2 hi/1 lo | AI tools: ChatGPT/Claude | Writing: 0 hi | Org: MICROSOFT",
+    "dims": {
+      "functional": 4,
+      "outcomes": 4,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1309,
+    "cand_id": 1092,
+    "name": "Asma Butt",
+    "email": "asmauxuidesigner4@gmail.com",
+    "score": 78.8,
+    "tier": "Tier B",
+    "summary": "Discipline: User Research | Qual research: 0 hi/4 lo | AI tools: ChatGPT/Claude | Writing: 2 hi | Org: GOOGLE",
+    "dims": {
+      "functional": 4,
+      "outcomes": 2,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 3,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1273,
+    "cand_id": 1061,
+    "name": "Zia Ullah",
+    "email": "ziabhatti496@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: ChatGPT/Claude | Writing: 1 hi | Org: AMAZON",
+    "dims": {
+      "functional": 4,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1322,
+    "cand_id": 1105,
+    "name": "Rimsha Faisal",
+    "email": "rimshafaisal111@gmail.com",
+    "score": 67.5,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/1 lo | AI tools: Prompt eng/LLM | Writing: 0 hi | Org: MIT",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1277,
+    "cand_id": 1064,
+    "name": "Muhammad Abdullah Safdar",
+    "email": "abdullah78009@gmail.com",
+    "score": 66.2,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Research | Qual research: 0 hi/1 lo | AI tools: Prompt eng/LLM | Writing: 0 hi | Org: IDEO",
+    "dims": {
+      "functional": 4,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1285,
+    "cand_id": 384,
+    "name": "Hamza Ahmed",
+    "email": "hamza.a15102000@gmail.com",
+    "score": 63.7,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Research | Qual research: 0 hi/2 lo | AI tools: No AI tools | Writing: 0 hi | Org: MIT",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1319,
+    "cand_id": 1102,
+    "name": "Talal Hassan Khan",
+    "email": "thk2590810@gmail.com",
+    "score": 63.7,
+    "tier": "Tier C",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: Chatbot tools | Writing: 0 hi",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 1,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1263,
+    "cand_id": 1051,
+    "name": "Ahmad Hamdan Akram",
+    "email": "hamdanakram682@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/1 lo | AI tools: Prompt eng/LLM | Writing: 0 hi | Org: MICROSOFT",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 3,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1279,
+    "cand_id": 1066,
+    "name": "Muhammad Taufeeq",
+    "email": "taufeeqs.uiux@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/1 lo | AI tools: ChatGPT/Claude | Writing: 0 hi | Org: GOOGLE",
+    "dims": {
+      "functional": 4,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1328,
+    "cand_id": 1111,
+    "name": "Hadia Sajjad",
+    "email": "hadia.sajjad24@gmail.com",
+    "score": 61.3,
+    "tier": "Tier C",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1260,
+    "cand_id": 1048,
+    "name": "Arslan Saleem",
+    "email": "arslansaleem864@gmail.com",
+    "score": 60.0,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Research | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1287,
+    "cand_id": 1073,
+    "name": "Muhammad Jaffer",
+    "email": "Muhammadjaffer94@gmail.com",
+    "score": 56.2,
+    "tier": "Tier C",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: ChatGPT/Claude | Writing: 0 hi | Org: MIT",
+    "dims": {
+      "functional": 4,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1313,
+    "cand_id": 1096,
+    "name": "Aaqib Khan",
+    "email": "aaqibkhan26990@gmail.com",
+    "score": 53.8,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi | Org: MICROSOFT",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1296,
+    "cand_id": 1079,
+    "name": "Muhammad Ali",
+    "email": "dezigner.ali@gmail.com",
+    "score": 52.5,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: ChatGPT/Claude | Writing: 0 hi",
+    "dims": {
+      "functional": 4,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1307,
+    "cand_id": 1090,
+    "name": "Zikra Fiaz",
+    "email": "Zikrafiaz@gmail.com",
+    "score": 52.5,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi | Org: GOOGLE",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 4,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1259,
+    "cand_id": 1047,
+    "name": "Muhammad Taimoor",
+    "email": "muhammad.taimoor725@gmail.com",
+    "score": 50.0,
+    "tier": "No-Hire",
+    "summary": "Discipline: Conversational Ux | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1320,
+    "cand_id": 1103,
+    "name": "Nain Tara",
+    "email": "naint455@gmail.com",
+    "score": 47.5,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Experience Design | Qual research: 0 hi/0 lo | AI tools: Chatbot tools | Writing: 0 hi | Org: GOOGLE",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 1,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1311,
+    "cand_id": 1094,
+    "name": "Ghulam Qadir",
+    "email": "gqadirbarejo@gmail.com",
+    "score": 46.8,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/1 lo | AI tools: ChatGPT/Claude | Writing: 1 hi | Org: GOOGLE | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 3,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1302,
+    "cand_id": 1085,
+    "name": "Zehra Rashid",
+    "email": "zehra.rashid2013@gmail.com",
+    "score": 44.6,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Research | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1294,
+    "cand_id": 1078,
+    "name": "Asad Nawaz",
+    "email": "asadnawazzzzzz@gmail.com",
+    "score": 42.5,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/1 lo | AI tools: Prompt eng/LLM | Writing: 1 hi | Org: IDEO | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 4,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1316,
+    "cand_id": 1099,
+    "name": "Hamza Jamal",
+    "email": "hmzajmal911@gmail.com",
+    "score": 42.5,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: ChatGPT/Claude | Writing: 0 hi | Org: GOOGLE | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 4,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1301,
+    "cand_id": 1084,
+    "name": "Manahil Ahmed",
+    "email": "manahilahmed04@gmail.com",
+    "score": 40.4,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Research | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1272,
+    "cand_id": 1060,
+    "name": "Muhammad Ibrahim Khan",
+    "email": "Muhammad.ibrahim.k@protonmail.com",
+    "score": 38.8,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Research | Qual research: 0 hi/1 lo | AI tools: No AI tools | Writing: 0 hi | Org: GOOGLE",
+    "dims": {
+      "functional": 3,
+      "outcomes": 1,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 974,
+    "cand_id": 817,
+    "name": "Muhammad Ammar Khan",
+    "email": "rajaammar864@gmail.com",
+    "score": 37.2,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: Prompt eng/LLM | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 4,
+      "growth": 2
+    }
+  },
+  {
+    "app_id": 980,
+    "cand_id": 823,
+    "name": "Aisha Bashir",
+    "email": "bashir.aisha15@gmail.com",
+    "score": 37.2,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: ChatGPT/Claude | Writing: 1 hi | Org: IDEO | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 1,
+      "environment": 4,
+      "ownership": 1,
+      "communication": 2,
+      "hard_skills": 2,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1268,
+    "cand_id": 1056,
+    "name": "Muhammad Wasi Haider",
+    "email": "muhammadwasihaider72@gmail.com",
+    "score": 36.1,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | Org: IDEO | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1284,
+    "cand_id": 1071,
+    "name": "Syed Manan Ali",
+    "email": "manansoh2020@gmail.com",
+    "score": 36.1,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 3,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1270,
+    "cand_id": 1058,
+    "name": "UIxFly (Moheed)",
+    "email": "uixfly@gmail.com",
+    "score": 35.1,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 4
+    }
+  },
+  {
+    "app_id": 1291,
+    "cand_id": 1076,
+    "name": "Sameen Ali",
+    "email": "sameenali866@gmail.com",
+    "score": 32.9,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 1 hi | Org: GOOGLE | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 1,
+      "environment": 1,
+      "ownership": 3,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1300,
+    "cand_id": 1083,
+    "name": "Muhammad Ali",
+    "email": "muhammadali720p@gmail.com",
+    "score": 32.9,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | Org: IDEO | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1290,
+    "cand_id": 1075,
+    "name": "Majid Raffique",
+    "email": "majidmughal208@gmail.com",
+    "score": 31.9,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 3,
+      "outcomes": 0,
+      "environment": 2,
+      "ownership": 2,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 976,
+    "cand_id": 819,
+    "name": "Sholmiyat Adnan",
+    "email": "adnansholmiyat@gmail.com",
+    "score": 28.7,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: ChatGPT/Claude | Writing: 0 hi | Org: IDEO | MISSING MH: 1",
+    "dims": {
+      "functional": 1,
+      "outcomes": 0,
+      "environment": 4,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 2,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1286,
+    "cand_id": 1072,
+    "name": "Sanaullah Mukhtar",
+    "email": "sanaullahmukhtar01@gmail.com",
+    "score": 26.6,
+    "tier": "No-Hire",
+    "summary": "Discipline: Design Thinking | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1297,
+    "cand_id": 1080,
+    "name": "Saad Sajid",
+    "email": "saadsajid2344@gmail.com",
+    "score": 26.6,
+    "tier": "No-Hire",
+    "summary": "Discipline: Ux Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1044,
+    "cand_id": 867,
+    "name": "Ameer Hamza Tariq",
+    "email": "ahamzatariq@gmail.com",
+    "score": 20.2,
+    "tier": "No-Hire",
+    "summary": "Discipline: User Experience Design | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 1",
+    "dims": {
+      "functional": 2,
+      "outcomes": 0,
+      "environment": 1,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1304,
+    "cand_id": 1087,
+    "name": "Saad imran",
+    "email": "saadimranhazarvi0@gmail.com",
+    "score": 18.1,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 2",
+    "dims": {
+      "functional": 0,
+      "outcomes": 0,
+      "environment": 3,
+      "ownership": 2,
+      "communication": 2,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  },
+  {
+    "app_id": 1289,
+    "cand_id": 1074,
+    "name": "Hassan Bin Tariq",
+    "email": "hassan.tq.pk@gmail.com",
+    "score": 12.6,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | Org: MIT | MISSING MH: 2",
+    "dims": {
+      "functional": 0,
+      "outcomes": 0,
+      "environment": 2,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 3
+    }
+  },
+  {
+    "app_id": 1262,
+    "cand_id": 1050,
+    "name": "zennab Applicant",
+    "email": "zennab-shujah@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1305,
+    "cand_id": 1088,
+    "name": "wajihazainab Applicant",
+    "email": "wajihazainab@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1314,
+    "cand_id": 1097,
+    "name": "hamza Applicant",
+    "email": "hamza-irfan-2b179a22a@linkedin.temp",
+    "score": 10.0,
+    "tier": "No-Hire",
+    "summary": "CV unreadable or missing",
+    "dims": {}
+  },
+  {
+    "app_id": 1326,
+    "cand_id": 1109,
+    "name": "Faizan Ullah",
+    "email": "faizanullah918@gmail.com",
+    "score": 8.1,
+    "tier": "No-Hire",
+    "summary": "Discipline: Not evident | Qual research: 0 hi/0 lo | AI tools: No AI tools | Writing: 0 hi | MISSING MH: 2",
+    "dims": {
+      "functional": 0,
+      "outcomes": 0,
+      "environment": 1,
+      "ownership": 1,
+      "communication": 1,
+      "hard_skills": 0,
+      "growth": 1
+    }
+  }
+]

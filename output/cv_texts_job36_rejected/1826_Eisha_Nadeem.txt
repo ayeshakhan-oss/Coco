@@ -1,0 +1,120 @@
+APP ID: 1826
+CANDIDATE ID: 1466
+NAME: Eisha Nadeem
+EMAIL: ssc.eisha.191094@gmail.com
+LOCATION: Islamabad
+CURRENT ROLE: Not mentioned
+CURRENT COMPANY: Not mentioned
+EXPECTED SALARY: 70,000
+================================================================================
+
+ 
+EISHA  
+NADEEM  
+Wah  Cantt,  Pakistan  | LinkedIn  | GitHub  
+AI Engineer  & Data Analyst        03129422032  | ssc.eisha.191094@gmail.com  
+    Website: https://eishanadeemportfolio.vercel.app/  
+AI Engineer and Data Analyst with a strong foundation in machine learning, data analytics, and backend 
+development. Experienced in building data  driven applications,  and intelligent search systems  using Python  based 
+technologies. Possesses hands  on internship experience in ML, deep learning, and analytics, with a research -oriented  
+mindset and a proven ability to deliver end  to end technical solutions. Passionate about applied AI, automation, and 
+impactful real  world systems. . 
+ 
+ 
+EXPERIENCE  
+MACHINE LEARNING INTERN  
+ELEEVO PATHWAYS  | AUG  2025 – SEP 2025 | Remote  
+• Worked on supervised learning problems including multi -class classification and feature 
+engineering.  
+• Performed model evaluation, comparison, and hyperparameter tuning.  
+• Technologies: Python, scikit -learn, XGBoost, Random Forest, Matplotlib.  
+ 
+ 
+ ARTIFICIAL INTELLIGENCE INTERN  
+ CODE SENTINEL  | AUG 2025 | Remote  
+• Built and evaluated regression and classification models.  
+• Implemented neural networks and transfer learning pipelines.  
+• Deployed AI  powered web applications.  
+• Technologies: Python, TensorFlow, Keras, scikit -learn, Streamlit.  
+ 
+ 
+DEEP LEARNING INTERN  
+INFOTECH SOLUTIONS  | JUN 2025 - AUG 2025 | Remote  
+• Worked on a transformer -based Text -to-Speech (TTS) system using multi -speaker audio data.  
+• Handled audio preprocessing, feature extraction, model training, and evaluation.  
+• Technologies: Python, PyTorch, TensorFlow, torchaudio, librosa, HuggingFace.  
+  
+ 
+ 
+ 
+ 
+ 
+EDUCATION  
+BACHELORS IN  COMPUTER SCIENC E 
+COMSATS UNIVERSITY ISLAMABAD 
+02/2022  – 01/2026  | CGPA:  3.56 
+ 
+ 
+SKILLS  
+• Programming  Languages:  Python,  C++, Java (basics) . 
+• Data Tools:  Excel, Pandas, NumPy, Matplotlib, Seaborn, OpenCV, Google Colab.  
+• AI & Machine Learning : Excel, Pandas, NumPy, Matplotlib, Seaborn, OpenCV, Google Colab , 
+Scikit -learn, CV, NLP -based query systems, image classification, feature extraction, SVM, pattern 
+recognition, and intelligent search systems.  
+• Web - Data Automation: Web scraping (BeautifulSoup, Selenium), basic API handling.  
+• Soft Skills:  Communication,  Teamwork,  Critical  Thinking,  Problem  Solving,  Leadership, 
+Technical Documentation  
+ 
+ 
+PROJECTS  
+ 
+ 
+Wardrobe Genius – An Intelligent Clothing Search Engine  
+ 
+• Develo ped an AI -powered clothing search engine with NLP  based query understanding and 
+visual similarity matching.  
+• Extracted and managed data from multiple  fashion websites using web scraping.  
+• Implemented intelligent search using text and image features.  
+• Technologies: Python, Selenium, TypeScript, Node.js.  
+ 
+Digital Image Processing – Menu Based System  
+ 
+• Built a Python  based system for applying core image processing operations including filtering, 
+edge detection, segmentation, and noise reduction.  
+• Technologies: Python, OpenCV, NumPy.  
+ 
+SVM -Based Object Classifier  
+ 
+• Developed an image classification system to distinguish between fighter jets and drones.  
+• Implemented feature extraction and trained supervised ML models for object recognition.  
+• Technologies: Python, OpenCV, scikit -learn.  
+ 
+CERTIFICATIONS  & COURSES  
+• Deep Learning with PyTorch  – Coursera  
+• Introduction to Neural Networks and PyTorch  – Coursera  
+• Deep Learning with Keras and Tensorflow – Coursera  
+• Introduction to Deep Learning & Neural Networks with Keras  – Coursera  
+• Google  Project  Management  – Google  | Coursera  
+• Machine Learning with Python  – Coursera  
+• IBM AI Fundamentals - Coursera  
+ 
+LEADERSHIP  & ACTIVITIES  
+General  Member  – COMSATS  Literary  Society  (CLS)  
+ 
+ 
+ACHIEVEMENTS  
+• Certificate of Achievement  – COMSATS Literary Society (CLS) | Nov 2025  
+Awarded for active contribution as a member of the Events Club, demonstrating dedication, 
+teamwork, and organizational skills in supporting society -led activities and events.  
+• Certificate of Organizer  – COMSATS Literary Society (CLS) | Nov 2023  
+Recognized for successfully organizing the Creative Canvas Competition  during Student Week, 
+showcasing leadership, event management, and coordination skills.  
+• Certificate of Participation  – Business Idea Competition (Bizz Buzz) | COMSATS University 
+Islamabad  
+Presented a business idea and received appreciation for innovation, feasibility, and effective 
+presentation skills.  
+• CEATS Mathematics Contest  – CEATS | 2017  
+Secured 10th position at the district level  and 28th position nationwide  among 293 participants, 
+reflecting strong mathematical proficiency, analytical reasoning, and competitive problem -solving 
+abilities.  
+ 

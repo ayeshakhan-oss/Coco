@@ -1,0 +1,76 @@
+APP ID: 1313
+NAME: Aaqib Khan
+EMAIL: aaqibkhan26990@gmail.com
+APPLIED: 2026-02-21 18:43:08.236579
+LOCATION: Islamabad
+================================================================================
+
+Linkedin
+Aaqib Portfolio
+Github
+Aaqib khan
+EXECUTIVE SUMMARY
+PROFESSIONAL EXPERIENCE7+ years of experience delivering more than 17 plus Saas Platforms and AI-powered Mobile and Web
+Apps.
+Accomplished faster developer handoffs by reducing design-to-dev time 40%, achieved by building a
+scalable design system and standardizing 10+ SaaS modules.
+Designed sleek, modern UI for 15+ mobile apps, improving overall user satisfaction by 40% through
+consistent use of visual hierarchy, spacing, and intuitive interaction design.Led a design team to develop a large SaaS platform, crafting over 50 user flows and 20 flow diagrams, and
+web app designs aligned with human computer interaction principles.Design Lead - Vialogic
+Senior Product Designer - NineSolDec 2021 - Present
+Dec 2020 - Dec 2021Digital Identity
+ArtsifySENIOR PRODUCT DESIGNER
++92 3420487566
+aaqibkhan26990@gmail.com
+Islamabad, Pakistan(Willing to relocate)
+Focused on creating engaging User Journeys by analyzing user research, developing precise user flows
+and site maps, and delivering impactful wireframes.
+Designed design systems, mockups, and prototypes that improved consistency and visual interactions
+Led cross-functional teams, while optimizing Software Development Life Cycle through Agile
+methodologies and managing 0 to 1 (end to end) project execution.
+Improved task completion success by 30%, measured through usability tests, by designing 25+ user flows
+       and interactive prototypes for AI study tools and learning journeys.
+Created engaging Play Store screenshots that effectively showcased app features and value, contributing to
+a 35% increase in downloads and stronger user retention.
+Crafted clean, memorable app icons aligned with brand identity and platform guidelines, enhancing visual
+ recognition and achieving a 25% improvement in brand recall across user surveys.Created interactive high-fidelity prototypes in Figma to streamline collaboration with developers,
+improving design-to-dev handoff accuracy and reducing revisions by 35%.Enhanced engagement and accessibility for 1,000+ users, validated through 15 usability tests, by applying
+       HCI principles and collaborating cross-functionally with product and engineering teams.
+Crafted responsive layouts and design systems optimized for scalability, accessibility (WCAG 2.1), and
+brand consistency across both desktop and tablet experiences.
+Integrated AI models for data processing, achieving a 12% reduction in processing time.
+ViaCyber Kapook PayScanner London-Tradex EIDNOW Meridian
+KEY SKILLS
+EUCATIONUX Strategy: Technical Requirements, User Research, Competitor Analysis, User Flows, Site Maps, Customer
+Journeys, Information Architecture. 
+UI Design: Wireframing, Design Systems, Responsive Design, Accessibility Standards, Variables, Design
+Tokens, Components, Component properties, , High-Fidelity Designs.
+Interaction Design: Prototyping, Storyboarding, Interaction Patterns, Usability Testing. 
+Tools: Figma, Adobe Illustrator, Photoshop, After Effects, Sketch, Webflow, WordPress, Balsamiq.
+Frontend Skills: HTML5, CSS3, React, Node JS, JavaScript, Responsive Design, AWS, Express, TypeScript,
+Databases.
+Collaboration Platforms: Slack, Miro, Notion, Microsoft Teams, Up Time, Azure, Trello.
+Project Management: Team Leadership, Agile Methodology, Product Development Lifecycle.
+Soft Skills: Problem-Solving, Creativity, Cross-Functional Collaboration, L1 Monitoring Support, Sales Force.
+Bachelor’s in software engineering
+University of Engineering and Technology, Peshawar - 2.9/4.0
+Relevant Courses: Web Engineering, UX Design Process, Master Digital Product Design, Modern React with
+Redux, Software Design & Architecture, JavaScript Advanced, Software Project Management, AWS Solutions
+Architect.
+Created 55+ complete mobile app UI and wireframe designs for diverse industries including E-commerce,
+AI, Health, Finance, Travel, Education, Corporate, Automotive, Media, and Productivity, ensuring design
+scalability and user engagement.
+Created high-quality 2D and 3D game assets, along with social media and digital print designs, ensuring
+cohesive visual identity and enhancing overall player engagement and brand visibility.UI/UX Designer - LogicWorms
+Graphic Designer - Impact Softwares Sols (Intern)Dec 2018 - Dec 2020
+Dec 2017 - Dec 2018Designed cohesive visual systems across mobile, web, and eCommerce platforms (including LogicWorms
+website), maintaining brand consistency and improving visual appeal across all digital touchpoints.
+Developed interactive games using Unity and C#, delivering smooth gameplay experiences and optimizing
+       performance across multiple platforms through efficient asset integration and design collaboration.Wireframed booking flows, hotel detail pages, and management dashboards based on user behavior insights
+and modern UX standards.
+Wireframed product pages, checkout flow, and admin dashboards guided by user behavior insights and e-
+commerce UX best practices.Developed custom icons, UI animations, videos, and Play Store assets, enhancing brand communication
+and increasing app store visibility and conversion rates.
+Conducted extensive visual and competitive research to define modern graphic styles, streamline user
+flows, and  deliver pixel-perfect, high-impact interfaces across platforms.
+Hotel Management System & E-commerce Store

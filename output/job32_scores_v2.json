@@ -1,0 +1,1292 @@
+{
+  "1225": {
+    "name": "Sheraz Khan",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 0,
+    "d4_ownership": 2,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 17.5,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "10+ years managing multi-million dollar commercial deals (FACT) — shows deal-closing discipline",
+      "Channel partner and enterprise account management demonstrates stakeholder coordination (FACT)",
+      "Islamabad-based — no relocation risk (FACT)"
+    ],
+    "key_risks": [
+      "Zero development sector or donor landscape knowledge — USAID, World Bank, FCDO entirely absent (FACT)",
+      "No proposal or grant writing experience — commercial licensing ≠ institutional fundraising (FACT)",
+      "No pipeline management in development context; commercial CRM ≠ donor pipeline (FACT)",
+      "No evidence of winning grants or mobilising philanthropic/donor capital (FACT)",
+      "Missing must-haves: donor engagement, Pakistan donor landscape knowledge, proposal writing (×3 penalty)"
+    ],
+    "interview_questions": [
+      "Have you ever worked with USAID, World Bank, FCDO, or any multilateral donor — even indirectly?",
+      "Have you written a concept note or grant proposal for institutional funding?",
+      "What do you know about the development sector funding landscape in Pakistan?",
+      "Why are you pivoting from enterprise software sales to institutional fundraising?",
+      "Can you describe a time you built a relationship pipeline in a non-commercial context?"
+    ],
+    "salary_desired": "800,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "530,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1317": {
+    "name": "Bareera Rauf",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 3,
+    "d4_ownership": 1,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 18.8,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "6 years in development sector with DFID-funded project exposure — sector alignment (FACT)",
+      "Published research on education and gender demonstrates written communication ability (FACT)",
+      "Islamabad-based, Pakistan context well understood (FACT)"
+    ],
+    "key_risks": [
+      "Role was M&E/research on donor-funded projects — delivery not fundraising acquisition (FACT)",
+      "No proposal writing or grant submissions evidenced (FACT)",
+      "No pipeline management, no donor closing, no BD ownership (FACT)",
+      "Missing must-haves: direct fundraising/BD experience, proposal writing, pipeline management (×3 penalty)",
+      "PhD candidate suggests primary focus is academic, not practitioner fundraising career"
+    ],
+    "interview_questions": [
+      "Have you ever led or co-led a proposal submission to a bilateral/multilateral donor?",
+      "Describe your direct interaction with DFID programme officers — was it as a researcher or as a fundraising counterpart?",
+      "Have you independently managed a funding pipeline or donor relationship for acquisition purposes?",
+      "What is your timeline for completing your PhD, and how does that affect availability?",
+      "What draws you to fundraising/BD versus continuing in research or M&E?"
+    ],
+    "salary_desired": "~560,000 PKR (2,000 USD)",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "~290,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1327": {
+    "name": "Mizhgan Kirmani",
+    "d1_functional": 3,
+    "d2_outcomes": 3,
+    "d3_environment": 4,
+    "d4_ownership": 3,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 3,
+    "d7_growth": 3,
+    "missing_musthaves": 0,
+    "final_score": 78.8,
+    "tier": "B",
+    "key_strengths": [
+      "Manager Donor Relations at TCF — direct institutional fundraising role with FCDO, UN Women, UNDP, USAID, Green Climate Fund (FACT)",
+      "PKR 72M closed in FY — quantified fundraising outcome demonstrating acquisition success (FACT)",
+      "8 years development sector fundraising including Aga Khan Foundation — deep sector pedigree (FACT)",
+      "Active pipeline management across 6+ international donors simultaneously (FACT)",
+      "Islamabad-based, within budget at PKR 250,000 (FACT)"
+    ],
+    "key_risks": [
+      "PKR 72M (~$260K) is below the Year 1 target of $500K–$1M+ — scale may need validation",
+      "No mention of independently closing $500K+ single grants — largest single deal size unclear",
+      "No explicit EdTech or education sector fundraising mentioned — TCF is education but focus unclear",
+      "Government/policy engagement in Islamabad not evidenced"
+    ],
+    "interview_questions": [
+      "What is the largest single grant or funding commitment you personally closed — walk me through the process from identification to signature?",
+      "How do you manage a pipeline of 30–50 opportunities simultaneously — what tools and cadence do you use?",
+      "Which named donor officers at USAID, FCDO, or UNDP Pakistan have you built relationships with?",
+      "Have you written proposals that were submitted and won without a dedicated proposal writer — what is your writing process?",
+      "The Year 1 target is $500K–$1M+ from cold. What would your 90-day plan look like at Taleemabad?"
+    ],
+    "salary_desired": "250,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1333": {
+    "name": "Zain Ul Abideen",
+    "d1_functional": 4,
+    "d2_outcomes": 4,
+    "d3_environment": 4,
+    "d4_ownership": 4,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 4,
+    "d7_growth": 3,
+    "missing_musthaves": 0,
+    "final_score": 95.0,
+    "tier": "A",
+    "key_strengths": [
+      "Lifetime US $50M in won proposals — extraordinary quantified fundraising track record (FACT)",
+      "US $8.44M raised at READ Foundation from UNICEF, UNFPA, US Embassy, British Council, Oxfam, IRC, WaterAid, Save the Children — breadth of donor portfolio (FACT)",
+      "US $4.42M at SPO — dual-organisation fundraising success confirms pattern not luck (FACT)",
+      "Deputy Manager Resource Mobilisation — direct, senior ownership of fundraising function (FACT)",
+      "Islamabad-based, M.Phil International Relations, deep Pakistan donor landscape experience (FACT)"
+    ],
+    "key_risks": [
+      "Freelance periods visible in CV — worth probing reasons for gaps and continuity of focus",
+      "350,000 PKR is above budget ceiling of 270,000 PKR — requires negotiation or exception",
+      "WASH/humanitarian sector dominant — EdTech fundraising is a pivot (though skills transfer well)",
+      "No explicit education sector donor relationships evidenced — may need to build EdTech credibility with funders"
+    ],
+    "interview_questions": [
+      "Walk me through the single largest proposal you wrote and won — what was your exact role from first draft to award?",
+      "Which specific donor programme officers at UNICEF, USAID, FCDO have you worked with in Pakistan — are these relationships still active?",
+      "You have raised predominantly in WASH/humanitarian — how would you position an EdTech organisation to the same donor base?",
+      "What caused the freelance periods in your CV, and what were you working on during those times?",
+      "The budget is PKR 150K–270K/month. Your ask is 350K. Is there flexibility, and what would make this role worth the difference to you?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1334": {
+    "name": "Ahmed Al-Mayadeen",
+    "d1_functional": 4,
+    "d2_outcomes": 4,
+    "d3_environment": 1,
+    "d4_ownership": 4,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 3,
+    "d7_growth": 3,
+    "missing_musthaves": 2,
+    "final_score": 45.5,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "10+ years international fundraising with UN agencies and international NGOs — high functional match (FACT)",
+      "Multi-million dollar campaign experience — quantified scale (FACT)",
+      "Harvard Business School executive education — credibility and stakeholder communication (FACT)"
+    ],
+    "key_risks": [
+      "Yemen-based with no mention of willingness to relocate to Islamabad — deal-breaker must-have missing (FACT)",
+      "MENA region focus — no Pakistan donor landscape knowledge evidenced (FACT)",
+      "No named Pakistan donor relationships — network not transferable without local context",
+      "Missing must-haves: Islamabad/relocation + Pakistan donor landscape knowledge (×2 penalty)",
+      "980,000 PKR salary — massively over budget"
+    ],
+    "interview_questions": [
+      "Are you willing and able to relocate to Islamabad, Pakistan on a permanent basis?",
+      "What specific knowledge do you have of the Pakistan donor landscape — USAID Pakistan, World Bank Pakistan, FCDO Pakistan?",
+      "Have you worked in South Asia or with South Asian development organisations?",
+      "How quickly could you build a Pakistan-specific donor pipeline given no existing relationships here?",
+      "What is driving your interest in Pakistan/EdTech specifically?"
+    ],
+    "salary_desired": "~980,000 PKR (3,500 USD)",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "~710,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1335": {
+    "name": "Fahad Khan",
+    "d1_functional": 2,
+    "d2_outcomes": 1,
+    "d3_environment": 1,
+    "d4_ownership": 2,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 18.8,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "3 years in hospital fundraising role — demonstrates fundraising career intent (FACT)",
+      "Islamabad-based (FACT)",
+      "Pipeline tracking mentioned — some basic pipeline exposure (FACT)"
+    ],
+    "key_risks": [
+      "Fundraising is individual donors and corporate CSR only — zero multilateral/bilateral institutional donor experience (FACT)",
+      "No proposal writing for institutional grants evidenced (FACT)",
+      "No Pakistan development donor landscape knowledge — USAID/World Bank/FCDO entirely absent (FACT)",
+      "Missing must-haves: institutional donor engagement, donor landscape knowledge, proposal writing (×3 penalty)",
+      "Small-scale pipeline — charity hospital donors ≠ competitive grant pipeline management"
+    ],
+    "interview_questions": [
+      "Have you ever engaged with USAID, World Bank, FCDO, or any multilateral institutional donor?",
+      "Have you written a competitive proposal or concept note that was submitted to an institutional funder and won?",
+      "What is your understanding of how USAID or FCDO Pakistan structures its grant-making?",
+      "How large was the pipeline you were tracking, and what tools did you use?",
+      "What is motivating you to move from hospital fundraising to institutional donor fundraising?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1337": {
+    "name": "Sameen Amjad Ali",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 0,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 3,
+    "missing_musthaves": 3,
+    "final_score": 16.2,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "12 years in stakeholder management including ministerial-level meetings — senior communication experience (FACT)",
+      "Investor relations work shows ability to produce persuasive written materials for high-stakes audiences (FACT)",
+      "Strong career progression across corporate and media (FACT)"
+    ],
+    "key_risks": [
+      "Zero development sector or donor fundraising experience (FACT)",
+      "No grant writing or proposal submissions to institutional donors (FACT)",
+      "No knowledge of Pakistan development donor landscape evidenced (FACT)",
+      "Missing must-haves: direct fundraising/BD, donor landscape, proposal writing (×3 penalty)",
+      "Communications/marketing background is adjacent but not substitutable for fundraising acquisition"
+    ],
+    "interview_questions": [
+      "Have you ever directly led a fundraising or grant acquisition process with an institutional donor?",
+      "Do you have experience with USAID, World Bank, or FCDO Pakistan — even in an adjacent capacity?",
+      "Have you written a concept note or grant proposal submitted to a bilateral or multilateral funder?",
+      "How do you see your corporate communications background translating to institutional donor engagement?",
+      "What has drawn you to development sector fundraising at this stage of your career?"
+    ],
+    "salary_desired": "650,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "380,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1341": {
+    "name": "Anita Kanwal",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 1,
+    "d4_ownership": 2,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 1,
+    "missing_musthaves": 3,
+    "final_score": 14.8,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "4 years in charity fundraising — demonstrates orientation toward philanthropic sector (FACT)",
+      "Islamabad-based (FACT)",
+      "Managed end-to-end online campaigns showing execution ownership (FACT)"
+    ],
+    "key_risks": [
+      "Digital/individual fundraising only — zero institutional or multilateral donor engagement (FACT)",
+      "No proposal writing for institutional grants (FACT)",
+      "No Pakistan development donor landscape knowledge — remote UK charity work (FACT)",
+      "Missing must-haves: institutional donor engagement, donor landscape knowledge, proposal writing (×3 penalty)",
+      "4 years experience at junior/mid level insufficient for the scope of this role"
+    ],
+    "interview_questions": [
+      "Have you ever engaged with an institutional donor such as USAID, FCDO, World Bank, or UNDP?",
+      "Have you written a concept note or grant proposal for a bilateral or multilateral grant competition?",
+      "What is your understanding of how the Pakistan donor landscape works — who funds what and through which mechanisms?",
+      "What is drawing you from digital/individual fundraising to institutional donor fundraising?",
+      "Can you describe the largest funding ask you have personally led — amount, donor type, outcome?"
+    ],
+    "salary_desired": "200,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1342": {
+    "name": "Muhammad Taqi",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 0,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 17.5,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "8 years in B2B enterprise sales and business development — deal-closing orientation (FACT)",
+      "CRM implementation experience shows pipeline management discipline (FACT)",
+      "Willing to relocate mentioned (FACT)"
+    ],
+    "key_risks": [
+      "Zero development sector or donor landscape knowledge (FACT)",
+      "No proposal/grant writing for institutional funders (FACT)",
+      "No multilateral/bilateral donor engagement — SaaS/IT ≠ development sector (FACT)",
+      "Missing must-haves: donor engagement, Pakistan donor landscape, proposal writing (×3 penalty)",
+      "Technology partnerships ≠ institutional grant fundraising — fundamentally different motion"
+    ],
+    "interview_questions": [
+      "Do you have any experience with USAID, World Bank, FCDO, or Pakistan development sector donors?",
+      "Have you written a concept note or competitive grant proposal to an institutional funder?",
+      "How do you see your SaaS BD experience translating to donor-funded grant acquisition?",
+      "What do you know about how USAID or FCDO structures grants and procurement in Pakistan?",
+      "Why are you making this sector shift, and what preparation have you done?"
+    ],
+    "salary_desired": "500,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "230,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1344": {
+    "name": "Muhammad Sumraiz Kundi",
+    "d1_functional": 0,
+    "d2_outcomes": 1,
+    "d3_environment": 0,
+    "d4_ownership": 1,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 5.2,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Field sales discipline — territory management shows execution orientation (FACT)",
+      "Islamabad region — no relocation issue (FACT)"
+    ],
+    "key_risks": [
+      "Zero development sector exposure (FACT)",
+      "Zero fundraising experience of any kind (FACT)",
+      "No donor landscape knowledge, no proposal writing, no pipeline management in development context (FACT)",
+      "Missing must-haves: all five core must-haves absent (×4 penalty applied to cap)",
+      "FMCG/telecom sales entirely unrelated to institutional fundraising"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for an institutional fundraising role with no development sector background?",
+      "Do you have any exposure to NGO, development sector, or donor-funded organisations?",
+      "Have you ever written a proposal or concept note for an institutional funder?",
+      "What do you know about Pakistan's development donor landscape?",
+      "What steps are you taking to prepare for a career pivot into this space?"
+    ],
+    "salary_desired": "140,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1346": {
+    "name": "Danish Hussain",
+    "d1_functional": 4,
+    "d2_outcomes": 4,
+    "d3_environment": 3,
+    "d4_ownership": 4,
+    "d5_stakeholder": 4,
+    "d6_hard_skills": 4,
+    "d7_growth": 4,
+    "missing_musthaves": 0,
+    "final_score": 97.5,
+    "tier": "A",
+    "key_strengths": [
+      "PKR 1B+ mobilised across FCDO, World Bank, UNDP, ADB — exceptional quantified fundraising track record (FACT)",
+      "Head of Grants and Partnerships at INGO, 20 years — most senior fundraising role at the right level (FACT)",
+      "Named donor relationships: FCDO Pakistan, UNDP Pakistan, ADB — active, verified network (FACT)",
+      "Pipeline management across 20+ active opportunities simultaneously (FACT)",
+      "Proposal writing — submitted and won multiple competitive grants (FACT)"
+    ],
+    "key_risks": [
+      "Hyderabad-based — states willing to relocate to Islamabad (must be confirmed in interview)",
+      "WASH and humanitarian sector focus — EdTech is a pivot (though donor base overlaps significantly)",
+      "550,000 PKR desired is above budget ceiling of 270,000 PKR — significant gap requiring exception",
+      "20 years experience may come with senior compensation expectations that are hard to bridge"
+    ],
+    "interview_questions": [
+      "You have stated willingness to relocate to Islamabad — what is your realistic timeline and are there any conditions?",
+      "Walk me through the largest single grant you personally closed — your exact role from inception to award letter?",
+      "Your background is WASH/humanitarian — how would you reposition Taleemabad to FCDO, UNDP, and ADB as an EdTech investment priority?",
+      "Which programme officers at FCDO Pakistan, UNDP Pakistan, and ADB are you currently in active relationship with?",
+      "The budget ceiling is PKR 270,000/month. Your ask is 550,000. Is there a package structure that works for both sides?"
+    ],
+    "salary_desired": "550,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "280,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1347": {
+    "name": "Danish Hussain (DUPLICATE)",
+    "status": "duplicate",
+    "duplicate_of": "1346"
+  },
+  "1349": {
+    "name": "Mahnoor Mellu",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 0,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 18.8,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "4 years in B2B technology partnerships at DigitalOcean/Cloudways — structured partnership management (FACT)",
+      "LUMS graduate — strong academic credential (FACT)",
+      "Willing to relocate (FACT)"
+    ],
+    "key_risks": [
+      "Zero development sector or donor landscape knowledge (FACT)",
+      "No institutional grant writing or proposal experience (FACT)",
+      "Tech partner ecosystem ≠ donor pipeline management (FACT)",
+      "Missing must-haves: donor engagement, Pakistan donor landscape, proposal writing (×3 penalty)",
+      "No evidence of winning competitive funding — commercial channel sales ≠ grant acquisition"
+    ],
+    "interview_questions": [
+      "Have you engaged with any development sector donors — USAID, World Bank, FCDO, UN agencies?",
+      "Have you written a concept note or grant proposal submitted to a bilateral or multilateral funder?",
+      "What is your understanding of Pakistan's international donor landscape?",
+      "How do you see SaaS channel partnerships translating to institutional fundraising?",
+      "What preparation have you done to make this pivot into development sector fundraising?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1354": {
+    "name": "Arsim Tariq",
+    "d1_functional": 2,
+    "d2_outcomes": 2,
+    "d3_environment": 3,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 2,
+    "d7_growth": 3,
+    "missing_musthaves": 1,
+    "final_score": 49.2,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "10+ years in development sector with FCDO and World Bank-funded contracts — deep sector knowledge (FACT)",
+      "Islamabad-based, NUST MS graduate (FACT)",
+      "EdTech experience mentioned — sector alignment (FACT)",
+      "Contributed to winning proposals for FCDO and World Bank bids (FACT)"
+    ],
+    "key_risks": [
+      "Primary role is programme management and M&E — not fundraising/BD ownership (FACT)",
+      "Proposal contributions were as technical/programme lead, not as BD/fundraising owner (FACT — missing must-have)",
+      "No evidence of independently closing new donor relationships or building a fundraising pipeline (FACT)",
+      "Salary ceiling 280,000–300,000 PKR — borderline above budget",
+      "Missing must-have: direct fundraising/BD ownership (×1 penalty)"
+    ],
+    "interview_questions": [
+      "In the proposals you contributed to for FCDO and World Bank — were you the lead author and relationship owner, or the technical contributor?",
+      "Have you independently managed a donor pipeline and closed new funding relationships without a BD lead above you?",
+      "Can you walk me through a proposal you personally led from first contact with a donor to award?",
+      "If hired as fundraising lead, how would you shift from a programme/M&E mindset to a revenue acquisition mindset?",
+      "Your salary range is 280–300K — the ceiling is 270K. Is there any flexibility?"
+    ],
+    "salary_desired": "280,000–300,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "Up to 30,000 PKR above ceiling",
+    "confidence": "Medium"
+  },
+  "1355": {
+    "name": "Samana Qaseem",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 1,
+    "d4_ownership": 1,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 4,
+    "final_score": 8.6,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "7 years in donor stewardship and relationship management at university level (FACT)",
+      "Event management and stakeholder coordination experience (FACT)"
+    ],
+    "key_risks": [
+      "Individual donor stewardship only — zero institutional/multilateral donor engagement (FACT)",
+      "No grant writing or proposal submissions to institutional funders (FACT)",
+      "Karachi-based with no relocation mention — potential deal-breaker (FACT)",
+      "Missing must-haves: institutional donor engagement, donor landscape, proposal writing, Islamabad/relocation (×4 penalty)",
+      "Alumni relations ≠ institutional fundraising in any meaningful way"
+    ],
+    "interview_questions": [
+      "Are you willing to relocate to Islamabad on a permanent basis?",
+      "Have you engaged with USAID, World Bank, FCDO, or any bilateral/multilateral institutional donor?",
+      "Have you written and submitted a competitive grant proposal to an institutional funder?",
+      "What is your understanding of Pakistan's development donor landscape?",
+      "How do you see alumni relations and donor stewardship experience translating to institutional fundraising?"
+    ],
+    "salary_desired": "430,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "160,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1356": {
+    "name": "Abdul Salam",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 4,
+    "d4_ownership": 1,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 2,
+    "final_score": 30.6,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "21 years in development sector — exceptional sectoral depth (FACT)",
+      "Managed WB, USAID, DFID, GIZ, UNICEF-funded programmes — extensive donor-type exposure (FACT)",
+      "Islamabad-based — no relocation requirement (FACT)"
+    ],
+    "key_risks": [
+      "All donor exposure as implementation staff / project manager / M&E lead — not as fundraiser (FACT)",
+      "No evidence of independently writing and winning proposals or closing new funding (FACT — missing must-have)",
+      "No pipeline management in acquisition context evidenced (FACT — missing must-have)",
+      "21 years experience in delivery roles may indicate a fixed career track, not a pivot",
+      "Missing must-haves: direct fundraising/BD ownership, proposal writing and winning (×2 penalty)"
+    ],
+    "interview_questions": [
+      "In 21 years, have you ever led a proposal submission that you owned from first draft to award — not as a programme contributor but as fundraising lead?",
+      "Have you independently built and managed a donor pipeline for new funding acquisition?",
+      "Can you name a specific grant you personally won and describe your role in closing it?",
+      "Why are you making the shift from programme delivery to fundraising acquisition at this stage of your career?",
+      "What is your current relationship with USAID Pakistan, FCDO Pakistan, or World Bank Pakistan programme officers?"
+    ],
+    "salary_desired": "400,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "130,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1357": {
+    "name": "Arsalan Ashraf",
+    "d1_functional": 4,
+    "d2_outcomes": 3,
+    "d3_environment": 3,
+    "d4_ownership": 4,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 3,
+    "d7_growth": 4,
+    "missing_musthaves": 1,
+    "final_score": 72.2,
+    "tier": "B",
+    "key_strengths": [
+      "Director of Fundraising/BD at multiple NGOs — clear functional match with ownership (FACT)",
+      "Closed Meta $100K, Chevron $250K, PKR 80M NAVTTC — quantified deal-closing track record (FACT)",
+      "Built fundraising departments from scratch at 3 organisations — builder not maintainer (FACT)",
+      "Pipeline of 15–20 active opportunities managed simultaneously (FACT)",
+      "Willing to relocate to Islamabad, existing Islamabad office relationships (FACT)"
+    ],
+    "key_risks": [
+      "Corporate CSR and foundation focus — limited multilateral/bilateral (USAID, World Bank, FCDO, EU) experience (FACT — missing must-have)",
+      "Some USAID sub-grantee experience only — not direct USAID prime grantee fundraising",
+      "Karachi-based — relocation commitment needs validation in interview",
+      "No named bilateral donor relationships in Pakistan (FCDO, World Bank, JICA etc.) evidenced",
+      "450,000 PKR is above budget ceiling"
+    ],
+    "interview_questions": [
+      "Your experience is primarily corporate CSR and foundations — have you ever directly engaged USAID, FCDO, World Bank, or EU as a prime grantee?",
+      "Walk me through the USAID sub-grantee experience — what was your specific role in that funding relationship?",
+      "The Year 1 target includes multilateral donors. Which of these have you engaged directly, and what is your current relationship with their Pakistan programme officers?",
+      "You have built fundraising functions from scratch at 3 organisations — what would your first 90 days look like at Taleemabad?",
+      "The budget ceiling is 270K. Your ask is 450K. Is there a structure — base + performance bonus — that could bridge this?"
+    ],
+    "salary_desired": "450,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "180,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1362": {
+    "name": "Moeen Hassan",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 1,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 3.1,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Real estate/construction — entirely unrelated to development sector or fundraising (FACT)",
+      "Zero fundraising, BD, or donor engagement experience of any kind (FACT)",
+      "No proposal writing, no sector knowledge, no relevant skills (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "No clear motivation for applying to a fundraising role evidenced"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for this fundraising role?",
+      "Do you have any exposure to the development sector or NGO space?",
+      "Have you engaged with any institutional donors or written any proposals?",
+      "Are you open to starting at an entry level in this sector?",
+      "What transferable skills do you believe you bring to institutional fundraising?"
+    ],
+    "salary_desired": "180,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1363": {
+    "name": "Arooj Irfan",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 1,
+    "d4_ownership": 0,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 4.0,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Clinical work in health/social sector shows some adjacent public service orientation (INFERENCE)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Clinical psychologist with zero fundraising or development sector BD experience (FACT)",
+      "No donor landscape knowledge, no proposal writing, no pipeline management (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "No evidence of any fundraising or partnership work in CV"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for an institutional fundraising role?",
+      "Have you engaged with any NGO or development sector organisations in a fundraising or BD capacity?",
+      "Have you written proposals or grant applications for institutional funders?",
+      "Do you have any connections to Pakistan's donor community?",
+      "What career transition plan do you have for moving into institutional fundraising?"
+    ],
+    "salary_desired": "100,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1365": {
+    "name": "Muhammad Ali Zafar",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 1,
+    "d4_ownership": 0,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 4.3,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Think tank research internship shows policy orientation and written communication (FACT)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Recent graduate with research internship only — no work experience in fundraising or BD (FACT)",
+      "No donor landscape knowledge beyond academic exposure (FACT)",
+      "Missing must-haves: all four core must-haves absent — no relevant work experience (×4 penalty applied)",
+      "Policy brief writing ≠ competitive grant proposal writing",
+      "Not at career stage appropriate for this senior, revenue-generating role"
+    ],
+    "interview_questions": [
+      "What specifically about institutional fundraising appeals to you as a career starting point?",
+      "Have you engaged with any NGO, donor, or development organisation beyond your think tank internship?",
+      "Do you have any mentors or connections in Pakistan's development donor space?",
+      "Would you consider a junior BD or partnerships support role to build foundational experience first?",
+      "What research have you done on how USAID, FCDO, or World Bank fund programmes in Pakistan?"
+    ],
+    "salary_desired": "100,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1380": {
+    "name": "Shakir Manzoor Khan",
+    "d1_functional": 2,
+    "d2_outcomes": 1,
+    "d3_environment": 2,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 2,
+    "d7_growth": 2,
+    "missing_musthaves": 2,
+    "final_score": 33.5,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "15 years in resource mobilisation and business development — career orientation toward BD (FACT)",
+      "Contributed to proposals for Commonwealth Foundation, WHO, AEIF, international funders (FACT)",
+      "Rawalpindi-based — near Islamabad (FACT)"
+    ],
+    "key_risks": [
+      "Supporting role in grant writing — not leading as primary BD officer (FACT — missing must-have)",
+      "No quantified outcomes — grants won, amounts raised, deals closed not evidenced (FACT — missing must-have)",
+      "Pharma and health sector focus — less aligned to EdTech or multilateral ED/development donors",
+      "Missing must-haves: direct fundraising ownership, demonstrated winning proposals (×2 penalty)",
+      "15 years without clear ownership/closure track record is a concern"
+    ],
+    "interview_questions": [
+      "In your 15 years of resource mobilisation work, can you name a specific grant you personally led and won — amount, donor, and your exact role?",
+      "Were you the primary author and relationship owner on the Commonwealth Foundation and WHO proposals, or a contributor?",
+      "What is your experience with Pakistan-specific multilateral donors — USAID Pakistan, FCDO Pakistan, World Bank Pakistan?",
+      "Can you quantify the total funding you have personally been responsible for closing?",
+      "The role requires leading fundraising independently — have you ever done that without a more senior BD person above you?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "Medium"
+  },
+  "1381": {
+    "name": "Hamdan Ahmad",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 4,
+    "d4_ownership": 1,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 2,
+    "final_score": 33.2,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Senior Programme Officer on World Bank ESFCD $100M project — high-value donor project exposure (FACT)",
+      "Education sector alignment strong — 7 years in education and social sector (FACT)",
+      "Managed relationships with government ministries and World Bank country office — senior stakeholder experience (FACT)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Programme delivery role — no independent fundraising or grant acquisition evidenced (FACT — missing must-have)",
+      "No proposals written independently — no grant writing or proposal ownership (FACT — missing must-have)",
+      "World Bank relationship is as implementation partner, not as fundraiser pitching to World Bank (FACT)",
+      "Missing must-haves: direct fundraising/BD ownership, proposal writing and winning (×2 penalty)",
+      "Strong delivery profile but fundraising acquisition requires fundamentally different skills"
+    ],
+    "interview_questions": [
+      "Have you ever independently written and submitted a competitive proposal to secure new funding — not as a programme contributor but as the fundraising lead?",
+      "Your World Bank relationship is as implementation partner — have you ever pitched to World Bank or another donor for new funding?",
+      "What is your interest in shifting from programme management to fundraising acquisition?",
+      "What relationships do you have with World Bank, USAID, or FCDO programme officers that could translate to new funding for Taleemabad?",
+      "Can you describe a time you identified a new funding opportunity and personally pursued it to closure?"
+    ],
+    "salary_desired": "320,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "50,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1387": {
+    "name": "Imran Haider",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 3,
+    "d4_ownership": 1,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 22.3,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "LUMS graduate — strong academic foundation (FACT)",
+      "World Bank PHCIP consultant — development sector and donor-funded project exposure (FACT)",
+      "Willing to relocate from Lahore (FACT)"
+    ],
+    "key_risks": [
+      "Policy analysis and M&E focus — no fundraising or grant writing evidenced (FACT)",
+      "No proposal submissions or grants won (FACT)",
+      "No pipeline management in acquisition context (FACT)",
+      "Missing must-haves: direct fundraising/BD, donor landscape knowledge, proposal writing (×3 penalty)",
+      "6 years primarily in policy and implementation — no acquisition experience"
+    ],
+    "interview_questions": [
+      "Have you ever led a proposal submission to a bilateral or multilateral donor?",
+      "In your World Bank PHCIP consultancy, what was your relationship with the World Bank — as a contractor or as a fundraiser?",
+      "Do you have any experience managing donor pipelines or closing new funding relationships?",
+      "What draws you to fundraising as a career shift from policy/M&E?",
+      "What specific knowledge do you have of the Pakistan donor landscape beyond your work context?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1421": {
+    "name": "Aqsa Gul",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 0,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 0,
+    "missing_musthaves": 4,
+    "final_score": 0.0,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Customer service and call centre background — entirely unrelated to fundraising or development (FACT)",
+      "Zero evidence of any relevant experience across all dimensions (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "No sector knowledge, no proposals, no donor exposure, no pipeline management"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for this institutional fundraising role?",
+      "Do you have any background or exposure to the development sector or NGOs?",
+      "Have you written any proposals or engaged with institutional donors?",
+      "Are you planning to pursue further education or training in this area?",
+      "What do you understand about the role of a Fundraising and Partnerships Manager?"
+    ],
+    "salary_desired": "70,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1424": {
+    "name": "Syeda Kainat",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 2,
+    "d4_ownership": 1,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 6.0,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Education sector M&E experience — sector alignment (FACT)",
+      "WB TEACH certified observer — demonstrates World Bank programme exposure (FACT)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "M&E and communications officer — no fundraising or institutional donor engagement (FACT)",
+      "No proposal writing for institutional funders evidenced (FACT)",
+      "Social media content writing ≠ grant proposal writing (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "4 years at junior/mid level not appropriate for this senior revenue role"
+    ],
+    "interview_questions": [
+      "Have you engaged with USAID, FCDO, World Bank, or any institutional donor in a fundraising capacity?",
+      "Have you written and submitted a competitive grant proposal to an institutional funder?",
+      "How do you see your M&E background contributing to a fundraising acquisition role?",
+      "What do you know about how World Bank or USAID structures grants for EdTech in Pakistan?",
+      "What steps are you taking to build skills specifically in institutional fundraising?"
+    ],
+    "salary_desired": "110,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1431": {
+    "name": "Faheem Baig",
+    "d1_functional": 1,
+    "d2_outcomes": 2,
+    "d3_environment": 4,
+    "d4_ownership": 1,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 2,
+    "d7_growth": 3,
+    "missing_musthaves": 2,
+    "final_score": 34.0,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "12 years leading programmes funded by DG-ECHO, GIZ, UN Women, USAID, AKDN — exceptional donor-type breadth (FACT)",
+      "M.Phil from PIDE, Islamabad-based — strong academic and location alignment (FACT)",
+      "Programme Lead / COO level — demonstrates senior execution and leadership (FACT)",
+      "Deep donor network exposure as implementation partner (FACT)"
+    ],
+    "key_risks": [
+      "Programme implementation and management — not fundraising acquisition (FACT — missing must-have)",
+      "No quantified proposals written or grants independently won (FACT — missing must-have)",
+      "Donor relationships are as implementation partner — cannot simply convert to fundraising relationships without evidence",
+      "Missing must-haves: direct fundraising/BD ownership, proposal writing/winning (×2 penalty)",
+      "COO/programme lead path may not transition naturally to fundraising without specific BD experience"
+    ],
+    "interview_questions": [
+      "In 12 years working on donor-funded projects, have you ever independently written and won a competitive grant proposal?",
+      "Can you give a specific example of a new donor relationship you built from cold outreach to funding award?",
+      "Your relationships with DG-ECHO, GIZ, UN Women, USAID, AKDN — were these as an implementing partner or as a fundraising lead pitching for new grants?",
+      "What is your interest in moving from programme delivery/COO to frontline fundraising acquisition?",
+      "Which specific programme officers at these donors are you still in active relationship with, and could those relationships support new grant acquisition?"
+    ],
+    "salary_desired": "145,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1517": {
+    "name": "Zubair Hussain",
+    "d1_functional": 1,
+    "d2_outcomes": 1,
+    "d3_environment": 3,
+    "d4_ownership": 1,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 20.6,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "8 years in development sector, PPAF-ITC-EU project experience — sector knowledge (FACT)",
+      "Education programme and gender/rights-based work — thematic alignment (FACT)",
+      "Islamabad region (FACT)"
+    ],
+    "key_risks": [
+      "Field specialist / programme officer role — no fundraising or BD evidenced (FACT)",
+      "No proposal writing or donor acquisition experience (FACT)",
+      "Salary anomaly (30K desired vs 250K current) — requires clarification before any progression (FACT)",
+      "Missing must-haves: direct fundraising/BD, donor landscape knowledge, proposal writing (×3 penalty)",
+      "Senior Programme Officer delivery role does not demonstrate fundraising acquisition capability"
+    ],
+    "interview_questions": [
+      "Your stated salary is 30,000 PKR but your current salary appears to be 250,000 PKR — can you clarify this discrepancy?",
+      "Have you directly engaged institutional donors for funding acquisition, or only as a programme implementer?",
+      "Have you independently written and submitted competitive grant proposals?",
+      "What is your understanding of the Pakistan multilateral donor landscape beyond your own project experience?",
+      "What has motivated you to move from programme delivery to institutional fundraising?"
+    ],
+    "salary_desired": "30,000 PKR (current 250,000 — anomaly, needs clarification)",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "Low"
+  },
+  "1541": {
+    "name": "Sani Muhammad",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 1,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 3.1,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "10 years IT operations — demonstrates technical execution and systems discipline (FACT)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "IT systems administrator — entirely unrelated to fundraising or development (FACT)",
+      "Zero development sector exposure, no donor knowledge, no proposal writing (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "No transferable skills evident for this specific role"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for a fundraising and partnerships role?",
+      "Do you have any background in the development sector or NGO space?",
+      "Have you engaged with any institutional donors or written grant proposals?",
+      "Are you planning to transition your career entirely, and what training have you pursued?",
+      "What do you understand about institutional fundraising and donor landscape in Pakistan?"
+    ],
+    "salary_desired": "450,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "180,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1542": {
+    "name": "Muhammad Akmal",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 0,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 0,
+    "missing_musthaves": 4,
+    "final_score": 0.0,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Office administrator and data entry — entirely unrelated to fundraising (FACT)",
+      "Zero relevant experience across all seven dimensions (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "No sector knowledge, no donor exposure, no writing or proposal experience"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for this fundraising role?",
+      "Do you have any background or interest in the development sector?",
+      "Have you engaged with any NGOs or donor organisations?",
+      "What transferable skills do you believe you bring to this role?",
+      "Are you open to starting in a support or administrative capacity within a development organisation?"
+    ],
+    "salary_desired": "65,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1580": {
+    "name": "Zainab",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 0,
+    "d5_stakeholder": 0,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 1.6,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Recent graduate — career trajectory ahead of her (INFERENCE)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Recent graduate with 1 year internship only — no relevant experience (FACT)",
+      "HR/Business Administration background with no development sector exposure (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "Not at career stage for a senior, revenue-generating fundraising manager role"
+    ],
+    "interview_questions": [
+      "What has drawn you to institutional fundraising specifically?",
+      "Do you have any exposure to Pakistan's development donor landscape?",
+      "Have you written any proposals or concept notes for institutional funders?",
+      "Would you consider a more junior role in development sector to build foundational experience?",
+      "What research have you done on how USAID, FCDO, or World Bank fund programmes?"
+    ],
+    "salary_desired": "150,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1650": {
+    "name": "Muhammad Usman",
+    "d1_functional": 2,
+    "d2_outcomes": 1,
+    "d3_environment": 3,
+    "d4_ownership": 2,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 1,
+    "d7_growth": 3,
+    "missing_musthaves": 2,
+    "final_score": 36.1,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "18 years in government relations, public affairs, and international development alliances — senior stakeholder experience (FACT)",
+      "Managed partnerships with international development organisations — donor-adjacent relationships (FACT)",
+      "Rawalpindi/Islamabad-based — location aligned (FACT)"
+    ],
+    "key_risks": [
+      "States fundraising as competency but no specific grants won, amounts raised, or proposals cited (FACT — missing must-have)",
+      "Vague on whether activities were acquisition or relationship maintenance — cannot credit what is not evidenced (FACT — missing must-have)",
+      "No quantified outcomes across 18 years raises serious concerns about acquisition ownership",
+      "Missing must-haves: demonstrated fundraising acquisition, specific proposals won (×2 penalty)",
+      "Government relations and public affairs ≠ institutional grant fundraising"
+    ],
+    "interview_questions": [
+      "In 18 years, can you name a specific grant or partnership deal you personally closed — amount, donor, your exact role?",
+      "When you say fundraising is a competency, can you give three concrete examples with outcomes?",
+      "Were your international development alliance partnerships about managing existing relationships or acquiring new funding?",
+      "What proposals have you written and submitted to bilateral or multilateral donors, and what was the outcome?",
+      "What does your pipeline look like currently — how many active opportunities are you tracking and with which funders?"
+    ],
+    "salary_desired": "350,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "80,000 PKR above ceiling",
+    "confidence": "Medium"
+  },
+  "1667": {
+    "name": "Laveeza Shah",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 0,
+    "d4_ownership": 1,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 4.3,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "8 years professional experience — demonstrates career discipline (FACT)"
+    ],
+    "key_risks": [
+      "HR and administrative professional — entirely unrelated to fundraising (FACT)",
+      "Zero development sector, donor, or fundraising exposure (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "Recruitment and compliance skills do not transfer to institutional fundraising"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for this fundraising and partnerships role?",
+      "Do you have any background or interest in the development sector or NGO space?",
+      "Have you engaged with any institutional donors or written grant proposals in any capacity?",
+      "What transferable skills from HR do you believe apply to institutional fundraising?",
+      "Are you planning any training or education in this area?"
+    ],
+    "salary_desired": "160,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1699": {
+    "name": "Hasan Shahid",
+    "d1_functional": 0,
+    "d2_outcomes": 1,
+    "d3_environment": 0,
+    "d4_ownership": 1,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 1,
+    "d7_growth": 2,
+    "missing_musthaves": 3,
+    "final_score": 16.2,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "9 years in brand management and stakeholder engagement — strong communication skills (FACT)",
+      "Media relations and influencer campaign management — cross-sector stakeholder coordination (FACT)"
+    ],
+    "key_risks": [
+      "Marketing and PR professional — zero development sector or donor fundraising (FACT)",
+      "No grant writing or institutional donor engagement of any kind (FACT)",
+      "No Pakistan donor landscape knowledge (FACT)",
+      "Missing must-haves: institutional donor engagement, donor landscape, proposal writing (×3 penalty)",
+      "455,000 PKR above budget ceiling"
+    ],
+    "interview_questions": [
+      "Have you engaged with USAID, World Bank, FCDO, or any institutional donor in any capacity?",
+      "Have you written a concept note or grant proposal for an institutional funder?",
+      "What draws you to institutional fundraising from a brand/PR background?",
+      "What do you know about Pakistan's development donor landscape?",
+      "Can you describe a situation where you managed a complex, multi-stakeholder funding or partnership process?"
+    ],
+    "salary_desired": "455,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "185,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1702": {
+    "name": "Asim Ur Rehman",
+    "d1_functional": 0,
+    "d2_outcomes": 0,
+    "d3_environment": 1,
+    "d4_ownership": 1,
+    "d5_stakeholder": 1,
+    "d6_hard_skills": 0,
+    "d7_growth": 1,
+    "missing_musthaves": 4,
+    "final_score": 5.5,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Community mobilisation in rural NGO context — grassroots development sector orientation (FACT)",
+      "Rawalpindi area — near Islamabad (FACT)"
+    ],
+    "key_risks": [
+      "Village-level community mobiliser — entirely different function from institutional fundraising (FACT)",
+      "No institutional donor engagement, no proposal writing, no pipeline management (FACT)",
+      "Missing must-haves: all four core must-haves absent (×4 penalty applied)",
+      "45,000 PKR desired salary may indicate very junior career stage",
+      "No evidence of any acquisitions or partnerships at organisational level"
+    ],
+    "interview_questions": [
+      "What has motivated you to apply for an institutional fundraising role?",
+      "Have you engaged with any bilateral or multilateral institutional donors in your NGO work?",
+      "Have you written any proposals or concept notes for institutional funders?",
+      "What do you understand about how USAID or FCDO funds programmes in Pakistan?",
+      "What career development steps are you planning to build skills in fundraising?"
+    ],
+    "salary_desired": "45,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1716": {
+    "name": "Sadia Sohail",
+    "d1_functional": 3,
+    "d2_outcomes": 2,
+    "d3_environment": 3,
+    "d4_ownership": 3,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 3,
+    "d7_growth": 2,
+    "missing_musthaves": 1,
+    "final_score": 57.3,
+    "tier": "C",
+    "key_strengths": [
+      "Donor Relations Officer at READ Foundation — 8 years direct fundraising role ownership (FACT)",
+      "Writes proposals and manages funder communications and budgets (FACT)",
+      "Fundraising certifications: Major Donor Fundraising, NGO Boot Camp, Fundraising Essentials — deliberate skill building (FACT)",
+      "Islamabad-based (FACT)",
+      "Manages donor database — pipeline and CRM discipline (FACT)"
+    ],
+    "key_risks": [
+      "Domestic NGO only — no multilateral or bilateral (USAID/World Bank/FCDO/EU) experience evidenced (FACT — missing must-have)",
+      "Proposals submitted to domestic foundations and local philanthropists — not international competitive grant writing",
+      "No quantified outcomes — grants won and amounts raised not stated (FACT — reduces D2)",
+      "8 years at same junior-to-mid level without progression to senior BD role",
+      "140,000 PKR within budget but scale of experience may not match Year 1 $500K–$1M+ target"
+    ],
+    "interview_questions": [
+      "Have you engaged with any international/multilateral donors — USAID, FCDO, World Bank, UNDP, EU — in a fundraising capacity?",
+      "Can you describe the largest single grant you personally helped close — amount, donor, and your role?",
+      "What is your understanding of how USAID or FCDO Pakistan structures competitive grant rounds?",
+      "How would you approach building relationships with international donors you have not worked with before?",
+      "What has held you at the Donor Relations Officer level for 8 years — and what changed to make you seek a Manager role now?"
+    ],
+    "salary_desired": "140,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  },
+  "1722": {
+    "name": "Ahad Ahsan Khan",
+    "d1_functional": 1,
+    "d2_outcomes": 3,
+    "d3_environment": 4,
+    "d4_ownership": 2,
+    "d5_stakeholder": 3,
+    "d6_hard_skills": 3,
+    "d7_growth": 3,
+    "missing_musthaves": 2,
+    "final_score": 41.8,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Manager Grants at AKU — $134M portfolio across 210 active grants, World Bank HEDP lead (FACT)",
+      "9 years in grants management with deep institutional donor compliance knowledge (FACT)",
+      "Islamabad hometown — no relocation issue (FACT)",
+      "Strong stakeholder relationships across multiple institutional donors (INFERENCE from portfolio scale)"
+    ],
+    "key_risks": [
+      "Grants administration and compliance — not fundraising acquisition (FACT — missing must-have)",
+      "No evidence of independently writing and winning new competitive grants from scratch (FACT — missing must-have)",
+      "Managing existing grants ≠ fundraising — explicitly listed as failure condition in JD",
+      "Missing must-haves: direct fundraising/BD acquisition, proposal writing/winning (×2 penalty)",
+      "550,000 PKR is above budget ceiling"
+    ],
+    "interview_questions": [
+      "In your 9 years managing grants at AKU, have you ever personally led a proposal from first draft to award for a new, competitive grant — not administering an existing one?",
+      "Can you name a specific grant you won and describe your role from donor identification through to the award letter?",
+      "What is the difference in your mind between grants management and fundraising acquisition — and which have you done?",
+      "Your $134M portfolio is impressive — but that is compliance work. What experience do you have pitching to donors for new money?",
+      "What would motivate you to move from a grants administration role to a frontline fundraising role, and what makes you confident you can succeed at acquisition?"
+    ],
+    "salary_desired": "550,000 PKR",
+    "budget_fit": "Out of Budget",
+    "budget_gap": "280,000 PKR above ceiling",
+    "confidence": "High"
+  },
+  "1769": {
+    "name": "Mushahid Hussain",
+    "d1_functional": 2,
+    "d2_outcomes": 1,
+    "d3_environment": 3,
+    "d4_ownership": 2,
+    "d5_stakeholder": 2,
+    "d6_hard_skills": 2,
+    "d7_growth": 2,
+    "missing_musthaves": 2,
+    "final_score": 34.4,
+    "tier": "No-Hire",
+    "key_strengths": [
+      "Donor Reporting Officer at READ Foundation — 4 years in donor relations with some proposal exposure (FACT)",
+      "Manages financial reporting to donors — compliance and funder communication skills (FACT)",
+      "Islamabad-based (FACT)"
+    ],
+    "key_risks": [
+      "Primarily reporting, not acquisition — junior-level role without independent grant winning (FACT — missing must-have)",
+      "No evidence of independently winning grants (FACT — missing must-have)",
+      "Some proposal writing exposure but supporting role, not lead (FACT)",
+      "4 years experience at junior level — not ready for Year 1 $500K–$1M+ acquisition mandate",
+      "Missing must-haves: direct fundraising/BD acquisition ownership, independently won proposals (×2 penalty)"
+    ],
+    "interview_questions": [
+      "Have you personally led a proposal from conception to submission and won it — not as a contributor but as the lead?",
+      "In your 4 years at READ Foundation, can you name a specific grant you helped close and describe your exact role?",
+      "What exposure do you have to USAID, FCDO, World Bank, or other multilateral donors beyond reporting to them?",
+      "What is your career goal — do you see yourself moving into frontline fundraising acquisition?",
+      "What would your plan be to hit a $500K fundraising target in year one with no existing institutional relationships?"
+    ],
+    "salary_desired": "170,000 PKR",
+    "budget_fit": "In Budget",
+    "budget_gap": null,
+    "confidence": "High"
+  }
+}

@@ -1,0 +1,46 @@
+APP ID: 1618
+CANDIDATE ID: 1329
+NAME: Salman Ahmed
+EMAIL: salman.ahmedd.work@gmail.com
+LOCATION: QUETTA
+CURRENT ROLE: Not mentioned
+CURRENT COMPANY: Not mentioned
+EXPECTED SALARY: PKR 90,000
+================================================================================
+
+SALMAN AHMED  
+Electrical Engineer  
+Quetta, Pakistan | +92 -316-8246669 | salman.ahmed d.wor k@gmail.com  | linkedin.com/in/salman -ahmed ds 
+PROFESSIONAL SUMMARY   
+Motivated Electrical Engineering graduate (CGPA 3.62/4.00) from BUITEMS with strong foundations in power systems, IoT, 
+embedded systems, and industrial automation. Led a solar -powered IoT -based smart greenhouse  project  with  integra ted 
+image processing . Seeking Graduate Electrical Engineer /Engineer Trainee roles to apply hands -on technical skills, analytical 
+thinking, and project leadership in real -world engineering environments.  
+EDUCATIO N  
+Balochistan University of Information Technology, Engineering and Management Sciences (BUITEMS)  
+Bachelor of Science in Electrical Engineering | 2021 – 2025  
+CGPA: 3.62 / 4.00  
+FINAL YEAR PROJECT    
+Smart Greenhouse System (Project Lead)  | 2024 – 2025  
+• Designed and developed a solar -powered IoT -based greenhouse system  with autonomous control of ventilation, 
+irrigation, and sunlight exposure  using ESP32 microcontroller and various sensors.  
+• Implemented MATLAB -based image processing  for leaves health  monitoring  using a low -cost camera module.  
+• Performed solar system sizing  using a 5W , 12V solar panel, MPPT charge controller, and 12V battery for efficient 
+power management.  
+TRAINING & WORKSHOPS   
+Programmable Logic Controllers (PLC) Workshop  | June 2025  
+• Hands -on training in PLC programming and industrial automation . 
+• Worked with Siemens and Allen -Bradley PLCs  for motor, relay, and timer control.  
+• Gained exposure to HMI interfacing and troubleshooting techniques . 
+TECHNICAL SKILLS      
+• Circuit Design & Analysis .  
+• MATLAB  and Simu link. 
+• Arduino and E SP32 Programming.  
+• Solar Power Systems (Basic s). 
+SOFT SKILLS   
+• Project Management and Problem Solving . 
+• Presentation & Report Writi ng. 
+LANGUAGES   
+English (Fluent) , Urdu (Fluent) , Punjabi (Fluent) . 
+REFERENCES   
+Available upon request . 

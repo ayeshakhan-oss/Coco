@@ -1,0 +1,86 @@
+APP ID: 1307
+NAME: Zikra Fiaz
+EMAIL: Zikrafiaz@gmail.com
+APPLIED: 2026-02-20 06:58:46.937620
+LOCATION: Rawalpindi
+================================================================================
+
+Zam Software Solutions, IslamabadUX/UI Designer | Zam Software Solutions, Islamabad  
+(2023 – Present)
+Designed and optimized complex interfaces for CRM dashboards
+and internal tools, focusing on reducing "Time-to-Task" for
+enterprise users.
+Architected a reusable component library using Figma Auto Layout
+and Variables, improving design-to-development speed by 35%.
+Documented logic-heavy edge cases and collaborated with
+engineers to ensure 1:1 implementation accuracy.
+Partnered with stakeholders to align product visuals with business
+KPIs, resulting in more scalable and user-centric features.
+Zikra Fiaz
+U I / U X  D e s i g n e r
+Education & Certificate
+Bachelor of Computer Science  (Bahria University, Islamabad)
+Google UX Design Professional Certificate (Coursera)
+Skills 
+Freelance Product Designer | Remote (2024 – Present)
+Designed end-to-end Shopify storefronts and high-conversion
+onboarding flows for global consumer brands.
+Built modular UI kits and marketing visual systems that maintained
+brand consistency across Web, Mobile, and Social touchpoints.
+Conducted UX audits on existing landing pages, leading to
+improved user retention and streamlined checkout experiences.linkedin.com/in/zikrafiaz/zikrafiaz@gmail.com
++92 332 5518841About
+UI/UX Designer with a background in Computer Science and 3+ years of
+experience bridging the gap between design and code. Expert in crafting
+scalable design systems and production-ready interfaces. I specialize in
+turning complex requirements into seamless, high-conversion user
+experiences for SaaS and Fintech environments.
+Experiencezikrafiaz.framer.website/
+Figma  
+Figjam
+JiraTOOLS & TECH
+Html/Css/Js
+Adobe Creative Suite
+VS Code
+Product Design: User Research, Information Architecture,
+Wireframing, High-Fidelity Prototyping, Usability Testing, Accessibility
+(WCAG).
+Design Systems: Components & Variants, Auto Layout, Multi-brand
+Systems, Style Documentation, Design Tokens, Data Visualization,
+Dashboard Architecture.
+Frontend Development: HTML5, CSS3, Tailwind CSS, Bootstrap,
+JavaScript/jQuery (Basic), Responsive Architecture.
+Tools: Figma (Expert), FigJam, Jira (Agile/Scrum), Adobe Creative Suite,
+VS Code, Framer.
+Aksa Sds, Islamabad   (Part-time during studies)
+UI Designer Internship | (2021 - 2022)  
+Created high-fidelity wireframes and interactive prototypes
+for local service platforms.
+Conducted usability testing that led to a 15% improvement in
+user satisfaction scores during the internship period.FEATURED PROJECTS
+1. ENTERPRISE CRM DASHBOARD
+(DESIGN & FRONTEND)
+Problem: Redesigned a data-heavy
+CRM suffering from high cognitive
+load and inconsistent UI.
+Solution: Created a structured
+design system and developed the
+frontend using HTML/CSS and
+jQuery.
+Impact: Reduced UI inconsistencies
+across the platform and delivered a
+pixel-perfect, responsive interface
+that handled complex data-tables
+effortlessly.
+2. E-COMMERCE GROWTH
+SUITE 
+Problem: Designing for a global
+audience with varying internet speeds
+and device types.
+Solution: Architected a mobile-first
+landing page in Figma with a focus on
+visual hierarchy and CTA placement.
+Impact: Delivered developer-ready
+documentation that prioritized
+accessibility and conversion-led
+aesthetics.

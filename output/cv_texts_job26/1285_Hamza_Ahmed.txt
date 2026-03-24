@@ -1,0 +1,179 @@
+APP ID: 1285
+NAME: Hamza Ahmed
+EMAIL: hamza.a15102000@gmail.com
+APPLIED: 2026-02-19 04:59:02.760080
+LOCATION: Islamabad
+================================================================================
+
+HAMZA AHMED  
+PRODUCT DESIGNER  
+ hamza.a15102000@gmail.com  +923153699981   in/hamza -ahmed096/  
+PROFILE  
+Product Designer with 3 years of experience designing high -impact web and mobile platforms across fintech, crypto, 
+SaaS, and enterprise products. Strong expertise in transforming complex business workflows into intuitive, scalable 
+user experiences through research -driven design,  system thinking, and cross -functional collaboration. Proven ability 
+to improve usability, accelerate product adoption, and strengthen design consistency through structured design 
+systems, usability testing, and implementation guidance. Comfortable working  directly with product managers, 
+engineers, and stakeholders in fast -moving environments.  
+ 
+EXPERIENCE  
+Product Designer  
+GrowthRune                                                                  November  2025 – Present , Remote, Florida USA  
+ 
+• Led end -to-end UI/UX audits for the Simming AI platform, identifying usability bottlenecks, interaction gaps, 
+visual    inconsistencies, and accessibility risks.  
+• Delivered structured design recommendations covering layout optimization, spacing hierarchy, interaction 
+clarity, and component consistency aligned with modern usability standards.  
+• Partnered with product and engineering teams to translate findings into actionable improvements tracked via 
+Linear, supporting faster iteration cycles and cleaner implementation.  
+• Improved overall interface clarity, task completion flow, and onboarding experience through targeted UX 
+refinements.  
+ 
+Mid-Level UI/UX Designer  
+Fexen Smart Solutions                                                                May  2025 – November 2025 , Islamabad  
+ 
+Key Responsibilities:  
+Product Design & UX Delivery  
+• Designed responsive web and mobile interfaces using Figma, translating business requirements into scalable 
+user flows, wireframes, interactive prototypes, and production -ready UI.  
+• Ensured accessibility compliance, usability best practices, and responsive behavior across devices.  
+• Worked closely with product managers and developers to validate feasibility and maintain delivery alignment.  
+Design Systems & Brand Governance  
+• Built and maintained reusable design systems covering typography, color tokens, component libraries, 
+iconography, and layout standards.  
+• Established consistent branding across multiple products, improving visual coherence and reducing UI rework.  
+Research & Validation  
+• Conducted competitor analysis, usability testing, and user feedback cycles to validate assumptions and refine 
+workflows.  
+• Iterated designs based on behavioral insights and usability findings.  
+Key Projects  
+• Designed dashboard and admin systems for fintech and crypto platforms.  
+• Led full product UI design for Moneda Capital Group, including mobile app and web platform focused on 
+secure crypto investment management, real -time dashboards, and responsive performance.  
+ 
+ 
+
+UI/UX Designer (Part Time)  
+HA Solutions                                                                                              July 2024 – Mar 2025 , Remote  
+ 
+• Designed mobile app interfaces for iOS and Android with emphasis on navigation clarity and interaction 
+consistency.  
+• Built responsive web layouts optimized for accessibility and cross -device usability.  
+• Produced interactive prototypes and validated concepts through user testing and feedback loops.  
+ 
+Frontend Developer  
+Cyber Reconnaissance and Combat Lab  November 2023 – July 2024, Islamabad  
+  
+• Developed ReactJS interfaces for an Upwork Alert platform replica including job listings, messaging, notifications, 
+and profile workflows.  
+• Collaborated with backend teams to ensure smooth API integration and consistent UX behavior.  
+• Strengthened performance, responsiveness, and component reuse.  
+ 
+Cyber Security Researcher  
+Cyber Reconnaissance and Combat Lab  November 2023 – July 2024, Islamabad  
+ 
+• Led hands -on research across network security, threat detection, vulnerability assessment, and malware 
+behavior analysis to evaluate real -world attack patterns and strengthen defensive strategies.  
+• Designed and optimized intrusion detection pipelines using Snort , Suricata , and Zeek , including rule tuning, 
+traffic inspection, alert validation, and false -positive reduction across simulated enterprise environments.  
+• Performed security assessments using Nessus , OpenVAS , Nmap , and manual reconnaissance to identify exposed 
+services, misconfigurations, and exploitable weaknesses, producing structured remediation reports.  
+• Implemented centralized monitoring and forensic analysis using Wazuh , SIEM platforms, and sandbox 
+environments, supporting threat simulations, incident analysis, and continuous improvement of detection 
+workflows.  
+ 
+UI UX Designer  
+CodSoft  July 2023 - August 2023, Remote  
+ 
+• Delivered UX projects including signup flow optimization, restaurant menu redesign, and e -commerce interfaces.  
+• Strengthened design thinking, usability validation, and collaborative workflows using Figma.  
+ 
+Intern UI Designer and Frontend Developer  
+Vivid Technologies Inc     August 2022 - September 2022, Remote  
+ 
+ • Developed frontend using HTML, CSS and JavaScript along with using Framework ReactJS.  
+ • Firstly, Designed landing pages using Figma designing tool.  
+ • Implemented landing pages using languages and frameworks.  
+ •  Created user friendly interfaces and improved design elements with increased user interactivity.  
+ 
+EDUCATION  
+BS Computer Science  
+Bahria University Islamabad • 2023  
+CORE SKILLS  
+Product Design  
+HTML, CSS, JavaScript, Wireframing, Prototyping, UX Strategy, User Flows, Web Design, Adobe Creative, Figma, 
+Storyboards, Mockups, Personas, Usability Testing, Interaction Design , Design QA, Information Architecture.   
+ 
+Usability Testing  
+A/B Testing, User Research, Competitor Analysis, Usability Testing, Data -Driven Design  
+ 
+Design Systems  
+Building and Maintaining Reusable Design Systems, UI Pattern Libraries, Component Libraries  
+ 
+Collaboration  
+Cross -functional Teamwork, Stakeholder Engagement, Design Advocacy, Design QA  
+ 
+Design Tools  
+Figma, Adobe XD, Miro, Balsamiq, Marvel, InVision, Webflow, Adobe Creative Suite, Canva, Notion  
+Cyber Security  
+SIEM, SOC, Wazuh, Qradar, IDS/IPS, Suricata, Snort, PfSense, Zeek, Brim, Syslog, vulnerability assessment,  Nessus, 
+OpenVas , VAPT, Nmap/Wireshark, HIDS/NIDS, EDR, Malware Analysis, Ghidra, Binary Ninja, Active Directory,  
+GoBuster,  Hydra, Incident  Response,  infoSec,  VMWare,  Linux  Administration  
+ 
+Software  Development  
+Python,  C/C++,  C#, Javascript,  React,  MySql,  HTML,  CSS, Java,  XML  
+ 
+Professional  Skills  
+Communication Skills, Problem Solving/Analysis, Attention to Details, Time Management, Team Work,  
+Continuous  Learning,  Report  Compilation.  
+ 
+CERTIFICATIONS  
+Foundation of User Experience Design | Google  
+Using AI in the UX Design Process | LinkedIn Learning  
+Figma: Teams, Stakeholders, and Design Reviews | LinkedIn Learning  
+Figma for UX Research | LinkedIn Learning  
+Webflow  101 Certification | Webflow  
+Scrum Fundamental Certified | ScrumStudy  
+Adobe Illustrator Fundamentals | Coursera  
+PROJECTS  
+Extsy  
+EXTSY is a cutting -edge cryptocurrency trading platform designed to provide seamless and secure services for trading, 
+swapping, and managing digital assets. As a UI/UX Designer, I led the design of intuitive Mobile Application , Admin 
+dashboards , Affiliate management systems , and Commission tracking features , ensuring an efficient and user -
+friendly experience for both admins and business development teams (BDs). The platform includes advanced features 
+like rebate negotiation systems, tier -based affiliate management, and real -time commission analytics. My focu s was 
+on creating responsive, visually engaging interfaces that enhance user experience while maintaining the platform's 
+security and functionality. With interactive charts, dat a visualization, and streamlined workflows, EXTSY empowers 
+users to manage and track their crypto portfolios effectively.  
+ 
+Moneda Capital  Group  
+Moneda Capital Group is a leading financial services provider specializing in a variety of wealth management solutions, 
+including investment opportunities in digital assets such as cryptocurrencies, as well as traditional financial 
+instruments. Their websi te serves as a gateway for investors and individuals looking to explore crypto trading, portfolio 
+management, and investment strategies.  
+As the UI/UX designer, I crafted the websit e and Mobile Application Design with a focus on user experience, security, 
+and clarity. The goal was to create an interface that not only presents complex financial data in an easy -to-understand 
+format but also offers seamless navigation and access to various services, including portfoli o tracking, market analysis, 
+and investment insights. The design emphasizes minimalism, with a professional color scheme and responsive layout 
+to ensure accessibility on both desktop and mobile devices. The overall objective was to ensure trust, transparen cy, 
+and efficiency for all users exploring Moneda's financial services.  
+ 
+Budget Management System and Forecasting Web App  (FYP)  
+Built expense tracking, forecasting, savings planning, and reporting interfaces with data visualization.  
+ 
+Additional UI Projects:  
+• Sales Alert Mobile App  
+• Cricket Scorer App  
+• Bicycle Gear Buying App  
+• Vehicle Module Controller App  
+Budget  Management  System  and Forecasting  
+• A website  to track  expenses  and manage  budgets  with  features  like split bills  and expense  categorization.  
+• Provides  an overview  of expenses,  income,  and savings,  with  alerts  for budget limits.  
+• Includes  forecasting,  reports,  and savings  plans  to enhance  financial  planning.  
+ProGuider  using  C# dot Net Framework  
+• A travel  Guide  application  using  C#/.NET  Framework.  
+• Guide  about  food,  places,  maps  and information  related  to different  location  search.  
+Car Racing  Game  using  C++ 
+• Capture  user  controls  for steering  and speed.  
+• Update  car position  and handle  collisions.  
+• Determine  race  completion  and display  results.

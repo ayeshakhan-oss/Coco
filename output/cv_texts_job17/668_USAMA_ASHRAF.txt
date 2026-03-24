@@ -1,0 +1,39 @@
+Usama Ashraf
+Email: usamaash101@gmail.com | Phone: +92-347-2257012 | Location: Kahuta, Pakistan
+Education
+BS Electrical Engineering, Institute of Space Technology, Islamabad (Aug 2020 – Jul 2024)
+• Focus areas: Power Electronics, Robotics, Opto-Electronics, Embedded Systems.
+• Final Year Project: Autonomous Fruit Plucking Robot – vision-guided robotic system with
+YOLOv8, Raspberry Pi, and 6-DOF robotic arm.
+Research & Academic Projects
+• Autonomous Fruit Plucking Robot (FYP Research Report) – Designed and implemented a robotic
+system with path planning, sensor integration, and computer vision for automated strawberry
+harvesting.
+• PocketQube Satellite – Worked on solar panel integration and deployment mechanism.
+• DSP Projects (MATLAB) – Implemented voice filtration, speech recognition, and signal analysis.
+• IoT-based Home Automation System – Developed device automation using microcontrollers and
+sensors.
+Teaching & Training
+STEM Trainer (May 2025 – Present)
+• Conducted robotics, Arduino, and electronics workshops.
+• Mentored students in project-based learning on automation and IoT.
+Professional Experience
+• Sales Manager / Site Engineer – Pak German Engineers (Aug 2024 – Apr 2025) – Managed BOQ
+generation, proposals, client coordination, and project execution.
+• Intern – National Radio & Telecommunication Corporation (Aug 2023 – Sep 2023) – Researched
+FPGA and optical fiber standards, supported project planning.
+• Intern – Rotex Pharma (Aug 2022 – Sep 2022) – Maintained machinery logs and supported
+troubleshooting of power systems.
+Skills
+Programming: Python, MATLAB, C++, Verilog | Hardware: Raspberry Pi, Arduino, PCB & Circuit
+Design | Robotics/AI: YOLOv8, Computer Vision, Inverse Kinematics, Sensor Integration | Other:
+STEM Training, Project Management, BOQ & Site Execution
+Certifications
+• Basics of Python – University of Michigan (Coursera)
+• Getting Started with Azure IoT Hub – Coursera
+• Create a Website Using WordPress – Coursera
+Languages
+• Urdu – Native
+• English – Professional Working Proficiency
+References
+Available upon request

@@ -1,0 +1,51 @@
+APP ID: 1611
+CANDIDATE ID: 1323
+NAME: Muhammad Ahmed Khan
+EMAIL: muhammadahmedkhan774@gmail.com
+LOCATION: Islamabad 
+CURRENT ROLE: Not mentioned
+CURRENT COMPANY: Not mentioned
+EXPECTED SALARY: 100000
+================================================================================
+
+MUHAMMAD  AHMED  KHAN  
++92 334 9549497 | muhammadahmedkhan774@gmail.com  | l i n k e d i n . c o m / i n / m u h a m m a d -a h m e d -k h a n  |  
+OBJECTIVE  
+Highly motivated and detail oriented mechanical engineering student with a passion for designing and developing 
+innovative solutions . 
+EDUCATION  
+National University of Sciences and Technology (NUST)                                                                      May  2025  
+Bachelor of Engineering in Mechanical  Engineering  
+EXPERIENCE  
+ STEM Engineer  I                                                                                                                                      June  2025  – Present  
+LearnOBots      Islamabad,  Pakistan  
+• Designed and led hands -on STE M workshops integrating coding, robotics, 3D printing, and creative 
+problem -solving.  
+• Guided students in exploring real -world applications of science, technology, engineering, arts, and math.  
+• Mentored students to develop critical thinking, teamwork, and innovation skills.  
+• Created age -appropriate lesson plans and provided technical support on tools and equipment.  
+Engineer  Support        July 2024  -May  2025 
+LearnOBots      Islamabad,  Pakistan  
+• Assisting STE M Engineers . 
+• Designed and Developed different IOT related projects . 
+Engineer Suppo rt         Aug 2023 – Sept 2023 
+ARMED FORCES INSTITUTE OF REHABILITATION MEDICINE     Islamabad,  Pakistan  
+• Operated CNC latte and milling machine . 
+• Developed CAD Model for different parts of an artificial limb . 
+PROJECTS  
+Design, Analysis & Fabrication of a Testing Jig for Non -Destructive  Testing of Prostheses (FYP)  
+• Develop a testing jig for the testing of transtibial limbs.  
+• Testing for the durability, Amount of load it can bear as well as breaking point . 
+    Smart Glove Using Arduino IDE  
+• Developed a functional smart glove capable of mouse emulation using Arduino IDE . 
+Maze Solver Robot  
+• Developed a robot capable of solving maze using Arduino IDE . 
+SKILLS  
+Programming  Languages  Python,  C++,  MATLAB  
+Software  CAD CAM - Fusion 360, PTC Creo , PROE, SolidWorks, Ansys,  Arduino IDE  
+Tools  Git/ GitHub , Google  CoLab,  VS Code  
+ 
+EXTRA -CURRICULAR  ACTIVITIES   
+IC Engine Components Workshop  (Presenter) - NUSTAG, ASME CEME  2023 
+Team Event Management (Team  Lead)  - ASME EFx  CEME  2024  
+Team Event Management (Head Accommodations) - EME Olympiad  2024  

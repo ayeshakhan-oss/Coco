@@ -1,0 +1,3982 @@
+{
+  "job_id": 36,
+  "total": 179,
+  "screened": 179,
+  "errors": 0,
+  "top30": [
+    {
+      "app_id": 1602,
+      "candidate_id": 1317,
+      "name": "Asif Khan",
+      "score": 100.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "250000",
+      "cv_len": 31139
+    },
+    {
+      "app_id": 1518,
+      "candidate_id": 699,
+      "name": "Zubair Hussain",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "220,000",
+      "cv_len": 15666
+    },
+    {
+      "app_id": 1545,
+      "candidate_id": 1281,
+      "name": "PARIYAL FAZAL SHAH",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 6097
+    },
+    {
+      "app_id": 1546,
+      "candidate_id": 1281,
+      "name": "PARIYAL FAZAL SHAH",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 6097
+    },
+    {
+      "app_id": 1720,
+      "candidate_id": 1397,
+      "name": "Jawad Khan",
+      "score": 92.5,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        2,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 23978
+    },
+    {
+      "app_id": 1658,
+      "candidate_id": 1353,
+      "name": "Fatima Razzaq",
+      "score": 91.3,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "185999",
+      "cv_len": 5104
+    },
+    {
+      "app_id": 1942,
+      "candidate_id": 1353,
+      "name": "Fatima Razzaq",
+      "score": 91.3,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 5104
+    },
+    {
+      "app_id": 1454,
+      "candidate_id": 1214,
+      "name": "Shahid Kamal",
+      "score": 88.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "150,000",
+      "cv_len": 10187
+    },
+    {
+      "app_id": 1864,
+      "candidate_id": 1498,
+      "name": "Fatima Mughal",
+      "score": 87.5,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "170000",
+      "cv_len": 12327
+    },
+    {
+      "app_id": 1528,
+      "candidate_id": 1270,
+      "name": "Muhammad Afzaal",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "130000",
+      "cv_len": 7315
+    },
+    {
+      "app_id": 1633,
+      "candidate_id": 1339,
+      "name": "Midhat Fatima",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 10001
+    },
+    {
+      "app_id": 1839,
+      "candidate_id": 1477,
+      "name": "HabibunNabi",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 3475
+    },
+    {
+      "app_id": 1489,
+      "candidate_id": 1241,
+      "name": "Muhammad Qasi",
+      "score": 85.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 6551
+    },
+    {
+      "app_id": 1700,
+      "candidate_id": 102,
+      "name": "Asad Farooq",
+      "score": 85.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "1,40,000",
+      "cv_len": 6945
+    },
+    {
+      "app_id": 1802,
+      "candidate_id": 1448,
+      "name": "syeda farzana ali shah",
+      "score": 83.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "300000",
+      "cv_len": 22007
+    },
+    {
+      "app_id": 1950,
+      "candidate_id": 1555,
+      "name": "Jalal Ud Din",
+      "score": 82.5,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 4261
+    },
+    {
+      "app_id": 1442,
+      "candidate_id": 1205,
+      "name": "Faryal Afridi",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        4,
+        1,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 5713
+    },
+    {
+      "app_id": 1477,
+      "candidate_id": 1233,
+      "name": "Sadia Siddique",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 7660
+    },
+    {
+      "app_id": 1513,
+      "candidate_id": 1261,
+      "name": "Ali Zia",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "As per the allocated budget",
+      "cv_len": 12637
+    },
+    {
+      "app_id": 1639,
+      "candidate_id": 1340,
+      "name": "Wajeeha rehber",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "95000",
+      "cv_len": 6464
+    },
+    {
+      "app_id": 1755,
+      "candidate_id": 1415,
+      "name": "Usman Ahmed Khan",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        3,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "160000",
+      "cv_len": 7492
+    },
+    {
+      "app_id": 1430,
+      "candidate_id": 1195,
+      "name": "Scheherazade Noor",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        3,
+        4,
+        1,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150,000-175,000",
+      "cv_len": 3534
+    },
+    {
+      "app_id": 1450,
+      "candidate_id": 1210,
+      "name": "Naveen Shariff",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "220000",
+      "cv_len": 6187
+    },
+    {
+      "app_id": 1453,
+      "candidate_id": 1213,
+      "name": "Abid Hussain",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "60K to 100k",
+      "cv_len": 5462
+    },
+    {
+      "app_id": 1591,
+      "candidate_id": 880,
+      "name": "Muhammad Junaid",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 4309
+    },
+    {
+      "app_id": 1600,
+      "candidate_id": 1315,
+      "name": "Adil Javed",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        2,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 5953
+    },
+    {
+      "app_id": 1789,
+      "candidate_id": 1439,
+      "name": "Muhammad Omer Khan",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "155000",
+      "cv_len": 13974
+    },
+    {
+      "app_id": 1495,
+      "candidate_id": 1247,
+      "name": "Shabbir Hussain",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 6298
+    },
+    {
+      "app_id": 1556,
+      "candidate_id": 1288,
+      "name": "Sana Mehboob",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80k minimum or above depending on the work targets. ",
+      "cv_len": 5720
+    },
+    {
+      "app_id": 1608,
+      "candidate_id": 1321,
+      "name": "Afaq Ahmad",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "85000",
+      "cv_len": 5307
+    }
+  ],
+  "all": [
+    {
+      "app_id": 1602,
+      "candidate_id": 1317,
+      "name": "Asif Khan",
+      "score": 100.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "250000",
+      "cv_len": 31139
+    },
+    {
+      "app_id": 1518,
+      "candidate_id": 699,
+      "name": "Zubair Hussain",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "220,000",
+      "cv_len": 15666
+    },
+    {
+      "app_id": 1545,
+      "candidate_id": 1281,
+      "name": "PARIYAL FAZAL SHAH",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 6097
+    },
+    {
+      "app_id": 1546,
+      "candidate_id": 1281,
+      "name": "PARIYAL FAZAL SHAH",
+      "score": 93.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 6097
+    },
+    {
+      "app_id": 1720,
+      "candidate_id": 1397,
+      "name": "Jawad Khan",
+      "score": 92.5,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        4,
+        4,
+        2,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 23978
+    },
+    {
+      "app_id": 1658,
+      "candidate_id": 1353,
+      "name": "Fatima Razzaq",
+      "score": 91.3,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "185999",
+      "cv_len": 5104
+    },
+    {
+      "app_id": 1942,
+      "candidate_id": 1353,
+      "name": "Fatima Razzaq",
+      "score": 91.3,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        4,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 5104
+    },
+    {
+      "app_id": 1454,
+      "candidate_id": 1214,
+      "name": "Shahid Kamal",
+      "score": 88.8,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "150,000",
+      "cv_len": 10187
+    },
+    {
+      "app_id": 1864,
+      "candidate_id": 1498,
+      "name": "Fatima Mughal",
+      "score": 87.5,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        3,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "170000",
+      "cv_len": 12327
+    },
+    {
+      "app_id": 1528,
+      "candidate_id": 1270,
+      "name": "Muhammad Afzaal",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "130000",
+      "cv_len": 7315
+    },
+    {
+      "app_id": 1633,
+      "candidate_id": 1339,
+      "name": "Midhat Fatima",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 10001
+    },
+    {
+      "app_id": 1839,
+      "candidate_id": 1477,
+      "name": "HabibunNabi",
+      "score": 86.2,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 3475
+    },
+    {
+      "app_id": 1489,
+      "candidate_id": 1241,
+      "name": "Muhammad Qasi",
+      "score": 85.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 6551
+    },
+    {
+      "app_id": 1700,
+      "candidate_id": 102,
+      "name": "Asad Farooq",
+      "score": 85.0,
+      "tier": "Tier A",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "1,40,000",
+      "cv_len": 6945
+    },
+    {
+      "app_id": 1802,
+      "candidate_id": 1448,
+      "name": "syeda farzana ali shah",
+      "score": 83.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "300000",
+      "cv_len": 22007
+    },
+    {
+      "app_id": 1950,
+      "candidate_id": 1555,
+      "name": "Jalal Ud Din",
+      "score": 82.5,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 4261
+    },
+    {
+      "app_id": 1442,
+      "candidate_id": 1205,
+      "name": "Faryal Afridi",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        4,
+        1,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 5713
+    },
+    {
+      "app_id": 1477,
+      "candidate_id": 1233,
+      "name": "Sadia Siddique",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 7660
+    },
+    {
+      "app_id": 1513,
+      "candidate_id": 1261,
+      "name": "Ali Zia",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "As per the allocated budget",
+      "cv_len": 12637
+    },
+    {
+      "app_id": 1639,
+      "candidate_id": 1340,
+      "name": "Wajeeha rehber",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "95000",
+      "cv_len": 6464
+    },
+    {
+      "app_id": 1755,
+      "candidate_id": 1415,
+      "name": "Usman Ahmed Khan",
+      "score": 81.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        3,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "160000",
+      "cv_len": 7492
+    },
+    {
+      "app_id": 1430,
+      "candidate_id": 1195,
+      "name": "Scheherazade Noor",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        3,
+        4,
+        1,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150,000-175,000",
+      "cv_len": 3534
+    },
+    {
+      "app_id": 1450,
+      "candidate_id": 1210,
+      "name": "Naveen Shariff",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "220000",
+      "cv_len": 6187
+    },
+    {
+      "app_id": 1453,
+      "candidate_id": 1213,
+      "name": "Abid Hussain",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        4,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "60K to 100k",
+      "cv_len": 5462
+    },
+    {
+      "app_id": 1591,
+      "candidate_id": 880,
+      "name": "Muhammad Junaid",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 4309
+    },
+    {
+      "app_id": 1600,
+      "candidate_id": 1315,
+      "name": "Adil Javed",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        3,
+        4,
+        2,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 5953
+    },
+    {
+      "app_id": 1789,
+      "candidate_id": 1439,
+      "name": "Muhammad Omer Khan",
+      "score": 80.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "155000",
+      "cv_len": 13974
+    },
+    {
+      "app_id": 1495,
+      "candidate_id": 1247,
+      "name": "Shabbir Hussain",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 6298
+    },
+    {
+      "app_id": 1556,
+      "candidate_id": 1288,
+      "name": "Sana Mehboob",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80k minimum or above depending on the work targets. ",
+      "cv_len": 5720
+    },
+    {
+      "app_id": 1608,
+      "candidate_id": 1321,
+      "name": "Afaq Ahmad",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "85000",
+      "cv_len": 5307
+    },
+    {
+      "app_id": 1624,
+      "candidate_id": 1333,
+      "name": "Muhammad Siddique",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 3191
+    },
+    {
+      "app_id": 1723,
+      "candidate_id": 1399,
+      "name": "Fatima Shah",
+      "score": 78.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "According to your budget",
+      "cv_len": 13059
+    },
+    {
+      "app_id": 1508,
+      "candidate_id": 1257,
+      "name": "Yasmeen Nisar",
+      "score": 77.5,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        3,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "50000",
+      "cv_len": 4608
+    },
+    {
+      "app_id": 1825,
+      "candidate_id": 1467,
+      "name": "Maqbool Hussain",
+      "score": 77.5,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        3,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 6311
+    },
+    {
+      "app_id": 1932,
+      "candidate_id": 1545,
+      "name": "Tahseen Ullah",
+      "score": 77.5,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        2,
+        4,
+        4,
+        3,
+        0,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "130000",
+      "cv_len": 4466
+    },
+    {
+      "app_id": 1401,
+      "candidate_id": 1178,
+      "name": "Misbah Zafar Iqbal",
+      "score": 76.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        2,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 7914
+    },
+    {
+      "app_id": 1893,
+      "candidate_id": 1517,
+      "name": "Taj Hussain",
+      "score": 76.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 7320
+    },
+    {
+      "app_id": 1482,
+      "candidate_id": 1236,
+      "name": "Muhammad kashif",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "60000",
+      "cv_len": 3983
+    },
+    {
+      "app_id": 1561,
+      "candidate_id": 812,
+      "name": "Zehra Khushal",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        2,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "300000",
+      "cv_len": 21550
+    },
+    {
+      "app_id": 1577,
+      "candidate_id": 1303,
+      "name": "Zohra Baloch",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        2,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "200000 PKR",
+      "cv_len": 2742
+    },
+    {
+      "app_id": 1905,
+      "candidate_id": 1525,
+      "name": "Saadia Asad Abbasi",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 5666
+    },
+    {
+      "app_id": 1906,
+      "candidate_id": 1525,
+      "name": "Saadia Asad Abbasi",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 5666
+    },
+    {
+      "app_id": 1952,
+      "candidate_id": 1557,
+      "name": "Syeda Riffat Aliya",
+      "score": 75.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "200k",
+      "cv_len": 7187
+    },
+    {
+      "app_id": 1415,
+      "candidate_id": 165,
+      "name": "Syeda Kainat",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        2,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "1100000",
+      "cv_len": 6050
+    },
+    {
+      "app_id": 1496,
+      "candidate_id": 1248,
+      "name": "Maimoona Farukh",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        4,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "250,000",
+      "cv_len": 3474
+    },
+    {
+      "app_id": 1594,
+      "candidate_id": 1311,
+      "name": "Mamoona Safeer",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        3,
+        4,
+        1,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 9785
+    },
+    {
+      "app_id": 1643,
+      "candidate_id": 1341,
+      "name": "Muti Ur Rehman",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "Rs 90,000 per month ",
+      "cv_len": 3431
+    },
+    {
+      "app_id": 1678,
+      "candidate_id": 1369,
+      "name": "Saira Akram",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "Rs. 400,000 per month",
+      "cv_len": 13132
+    },
+    {
+      "app_id": 1731,
+      "candidate_id": 1405,
+      "name": "Sana Tariq Abbasi",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        3,
+        4,
+        2,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "90000 above ",
+      "cv_len": 6855
+    },
+    {
+      "app_id": 1791,
+      "candidate_id": 1440,
+      "name": "Waleed Ahmed",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        3,
+        4,
+        3,
+        1,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "140k",
+      "cv_len": 7836
+    },
+    {
+      "app_id": 1805,
+      "candidate_id": 1450,
+      "name": "Muhammad Ali",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        4,
+        1,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "190,000",
+      "cv_len": 5356
+    },
+    {
+      "app_id": 1857,
+      "candidate_id": 1491,
+      "name": "Amina Batool",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "Rs. 300k - 310k",
+      "cv_len": 2914
+    },
+    {
+      "app_id": 1903,
+      "candidate_id": 1523,
+      "name": "Muhammad Abubakr",
+      "score": 73.8,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        3,
+        2,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "250000",
+      "cv_len": 6880
+    },
+    {
+      "app_id": 1499,
+      "candidate_id": 1249,
+      "name": "Muzammil Ahmed",
+      "score": 72.5,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "50000",
+      "cv_len": 3539
+    },
+    {
+      "app_id": 1687,
+      "candidate_id": 1375,
+      "name": "Muhammad Hakim",
+      "score": 72.5,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "Negotiable",
+      "cv_len": 11185
+    },
+    {
+      "app_id": 1688,
+      "candidate_id": 1375,
+      "name": "Muhammad Hakim",
+      "score": 72.5,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "Negotaibel",
+      "cv_len": 11185
+    },
+    {
+      "app_id": 1827,
+      "candidate_id": 1468,
+      "name": "Saif Ali",
+      "score": 72.5,
+      "tier": "Tier B",
+      "dims": [
+        2,
+        2,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "160000",
+      "cv_len": 5300
+    },
+    {
+      "app_id": 1408,
+      "candidate_id": 1185,
+      "name": "Laiba Ahmed",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "130,000",
+      "cv_len": 5095
+    },
+    {
+      "app_id": 1455,
+      "candidate_id": 1215,
+      "name": "Atif Rahim",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        4,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "220000",
+      "cv_len": 5051
+    },
+    {
+      "app_id": 1549,
+      "candidate_id": 1283,
+      "name": "Ali Muhammad",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        1,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "130000",
+      "cv_len": 10574
+    },
+    {
+      "app_id": 1626,
+      "candidate_id": 1335,
+      "name": "Hassnain Hassan",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 5666
+    },
+    {
+      "app_id": 1788,
+      "candidate_id": 1144,
+      "name": "Muhammad Ali Zafar",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "1,00,000",
+      "cv_len": 4927
+    },
+    {
+      "app_id": 1871,
+      "candidate_id": 1502,
+      "name": "Muhammad Arif",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        2,
+        4,
+        2,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 5512
+    },
+    {
+      "app_id": 1946,
+      "candidate_id": 1552,
+      "name": "Mariam Rehman",
+      "score": 71.2,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        2,
+        4,
+        1,
+        4,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "145000",
+      "cv_len": 18635
+    },
+    {
+      "app_id": 1698,
+      "candidate_id": 701,
+      "name": "Uzair Ahmad",
+      "score": 70.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "90000-100000",
+      "cv_len": 7911
+    },
+    {
+      "app_id": 1738,
+      "candidate_id": 1410,
+      "name": "Muhammad AMIR Mehmood",
+      "score": 70.0,
+      "tier": "Tier B",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 5681
+    },
+    {
+      "app_id": 1808,
+      "candidate_id": 1451,
+      "name": "Mehwish",
+      "score": 70.0,
+      "tier": "Tier B",
+      "dims": [
+        4,
+        1,
+        4,
+        1,
+        3,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "200000",
+      "cv_len": 3483
+    },
+    {
+      "app_id": 1422,
+      "candidate_id": 1191,
+      "name": "AQSA GUL",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 4559
+    },
+    {
+      "app_id": 1533,
+      "candidate_id": 1273,
+      "name": "Muqqadas Saba",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 7377
+    },
+    {
+      "app_id": 1536,
+      "candidate_id": 1274,
+      "name": "Nain Tara",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "65,000",
+      "cv_len": 4926
+    },
+    {
+      "app_id": 1579,
+      "candidate_id": 855,
+      "name": "Rida Zanib",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80-000-100000",
+      "cv_len": 5513
+    },
+    {
+      "app_id": 1674,
+      "candidate_id": 1367,
+      "name": "Amina Jabin",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "50000",
+      "cv_len": 6560
+    },
+    {
+      "app_id": 1694,
+      "candidate_id": 309,
+      "name": "Varisha Khan",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "200,000",
+      "cv_len": 9734
+    },
+    {
+      "app_id": 1819,
+      "candidate_id": 1461,
+      "name": "Rija Zahid",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        3,
+        2,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150,000",
+      "cv_len": 4605
+    },
+    {
+      "app_id": 1837,
+      "candidate_id": 1475,
+      "name": "Hunza",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "90,000",
+      "cv_len": 7222
+    },
+    {
+      "app_id": 1927,
+      "candidate_id": 1540,
+      "name": "Wajih Bukhari",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        3,
+        2,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120,000",
+      "cv_len": 4216
+    },
+    {
+      "app_id": 1930,
+      "candidate_id": 1543,
+      "name": "Javid Jamal",
+      "score": 68.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80,000",
+      "cv_len": 12645
+    },
+    {
+      "app_id": 1570,
+      "candidate_id": 1297,
+      "name": "Sartaj Ali",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 5773
+    },
+    {
+      "app_id": 1588,
+      "candidate_id": 1310,
+      "name": "Hooria Huda",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 8647
+    },
+    {
+      "app_id": 1704,
+      "candidate_id": 1386,
+      "name": "Syed Imtessal Ahsan",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        2,
+        3,
+        2,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "35000",
+      "cv_len": 4922
+    },
+    {
+      "app_id": 1706,
+      "candidate_id": 1385,
+      "name": "Basit Ali",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 4845
+    },
+    {
+      "app_id": 1711,
+      "candidate_id": 1391,
+      "name": "Rafeeqa Akram",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 3129
+    },
+    {
+      "app_id": 1767,
+      "candidate_id": 1422,
+      "name": "Sidra Ishfaq",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        4,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "Rs. 150,000",
+      "cv_len": 13634
+    },
+    {
+      "app_id": 1779,
+      "candidate_id": 1433,
+      "name": "Shahzad Akber",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        3,
+        4,
+        2,
+        2,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 6047
+    },
+    {
+      "app_id": 1853,
+      "candidate_id": 1488,
+      "name": "Usman Ahmad",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "50000",
+      "cv_len": 3142
+    },
+    {
+      "app_id": 1917,
+      "candidate_id": 1532,
+      "name": "Nasir Hussain",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 10481
+    },
+    {
+      "app_id": 1948,
+      "candidate_id": 1553,
+      "name": "Daniyah Noor",
+      "score": 67.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "120000",
+      "cv_len": 5000
+    },
+    {
+      "app_id": 1519,
+      "candidate_id": 1265,
+      "name": "Imama Tahir",
+      "score": 66.2,
+      "tier": "Tier C",
+      "dims": [
+        4,
+        1,
+        4,
+        2,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 8964
+    },
+    {
+      "app_id": 1766,
+      "candidate_id": 1421,
+      "name": "Fizza Faizan Farooqui",
+      "score": 66.2,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        2,
+        3,
+        1,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "300000",
+      "cv_len": 2551
+    },
+    {
+      "app_id": 1783,
+      "candidate_id": 1436,
+      "name": "Sohail Ahmad",
+      "score": 66.2,
+      "tier": "Tier C",
+      "dims": [
+        4,
+        1,
+        3,
+        2,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100k",
+      "cv_len": 3018
+    },
+    {
+      "app_id": 1794,
+      "candidate_id": 1442,
+      "name": "Malaika Kakar",
+      "score": 66.2,
+      "tier": "Tier C",
+      "dims": [
+        4,
+        1,
+        4,
+        1,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "PKR 250,000 (negotiable) ",
+      "cv_len": 6161
+    },
+    {
+      "app_id": 1451,
+      "candidate_id": 1211,
+      "name": "Usman Ahmad",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        4,
+        1,
+        4,
+        2,
+        3,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "90k",
+      "cv_len": 2646
+    },
+    {
+      "app_id": 1494,
+      "candidate_id": 1246,
+      "name": "Awais Hakim",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "85000",
+      "cv_len": 2330
+    },
+    {
+      "app_id": 1547,
+      "candidate_id": 1282,
+      "name": "Anila",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 3890
+    },
+    {
+      "app_id": 1564,
+      "candidate_id": 115,
+      "name": "Mahroosha Saleem",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 5722
+    },
+    {
+      "app_id": 1669,
+      "candidate_id": 1362,
+      "name": "Zarghuna",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        1,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 3333
+    },
+    {
+      "app_id": 1775,
+      "candidate_id": 1429,
+      "name": "Mohammad Qasim",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "110000",
+      "cv_len": 3822
+    },
+    {
+      "app_id": 1895,
+      "candidate_id": 1518,
+      "name": "Muhammad Farooq",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "2.5 lac",
+      "cv_len": 10625
+    },
+    {
+      "app_id": 1896,
+      "candidate_id": 1518,
+      "name": "Muhammad Farooq",
+      "score": 65.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        3,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "2.5 lac",
+      "cv_len": 10625
+    },
+    {
+      "app_id": 1907,
+      "candidate_id": 980,
+      "name": "Sikandar Khurshid",
+      "score": 63.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        4
+      ],
+      "missing_mh": 1,
+      "salary": "150000",
+      "cv_len": 4766
+    },
+    {
+      "app_id": 1501,
+      "candidate_id": 1251,
+      "name": "Asif Hayat",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100,000",
+      "cv_len": 3731
+    },
+    {
+      "app_id": 1644,
+      "candidate_id": 1342,
+      "name": "Abdul Haleem",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 5817
+    },
+    {
+      "app_id": 1709,
+      "candidate_id": 1389,
+      "name": "Qurban Ali",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "250,000",
+      "cv_len": 10332
+    },
+    {
+      "app_id": 1786,
+      "candidate_id": 1438,
+      "name": "Shaista Owais",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "PKR 350000",
+      "cv_len": 6516
+    },
+    {
+      "app_id": 1856,
+      "candidate_id": 1490,
+      "name": "Saira Shakoor",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        4,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "180000",
+      "cv_len": 6658
+    },
+    {
+      "app_id": 1936,
+      "candidate_id": 1548,
+      "name": "Najam Nisar",
+      "score": 63.7,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "will be discussed",
+      "cv_len": 6396
+    },
+    {
+      "app_id": 1507,
+      "candidate_id": 1256,
+      "name": "Azra Perveen",
+      "score": 62.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        0,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "50000 +",
+      "cv_len": 3876
+    },
+    {
+      "app_id": 1521,
+      "candidate_id": 1267,
+      "name": "Fatima Amjad",
+      "score": 62.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 3733
+    },
+    {
+      "app_id": 1593,
+      "candidate_id": 1304,
+      "name": "Zainab",
+      "score": 62.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        4,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150K (PKR)",
+      "cv_len": 6444
+    },
+    {
+      "app_id": 1740,
+      "candidate_id": 1411,
+      "name": "Muhammad Zulqarnain",
+      "score": 62.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        3,
+        2,
+        0,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "70000-80000",
+      "cv_len": 4079
+    },
+    {
+      "app_id": 1426,
+      "candidate_id": 1192,
+      "name": "Iqra parvez",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        0,
+        4,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "20000",
+      "cv_len": 2126
+    },
+    {
+      "app_id": 1465,
+      "candidate_id": 1224,
+      "name": "Muhammad Saad Fareed Burney",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "170000 PKR",
+      "cv_len": 3297
+    },
+    {
+      "app_id": 1583,
+      "candidate_id": 1306,
+      "name": "Aaliya Farooq",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        4,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "70,000",
+      "cv_len": 4875
+    },
+    {
+      "app_id": 1653,
+      "candidate_id": 317,
+      "name": "Mahnoor",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "105k ",
+      "cv_len": 3363
+    },
+    {
+      "app_id": 1662,
+      "candidate_id": 1356,
+      "name": "Muhammad Hanzala",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        0,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 3472
+    },
+    {
+      "app_id": 1921,
+      "candidate_id": 1534,
+      "name": "Rosheen Naeem",
+      "score": 61.3,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "130,000 +",
+      "cv_len": 5687
+    },
+    {
+      "app_id": 1625,
+      "candidate_id": 1334,
+      "name": "Naima memoon",
+      "score": 60.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        2,
+        3,
+        0,
+        1
+      ],
+      "missing_mh": 0,
+      "salary": "140000",
+      "cv_len": 2603
+    },
+    {
+      "app_id": 1659,
+      "candidate_id": 1354,
+      "name": "Zaynab Hashmi",
+      "score": 60.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        4,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100,000",
+      "cv_len": 5939
+    },
+    {
+      "app_id": 1660,
+      "candidate_id": 1354,
+      "name": "Zaynab Hashmi",
+      "score": 60.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        4,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100,000",
+      "cv_len": 5939
+    },
+    {
+      "app_id": 1527,
+      "candidate_id": 1269,
+      "name": "Perniya Akram",
+      "score": 58.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        3,
+        1
+      ],
+      "missing_mh": 0,
+      "salary": "200000+",
+      "cv_len": 3203
+    },
+    {
+      "app_id": 1879,
+      "candidate_id": 294,
+      "name": "Muhammad Zain Mobeen",
+      "score": 58.8,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        1,
+        4,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "200,000 PKR ",
+      "cv_len": 6979
+    },
+    {
+      "app_id": 1405,
+      "candidate_id": 1182,
+      "name": "Ishfaq Ahmad",
+      "score": 58.4,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "60000",
+      "cv_len": 1758
+    },
+    {
+      "app_id": 1447,
+      "candidate_id": 1208,
+      "name": "Aleena Akhtar",
+      "score": 58.4,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        3,
+        3,
+        4,
+        3,
+        4
+      ],
+      "missing_mh": 1,
+      "salary": "200000",
+      "cv_len": 5315
+    },
+    {
+      "app_id": 1491,
+      "candidate_id": 1243,
+      "name": "Muhammad Raza",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        3,
+        3,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "70000",
+      "cv_len": 1535
+    },
+    {
+      "app_id": 1538,
+      "candidate_id": 1277,
+      "name": "Shakila",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        0,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "Nil",
+      "cv_len": 3425
+    },
+    {
+      "app_id": 1677,
+      "candidate_id": 1368,
+      "name": "Abdul subhan",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        1,
+        4,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 4364
+    },
+    {
+      "app_id": 1812,
+      "candidate_id": 1455,
+      "name": "Hafiza Swaira Shahbaz",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        0,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 3298
+    },
+    {
+      "app_id": 1826,
+      "candidate_id": 1466,
+      "name": "Eisha Nadeem",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        2,
+        1,
+        4,
+        2,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "70,000",
+      "cv_len": 4828
+    },
+    {
+      "app_id": 1915,
+      "candidate_id": 1530,
+      "name": "Amira Fatima",
+      "score": 57.5,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        1,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "60,000",
+      "cv_len": 3304
+    },
+    {
+      "app_id": 1714,
+      "candidate_id": 210,
+      "name": "Muhammad Aman Khan",
+      "score": 57.4,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        4,
+        4,
+        0,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "120000",
+      "cv_len": 2737
+    },
+    {
+      "app_id": 1413,
+      "candidate_id": 1187,
+      "name": "Saeed Ahmed",
+      "score": 56.2,
+      "tier": "Tier C",
+      "dims": [
+        2,
+        1,
+        4,
+        3,
+        4,
+        0,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "80K ",
+      "cv_len": 4514
+    },
+    {
+      "app_id": 1584,
+      "candidate_id": 387,
+      "name": "Faiza Ghazal",
+      "score": 56.2,
+      "tier": "Tier C",
+      "dims": [
+        1,
+        1,
+        4,
+        3,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "320000",
+      "cv_len": 4108
+    },
+    {
+      "app_id": 1887,
+      "candidate_id": 1414,
+      "name": "Hayat Ahmad Khan Jalali",
+      "score": 56.2,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        2,
+        4,
+        0,
+        3,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "50000",
+      "cv_len": 4298
+    },
+    {
+      "app_id": 1448,
+      "candidate_id": 1209,
+      "name": "Tehreem Ali",
+      "score": 55.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        1,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "40000",
+      "cv_len": 1855
+    },
+    {
+      "app_id": 1585,
+      "candidate_id": 1307,
+      "name": "Sultana Quresh",
+      "score": 55.0,
+      "tier": "Tier C",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "90000+",
+      "cv_len": 3721
+    },
+    {
+      "app_id": 1781,
+      "candidate_id": 1435,
+      "name": "Muqaddas Javed",
+      "score": 55.0,
+      "tier": "Tier C",
+      "dims": [
+        2,
+        1,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "60000-70000",
+      "cv_len": 2066
+    },
+    {
+      "app_id": 1617,
+      "candidate_id": 1328,
+      "name": "Inayat ur Rahman",
+      "score": 54.2,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        4,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "170000",
+      "cv_len": 2687
+    },
+    {
+      "app_id": 1657,
+      "candidate_id": 1352,
+      "name": "Syed Muhammad Zain Hashmi",
+      "score": 53.8,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        2,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "As part of policy ",
+      "cv_len": 5625
+    },
+    {
+      "app_id": 1955,
+      "candidate_id": 1559,
+      "name": "ADNAN",
+      "score": 53.8,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        2,
+        3,
+        0,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "60000",
+      "cv_len": 4057
+    },
+    {
+      "app_id": 1597,
+      "candidate_id": 1312,
+      "name": "Saba Noor",
+      "score": 52.5,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        2,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80,000",
+      "cv_len": 5441
+    },
+    {
+      "app_id": 1726,
+      "candidate_id": 1402,
+      "name": "Amara Naqui",
+      "score": 52.5,
+      "tier": "No-Hire",
+      "dims": [
+        2,
+        1,
+        4,
+        1,
+        4,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "90 to 95k",
+      "cv_len": 4547
+    },
+    {
+      "app_id": 1721,
+      "candidate_id": 1398,
+      "name": "Maryam Binnit E Rauf",
+      "score": 52.1,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        4,
+        1
+      ],
+      "missing_mh": 1,
+      "salary": "100k",
+      "cv_len": 6181
+    },
+    {
+      "app_id": 1601,
+      "candidate_id": 1316,
+      "name": "Peria Aizaz",
+      "score": 51.2,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        3,
+        0,
+        1
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 3825
+    },
+    {
+      "app_id": 1861,
+      "candidate_id": 1495,
+      "name": "Hafsa Qadri",
+      "score": 51.2,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        3,
+        1,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100,000",
+      "cv_len": 3415
+    },
+    {
+      "app_id": 1795,
+      "candidate_id": 1443,
+      "name": "Abdul Hamid",
+      "score": 51.0,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        1,
+        4,
+        3,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "150000",
+      "cv_len": 3319
+    },
+    {
+      "app_id": 1926,
+      "candidate_id": 1539,
+      "name": "Sobia Minhas",
+      "score": 51.0,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        4,
+        2,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "230000",
+      "cv_len": 4787
+    },
+    {
+      "app_id": 1403,
+      "candidate_id": 1180,
+      "name": "Madeeha Kanwal",
+      "score": 50.0,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        3,
+        3,
+        4,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 5300
+    },
+    {
+      "app_id": 1630,
+      "candidate_id": 1337,
+      "name": "Okasha Khan",
+      "score": 50.0,
+      "tier": "No-Hire",
+      "dims": [
+        2,
+        1,
+        4,
+        1,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100,000",
+      "cv_len": 2554
+    },
+    {
+      "app_id": 1636,
+      "candidate_id": 482,
+      "name": "Anisa Shah",
+      "score": 48.9,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        2,
+        4,
+        1,
+        3,
+        0,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "One Lakh Thirty thousand rupees",
+      "cv_len": 4823
+    },
+    {
+      "app_id": 1553,
+      "candidate_id": 1286,
+      "name": "Shagufta Shaheen",
+      "score": 48.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        3,
+        0,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "40000",
+      "cv_len": 2289
+    },
+    {
+      "app_id": 1607,
+      "candidate_id": 1320,
+      "name": "Fatima TU Zahra",
+      "score": 48.8,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        4,
+        1,
+        0,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "150000",
+      "cv_len": 3718
+    },
+    {
+      "app_id": 1764,
+      "candidate_id": 1419,
+      "name": "Muhammad Mustafa",
+      "score": 48.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        1,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "80000",
+      "cv_len": 2210
+    },
+    {
+      "app_id": 1916,
+      "candidate_id": 1531,
+      "name": "Muhammad Ansaar Mehsood",
+      "score": 48.8,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        4,
+        0,
+        3,
+        0,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 3443
+    },
+    {
+      "app_id": 1833,
+      "candidate_id": 1472,
+      "name": "Muhammad Khalil",
+      "score": 47.5,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        1,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "60,000",
+      "cv_len": 3020
+    },
+    {
+      "app_id": 1484,
+      "candidate_id": 1237,
+      "name": "Asfand Raheel",
+      "score": 46.2,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        0,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100000",
+      "cv_len": 2151
+    },
+    {
+      "app_id": 1683,
+      "candidate_id": 1373,
+      "name": "Afira Annis",
+      "score": 45.7,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        2,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "45000",
+      "cv_len": 2239
+    },
+    {
+      "app_id": 1750,
+      "candidate_id": 992,
+      "name": "Muhammad Usman Shabbir",
+      "score": 43.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        1,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "100k+ (negotiable)",
+      "cv_len": 8454
+    },
+    {
+      "app_id": 1924,
+      "candidate_id": 1537,
+      "name": "MUBARAH CHAUDHARY",
+      "score": 43.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        1,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "40k",
+      "cv_len": 2607
+    },
+    {
+      "app_id": 1956,
+      "candidate_id": 1560,
+      "name": "Amna",
+      "score": 43.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "70 ",
+      "cv_len": 3221
+    },
+    {
+      "app_id": 1503,
+      "candidate_id": 1252,
+      "name": "Nimra Ansa",
+      "score": 42.5,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        1,
+        0,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "70000",
+      "cv_len": 1599
+    },
+    {
+      "app_id": 1648,
+      "candidate_id": 1344,
+      "name": "Muhammad Hasaan Khalid",
+      "score": 41.4,
+      "tier": "No-Hire",
+      "dims": [
+        3,
+        1,
+        3,
+        0,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "60000",
+      "cv_len": 2039
+    },
+    {
+      "app_id": 1858,
+      "candidate_id": 1492,
+      "name": "Jaweria Lateef",
+      "score": 41.2,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        1,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "60000",
+      "cv_len": 7264
+    },
+    {
+      "app_id": 1647,
+      "candidate_id": 455,
+      "name": "Hareem Khattak",
+      "score": 37.5,
+      "tier": "No-Hire",
+      "dims": [
+        2,
+        1,
+        4,
+        0,
+        0,
+        1,
+        2
+      ],
+      "missing_mh": 0,
+      "salary": "90000",
+      "cv_len": 1619
+    },
+    {
+      "app_id": 1817,
+      "candidate_id": 1460,
+      "name": "Zainab Tahir",
+      "score": 37.5,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        4,
+        0,
+        4,
+        0,
+        1
+      ],
+      "missing_mh": 0,
+      "salary": "95000",
+      "cv_len": 2627
+    },
+    {
+      "app_id": 1935,
+      "candidate_id": 1494,
+      "name": "Saba Manzoor",
+      "score": 37.5,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        3,
+        1,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 0,
+      "salary": "60000",
+      "cv_len": 2681
+    },
+    {
+      "app_id": 1603,
+      "candidate_id": 1318,
+      "name": "Sehrish Nida",
+      "score": 37.2,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        4,
+        2,
+        4,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "100000",
+      "cv_len": 7562
+    },
+    {
+      "app_id": 1614,
+      "candidate_id": 1325,
+      "name": "Sumbal bano",
+      "score": 36.2,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        2,
+        4,
+        0,
+        0,
+        0,
+        4
+      ],
+      "missing_mh": 0,
+      "salary": "130k",
+      "cv_len": 1968
+    },
+    {
+      "app_id": 1618,
+      "candidate_id": 1329,
+      "name": "Salman Ahmed",
+      "score": 34.0,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        2,
+        3,
+        3,
+        0,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "PKR 90,000",
+      "cv_len": 1999
+    },
+    {
+      "app_id": 1604,
+      "candidate_id": 1319,
+      "name": "Amanullah Naich",
+      "score": 33.8,
+      "tier": "No-Hire",
+      "dims": [
+        1,
+        1,
+        3,
+        0,
+        3,
+        1,
+        1
+      ],
+      "missing_mh": 0,
+      "salary": "80",
+      "cv_len": 2586
+    },
+    {
+      "app_id": 1708,
+      "candidate_id": 1388,
+      "name": "Hafsa Nijat",
+      "score": 32.9,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        4,
+        2,
+        3,
+        0,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "60000-70000",
+      "cv_len": 1829
+    },
+    {
+      "app_id": 1797,
+      "candidate_id": 583,
+      "name": "Rabia Tariq",
+      "score": 32.9,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        4,
+        1,
+        3,
+        1,
+        4
+      ],
+      "missing_mh": 1,
+      "salary": "none",
+      "cv_len": 2898
+    },
+    {
+      "app_id": 1611,
+      "candidate_id": 1323,
+      "name": "Muhammad Ahmed Khan",
+      "score": 31.9,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        3,
+        1,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "100000",
+      "cv_len": 2439
+    },
+    {
+      "app_id": 1869,
+      "candidate_id": 42,
+      "name": "Ayesha Raza Khan",
+      "score": 31.9,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        4,
+        1,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "2500000",
+      "cv_len": 7171
+    },
+    {
+      "app_id": 1923,
+      "candidate_id": 1536,
+      "name": "Maryam bibi",
+      "score": 30.8,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        4,
+        1,
+        1,
+        3,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "40k",
+      "cv_len": 1977
+    },
+    {
+      "app_id": 1690,
+      "candidate_id": 1376,
+      "name": "Rabia Mukhtar",
+      "score": 29.8,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        3,
+        0,
+        3,
+        3,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "855700",
+      "cv_len": 1432
+    },
+    {
+      "app_id": 1760,
+      "candidate_id": 1417,
+      "name": "talha iftikhar",
+      "score": 28.7,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        3,
+        0,
+        3,
+        3,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "100000",
+      "cv_len": 2208
+    },
+    {
+      "app_id": 1664,
+      "candidate_id": 1223,
+      "name": "Javeria Zahra",
+      "score": 25.5,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        3,
+        0,
+        3,
+        1,
+        3
+      ],
+      "missing_mh": 1,
+      "salary": "75000 PKR",
+      "cv_len": 1726
+    },
+    {
+      "app_id": 1540,
+      "candidate_id": 1278,
+      "name": "Muhammad Akmal",
+      "score": 15.9,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        3,
+        0,
+        0,
+        0,
+        2
+      ],
+      "missing_mh": 1,
+      "salary": "60000",
+      "cv_len": 1092
+    },
+    {
+      "app_id": 1485,
+      "candidate_id": 1238,
+      "name": "Muhammad Naeem",
+      "score": 6.1,
+      "tier": "No-Hire",
+      "dims": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        3
+      ],
+      "missing_mh": 2,
+      "salary": "160000",
+      "cv_len": 297
+    }
+  ],
+  "unreadable": []
+}

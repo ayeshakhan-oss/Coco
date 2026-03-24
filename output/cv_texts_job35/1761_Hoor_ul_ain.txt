@@ -1,0 +1,65 @@
+Hoor ul Ain
+hoorulain54@gmail.com
++92 311 0476288
+linkedin.com/in/h00r-ul-ain
+Professional Experience
+TechnoGenics SMC Pvt. Ltd.                                                                                                                Lahore, PK (Hybrid)
+Content Engineer | Conversational AI & Cybersecurity                                                                              (Jul 2024-Present)  
+Python Programming
+Chatbot UX Writing & Microcopy
+Systems Thinking
+Conversational Design Flow
+Prompt Engineering
+Rasa Response Schemas
+Usability Testing (Conversational AI)
+Technical Documentation
+Cross-Functional Collaboration 
+JSON/YAML Configuration
+School of Interdisciplinary Engineering & Sciences, NUST                                                                        Islamabad, PK
+Research Intern                                                                                                                                       (Dec 2023-Mar 2024) 
+Predictive Modeling: Implemented supervised machine learning models (Random Forest, LightGBM, XGBoost), neural networks
+(ANN, MLP), and unsupervised clustering (K-Means), on genomic and chemistry datasets for academic projects. Performed
+exploratory data analysis, feature engineering, and hyper-parameter tuning, achieving up to 50% improved accuracy.
+Academic Writing: Collaborated with doctoral candidates to formulate methodologies and document results for research papers.
+Tools & Frameworks: Python Programming, Visual Studio Code, Google Colab, RapidMiner, Microsoft Excel, Microsoft Word.
+Education
+University of Engineering & Technology                                                                                                            Lahore, PK
+BS Computer Science                                                                                                                                            (2019-2023)
+Conversational Design: Defined JSON-based response systems within Rasa architecture to guide AI and agentic AI behavior
+across success, failure, and high-stakes scenarios, ensuring context-aware user interactions across web and mobile platforms.
+Experience Engineering: Developed multi-tone conversational styles tailored to diverse user personas by customizing LLM
+behavior through Modelfile-based configurations of Ollama-hosted models, including Gemma 3, Llama 3, Mistral, and Mixtral.
+Personification: Designed a personification logic framework, based on the NIST Cybersecurity Framework, that allows AI-
+powered security analyst, CARA, to map recommended actions based on implementation tiers, security roles, and risk profiles.
+QA & Documentation: Performed end-to-end usability testing to validate security use cases, action-centric intents, knowledge-base
+accuracy, and wrote release notes to clearly communicate AI capabilities to stakeholders, sales team, and customers.
+Cybersecurity Content: Authored threat briefs and security advisories to contextualize emerging security risks for stakeholders.
+Volunteer Experience
+UET Blood Donors’ Society                                                                                                                                  Lahore, PK  
+Vice President                                                                                                                                                        (2022-2023) 
+Led 11 teams of 100 active members to execute social initiatives, partnering with various NGOs and hospitals in Lahore. 
+Served in multiple capacities to coordinate timely blood donations, maintain donors’ data, lead orientations for new inductees,
+engage the dormant teams, supervise communication across official channels, and organize flagship events.
+Key Skills
+-
+-
+Islamabad, Pakistan
+Amal Academy                                                                                                                                                       Lahore, PK
+Career-Prep Fellowship                                                                                                                                      (Jul-Sep 2022) 
+Invested 150 hours to develop leadership, public speaking, entrepreneurship, proactive thinking, social impact, and networking
+skills by completing online courses and participating in interactive weekend sessions. Received the Best Mega Project Award
+among seven teams for the mega project, Seedfier, an online platform for sustainable household farming solutions.
+-
+Relevant Projects
+Hybrid Text Recognizer for Urdu & English Text from Natural Scene                                                 
+Bachelor’s Final Year Project (2022-2023) 
+A mobile application to detect and extract Urdu and English text from images captured via the mobile camera, using deep learning
+models and Firebase integration. The recognized text can be saved and shared in multiple formats, like PDF or DOC.
+Collaborated with the team to collect, annotate, and preprocess data, and implement deep learning models on the image dataset. 
+Authored technical documentation, including methodology, design concepts, implementation details, and results for thesis writing.
+Tools & Frameworks: Python, TensorFlow, OpenCV, EasyOCR, VS Code, Jupyter Notebook, Kaggle, MS Office, and LaTeX.
+-
+-
+-
+Civic Leadership
+Ethical Problem-Solving

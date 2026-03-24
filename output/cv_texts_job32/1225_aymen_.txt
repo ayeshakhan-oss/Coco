@@ -1,0 +1,96 @@
+=== App 1225 | aymen  | aymen.abid@taleemabad.com | Isb ===
+
+WhatsApp - 03469037509
+heysheraz@outlook.com 
+linkedin.com/in/heysheraz 
+github.com/scheraz
+ZONES, INC.
+ZONES, INC.
+ZONES, INC.
+Microsoft Licensing Advisor
+Renewals Operations Specialist
+Account Manager
+Dec 2024 - Aug 2025
+Jan 2024 - Nov 2024
+Jan 2022 - Jan 2024
+Managed Microsoft Volume Licensing (MPSA, CSP/NCE, OV) for clients, ensuring optimal solutions.
+Increased renewal rate by 6% and drove net new revenue via proactive engagement and upselling.
+Conducted client reviews, analyzed trends, managed vendors, and collaborated with cross-functional teamManaged
+Microsoft Volume Licensing (MPSA, CSP/NCE, OV) for clients, ensuring optimal solutions. 
+Managed renewals for top OEMs across SMB, MM, and Enterprise in South & West U.S.
+Achieved 98% renewal rate (+12% YoY) via proactive engagement and retention.
+Optimized workflows, strengthened OEM/partner relationships, and ensured seamless contract processing.
+Achieved 100% of annual sales targets for two consecutive years in SMB hardware and software solutions.
+Expanded client portfolio, acquiring 15 new logos over two years, driving sustained growth.
+Led account strategies, fostered long-term partnerships, and optimized deals through cross-functional collaboration.
+Managed multi-platform digital presence, achieving 40% engagement and 35% follower growth in six months.
+Developed data-driven content strategies, boosting post reach by 50% and website traffic by 30%.
+Oversaw content execution, optimized paid campaigns, and collaborated with stakeholders to maximize brand
+visibility.
+Muhammad Sheraz Khan
+PROFESSIONAL EXPERIENCE
+EMLAAK MARKETING
+Social Media Manager 
+Jan 2021 - June 2022
+OS - Red Hat, CentOS, Windows
+Programming Languages - Python, Bash, JS/HTML/CSS, ReactJS, NodeJS, MongoDB, Express
+Container Orchestration - Kubernetes, Docker, Podman Technologies/Framework - Github, Terraform, Postman, Netlify,
+Render 
+TECHNICAL SKILLS
+AWS Certified Solution Architect Associate | Certified Kubernetes Administrators | Red Hat Certified System Admin |
+AWS Certified Cloud Practitioner | Red Hat Certified Engineer (Udemy Training) |
+CERTIFICATIONS
+ROOTS MILLENNIUM SCHOOLS & COLLEGES - TME
+Mathematics Teacher (IGCSE - OLevels)
+Jan 2020 - Dec 2021
+Taught Cambridge/Oxford O-Level Mathematics with learner-centered instruction, enhancing comprehension and
+engagement.
+Achieved 63% A/A* grades and 70% overall class performance improvement over two years.
+Provided 1-on-1 mentoring, improving test scores by 35%, and engaged stakeholders for consistent outcomes.
+AI Image GeneratorAI Image Generator
+Built a responsive web app with dark/light theme toggle and integrated Hugging Face API to convert text prompts into AI-
+generated images. 🚀
+Stack used: HTML/CSS/JS and Huggingface API for text-to-image generations.
+Netlify Link: https://cheery-cannoli-4e9cc1.netlify.app/
+Serverless User Management API with AWS CDK, Lambda, and DynamoDB
+Built a fully serverless REST API for user management using AWS CDK, API Gateway, Lambda (Node.js/TypeScript), and
+DynamoDB. Integrated the backend with a Next.js frontend via Axios, enabling seamless CRUD operations. Implemented
+CORS, environment-based configuration, and efficient data access with DynamoDB’s on-demand billing for scalability and
+cost optimization.
+Netlify Link: https://prismatic-faloodeh-96cb3b.netlify.app/
+Product Management SaaS – React, Next.js & AWS
+Built a full-stack product management application using Next.js and React on the frontend, integrated with AWS Lambda,
+DynamoDB, and S3 for serverless backend. Implemented features for creating, reading, and deleting products with real-
+time image uploads and optimized frontend performance using React Query.
+Netlify Link: https://brilliant-madeleine-5addde.netlify.app/
+HTML/CSS/JS Website Conversion to ReactJS App
+Built a site in HTML and CSS and then converted it into a React App via Create-React-App package bundler. Deployed it
+on Netlify.
+Netlify Link: https://backroads-reactap.netlify.app/
+MERN Stack Project
+Built a full-stack job tracking application with MongoDB, Express, React, and Node.js. Features include secure JWT
+authentication, CRUD operations for job applications, filtering, sorting, and real-time statistics using MongoDB
+aggregations. Deployed on Render with a responsive UI for seamless user experience.
+Render Link: https://mern-stack-jobster-api.onrender.com/landing
+MEN Stack (MongoDB, ExpressJS, NodeJS) with HTML/CSS/JS Frontend
+Developed a full-stack to-do list application using the MEN stack (MongoDB, Express.js, Node.js) with a frontend built in
+HTML, CSS, and JavaScript, supporting full CRUD operations for task management.
+Github link: https://github.com/Scheraz/todo-list-app-in-MEN-stack
+MERN Stack Notes App : Built with React, React Router, Tailwind CSS, DaisyUI, and Lucide-React. Features CRUD
+functionality, intuitive UI, and secure API design with Node.js and MongoDB.
+Deployed on Render:  https://fullstack-notes-app-ck2f.onrender.com/
+Kubernetes 
+Deployed a prod-ready K-8 Cluster on local machine via Vagrant 
+Github link: https://github.com/Scheraz/Deploying-a-K8-cluster-on-local-machine
+PROJECTS AND TECH HIGHLIGHTS
+University of Engineering and Technology Peshawar,Pakistan
+Bachelors in Science Computer Science (Hons.)
+2013 - 2017
+EDUCATION
+
+
+--- COVER NOTE ---
+ N/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/A
+
+--- CUSTOM ANSWERS ---
+{"1771234340593": {"answer": "N/A", "question": "One example of a funding relationship you built or a deal you helped close, and what made it work"}}

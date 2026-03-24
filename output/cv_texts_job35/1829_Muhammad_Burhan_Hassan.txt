@@ -1,0 +1,242 @@
+APP ID: 1829
+NAME: Muhammad Burhan Hassan
+SCANNER SCORE: 9.0
+LOCATION: Islamabad
+================================================================================
+
+Muhammad Burhan Hassan
+Address: Islamabad, Pakistan
+Phone: + 923405588634
+
+Email: burhanhassan384@gmail.com
+
+OBJECTIVE
+
+Dynamic and results-driven research and development professional
+with a Master’s degree in Statistics more than two years of
+experience in applied research, data analytics, and multi-sectoral
+projects funded by organizations including the World Bank,
+SUPARCO, PSPA and Reforms Support Unit - Sindh(RSU). Proficient
+in quantitative and qualitative data analysis using SPSS, Stata, R,
+Python, MAXQDA, and MS Excel, with strong skills in drafting
+analytical reports and policy-oriented documentation. Experienced
+in designing research protocols; developing CAPI-based data
+collection tools (SurveyCTO, KoboCollect, Tangerine, CSPro); and
+building interactive dashboards using Power BI and Looker Studio.
+Adept at training and supervising field teams on quantitative and
+qualitative survey instruments while ensuring high-quality data
+management through rigorous cleaning, validation, and quality
+assurance processes. Demonstrated strengths in project
+coordination, stakeholder engagement with government and donor
+counterparts, ethical compliance in research operations, and
+evidence-based evaluation, supported by strong leadership,
+analytical, and communication skills.
+
+WORK EXPERIENCE
+Organization : VIT Global Pvt. Ltd.
+Position: Business Operations Associate
+
+Year: Dec 2023 — Present
+
+Project: Punjab Human Capital Investment Project (PHCIP)
+Client: Punjab Social Protection Authority(PSPA) World Bank(WB)
+Responsibilities
+
+Trained data collection teams on various tools including Household,
+AIMECD, Teacher Observation, BHU, and School Information.
+
+Developed and tested CAPI-based data collection tools.
+
+Coordinated with field teams and maintained data collection
+progress records.
+
+Performed data cleaning, conducted debriefing sessions, and
+participated in client meetings.
+
+Project: Early Grade Reading Assessment (EGRA)
+
+Client : Reform Support Unit (RSU)
+
+World Bank (WB)
+
+Responsibilities
+
+Developed CAPI versions of tools using SurveyCTO and Tangerine.
+
+Conducted training sessions for enumerators and supervisors on tool
+usage and data protocols.
+
+Managed data quality assurance, analysis, and final reporting.
+
+Presented updates during client meetings and project briefings.
+
+Project: Evidence for Health (E4H)
+Client : Integrity
+
+Responsibilities
+
+Developed CAPI versions of data collection tools and trained field
+teams on data collection procedures.
+
+Supervised data quality, cleaning, and analysis.
+
+Facilitated debriefing sessions and supported client coordination.
+Project: Assessment of Teacher Training Program up-take and
+Potential Impacts on Pedagogical Practice (ASPIRE)
+
+Client : Ministry of Education and Professional Training
+
+National Institute of Excellence in Teacher Education (NIETE)
+Responsibilities
+
+Conducted capacity-building sessions for data collection teams and
+supervisors.
+
+Coordinated field activities, ensured data quality, and supported
+analysis and reporting.
+
+Participated in progress review meetings with project clients.
+Project: Financial Advisory Services of Pakistan Optical Remote
+Sensing Satellite(PRSS -O2)
+
+Client: Pakistan Space and Upper Atmosphere Research Commission
+(SUPARCO)
+
+Responsibilities
+Planned and executed project activities as per timelines.
+
+Conducted bi-weekly coordination meetings with clients and
+consultants.
+
+Reviewed consultant reports, prepared socio-economic and progress
+reports, and developed presentations for client meetings.
+
+Project: Summative Evaluation of Library-Based Interventions
+(Lahore and Bahawalpur)
+
+Client : Idare-e-Taleem-o-Agahi (ITA)
+Responsibilities
+
+Planned and executed field research activities and developed data
+collection tools.
+
+Designed and deployed CAPI tools, trained field teams, and
+monitored implementation progress.
+
+Supervised data quality, cleaning, and analysis.
+
+Participated in review meetings and prepared final project reports.
+
+Project: Labor Market Assessment in Azad Jammu & Kashmir
+
+Client: National Vocational & Technical Training Commission
+(NAVTTC)
+
+Responsibilities:
+
+Planned and executed projects from the inception phase through
+final reporting and submission.
+
+Developed CAPI-based data collection tools and interactive
+dashboards for real-time monitoring and decision-making.
+
+Conducted training of data collection teams and ensured close
+coordination during field operations.
+
+Supervised field activities to maintain data quality and adherence to
+research protocols.
+
+Performed data cleaning, validation, and statistical analysis.
+
+Drafted comprehensive analytical reports with clear, actionable
+recommendations for program improvement.
+
+Organization :Muller & Phipps(M&P) Express Logistics (Pvt) Ltd
+Position: Operation Officer
+
+Year: July 2022- November 2023
+
+Responsibilities
+
+Align couriers in daily operation activities and make it possible to
+send them on their routes for early deliveries.
+
+Make daily operation reports and finalize old-dated pending
+shipments.
+
+Resolve customer complaints and ensure deliveries according to the
+SOPs.
+
+Organization: Ufone Islamabad
+
+Position: Customer Services Executive
+
+Year: March 2019 — August 2021
+
+Responsibilities
+
+Worked on Higher Education Commission (HEC) helpline and
+provided information to the applicants who are applying for degree
+attestation or applying for scholarships announced by HEC.
+
+Organization: Pakistan Meteorological Department (PMD)
+Islamabad
+
+Position: Internee
+
+Year: January 2018 — January 2019
+
+Responsibilities
+
+Worked in Pakistan Meteorological Department (PMD) as an
+internee. Perform data analysis on their daily pollen count data of
+
+Islamabad, use previous data to develop a prediction model using
+multi-quantile regression statistical technique and use this model
+for the prediction. Tools used in this analysis are Python, SPSS, and
+MS Excel
+
+EDUCATION
+
+Bachelor of Science
+
+Quaid-e-Azam University Islamabad, Pakistan
+
+Master in Statistics
+
+International Islamic University Islamabad, Pakistan
+
+SKILLS
+Data Collection, monitoring & Validation
+
+Questionnaire Design & CAPI Tool Development (SurveyCTO,
+Tangerine)
+
+Quantitative data Analysis using R, Python, SPSS,STATA and MS
+Excel
+
+Qualitative data analysis using MAXQDA.
+
+Development of dashboards, Power BI and looker studio.
+Project Coordination & Team Management
+
+Data Quality Assurance & Reporting Writing
+
+Project management and coordination
+
+Quantitative and qualitative research methods
+
+Stakeholder coordination (SUPARCO, World Bank, government
+counterparts)
+
+Training and capacity development
+Report writing and data visualization
+Field logistics and operations management
+
+CERTIFICATION
+
+I have completed the “ Logical Frame Work Analysis” course
+
+from National Center for Rural Development Islamabad.
+
+World Bank Teach Observation Tool Certified

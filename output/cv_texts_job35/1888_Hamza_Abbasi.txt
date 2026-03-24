@@ -1,0 +1,74 @@
+Hamza Abbasi 
+Email: hamza.abbasi.analytics@gmail.com | Phone: +923303049702 | LinkedIn: www.linkedin.com/in/hamza-abbasi-88b31a297 |  
+GitHub: https://github.com/ds-hamza14 
+ 
+EDUCATION 
+IQRA UNIVERSITY | Bachelors in Business Administration | Expected Feb 2026 |                                                  Islamabad, Pakistan                
+Honors & Awards:  
+Selected as Discussant at an International Conference on Green Transitions and Urban Resilience (NUML, 2025); 
+Selected for Phase 2 of Stanford Global Sustainability Challenge (Top tier of 600+ global teams);  
+Finalist (Top 27/100+) at Innovation Fest 2025 for sustainable business solutions 
+Societies: Sustainability Club 
+RESEARCH EXPERIENCE 
+Research Assistant | Marketing Analytics                                                                                                                        Oct 2025-Present 
+ 
+Conducted PLS-SEM analysis on 244 survey responses to quantify the impact of "Fear of Missing Out" (FOMO) on brand 
+advocacy, establishing sequential mediation paths for consumer behavior (Under Review for Q1 Journal). 
+ 
+Designed and executed experimental research on Agentic Nudges, analyzing the impact of autonomous AI interventions on 
+sustainable purchase intentions across participants from multiple universities. 
+Research Assistant (AI & Data Science) | Iqra University & Yuan Ze University |                                                      Nov 2024-Present 
+ 
+Engineered a GenAI detection framework evaluating RoBERTa models; achieved 94.5% accuracy in distinguishing synthetic 
+text, though identified performance drops in humanized datasets. 
+ 
+Authored a research paper on "Indistinguishability in Generative AI" utilizing mixed-methods analysis to propose regulatory 
+frameworks for synthetic media (Under Review for Q1 Journal). 
+ 
+Developed explainable AI (XAI) models for agricultural resilience using SHAP and LIME libraries; optimized predictive 
+accuracy to R² = 0.82 and RMSE = 0.17. 
+International Conference on Real Estate (ICRE 2025) | NUML University Islamabad |                                                      2 Dec 2025               
+ 
+Presented findings on "Barriers to Green Technology Adoption," synthesizing data to recommend policy shifts for sustainable 
+urban development in Pakistan. 
+PROFESSIONAL EXPERIENCE 
+Campus Ambassador | FirstPassAI | Remote                                                                                                              Aug 2025-Oct 2025 
+ 
+Orchestrated campus-wide workshops to introduce AI-driven recruitment tools, bridging the gap between student talent and 
+emerging HR technologies. 
+ 
+Collaborated with a team of 9 ambassadors to execute marketing strategies, increasing student engagement and platform 
+adoption. 
+Teaching Assistant | Data Science | Iqra University |                                                                                           Fall 2024 & Spring 2025 
+ 
+Facilitated learning for undergraduate students in Python programming, data preprocessing, and machine learning algorithms. 
+ 
+Assisted faculty in curriculum development and grading, ensuring 100% adherence to academic standards. 
+TECHNICAL PROJECTS 
+PakFloodResilient: AI-Powered Flood Forecasting System Project Lead & Lead Data Scientist  
+ 
+Spearheaded the development of a flood early-warning system integrating GPM/IMERG satellite data and hydrological 
+records. 
+ 
+Implemented ensemble Machine Learning models (SVM + ANN) to forecast flood risks with 24-hour lead times, 
+significantly reducing community response latency. 
+ 
+Designed a multi-channel dissemination architecture (IVR/SMS) to ensure last-mile connectivity for low-literacy rural 
+populations. 
+Customer Churn Prediction & Retention Analytics Machine Learning Engineer 
+ 
+Analyzed telecom customer demographics and service data to identify key churn drivers; discovered a high correlation 
+between "Month-to-Month" contracts and churn rates. 
+ 
+Developed an ensemble of 6 classifiers (including SVM, Random Forest, KNN); XGBoost achieved the highest ROC-AUC 
+score, outperforming baseline models. 
+ 
+Deployed advanced feature engineering techniques (One-Hot Encoding, MinMaxScaler) to optimize model performance on 
+categorical and numerical data. 
+ADDITIONAL INFORMATION 
+Technical Skills 
+Python, SQL, R, TensorFlow, Scikit-Learn, Keras, Matplotlib, Seaborn, Power BI, BERT, mBERT, XLM-R, MySQL 
+Extracurricular Activities 
+Captain, Tug of War Team: Led university team to consecutive victories (2024, 2025) in Sports Week 
+Certification 
+IBM Data Science, Google Data Analytics, Python for everybody, SQL for data science 

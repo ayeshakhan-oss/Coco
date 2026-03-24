@@ -1,0 +1,86 @@
+Muhammad Junaid
+Islamabad, Pakistan
+034-25071581
+junaidjadee912@gmail.com
+www.linkedin.com/in/muhammad-junaid-98a665247
+www.github.com/muhammad-junaid-912
+Profile Summary
+Data and Research Analyst with strong expertise in econometrics, statistical modeling, and policy analyt-
+ics. Experienced in transforming large datasets into actionable insights using STATA, R, SPSS, EViews,
+and Excel. Proven ability in survey design, data cleaning, visualization, and analytical reporting for gov-
+ernment and development projects. Strong communicator with experience translating technical findings
+into decision-ready outputs.
+Technical Skills
+• Programming & Analytics: R, STATA, SPSS, EViews, MATLAB (basic)
+• Data Processing: Data cleaning, transformation, merging, validation, panel datasets
+• Visualization & Reporting: Excel dashboards, PowerPoint, Power BI
+• Survey Tools: ODK, Google Forms
+• Version Control: GitHub
+• AI Productivity: Advanced prompting, automation workflows
+Professional Experience
+Field Enumerator Taleemabad
+Feb 2025 – May 2025
+• Collected and validated large-scale student assessment data using ODK tools ensuring high data
+accuracy.
+• Supported field quality assurance and data consistency checks.
+Research Assistant Pakistan Institute of Development Economics (PIDE), Islamabad
+Sep
+2024 – Feb 2025
+• Cleaned and analyzed large logistics datasets using STATA and Excel to estimate supply chain
+costs and inefficiencies.
+• Designed questionnaires and managed primary data collection including interviews, market surveys,
+and FGDs.
+• Conducted secondary research and literature reviews to support evidence-based policy recommen-
+dations.
+• Developed analytical reports and visual summaries for government stakeholders.
+Research Assistant Ministry of Planning, Development & Special Initiatives, Islamabad
+Feb 2024 – Aug 2024
+• Processed multi-year macroeconomic datasets and performed statistical analysis for policy research
+projects.
+• Automated data cleaning workflows improving reporting efficiency and data consistency.
+• Contributed to drafting policy briefs, analytical notes, and presentations for senior researchers.
+Project Coordinator AASS Humanitarian Organization, Islamabad
+Jun 2023 – Dec 2023
+• Preprocessed and validated project datasets to support monitoring and donor reporting.
+• Developed funding proposals using data-driven narratives and performance indicators.
+• Coordinated project documentation and reporting workflows.
+Selected Data Projects
+• Energy Subsidy Optimization Model: Built time-series econometric models and LQR simu-
+lations using STATA and MATLAB to analyze fiscal sustainability.
+1
+• Agricultural Supply Chain Cost Mapping: Designed surveys, cleaned datasets, and visualized
+logistics cost structures for policy planning.
+• Education Assessment Analytics: Processed student assessment datasets and built Excel dash-
+boards for performance tracking.
+Education
+Pakistan Institute of Development Economics (PIDE), Islamabad
+2022 – 2025
+MPhil Economics
+—
+CGPA: 3.68/4.0
+Thesis: Nexus Between Energy Subsidies and Fiscal Deficit of Pakistan
+Quaid-i-Azam University, Islamabad
+2018 – 2022
+BS Economics
+—
+CGPA: 3.4/4.0
+Selected Certifications
+• 57th Training Workshop on Research Tools and Techniques using SPSS, Pakistan Scientific and
+Technological Information Centre (Oct 2025)
+• Quantitative Research Methods: Tools for Data Analysis, Coursera (May 2025)
+• AI for Everyone, Coursera(April 2025)
+• Workshop on Stata for Survey Data Analysis and Time Series Data. , NextGen (Jan 2025)
+• Matlab and Simulink Basics, Coursera (Dec 2024)
+• Matlab Onramp, MathWorks (Nov 2024)
+• Data Analytics and Business Intelligence” Course by DigiSkills (10/2024)
+• Energy Subsidy Reform Course by IMF, edX (09/2024)
+• Training Workshop on Panel Household Survey for MICS, PIDE (05/2024)
+• Data Analysis with R Programming, Google Data Analytics – Coursera (03/2024)
+• Training Workshop on Panel Data Analysis Using STATA, PIDE (12/2023)
+• From Excel to Power BI, Coursera (10/2023)
+• Applied Economics with R Software, PIDE (03/2023)
+• Introduction to Data Analytics and Business by University of Colorado, Coursera (03/2022)
+• Project Management project by University of California Irvine, coursera (03/2022)
+• Foundations; Data, Data, Everywhere, Google IRM (11/2022)
+• Excel Fundamentals for Data Analytics – Coursera
+2

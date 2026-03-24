@@ -1,0 +1,90 @@
+APP ID: 1442
+NAME: Faryal Afridi
+SALARY: 100000
+================================================================================
+
+FARYAL  ALAM  AFRIDI  
+LinkedIn : www.linkedin.com/in/faryal -afridi -0a65181a3  
+Email:  faryalafridi4@gmail.com  Phone  No: 0343 -4444007  
+ EDUCATION   
+ 
+National  University  of Sciences  and Technology,  Islamabad  (NUST)  – MS Economics - CGPA - 3.4/4.0 2022-2025  
+Present  Relevant  Courses:  Advanced  Micro  Economics | Advanced  Macro  Economics  | Advanced  Econometrics  |Health 
+Economics | Advanced Econometrics Techniques and Forecasting | Environmental Economics  
+Quaid -i-Azam  University,  Islamabad  (QAU)  – B.S Economics  - CGPA - 3.00/4.0  2016 - 2020  
+Relevant  Courses:  Micro  Economics | Macro  Economics  | Statistics | Econometrics  | International  Economics | 
+Development Economics | Economy of Pakistan | Financial Economics | Monetary Economics  
+ 
+PROFESSIONAL  EXPERIENCE  
+ 
+Associate in Social Development - Research Associa te,                                                                              February 2025 - present                                     
+• Spearhead research on public health initiatives, focusing on  Antimicrobial Resistance (AMR)  and digital health 
+technologies.  
+• Monitor and analyze field activity data through a dedicated  AMR project d ashboard  to track progress and key metrics.  
+• Manage and monitor interactions with a  WhatsApp bot  used as a digital tool for data collection and participant 
+engagement.  
+• Lead the design of Focus Group Discussions (FGDs)  in the field to gather qualitative data . 
+• Conduct a  comparative analysis of Tuberculosis (TB) treatment protocols, specifically evaluating the  BPAL vs. BD LC to 
+assess their efficacy and implementation.  
+ 
+ 
+ 
+Associates  in Development  AiD-  Research  Coordinator  PYWD  USAID .                                        September  2024 - February 2025  
+• Assisted in preparing the  data collection schedule  and completion report.  
+• Designed  CAPI instruments  using  Kobo  and conducted a  pilot test  
+• Coordinated field assignments and tracked  data collection progress.  
+• Regular  Check -ins with  the field  data  team  during  data  collection.  
+• Provided  ongoing support  to the field teams with  advances  and logistics.  
+• Visited field districts for  Key Informant Interviews (KIIs)  with the team leader.  
+• Supported  Quality Assurance  of data collected by enumerators.  
+• Using  SPSS  to analyze the data.  
+• Transcribed  FGDs  and KIIs.  
+ 
+Taleemabad  – Research  Assistant  Digital  School  Program  (DSP)  January  2024 - August  2024  
+• Designed  surveys  for teachers  and students  to assess  educational  needs  and outcomes.  
+• Managed  data  operations  using  Open  Data  Kit (ODK)  to ensure  accurate  data  collection  and transfer.  
+• Conducted  site visits  to Alternative  Learning  Program  (ALP)  centers  in Islamabad,  established  by the 
+Japan International Cooperation Agency (JICA).  
+• Conduct  FDGs  and KIIs with  community  members  and Government  and non-government  officials.  
+• Compiled  and analyzed  collected  data,  producing  comprehensive  reports  to guide  and optimize  program 
+strategies and outcomes.  
+• Transferred  and reviewed JICA’s ALP content using Taleemabad’s lesson planning tools.  
+ PTV World  Islamabad  October  2022 - January  2023  
+• Conducted  extensive  research  on various  economic,  business,  and power  sector  topics,  contributing  to increased  content 
+depth and relevance.  
+• Authored  engaging  and informative  news  stories  about  business  economics,  power  sector  developments, 
+and energy market trends.  
+• Averaged  5 to 6 stories  daily,  demonstrating  exceptional  productivity  and time  management  skills  in a 
+fast-paced news environment.  
+• Gained  valuable  hands -on experience  in news  writing  and research,  specializing  in the dynamic  fields  of economics.  
+ 
+Quaid  e Azam  University  Islamabad  – Teacher  Assistant  June  2020 - August  2020  
+• As a teacher  assistant  at Quaid  e Azam  University,  I facilitated  data  collection  and distribution  of 
+questionnaires, ensuring comprehensive information gathering.  
+• I skillfully  organized,  transferred,  and cleaned  the collected  data  in Excel  worksheets  for efficient  analysis.  
+• Contributed  to research  projects  by conducting  literature  reviews.  
+ 
+LEADERSHIP  AND VOLUNTEER  EXPERIENCE  
+Quaid -i-Azam  University  Library  Society  – Finance  Secretary  2019 - 2020  
+• Led a team  of 35+ volunteers  and members  to organize  20+ book  fairs  that raised  funds  for the education 
+of underprivileged kids in remote areas around the campus.  
+• Conducted  library  events,  study  circles,  reading  circles,  book  talks,  writer’s  workshops,  etc.,  increasing 
+library memberships by almost 40%  
+ 
+RESEARCH  & THESIS   
+Thesis : Sehat  Sahulat  Card  and Chang es in Health -Seeking  Behavior  in KP 
+Master's Thesis: The Impact of the Sehat Sahulat Card on Health -Seeking Behavior in Khyber Pakhtunkhwa  (2021 -2024)  
+ Conducted a comprehensive mixed -methods study to analyze the effects of a government health insurance program 
+on healthcare utilization.  
+ Designed and administered structured questionnaires, leading primary data collection from a diverse sample across 
+KP. 
+ Performed robust quantitative analysis using statistical software (e.g. , Stata) to identify significant  trends and 
+correlations.  
+ Synthesized findings into a conclusive thesis, providing evidence -based recommendations for public health policy 
+and program improvement.  
+ 
+ 
+ 
+SKILLS   
+• R, ODK,  SurveyCTO,  KOBOTOOL,  Stata,  SPSS,  Ox Metrics,  MS Excel,  MS Word,  MS PowerPoint, 
+Quantitative and Qualitative research and analysis. 
