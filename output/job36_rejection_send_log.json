@@ -1,0 +1,812 @@
+{
+  "sent": [
+    {
+      "app_id": 1401,
+      "name": "Misbah Zafar Iqbal",
+      "email": "misbah.zafar@isb.nu.edu.pk"
+    },
+    {
+      "app_id": 1403,
+      "name": "Madeeha Kanwal",
+      "email": "mkreply2005@gmail.com"
+    },
+    {
+      "app_id": 1405,
+      "name": "Ishfaq Ahmad",
+      "email": "qaziishfaqkhan45@gmail.com"
+    },
+    {
+      "app_id": 1408,
+      "name": "Laiba Ahmed",
+      "email": "laibaahmed938@gmail.com"
+    },
+    {
+      "app_id": 1413,
+      "name": "Saeed Ahmed",
+      "email": "saeedahmed4288@gmail.com"
+    },
+    {
+      "app_id": 1415,
+      "name": "Syeda Kainat",
+      "email": "kaynatsyeda4@gmail.com"
+    },
+    {
+      "app_id": 1422,
+      "name": "AQSA GUL",
+      "email": "aqsagul3122@gmail.com"
+    },
+    {
+      "app_id": 1426,
+      "name": "Iqra parvez",
+      "email": "iqraparvez0105@gmail.com"
+    },
+    {
+      "app_id": 1447,
+      "name": "Aleena Akhtar",
+      "email": "Aleenafm1@gmail.com"
+    },
+    {
+      "app_id": 1448,
+      "name": "Tehreem Ali",
+      "email": "tehreemaly90@gmail.com"
+    },
+    {
+      "app_id": 1450,
+      "name": "Naveen Shariff",
+      "email": "naveenshariff73@gmail.com"
+    },
+    {
+      "app_id": 1451,
+      "name": "Usman Ahmad",
+      "email": "usmanahmaddenin@gmail.com"
+    },
+    {
+      "app_id": 1453,
+      "name": "Abid Hussain",
+      "email": "abidqaisrani5@gmail.com"
+    },
+    {
+      "app_id": 1454,
+      "name": "Shahid Kamal",
+      "email": "shahid.kaamal@gmail.com"
+    },
+    {
+      "app_id": 1455,
+      "name": "Atif Rahim",
+      "email": "atifrahim105@gmail.com"
+    },
+    {
+      "app_id": 1465,
+      "name": "Muhammad Saad Fareed Burney",
+      "email": "saadburney10@gmail.com"
+    },
+    {
+      "app_id": 1477,
+      "name": "Sadia Siddique",
+      "email": "sadich61@gmail.com"
+    },
+    {
+      "app_id": 1482,
+      "name": "Muhammad kashif",
+      "email": "kashiafridi87@gmail.com"
+    },
+    {
+      "app_id": 1484,
+      "name": "Asfand Raheel",
+      "email": "raoasfandraheel@gmail.com"
+    },
+    {
+      "app_id": 1489,
+      "name": "Muhammad Qasi",
+      "email": "qasee.khundian@gmail.com"
+    },
+    {
+      "app_id": 1491,
+      "name": "Muhammad Raza",
+      "email": "raza2001040616@gmail.com"
+    },
+    {
+      "app_id": 1494,
+      "name": "Awais Hakim",
+      "email": "m.awaishakim99@gmail.com"
+    },
+    {
+      "app_id": 1495,
+      "name": "Shabbir Hussain",
+      "email": "shabbir.dani@gmail.com"
+    },
+    {
+      "app_id": 1496,
+      "name": "Maimoona Farukh",
+      "email": "maimoona.malik83@gmail.com"
+    },
+    {
+      "app_id": 1499,
+      "name": "Muzammil Ahmed",
+      "email": "muzurazee121@gmail.com"
+    },
+    {
+      "app_id": 1501,
+      "name": "Asif Hayat",
+      "email": "asifhayat21@gmail.com"
+    },
+    {
+      "app_id": 1503,
+      "name": "Nimra Ansa",
+      "email": "nimrabaqir43@gmail.com"
+    },
+    {
+      "app_id": 1507,
+      "name": "Azra Perveen",
+      "email": "azraparveen0012@gmail.com"
+    },
+    {
+      "app_id": 1508,
+      "name": "Yasmeen Nisar",
+      "email": "yasmeennisar27@gmail.com"
+    },
+    {
+      "app_id": 1519,
+      "name": "Imama Tahir",
+      "email": "imamatahir5@gmail.com"
+    },
+    {
+      "app_id": 1521,
+      "name": "Fatima Amjad",
+      "email": "amjadfatima190@gmail.com"
+    },
+    {
+      "app_id": 1527,
+      "name": "Perniya Akram",
+      "email": "perniya_akram@hotmail.com"
+    },
+    {
+      "app_id": 1528,
+      "name": "Muhammad Afzaal",
+      "email": "m.afzal36@yahoo.com"
+    },
+    {
+      "app_id": 1533,
+      "name": "Muqqadas Saba",
+      "email": "muqqadas2001@gmail.com"
+    },
+    {
+      "app_id": 1536,
+      "name": "Nain Tara",
+      "email": "neno.farman@gmail.com"
+    },
+    {
+      "app_id": 1540,
+      "name": "Muhammad Akmal",
+      "email": "muhammadakmala287@gmail.com"
+    },
+    {
+      "app_id": 1545,
+      "name": "PARIYAL FAZAL SHAH",
+      "email": "pariyalfazal@gmail.com"
+    },
+    {
+      "app_id": 1549,
+      "name": "Ali Muhammad",
+      "email": "alyhnz1140@gmail.com"
+    },
+    {
+      "app_id": 1553,
+      "name": "Shagufta Shaheen",
+      "email": "shaheenshagufta73@yahoo.com"
+    },
+    {
+      "app_id": 1556,
+      "name": "Sana Mehboob",
+      "email": "sanamehboob42@gmail.com"
+    },
+    {
+      "app_id": 1561,
+      "name": "Zehra Khushal",
+      "email": "zhrehman603@gmail.com"
+    },
+    {
+      "app_id": 1564,
+      "name": "Mahroosha Saleem",
+      "email": "mahroosha.sal@gmail.com"
+    },
+    {
+      "app_id": 1570,
+      "name": "Sartaj Ali",
+      "email": "sartaj.daulat@gmail.com"
+    },
+    {
+      "app_id": 1577,
+      "name": "Zohra Baloch",
+      "email": "balouchzohra@gmail.com"
+    },
+    {
+      "app_id": 1579,
+      "name": "Rida Zanib",
+      "email": "rida.zanib97@gmail.com"
+    },
+    {
+      "app_id": 1583,
+      "name": "Aaliya Farooq",
+      "email": "aliyafarooq321@gmail.com"
+    },
+    {
+      "app_id": 1584,
+      "name": "Faiza Ghazal",
+      "email": "Faiza.ghazal098@gmail.com"
+    },
+    {
+      "app_id": 1585,
+      "name": "Sultana Quresh",
+      "email": "sultanaquresh94@gmail.com"
+    },
+    {
+      "app_id": 1588,
+      "name": "Hooria Huda",
+      "email": "hooria.khan773@gmail.com"
+    },
+    {
+      "app_id": 1594,
+      "name": "Mamoona Safeer",
+      "email": "mamoona.safeer1997@gmail.com"
+    },
+    {
+      "app_id": 1597,
+      "name": "Saba Noor",
+      "email": "saba.shahwani999@gmail.com"
+    },
+    {
+      "app_id": 1600,
+      "name": "Adil Javed",
+      "email": "adiljaved371@gmail.com"
+    },
+    {
+      "app_id": 1601,
+      "name": "Peria Aizaz",
+      "email": "periakharal@gmail.com"
+    },
+    {
+      "app_id": 1603,
+      "name": "Sehrish Nida",
+      "email": "sehrishumairgill@gmail.com"
+    },
+    {
+      "app_id": 1604,
+      "name": "Amanullah Naich",
+      "email": "amanullahnaich3@gmail.com"
+    },
+    {
+      "app_id": 1607,
+      "name": "Fatima TU Zahra",
+      "email": "fatimatuzaharaawais@gmail.com"
+    },
+    {
+      "app_id": 1608,
+      "name": "Afaq Ahmad",
+      "email": "afaqa4851@gmail.com"
+    },
+    {
+      "app_id": 1611,
+      "name": "Muhammad Ahmed Khan",
+      "email": "muhammadahmedkhan774@gmail.com"
+    },
+    {
+      "app_id": 1614,
+      "name": "Sumbal bano",
+      "email": "sumbalkhan6699@gmail.com"
+    },
+    {
+      "app_id": 1617,
+      "name": "Inayat ur Rahman",
+      "email": "inayatsona4@gmail.com"
+    },
+    {
+      "app_id": 1618,
+      "name": "Salman Ahmed",
+      "email": "salman.ahmedd.work@gmail.com"
+    },
+    {
+      "app_id": 1625,
+      "name": "Naima memoon",
+      "email": "naima.memoon55@gmail.com"
+    },
+    {
+      "app_id": 1626,
+      "name": "Hassnain Hassan",
+      "email": "mr.hassnain423@gmail.com"
+    },
+    {
+      "app_id": 1630,
+      "name": "Okasha Khan",
+      "email": "okashachangwani@gmail.com"
+    },
+    {
+      "app_id": 1633,
+      "name": "Midhat Fatima",
+      "email": "midhatfatima22@gmail.com"
+    },
+    {
+      "app_id": 1636,
+      "name": "Anisa Shah",
+      "email": "daud.anissa@yahoo.com"
+    },
+    {
+      "app_id": 1639,
+      "name": "Wajeeha rehber",
+      "email": "wajiha.rehberali@gmail.com"
+    },
+    {
+      "app_id": 1643,
+      "name": "Muti Ur Rehman",
+      "email": "mutiurrehman004@gmail.com"
+    },
+    {
+      "app_id": 1644,
+      "name": "Abdul Haleem",
+      "email": "ahaleem7222@gmail.com"
+    },
+    {
+      "app_id": 1647,
+      "name": "Hareem Khattak",
+      "email": "hareemmoinkhattak1@gmail.com"
+    },
+    {
+      "app_id": 1648,
+      "name": "Muhammad Hasaan Khalid",
+      "email": "hasaanbhutta78@icloud.com"
+    },
+    {
+      "app_id": 1657,
+      "name": "Syed Muhammad Zain Hashmi",
+      "email": "zainhashmi183@gmail.com"
+    },
+    {
+      "app_id": 1659,
+      "name": "Zaynab Hashmi",
+      "email": "zaynabhashmi740@gmail.com"
+    },
+    {
+      "app_id": 1662,
+      "name": "Muhammad Hanzala",
+      "email": "ghanzala0@gmail.com"
+    },
+    {
+      "app_id": 1664,
+      "name": "Javeria Zahra",
+      "email": "javeriazahra215@gmail.com"
+    },
+    {
+      "app_id": 1674,
+      "name": "Amina Jabin",
+      "email": "aminajabin229@gmail.com"
+    },
+    {
+      "app_id": 1677,
+      "name": "Abdul subhan",
+      "email": "abdulsubhangormani@gmail.com"
+    },
+    {
+      "app_id": 1678,
+      "name": "Saira Akram",
+      "email": "mssairaakram@gmail.com"
+    },
+    {
+      "app_id": 1683,
+      "name": "Afira Annis",
+      "email": "afiraannis6@gmail.com"
+    },
+    {
+      "app_id": 1687,
+      "name": "Muhammad Hakim",
+      "email": "dr.muhammad.hakim@gmail.com"
+    },
+    {
+      "app_id": 1690,
+      "name": "Rabia Mukhtar",
+      "email": "rmukhtar450@gmail.com"
+    },
+    {
+      "app_id": 1694,
+      "name": "Varisha Khan",
+      "email": "varishakhaan97@gmail.com"
+    },
+    {
+      "app_id": 1698,
+      "name": "Uzair Ahmad",
+      "email": "uzair.ahmad5519@gmail.com"
+    },
+    {
+      "app_id": 1704,
+      "name": "Syed Imtessal Ahsan",
+      "email": "imtessals@gmail.com"
+    },
+    {
+      "app_id": 1706,
+      "name": "Basit Ali",
+      "email": "basitalee77@gmail.com"
+    },
+    {
+      "app_id": 1708,
+      "name": "Hafsa Nijat",
+      "email": "hafsanijat08@gmail.com"
+    },
+    {
+      "app_id": 1709,
+      "name": "Qurban Ali",
+      "email": "saandqurban@gmail.com"
+    },
+    {
+      "app_id": 1711,
+      "name": "Rafeeqa Akram",
+      "email": "rafeeqaakram@gmail.com"
+    },
+    {
+      "app_id": 1714,
+      "name": "Muhammad Aman Khan",
+      "email": "amankhan9618@gmail.com"
+    },
+    {
+      "app_id": 1721,
+      "name": "Maryam Binnit E Rauf",
+      "email": "maryamrf832@gmail.com"
+    },
+    {
+      "app_id": 1723,
+      "name": "Fatima Shah",
+      "email": "fatima.shah444@gmail.com"
+    },
+    {
+      "app_id": 1726,
+      "name": "Amara Naqui",
+      "email": "amara.naqui4@gmail.com"
+    },
+    {
+      "app_id": 1731,
+      "name": "Sana Tariq Abbasi",
+      "email": "abbasisanatariq@gmail.com"
+    },
+    {
+      "app_id": 1738,
+      "name": "Muhammad AMIR Mehmood",
+      "email": "amirmehmoodm9@gmail.com"
+    },
+    {
+      "app_id": 1740,
+      "name": "Muhammad Zulqarnain",
+      "email": "m.zulqarnain910@gmail.com"
+    },
+    {
+      "app_id": 1750,
+      "name": "Muhammad Usman Shabbir",
+      "email": "usmanshabbirchouhan@gmail.com"
+    },
+    {
+      "app_id": 1760,
+      "name": "talha iftikhar",
+      "email": "talhaiftykhar458@gmail.com"
+    },
+    {
+      "app_id": 1764,
+      "name": "Muhammad Mustafa",
+      "email": "muhammadmustafakhan549@gmail.com"
+    },
+    {
+      "app_id": 1766,
+      "name": "Fizza Faizan Farooqui",
+      "email": "fizza_faizan@yahoo.com"
+    },
+    {
+      "app_id": 1767,
+      "name": "Sidra Ishfaq",
+      "email": "sidraishfaq@gmail.com"
+    },
+    {
+      "app_id": 1775,
+      "name": "Mohammad Qasim",
+      "email": "Barcha151214@gmail.com"
+    },
+    {
+      "app_id": 1779,
+      "name": "Shahzad Akber",
+      "email": "shahzadakber66@gmail.com"
+    },
+    {
+      "app_id": 1781,
+      "name": "Muqaddas Javed",
+      "email": "complicatedtarar786@gmail.com"
+    },
+    {
+      "app_id": 1783,
+      "name": "Sohail Ahmad",
+      "email": "sohailkhattak1010@gmail.com"
+    },
+    {
+      "app_id": 1786,
+      "name": "Shaista Owais",
+      "email": "shaistaowais3@gmail.com"
+    },
+    {
+      "app_id": 1788,
+      "name": "Muhammad Ali Zafar",
+      "email": "aliizaffaar@gmail.com"
+    },
+    {
+      "app_id": 1791,
+      "name": "Waleed Ahmed",
+      "email": "mwaleed@math.qau.edu.pk"
+    },
+    {
+      "app_id": 1794,
+      "name": "Malaika Kakar",
+      "email": "kakarmalayeka@gmail.com"
+    },
+    {
+      "app_id": 1795,
+      "name": "Abdul Hamid",
+      "email": "call2hamid@gmail.com"
+    },
+    {
+      "app_id": 1797,
+      "name": "Rabia Tariq",
+      "email": "merabiatariq@gmail.com"
+    },
+    {
+      "app_id": 1802,
+      "name": "syeda farzana ali shah",
+      "email": "farzanaali77@hotmail.com"
+    },
+    {
+      "app_id": 1805,
+      "name": "Muhammad Ali",
+      "email": "Muhammad.ali.rajpoot12@gmail.com"
+    },
+    {
+      "app_id": 1812,
+      "name": "Hafiza Swaira Shahbaz",
+      "email": "hafizaswairashahbaz@gmail.com"
+    },
+    {
+      "app_id": 1817,
+      "name": "Zainab Tahir",
+      "email": "zaybeequreshi@gmail.com"
+    },
+    {
+      "app_id": 1819,
+      "name": "Rija Zahid",
+      "email": "rijazahid7@gmail.com"
+    },
+    {
+      "app_id": 1825,
+      "name": "Maqbool Hussain",
+      "email": "cyedhuxayn@gmail.com"
+    },
+    {
+      "app_id": 1826,
+      "name": "Eisha Nadeem",
+      "email": "ssc.eisha.191094@gmail.com"
+    },
+    {
+      "app_id": 1827,
+      "name": "Saif Ali",
+      "email": "saifa8841@gmail.com"
+    },
+    {
+      "app_id": 1833,
+      "name": "Muhammad Khalil",
+      "email": "mkhaliluafbrw@gmail.com"
+    },
+    {
+      "app_id": 1853,
+      "name": "Usman Ahmad",
+      "email": "usmankonosuba@gmail.com"
+    },
+    {
+      "app_id": 1856,
+      "name": "Saira Shakoor",
+      "email": "sairashakoor3@gmail.com"
+    },
+    {
+      "app_id": 1858,
+      "name": "Jaweria Lateef",
+      "email": "jawerialateef87@gmail.com"
+    },
+    {
+      "app_id": 1861,
+      "name": "Hafsa Qadri",
+      "email": "hafsaqadri875@gmail.com"
+    },
+    {
+      "app_id": 1871,
+      "name": "Muhammad Arif",
+      "email": "arifsadiq03@gmail.com"
+    },
+    {
+      "app_id": 1879,
+      "name": "Muhammad Zain Mobeen",
+      "email": "mzainmob@gmail.com"
+    },
+    {
+      "app_id": 1887,
+      "name": "Hayat Ahmad Khan Jalali",
+      "email": "khanzadahayat7@gmail.com"
+    },
+    {
+      "app_id": 1893,
+      "name": "Taj Hussain",
+      "email": "tajhusssain.qau@gmail.com"
+    },
+    {
+      "app_id": 1895,
+      "name": "Muhammad Farooq",
+      "email": "farooqsociologist611@gmail.com"
+    },
+    {
+      "app_id": 1905,
+      "name": "Saadia Asad Abbasi",
+      "email": "saadiaasad123@gmail.com"
+    },
+    {
+      "app_id": 1907,
+      "name": "Sikandar Khurshid",
+      "email": "ssikandarmalik95@gmail.com"
+    },
+    {
+      "app_id": 1915,
+      "name": "Amira Fatima",
+      "email": "amirafatima5566@gmail.com"
+    },
+    {
+      "app_id": 1916,
+      "name": "Muhammad Ansaar Mehsood",
+      "email": "ansaarmaseed125@gmail.com"
+    },
+    {
+      "app_id": 1917,
+      "name": "Nasir Hussain",
+      "email": "nasirshigri001@gmail.com"
+    },
+    {
+      "app_id": 1921,
+      "name": "Rosheen Naeem",
+      "email": "rosheen.naeem@gmail.com"
+    },
+    {
+      "app_id": 1923,
+      "name": "Maryam bibi",
+      "email": "maryammurtaza389@gmail.com"
+    },
+    {
+      "app_id": 1924,
+      "name": "MUBARAH CHAUDHARY",
+      "email": "mubarahchaudhary271998@gmail.com"
+    },
+    {
+      "app_id": 1926,
+      "name": "Sobia Minhas",
+      "email": "sobiam424@gmail.com"
+    },
+    {
+      "app_id": 1927,
+      "name": "Wajih Bukhari",
+      "email": "syedwajihbukhari@gmail.com"
+    },
+    {
+      "app_id": 1930,
+      "name": "Javid Jamal",
+      "email": "Javidjamal1970@gmail.com"
+    },
+    {
+      "app_id": 1932,
+      "name": "Tahseen Ullah",
+      "email": "tahseenun1988@gmail.com"
+    },
+    {
+      "app_id": 1935,
+      "name": "Saba Manzoor",
+      "email": "sabamanzoor909@gmail.com"
+    },
+    {
+      "app_id": 1936,
+      "name": "Najam Nisar",
+      "email": "najamnisar@hotmail.com"
+    },
+    {
+      "app_id": 1942,
+      "name": "Fatima Razzaq",
+      "email": "fatima.razzaq92@gmail.com"
+    },
+    {
+      "app_id": 1946,
+      "name": "Mariam Rehman",
+      "email": "mariamrehman681@gmail.com"
+    },
+    {
+      "app_id": 1948,
+      "name": "Daniyah Noor",
+      "email": "daniyahnoor@gmail.com"
+    },
+    {
+      "app_id": 1952,
+      "name": "Syeda Riffat Aliya",
+      "email": "aliyabukhari123@gmail.com"
+    }
+  ],
+  "skipped": [
+    {
+      "app_id": 1485,
+      "name": "Muhammad Naeem",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1538,
+      "name": "Shakila",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1546,
+      "name": "PARIYAL FAZAL SHAH",
+      "reason": "duplicate-email:pariyalfazal@gmail.com"
+    },
+    {
+      "app_id": 1547,
+      "name": "Anila",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1593,
+      "name": "Zainab",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1653,
+      "name": "Mahnoor",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1660,
+      "name": "Zaynab Hashmi",
+      "reason": "duplicate-email:zaynabhashmi740@gmail.com"
+    },
+    {
+      "app_id": 1669,
+      "name": "Zarghuna",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1688,
+      "name": "Muhammad Hakim",
+      "reason": "duplicate-email:dr.muhammad.hakim@gmail.com"
+    },
+    {
+      "app_id": 1837,
+      "name": "Hunza",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1869,
+      "name": "Ayesha Raza Khan",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1896,
+      "name": "Muhammad Farooq",
+      "reason": "duplicate-email:farooqsociologist611@gmail.com"
+    },
+    {
+      "app_id": 1906,
+      "name": "Saadia Asad Abbasi",
+      "reason": "duplicate-email:saadiaasad123@gmail.com"
+    },
+    {
+      "app_id": 1955,
+      "name": "ADNAN",
+      "reason": "flagged-no-cv"
+    },
+    {
+      "app_id": 1956,
+      "name": "Amna",
+      "reason": "flagged-no-cv"
+    }
+  ],
+  "failed": []
+}

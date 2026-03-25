@@ -1,182 +1,150 @@
 """
 Job 17 — CPD Coach
 Filter: Female candidates who are TFP Fellows, not already hired.
+Pulls directly from Neon DB, decodes PDFs, scans for TFP mentions.
 """
 
-import json
 import base64
-import os
 import re
+import psycopg2
 
-# OCR setup
 import fitz  # pymupdf
-import pytesseract
-from PIL import Image
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-PERSISTED_FILE = r"C:\Users\Dell\.claude\projects\c--My-First-Agent\585b1f5b-e55a-43e0-b044-a2981044a0b4\tool-results\toolu_01CyiUzd7ipxtree6bZXkpip.json"
+DB_URL = "postgresql://neondb_owner:npg_kBQ10OASHEmd@ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
-OUTPUT_DIR = r"c:\My First Agent\output\cv_texts_job17"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+FEMALE_NAMES = {
+    'ayesha','fatima','zainab','hira','sara','sana','nadia','amna','maryam','rabia',
+    'khadija','asma','iqra','mahnoor','mehwish','nimra','saima','samia','sidra','sumera',
+    'uzma','aliya','anam','bushra','farah','faria','farida','hafsa','hajra','huma',
+    'iram','irum','javeria','kiran','laiba','lubna','madiha','maheen','maha','maria',
+    'noor','noreen','ramsha','rida','rimsha','sadaf','safia','sahar','salma','saman',
+    'samreen','shabana','shagufta','shaista','shazia','sobia','sumaira','sundas',
+    'tayyaba','tooba','urooj','wardah','warda','yasmin','zahida','zara','zohra',
+    'zunaira','naila','naima','nasreen','nosheen','rehana','robina','saadia','sabrina',
+    'qurat','quratulain','palwasha','rukhsar','romaisa','aneesa','aneeqa','areeba',
+    'arfa','arooj','asiya','bisma','dua','emaan','eman','erum','fiza','ghazal',
+    'hadia','humera','ifra','iman','inaya','isha','jaweria','kinza','laraib','maira',
+    'maleeha','maliha','mehreen','mishal','momina','munaza','muneeba','nabila',
+    'naeema','natasha','nazia','neha','nida','rania','reema','rizwana','roohi',
+    'sabeena','sadia','saeeda','samavia','sameen','sameera','samina','saniya',
+    'sehrish','shahida','shamsa','shehla','shumaila','sibgha','soha','sumaiyya',
+    'summaya','syeda','tahira','tania','tehreem','umama','umme','unsa','urwa',
+    'ushna','wajeeha','yusra','zeba','zeenat','zimal','zobia','zoha','zoya',
+    'zunera','kashmala','anmol','komal','sumbul','anum','ruba','alina','amara',
+    'amreen','anila','ansa','aqsa','aroha','arwa','asna','azra','bareeha','barira',
+    'dania','diba','esha','faiza','falak','farha','farwa','freeha','haleema','hina',
+    'hoorain','humaira','ifza','iffat','irsa','isma','kainat','khansa','layla',
+    'madeha','maham','maida','malak','mariam','marriam','mehak','muniba','nabiha',
+    'nafeesa','najma','namra','naureen','nazish','pakeeza','pari','rafia','raheela',
+    'rahila','razia','reeha','ruqaiya','sabreena','safinaz','saghar','sahira','saira',
+    'saliha','samra','shaheena','shaheen','shahnaz','shanza','sheeza','sohaila',
+    'somia','sonia','subhana','suha','summera','swera','tabinda','tanzeela','tehmina',
+    'ulfat','unaiza','uroosa','vaneeza','wajiha','wareesha','yashfa','yumna','zakia',
+    'zarqa','zehra','zikra','zobia','raheela',
+}
+
+TFP_PATTERNS = [
+    r'teach\s+for\s+pakistan',
+    r'tfp\s+fellow',
+    r'fellow.*teach\s+for\s+pakistan',
+    r'teach\s+for\s+pakistan.*fellow',
+    r'\btfp\b',
+]
 
 
-def extract_text_from_pdf_bytes(pdf_bytes):
+def extract_text(pdf_bytes):
     text = ""
     try:
         doc = fitz.open(stream=pdf_bytes, filetype="pdf")
         for page in doc:
-            page_text = page.get_text()
-            if page_text.strip():
-                text += page_text
-            else:
-                # OCR fallback
-                pix = page.get_pixmap(dpi=200)
-                img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-                text += pytesseract.image_to_string(img)
+            text += page.get_text()
         doc.close()
     except Exception as e:
-        text = f"[ERROR extracting text: {e}]"
+        text = f"[ERROR: {e}]"
     return text.strip()
 
 
-def is_tfp_fellow(text):
-    text_lower = text.lower()
-    tfp_patterns = [
-        r'teach for pakistan',
-        r'tfp\s+fellow',
-        r'fellow.*teach for pakistan',
-        r'teach for pakistan.*fellow',
-        r'\btfp\b',
-    ]
-    for pat in tfp_patterns:
-        if re.search(pat, text_lower):
-            return True
-    return False
-
-
-def is_female(text, first_name):
-    text_lower = text.lower()
-    # Check pronouns
-    if re.search(r'\b(she|her|hers)\b', text_lower):
-        return True
-    # Common female name indicators
-    female_names = [
-        'zoya', 'fatima', 'ayesha', 'aisha', 'amina', 'sana', 'sara', 'sarah',
-        'hira', 'nadia', 'maria', 'maryam', 'mariam', 'zainab', 'zahra', 'mahnoor',
-        'anum', 'aroha', 'kiran', 'sobia', 'rabia', 'rida', 'layla', 'laila',
-        'noor', 'amber', 'ambreen', 'bushra', 'fizza', 'fizaa', 'gulnaz',
-        'hafsa', 'hoorain', 'iqra', 'javeria', 'kinza', 'komal', 'maha',
-        'mehwish', 'misbah', 'naima', 'nazia', 'neha', 'nimra', 'pariyal',
-        'pari', 'rehma', 'rimsha', 'roshaan', 'ruqayyah', 'sadaf', 'saima',
-        'samia', 'scheherazade', 'sehar', 'shabana', 'shagufta', 'shakeela',
-        'shamsa', 'shazia', 'sidra', 'siffah', 'sobia', 'sumaiya', 'sumaira',
-        'syeda', 'tayyaba', 'ume', 'umm', 'umme', 'urwa', 'wardah', 'yusra',
-        'zara', 'zarqa', 'zuha', 'zujajah', 'madiha', 'nabeela', 'nabeelah',
-        'faryal', 'midhat', 'sadia', 'pariyal', 'momina', 'alina', 'abeera',
-        'abeer', 'anaya', 'aneeza', 'aneeqa', 'aniqa', 'aqsa', 'areeba',
-        'areej', 'arwa', 'asma', 'asna', 'athena', 'atiya', 'azka', 'bareerah',
-        'dua', 'eisha', 'emaan', 'eman', 'eshal', 'fareeha', 'farida', 'farwa',
-        'faten', 'fauzia', 'fiza', 'gul', 'hajra', 'hamna', 'hana', 'haniya',
-        'henna', 'hibba', 'huda', 'humna', 'ifra', 'inaya', 'iqra', 'iram',
-        'izna', 'jazba', 'khadeeja', 'khadeja', 'khadijah', 'khansa', 'lubna',
-        'maham', 'mahnoor', 'mahpara', 'malak', 'maliha', 'marwa', 'mishal',
-        'minahil', 'minhal', 'misba', 'momena', 'muneeba', 'muniba', 'nabila',
-        'nabiha', 'nadia', 'nailah', 'naila', 'nawal', 'nida', 'niha', 'nisha',
-        'noreen', 'nosheen', 'nudrat', 'numra', 'pakiza', 'palwasha', 'qurat',
-        'quratulain', 'ramsha', 'rania', 'ranya', 'razia', 'rida', 'romaisa',
-        'romesa', 'ruba', 'rukayya', 'ruksana', 'ruma', 'rumaisa', 'rumaysa',
-        'saba', 'sabah', 'sabahat', 'sabeen', 'sadaf', 'sahar', 'sahira',
-        'sameen', 'sameena', 'samina', 'sana', 'sanaa', 'sania', 'saniya',
-        'seerat', 'shaan', 'shahida', 'shahla', 'shaiqa', 'shaista', 'shalimar',
-        'shamim', 'shanza', 'shirin', 'shiza', 'shurooq', 'shumaila', 'sibgha',
-        'simra', 'sobia', 'sofia', 'sophia', 'sundas', 'surriya', 'syeda',
-        'tahira', 'tanzila', 'tasmia', 'tazeen', 'tooba', 'ulfat', 'umara',
-        'urooj', 'ushna', 'uzma', 'vaneeza', 'wajeeha', 'warda', 'waseema',
-        'yasmeen', 'yasmin', 'yumna', 'zeba', 'zehra', 'zile', 'zoha',
-    ]
-    fn = first_name.lower().strip() if first_name else ''
-    if fn in female_names:
-        return True
-    return False
+def is_tfp(text):
+    t = text.lower()
+    return any(re.search(p, t) for p in TFP_PATTERNS)
 
 
 def main():
-    print(f"Loading persisted results...")
-    with open(PERSISTED_FILE, 'r', encoding='utf-8') as f:
-        raw = json.load(f)
+    conn = psycopg2.connect(DB_URL)
+    cur = conn.cursor()
 
-    # The persisted file has a 'text' key with JSON string
-    if isinstance(raw, list) and len(raw) > 0 and 'text' in raw[0]:
-        candidates = json.loads(raw[0]['text'])
-    else:
-        candidates = raw
+    cur.execute("""
+        SELECT DISTINCT ON (c.id)
+            c.id as candidate_id,
+            a.id as application_id,
+            c.first_name, c.last_name,
+            c.email, c.phone, c.location,
+            c.resume_data,
+            a.status, a.applied_at,
+            a.values_interview_result
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = 17
+          AND a.status != 'hired'
+          AND c.resume_data IS NOT NULL
+        ORDER BY c.id, a.applied_at DESC
+    """)
+    rows = cur.fetchall()
+    cols = [d[0] for d in cur.description]
+    candidates = [dict(zip(cols, r)) for r in rows]
+    cur.close()
+    conn.close()
 
-    print(f"Total applicants (non-hired): {len(candidates)}")
+    print(f"Scanning {len(candidates)} unique candidates with resumes...\n")
 
-    results = []
+    tfp_females = []
+
     for i, c in enumerate(candidates):
-        first_name = c.get('first_name') or ''
-        last_name = c.get('last_name') or ''
-        full_name = f"{first_name} {last_name}".strip()
-        app_id = c.get('app_id')
-        candidate_id = c.get('candidate_id')
-        email = c.get('email', '')
-        status = c.get('status', '')
-        location = c.get('location', '')
-        resume_b64 = c.get('resume_data', '')
-
-        print(f"[{i+1}/{len(candidates)}] Processing: {full_name} (app {app_id})")
-
-        if not resume_b64:
-            print(f"  -> No resume data, skipping")
+        fn = (c['first_name'] or '').strip().lower()
+        if fn not in FEMALE_NAMES:
             continue
 
         try:
-            pdf_bytes = base64.b64decode(resume_b64)
-        except Exception as e:
-            print(f"  → Base64 decode error: {e}")
+            pdf_bytes = base64.b64decode(c['resume_data'])
+        except Exception:
             continue
 
-        cv_text = extract_text_from_pdf_bytes(pdf_bytes)
+        text = extract_text(pdf_bytes)
+        full_name = f"{c['first_name']} {c['last_name']}".strip()
+        print(f"[{i+1}] {full_name} — scanning...", end=" ")
 
-        # Save CV text
-        safe_name = re.sub(r'[^\w\s-]', '', full_name).replace(' ', '_')
-        txt_path = os.path.join(OUTPUT_DIR, f"{app_id}_{safe_name}.txt")
-        with open(txt_path, 'w', encoding='utf-8') as f:
-            f.write(cv_text)
-
-        tfp = is_tfp_fellow(cv_text)
-        female = is_female(cv_text, first_name)
-
-        print(f"  -> TFP Fellow: {tfp} | Female: {female}")
-
-        if tfp and female:
-            results.append({
-                'app_id': app_id,
-                'candidate_id': candidate_id,
+        if is_tfp(text):
+            print("TFP FOUND")
+            tfp_females.append({
                 'name': full_name,
-                'email': email,
-                'status': status,
-                'location': location,
-                'cv_text_path': txt_path,
-                'cv_text_preview': cv_text[:500],
+                'email': c['email'],
+                'phone': c['phone'],
+                'location': c['location'] or 'N/A',
+                'status': c['status'],
+                'applied_at': str(c['applied_at'])[:10],
+                'values_result': c['values_interview_result'] or 'N/A',
+                'app_id': c['application_id'],
+                'candidate_id': c['candidate_id'],
             })
+        else:
+            print("no TFP")
 
     print(f"\n{'='*60}")
-    print(f"FEMALE TFP FELLOWS - Job 17 CPD Coach")
+    print(f"FEMALE TFP FELLOWS — CPD Coach (Job 17)")
     print(f"{'='*60}")
-    if not results:
-        print("No female TFP Fellows found.")
-    for r in results:
-        print(f"\n#{results.index(r)+1} {r['name']}")
-        print(f"   App ID: {r['app_id']} | Candidate ID: {r['candidate_id']}")
-        print(f"   Email: {r['email']}")
-        print(f"   Status: {r['status']} | Location: {r['location']}")
-        print(f"   CV saved: {r['cv_text_path']}")
-        preview = r['cv_text_preview'][:200].encode('ascii', 'replace').decode('ascii')
-        print(f"   Preview: {preview}...")
+    if not tfp_females:
+        print("None found.")
+    for idx, r in enumerate(tfp_females, 1):
+        print(f"\n#{idx} {r['name']}")
+        print(f"   Location  : {r['location']}")
+        print(f"   Email     : {r['email']}")
+        print(f"   Phone     : {r['phone']}")
+        print(f"   Applied   : {r['applied_at']}")
+        print(f"   Status    : {r['status']}")
+        print(f"   Values    : {r['values_result']}")
+        print(f"   App ID    : {r['app_id']} | Candidate ID: {r['candidate_id']}")
 
-    print(f"\nTotal female TFP Fellows found: {len(results)}")
+    print(f"\nTotal: {len(tfp_females)} female TFP Fellow(s) found.")
 
 
 if __name__ == '__main__':

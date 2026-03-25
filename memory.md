@@ -153,12 +153,73 @@ All reports are now delivered as **PDF attachment + brief email body**. Never em
 - `nonlocal row_idx, tbl_rows, tbl_style` needed if modifying these inside nested helper functions
 - Reference script: `send_job36_report_pdf.py`
 
+## CV-Stage Rejection Email Rules (confirmed 2026-03-25)
+
+Reference script: `scripts/jobs/job36/send_job36_rejection_live.py`
+Pilot one-off: `scripts/jobs/job36/send_job36_misbah_pilot.py`
+
+- **Minimum 500 words** per email
+- **"We" voice** throughout — never "I"
+- **They/them pronouns** for candidates — never "he/she/his/her" — gender-neutral always
+- **Tone:** considerate, warm, open-handed, never harsh or dismissive
+- **Not over-diagnostic** — we read a CV, not the whole person. Use reflective language: "we did not yet see enough evidence of…", not "you do not have this skill"
+- **Genuine strengths acknowledged** — specific to their actual CV, not generic praise
+- **Mismatch explained** with care — focus on the gap between their demonstrated experience and the role demands
+- **Closing:** encouraging, open-handed — where their strengths may be better suited, invitation to apply to future roles
+- **Simpler subject lines** for CV-stage rejections (not story-driven like values emails): e.g. "Your Application for Field Coordinator, Research & Impact Studies"
+- **Sign-off (exact format):** Warm regards, / People and Culture Team / Taleemabad / hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
+- **Never mention Coco or AI in the email body**
+- **Same HTML design** as values feedback emails (confirmed template)
+- **CC:** hiring@taleemabad.com + ayesha.khan@taleemabad.com on every send
+- **Always verify CV content** from DB before finalising any role-specific suggestions in closing (do not rely on old AI-generated drafts)
+
+## Values Feedback Email — Confirmed Design & Rules (2026-03-25)
+
+Reference script: `scripts/jobs/job36/send_job36_values_feedback_pilot.py` (v8)
+
+### Writing Rules (all mandatory, apply to every values feedback email)
+1. **No interviewer names** — never name who conducted the call. Date is fine.
+2. **No personal-vs-professional framing** — assess depth and stakes of the example, not its context.
+3. **No em dashes " —"** — replace with period, comma, or colon. Dashes look AI-generated.
+4. **No "letter"** — do not refer to the email as a letter in the body. Internal framing only.
+5. **Tone: considerate, open-handed, emotionally careful** — no absolute/harsh phrases. Use reflective language ("we found ourselves wondering", not "this disqualifies"). Add emotional cushioning before the gap section. Write WITH the candidate, not AT them.
+6. **Subject lines: story-driven** — pull 2-3 evocative threads from the candidate's own conversation. Never label the email generically (not "Values Interview Feedback"). End on neutral/reflective language, never on absence or gap. Examples: "Sehri, Iftari, and what stayed with us" · "The Punjab handover, the honest answer, and where it left us"
+7. **Warm bench vs values-failed closing**: values-failed candidates get "door is open if you grow and come back" — NOT a warm bench promise. Warm bench = we proactively reach out.
+
+### Confirmed HTML Design (v8 final)
+- Header: white background, blue text (#1565c0), blue bottom border, Taleemabad logo (CID inline)
+- Header subtitle line: "PEOPLE & CULTURE · APPLICATION UPDATE" in small caps blue
+- Subject line displayed in header as bold blue title
+- Role name as smaller subtitle below
+- Main headings (H): bold, blue (#1565c0)
+- Subheadings (SUB): bold, green (#1b5e20)
+- Body: Georgia serif, 15px, line-height 1.8, text-align justify
+- P.S. block: light green background (#f1f8e9), green left border
+- Footer: "Taleemabad" in blue, hiring@taleemabad.com, www.taleemabad.com
+- Full pre-send checklist: memory/feedback_email_rules.md
+
+### Job 36 Values Feedback Status (2026-03-25)
+- Muhammad Omer Khan: values FAIL (All for One: -, Practice Joy: -) · feedback email SENT 2026-03-25
+- Faryal Afridi: values FAIL (4x +/-, 0 minus but exceeds max +/- threshold) · feedback email SENT 2026-03-25
+- Reference script: scripts/jobs/job36/send_job36_values_feedback_pilot.py (final v8)
+
 ## Job Status Log
+- **Job 17** (CPD Coach): Zero In invites sent 2026-03-25 to 6 female TFP Fellows (Islamabad + Gilgit).
+  Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). CC: hiring@taleemabad.com + Hasnat only (no jawwad/ayesha).
+  Subject format: "Zero In Call for CPD Coach - [Candidate Name]" (user confirmed — differs from standard invite subject).
+  Candidates: Syeda Siddiqa Fatima · Fatima Saeed · Zara Bhayo · Irum Afzal · Hajra Sajjad · Shazia Sahat.
+  Filter: female name inference + TFP keyword scan across Base64 PDFs (all structured fields NULL for Job 17).
+  Scripts: scripts/jobs/job17/send_job17_values_invite.py · screen_job17_tfp_filter.py
 - **Job 32** (Fundraising & Partnerships Manager): PDF report sent 2026-03-05 to sabeena.abbasi@taleemabad.com (hiring manager), CC hiring@taleemabad.com.
   64 total applications · 48 assessed · 10 shortlisted · 3 out of budget. Scripts: send_job32_report_pdf.py · send_job32_report_v9.py
   v9 email HTML report also sent 2026-03-11 to ayesha.khan@taleemabad.com — DCA format (Part A + B + C), charts embedded at top via CID.
 - **Job 36** (Field Coordinator, Research & Impact Studies): PDF report sent 2026-03-05 to muzzammil.patel@taleemabad.com, CC hiring@taleemabad.com.
   172 screened · 15 shortlisted · 5 over-budget flagged. Scripts: send_job36_report_pdf.py
+  **Candidate emails SENT 2026-03-25:**
+  - Values feedback: Omer Khan + Faryal Afridi (FAIL) — scripts/jobs/job36/send_job36_values_feedback_pilot.py
+  - CV-stage rejections: 146 candidates sent, 15 skipped (10 no-CV + 5 duplicates) — scripts/jobs/job36/send_job36_rejection_live.py
+  - Send log: output/job36_rejection_send_log.json
+  - 10 flagged candidates (no CV / unreadable) — PENDING, decision deferred
 - **Job 35** (Junior Research Associate – Impact & Policy): PDF report sent 2026-03-05 to muzzammil.patel@taleemabad.com, CC hiring@taleemabad.com.
   291 screened (keyword-scored from scratch) · 30 shortlisted (all Tier A) · 0 over-budget (no salaries stated).
   Budget: PKR 150K–200K. Scripts: screen_job35_fetch.py · enrich_job35_top30.py · send_job35_report_pdf.py
