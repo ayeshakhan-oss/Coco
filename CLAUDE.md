@@ -4,6 +4,9 @@
 An AI agent for Taleemabad's hiring team. It screens candidate CVs against Job Descriptions
 and internal budget, ranks candidates, and sends analysis reports to hiring managers and HR.
 
+## NIETE
+Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
+
 ## Current Focus
 Building the CV screening pipeline: ingest CVs → score vs JD + budget → generate ranked report → notify stakeholders.
 

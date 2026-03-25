@@ -36,6 +36,17 @@ Safe email HTML rules:
 
 ---
 
+## NIETE — National Institute of Excellence in Teacher Education (saved 2026-03-25)
+A Taleemabad sister project, launched in partnership with the Ministry of Federal Education and Professional Training (MoFEPT).
+- Website: niete.edu.pk
+- Mission: digital teacher training and licensing — CPD (Continuous Professional Development) at scale
+- 360-degree ecosystem: teachers, school leaders, students, parents on one platform
+- AI-powered assessments, lesson plans, coaching support
+- Digital training in partnership with LUMS School of Education
+- Currently operating in Islamabad (urban + suburban)
+- Hiring manager for Job 17 (CPD Coach): Hasnat Tariq — Hasnat@niete.edu.pk
+- Treat NIETE roles with the same mission-alignment lens as core Taleemabad roles — it is NOT a third party
+
 ## Taleemabad Organisation Context (saved 2026-03-03)
 See full detail in context/project-background.md. Key facts for screening:
 
