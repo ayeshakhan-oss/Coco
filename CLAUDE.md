@@ -103,9 +103,10 @@ Building the CV screening pipeline: ingest CVs → score vs JD + budget → gene
 - Slots: Mon–Fri, 11am–12pm and 1pm–2pm, 2-week window (self-booking via Google Calendar link)
 - Teams link: add later (placeholder in script until confirmed)
 - Google Calendar OAuth: credentials.json + token.json in project root (project: agent-coco)
-- Reference script: send_job36_values_invite.py · send_job35_values_invite.py
+- Reference script: send_job36_values_invite.py · send_job35_values_invite.py · send_job17_values_invite.py
 - Email design: CONFIRMED FINAL (2026-03-11) — branded green header + CID inline logos + purple CTA button; see memory.md
 - Markaz shortlist action: UPDATE applications SET status = 'shortlisted' WHERE id = ANY(app_ids) — use update_job##_shortlist_status.py pattern
+- **Job 17 subject override (2026-03-25):** "Zero In Call for [Position] - [Candidate Name]" — user may request this format instead of standard. CC = hiring@taleemabad.com + hiring manager only.
 
 ## Open Issues
 - [x] Install Python on machine ✓
