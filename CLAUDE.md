@@ -73,6 +73,20 @@ Building the CV screening pipeline: ingest CVs → score vs JD + budget → gene
 - **Email greeting:** always address hiring manager by first name — query users table, never use generic name
 - **Email recipients:** TO = hiring manager email, CC = hiring@taleemabad.com (standard for all reports)
 
+## Candidate Feedback Email Rules (confirmed 2026-03-25)
+- Tone: considerate, open-handed, emotionally careful — no absolute/harsh phrasing, write WITH the candidate
+- No em dashes " —" anywhere — replace with period, comma, or colon (dashes look AI-generated)
+- Never refer to the email as a "letter" in the body — internal framing only
+- **They/them pronouns for all candidates** — never "he/she/his/her" — gender-neutral always
+- **"We" voice throughout all emails** — never "I"
+- Subject lines: story-driven for values/warm-bench emails; simpler for CV-stage rejections
+- Warm bench vs values-failed closing: see memory/feedback_email_rules.md
+- Full rules + confirmed HTML design (v8) + pre-send checklist: memory/feedback_email_rules.md
+- Three email types: (1) CV-stage rejection 500w+ · (2) Values failed 800-1100w · (3) Warm bench with pipeline promise — see memory/feedback_email_rules.md
+- CV-stage rejections: minimum 500w, "we" voice, reflective not diagnostic, verify CV content from DB before sending, CC hiring@ + ayesha.khan@
+- Sign-off (exact): Warm regards, / People and Culture Team / Taleemabad / hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
+- Never mention Coco or AI in the email body
+
 ## Values Scorecard Scoring — People Analyzer (confirmed 2026-03-17)
 - Ratings: **+** (exhibits) · **+/-** (inconsistent) · **-** (does not exhibit)
 - **PASS:** zero minuses AND ≤2 +/- · **OUT:** any minus OR ≥3 +/-
