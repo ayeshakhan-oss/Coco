@@ -42,29 +42,30 @@ Taleemabad roles, especially design and research roles, require people who will 
 
 ### Step 1 — Pull the candidate list from Markaz DB
 
-Query the applications table for the role. Filter by `status = 'case_study_sent'`. Retrieve:
-- Application IDs
-- Candidate names and contact emails
-- Current status
+Query the applications table for the role to get application IDs, emails, and current status. Do NOT filter by status alone — DB status is often stale. Some candidates who have submitted still show `shortlisted` instead of `case_study_sent`.
+
+Use Gmail (Step 2) as the authoritative source for who has actually submitted. Use the DB to get contact info and application IDs.
 
 Status reference for KCD stage:
-- `shortlisted` — passed values call, case study not yet sent
-- `case_study_sent` — case study sent, awaiting or received submission ← **this is your working set**
-- `gwc_scheduled` — KCD passed, moved to GWC interview
-
-Only evaluate candidates with `status = 'case_study_sent'`.
+- `shortlisted` — passed values call (may or may not have submitted — verify via Gmail)
+- `case_study_sent` — case study sent (may or may not have submitted — verify via Gmail)
+- `gwc_scheduled` — KCD already evaluated, moved to GWC interview
 
 ### Step 2 — Collect submissions from both sources
 
 Submissions arrive via two channels. Check both before proceeding — some candidates submit on Markaz, others email directly.
 
-**Source A — Markaz platform:**
-Log into Markaz and locate the candidate's application. Check for attached files under "Case Study Submission" (typically a Word/PDF document + Excel spreadsheet).
+**Source A — Gmail (primary check):**
+Search using this exact subject pattern:
+`subject:"New Case Study Submission for [Role Name]"`
+Example: `subject:"New Case Study Submission for Field Coordinator"`
 
-**Source B — Gmail (hiring@ inbox):**
-Search for emails from each candidate's email address. Look for case study attachments (.docx, .pdf, .xlsx). Note submission timestamps — late submissions may be relevant context.
+This returns automated Markaz notification emails sent to hiring@taleemabad.com, which are accessible via the current Gmail token. Each notification confirms a submission and names the candidate. This is the most reliable way to get a complete submission list regardless of DB status.
 
-Cross-reference both sources. If a candidate appears in the DB as `case_study_sent` but has no submission in either place, note as "awaiting submission" — do not evaluate yet.
+**Source B — Markaz platform:**
+For each candidate identified in Gmail, open their application on Markaz and verify the submission is present under "Case Study Submission". Files are typically a Word/PDF document + optional Excel spreadsheet.
+
+Cross-reference both. If a candidate was told to submit but appears in neither source, note as "awaiting submission" — do not evaluate yet.
 Do not open or read any submission content yet.
 
 ### Step 3 — Extract text from submissions
