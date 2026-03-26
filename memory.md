@@ -94,6 +94,9 @@ Full SOP saved in skills/kcd-evaluation.md. Key facts for quick recall:
 - **Output format:** PDF attachment (same as screening report). Pilot: Ayesha + Jawwad. Live: Ayesha + hiring manager, CC hiring@taleemabad.com
 - **Gold standard benchmarks (Soul Architect, March 2026):** Aaqib Khan 94% · Zikra Fiaz 93% · Nain Tara 88% · Danyal Haroon 88%
 - **Final test before every verdict:** "Would I trust this person to analyze a messy real-world problem without supervision?"
+- **Gmail search for submissions:** `subject:"New Case Study Submission for [Role Name]"` — returns Markaz automated notifications. More reliable than DB status filter.
+- **DB status is unreliable** for KCD stage — candidates may still show `shortlisted` even after submitting. Always use Gmail notifications as source of truth for who submitted.
+- **Job 36 (Field Coordinator) — 5 pending KCD evaluation (as of 2026-03-26):** Scheherazade Noor · Jalal Ud Din · Amina Batool · Maria Karim · Usman Ahmed Khan. Already evaluated + at GWC: Muhammad Abubakr · Shazmina · Moiz Khan.
 
 ---
 
