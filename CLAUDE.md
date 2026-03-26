@@ -8,7 +8,7 @@ and internal budget, ranks candidates, and sends analysis reports to hiring mana
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
 ## Current Focus
-Full hiring pipeline operational: CV screening → Values Call → KCD Case Study evaluation → GWC Interview (HR as observer only).
+KCD evaluation in progress — Job 36 Field Coordinator. 5 pending candidates: Scheherazade Noor, Jalal Ud Din, Amina Batool, Maria Karim, Usman Ahmed Khan. Awaiting case study assignment + datasets to begin evaluation.
 
 ## Memory Hierarchy
 - This file: Entry point. Read FIRST, every session.
