@@ -33,7 +33,7 @@ Taleemabad roles, especially design and research roles, require people who will 
 | 2 | Datasets | `temp/case-studies/[Role]/datasets/*.csv` | Read these yourself — you need to know what good answers look like |
 | 3 | Evaluation Framework | `temp/case-studies/[Role]/CLAUDE.md` | Criteria, weights, key flags, what a 5 looks like per criterion |
 | 4 | Ideal Answer | `temp/case-studies/[Role]/[Role]_Case_Study_Analysis.md` | Calibration benchmark — read BEFORE candidate submissions |
-| 5 | Candidate Submissions | Gmail (hiring@ inbox) | The actual files (.docx / .pdf) |
+| 5 | Candidate Submissions | Markaz platform + Gmail (hiring@ inbox) | The actual files (.docx / .pdf / .xlsx) — check both, some candidates submit on Markaz, others email directly |
 | 6 | Markaz candidate list | MCP query | Application IDs, statuses, contact info |
 
 ---
@@ -42,19 +42,30 @@ Taleemabad roles, especially design and research roles, require people who will 
 
 ### Step 1 — Pull the candidate list from Markaz DB
 
-Query the applications table for the role. Retrieve:
+Query the applications table for the role. Filter by `status = 'case_study_sent'`. Retrieve:
 - Application IDs
 - Candidate names and contact emails
-- Current status (should be post-values-pass)
-- Any notes already on file
+- Current status
 
-Only proceed with candidates whose status confirms they passed the values call.
+Status reference for KCD stage:
+- `shortlisted` — passed values call, case study not yet sent
+- `case_study_sent` — case study sent, awaiting or received submission ← **this is your working set**
+- `gwc_scheduled` — KCD passed, moved to GWC interview
 
-### Step 2 — Download submissions from Gmail
+Only evaluate candidates with `status = 'case_study_sent'`.
 
-Access the hiring@ inbox. Locate case study submissions for the relevant role and batch.
-Download all .docx and .pdf files. Note submission timestamps — late submissions may be relevant context.
-Do not open or read any submission yet.
+### Step 2 — Collect submissions from both sources
+
+Submissions arrive via two channels. Check both before proceeding — some candidates submit on Markaz, others email directly.
+
+**Source A — Markaz platform:**
+Log into Markaz and locate the candidate's application. Check for attached files under "Case Study Submission" (typically a Word/PDF document + Excel spreadsheet).
+
+**Source B — Gmail (hiring@ inbox):**
+Search for emails from each candidate's email address. Look for case study attachments (.docx, .pdf, .xlsx). Note submission timestamps — late submissions may be relevant context.
+
+Cross-reference both sources. If a candidate appears in the DB as `case_study_sent` but has no submission in either place, note as "awaiting submission" — do not evaluate yet.
+Do not open or read any submission content yet.
 
 ### Step 3 — Extract text from submissions
 
