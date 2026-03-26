@@ -8,7 +8,7 @@ and internal budget, ranks candidates, and sends analysis reports to hiring mana
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
 ## Current Focus
-Building the CV screening pipeline: ingest CVs → score vs JD + budget → generate ranked report → notify stakeholders.
+Full hiring pipeline operational: CV screening → Values Call → KCD Case Study evaluation → GWC Interview (HR as observer only).
 
 ## Memory Hierarchy
 - This file: Entry point. Read FIRST, every session.
@@ -16,6 +16,7 @@ Building the CV screening pipeline: ingest CVs → score vs JD + budget → gene
 - skills/cv-screening.md: Core skill — how to screen and score candidates
 - skills/report-generation.md: How to format and generate the hiring report
 - skills/email-notification.md: How to notify stakeholders by email
+- skills/kcd-evaluation.md: KCD case study evaluation SOP — full pipeline Steps 1–8
 - skills/database-connection.md: MCP setup and database usage
 - docs/schema.md: Neon PostgreSQL schema (populate after first DB connection)
 - context/project-background.md: Taleemabad org context, hiring criteria, key people
@@ -39,6 +40,7 @@ Building the CV screening pipeline: ingest CVs → score vs JD + budget → gene
 
 ## Quick Reference
 - CV screening logic: see [skills/cv-screening.md](skills/cv-screening.md)
+- KCD case study evaluation: see [skills/kcd-evaluation.md](skills/kcd-evaluation.md)
 - Report format: see [skills/report-generation.md](skills/report-generation.md)
 - Email notifications: see [skills/email-notification.md](skills/email-notification.md)
 - Database setup: see [skills/database-connection.md](skills/database-connection.md)

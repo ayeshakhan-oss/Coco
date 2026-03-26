@@ -78,6 +78,25 @@ Full competitor list with context: see context/project-background.md → Competi
 
 ---
 
+## KCD Case Study Evaluation — SOP (added 2026-03-26)
+
+Full SOP saved in skills/kcd-evaluation.md. Key facts for quick recall:
+
+- **KCD** = Knowledge, Capability, Design. Second-to-last filter. Pipeline: Values Call → KCD → GWC Interview.
+- Never send a case study to anyone who failed values.
+- Submissions come in batches of 2–3. May receive multiple batches per role.
+- **Core philosophy:** test honesty of method, not intelligence or polish. Evaluate HOW they arrived at outputs.
+- Files land in: `temp/case-studies/[Role]/` (assignment, datasets, framework, ideal answer, submissions)
+- Role-specific `CLAUDE.md` = primary scoring framework. Default 6 criteria = fallback only if none exists.
+- **Three failure modes:** content dump (AI paste, no synthesis) · mirror problem (identical stats across candidates, flag both) · foundational misread (wrong anchor figure, cascading errors)
+- **Scoring:** 1–5 per criterion. Strong reasoning + minor errors → score high. Correct outputs + weak reasoning → score low. Insight without evidence → cap 3. Evidence without interpretation → cap 3.
+- **Verdict labels:** 85–100% STRONG HIRE · 70–84% HIRE · 55–69% CONDITIONAL · 40–54% BORDERLINE · <40% NOT RECOMMENDED
+- **Output format:** PDF attachment (same as screening report). Pilot: Ayesha + Jawwad. Live: Ayesha + hiring manager, CC hiring@taleemabad.com
+- **Gold standard benchmarks (Soul Architect, March 2026):** Aaqib Khan 94% · Zikra Fiaz 93% · Nain Tara 88% · Danyal Haroon 88%
+- **Final test before every verdict:** "Would I trust this person to analyze a messy real-world problem without supervision?"
+
+---
+
 ## Common Mistakes to Avoid
 - **Do NOT use SVG in HTML emails** — Gmail strips it, charts disappear silently.
 - **Do NOT use CSS flexbox in emails** — same problem.
