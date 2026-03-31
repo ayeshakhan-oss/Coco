@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 import sys as _sys
 _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+from scripts.utils.check_token_expiry import check_all_tokens
+check_all_tokens(print_output=True)
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 

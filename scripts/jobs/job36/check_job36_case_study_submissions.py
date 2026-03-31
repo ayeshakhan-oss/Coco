@@ -4,8 +4,12 @@ Searches for emails from known candidates + any case study subject lines.
 """
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
-import base64, json
+import base64, json, os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+from scripts.utils.audit_log import log_gmail_read
+from scripts.utils.check_token_expiry import check_all_tokens
 
+check_all_tokens(print_output=True)
 creds = Credentials.from_authorized_user_file("token_gmail.json")
 service = build("gmail", "v1", credentials=creds)
 
@@ -31,9 +35,11 @@ def has_attachments(payload):
             return True, part["filename"]
     return False, None
 
-def search_gmail(query, label=""):
+def search_gmail(query):
     results = service.users().messages().list(userId="me", q=query, maxResults=20).execute()
-    return results.get("messages", [])
+    msgs = results.get("messages", [])
+    log_gmail_read(query=query, message_count=len(msgs), context="check_job36_case_study_submissions")
+    return msgs
 
 found = []
 
