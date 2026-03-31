@@ -10,3 +10,14 @@ __pycache__/
 Temp/
 *.json.bak
 logs/*.log
+
+# Candidate data & output files — never commit
+output/
+data/
+*.pdf
+*.txt
+job36_rejection_replies.json
+job36_case_study_gmail_check.json
+job32_invite_check.txt
+job36_invite_check.txt
+nain_tara_cv.pdf
