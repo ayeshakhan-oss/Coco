@@ -4,6 +4,10 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 RECIPIENT = "ayesha.khan@taleemabad.com"
 SENDER    = os.getenv("EMAIL_USER")
@@ -954,6 +958,7 @@ msg.attach(MIMEText(html, "html"))
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
     server.login(SENDER, PASSWORD)
-    server.sendmail(SENDER, RECIPIENT, msg.as_string())
+    allow_candidate_addresses(RECIPIENT if isinstance(RECIPIENT, list) else [RECIPIENT])
+        safe_sendmail(server, SENDER, RECIPIENT, msg.as_string(), context='send_job32_report_v7')
 
 print("Email sent successfully — v7 report delivered to", RECIPIENT)

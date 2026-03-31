@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  width:1080px; height:1080px; overflow:hidden;
+  font-family:'Nunito', sans-serif;
+  background:#f8fafb;
+  display:flex; flex-direction:column;
+  position:relative;
+}
+.top-stripe { height:10px;
+  background:linear-gradient(90deg, #1565c0, #1b5e20); }
+.green-accent { position:absolute; top:0; right:0;
+  width:340px; height:340px; border-radius:0 0 0 100%;
+  background:linear-gradient(135deg,#e8f5e9,#f1f8e9); z-index:0; }
+
+.content { flex:1; display:flex; padding:72px 96px 0; gap:64px; align-items:center; z-index:1; }
+
+.left { flex:1; }
+.section-label {
+  font-size:12px; font-weight:800; color:#1565c0;
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:20px;
+}
+h2 {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:52px; color:#1a1a1a; line-height:1.25; margin-bottom:28px;
+}
+h2 em { color:#1565c0; font-style:italic; }
+
+.body-text {
+  font-size:20px; color:#444; line-height:1.8; font-weight:600;
+}
+.body-text strong { color:#1a1a1a; }
+
+.right { width:300px; display:flex; flex-direction:column; gap:18px; }
+.stat-box {
+  background:white; border-radius:16px;
+  padding:24px 22px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+  border-left:5px solid #1565c0;
+}
+.stat-box.green { border-left-color:#1b5e20; }
+.stat-box .icon { font-size:36px; margin-bottom:10px; }
+.stat-box .label { font-size:13px; font-weight:800; color:#999;
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.stat-box .val { font-family:'Playfair Display', serif;
+  font-size:22px; color:#1a1a1a; font-weight:700; line-height:1.4; }
+
+.bottom { background:#1565c0; padding:24px 96px;
+  display:flex; align-items:center; justify-content:space-between; }
+.bottom .txt { font-size:15px; color:rgba(255,255,255,0.7); font-weight:700; }
+.bottom .num { font-size:13px; color:rgba(255,255,255,0.4); font-weight:700; }
+</style></head><body>
+<div class="top-stripe"></div>
+<div class="green-accent"></div>
+
+<div class="content">
+  <div class="left">
+    <div class="section-label">The Before</div>
+    <h2>Like most companies,<br>we <em>didn&rsquo;t respond.</em></h2>
+    <div class="body-text">
+      When a candidate&rsquo;s profile wasn&rsquo;t the right fit, we moved on.
+      No feedback. No closure.<br><br>
+      <strong>Just silence.</strong><br><br>
+      We knew it wasn&rsquo;t ideal. But saying nothing felt &ldquo;safe.&rdquo;
+      Saying something — honestly — felt risky.
+    </div>
+  </div>
+  <div class="right">
+    <div class="stat-box">
+      <div class="icon">📭</div>
+      <div class="label">The old way</div>
+      <div class="val">&ldquo;We regret to inform you...&rdquo; — or nothing at all.</div>
+    </div>
+    <div class="stat-box green">
+      <div class="icon">💡</div>
+      <div class="label">The realisation</div>
+      <div class="val">Candidates put real effort into applying. They deserved better.</div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="txt">Taleemabad · People &amp; Culture</div>
+  <div class="num">2 / 6</div>
+</div>
+</body></html>

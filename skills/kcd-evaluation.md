@@ -55,15 +55,17 @@ Status reference for KCD stage:
 
 Submissions arrive via two channels. Check both before proceeding — some candidates submit on Markaz, others email directly.
 
-**Source A — Gmail (primary check):**
-Search using this exact subject pattern:
-`subject:"New Case Study Submission for [Role Name]"`
-Example: `subject:"New Case Study Submission for Field Coordinator"`
+**Source A — Gmail (primary check + file download):**
+Search using this pattern (no quotes around full phrase):
+`subject:New Case Study Submission [Role Name]`
+Example: `subject:New Case Study Submission Field Coordinator`
 
-This returns automated Markaz notification emails sent to hiring@taleemabad.com, which are accessible via the current Gmail token. Each notification confirms a submission and names the candidate. This is the most reliable way to get a complete submission list regardless of DB status.
+This returns automated Markaz notification emails sent to hiring@taleemabad.com. Each email has the submission files **attached directly** — download using `gmail.users.messages.attachments().get()`. Do NOT use the download links inside the email body — those require Markaz authentication and return 401.
 
-**Source B — Markaz platform:**
-For each candidate identified in Gmail, open their application on Markaz and verify the submission is present under "Case Study Submission". Files are typically a Word/PDF document + optional Excel spreadsheet.
+**Source B — DB `case_study_submission` field:**
+Query the applications table. The `case_study_submission` field contains the full written text for candidates who typed answers into Markaz. Pull this first — often sufficient for written evaluation without the Word file. `case_study_word_file` and `case_study_excel_file` columns have the server-side file paths (not directly accessible, but the same files are attached to the Gmail notification).
+
+**Google Sheet trackers:** Some candidates submit their tracker as a Google Sheet link instead of an xlsx file. The URL appears in the `case_study_submission` text. Read via Google Sheets API (token: token_sheets.json). Sheet ID is the string between `/d/` and `/edit` in the URL.
 
 Cross-reference both. If a candidate was told to submit but appears in neither source, note as "awaiting submission" — do not evaluate yet.
 Do not open or read any submission content yet.

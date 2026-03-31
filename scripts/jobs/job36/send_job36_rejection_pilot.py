@@ -18,6 +18,10 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 EMAIL_HOST     = os.getenv("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT     = int(os.getenv("EMAIL_PORT", 587))
@@ -313,7 +317,8 @@ def send_pilot():
         server.ehlo()
         server.starttls()
         server.login(EMAIL_USER, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_USER, recipients, msg.as_string())
+        allow_candidate_addresses(recipients if isinstance(recipients, list) else [recipients])
+        safe_sendmail(server, EMAIL_USER, recipients, msg.as_string(), context='send_job36_rejection_pilot')
 
     print(f"OK: Pilot email sent")
     print(f"  TO: {PILOT_TO}")

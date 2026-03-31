@@ -27,6 +27,10 @@ from reportlab.platypus import (
 )
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 RECIPIENT = "ayesha.khan@taleemabad.com"
 SENDER    = os.getenv("EMAIL_USER")
@@ -616,7 +620,8 @@ def send_email(pdf_bytes):
     msg.attach(part)
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
         s.login(SENDER, PASSWORD)
-        s.sendmail(SENDER, [RECIPIENT], msg.as_string())
+        allow_candidate_addresses([RECIPIENT] if isinstance([RECIPIENT], list) else [[RECIPIENT]])
+        safe_sendmail(s, SENDER, [RECIPIENT], msg.as_string(), context='send_job26_report_pdf')
     print(f"Email sent to {RECIPIENT}")
 
 

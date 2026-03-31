@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 1080px; height: 1080px; overflow: hidden;
+  font-family: 'Nunito', Arial, sans-serif;
+  background: #eef6ff;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.top-bar {
+  background: #4a8fd4;
+  padding: 28px 72px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.top-bar .label {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 26px; color: white; letter-spacing: 0.5px;
+}
+.top-bar .pill {
+  background: #ffe066; color: #5a3e00;
+  font-size: 13px; font-weight: 800;
+  padding: 7px 22px; border-radius: 30px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.content {
+  flex: 1; padding: 52px 72px 40px;
+  display: flex; flex-direction: column;
+}
+.headline {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 34px; color: #1e1e1e; margin-bottom: 8px;
+}
+.subhead {
+  font-size: 18px; color: #666; font-weight: 600;
+  font-style: italic; margin-bottom: 44px;
+}
+.cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 22px; flex: 1;
+}
+.card {
+  background: white; border-radius: 20px;
+  padding: 30px 26px 26px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+  display: flex; flex-direction: column;
+  align-items: flex-start;
+  border-top: 6px solid #4a8fd4;
+  transition: all 0.2s;
+}
+.card:nth-child(2) { border-top-color: #e05a4e; }
+.card:nth-child(3) { border-top-color: #f5a623; }
+.card:nth-child(4) { border-top-color: #5cb85c; }
+.card .icon { font-size: 44px; margin-bottom: 14px; }
+.card .title {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 22px; color: #1e1e1e; margin-bottom: 8px;
+}
+.card .desc { font-size: 15px; color: #666; font-weight: 600; line-height: 1.5; }
+
+.bottom-bar {
+  background: #e05a4e;
+  padding: 18px 72px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bottom-bar .txt {
+  font-size: 15px; font-weight: 800; color: rgba(255,255,255,0.75);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.bottom-bar .num {
+  font-size: 15px; color: rgba(255,255,255,0.55); font-weight: 700;
+}
+</style></head><body>
+<div class="top-bar">
+  <div class="label">✦ What We Changed</div>
+  <div class="pill">Time for a Change</div>
+</div>
+<div class="content">
+  <div class="headline">We chose to do it differently.</div>
+  <div class="subhead">Every rejection became an opportunity to leave someone better than we found them.</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">✅</div>
+      <div class="title">Clear Decisions</div>
+      <div class="desc">Honest, direct feedback — no vague corporate language</div>
+    </div>
+    <div class="card">
+      <div class="icon">🔍</div>
+      <div class="title">Specific Feedback</div>
+      <div class="desc">We named the exact gap and explained exactly why</div>
+    </div>
+    <div class="card">
+      <div class="icon">💬</div>
+      <div class="title">Human Touch</div>
+      <div class="desc">Written like a person, not a legal template</div>
+    </div>
+    <div class="card">
+      <div class="icon">🤝</div>
+      <div class="title">Respectful Language</div>
+      <div class="desc">Every candidate treated as a professional</div>
+    </div>
+  </div>
+</div>
+<div class="bottom-bar">
+  <div class="txt">Taleemabad · People &amp; Culture</div>
+  <div class="num">2 / 3</div>
+</div>
+</body></html>

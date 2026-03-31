@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family: 'Nunito', Georgia, sans-serif;
+  background: #f8fafb;
+  color: #1a1a1a;
+  width: 860px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ── HEADER ── */
+.doc-header {
+  background: linear-gradient(150deg, #0d3d7a 0%, #1565c0 70%, #1b5e20 100%);
+  padding: 64px 80px 56px;
+  position: relative; overflow: hidden;
+}
+.doc-header::before {
+  content:''; position:absolute;
+  width:480px; height:480px; border-radius:50%;
+  border:50px solid rgba(255,255,255,0.05);
+  top:-160px; right:-160px;
+}
+.doc-header::after {
+  content:''; position:absolute;
+  width:240px; height:240px; border-radius:50%;
+  border:30px solid rgba(255,255,255,0.04);
+  bottom:-80px; left:-80px;
+}
+.eyebrow {
+  font-size:12px; font-weight:800; color:rgba(255,255,255,0.5);
+  letter-spacing:4px; text-transform:uppercase;
+  margin-bottom:20px; position:relative; z-index:1;
+}
+.doc-header h1 {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:52px; color:white; line-height:1.2;
+  margin-bottom:16px; position:relative; z-index:1;
+}
+.doc-header h1 em { color:#a5d6a7; font-style:italic; }
+.doc-header .tagline {
+  font-size:18px; color:rgba(255,255,255,0.65);
+  font-weight:600; font-style:italic;
+  position:relative; z-index:1;
+}
+.values-pills {
+  display:flex; gap:12px; margin-top:28px;
+  position:relative; z-index:1;
+}
+.vp {
+  background:rgba(255,255,255,0.1);
+  border:1.5px solid rgba(255,255,255,0.2);
+  border-radius:30px; padding:7px 18px;
+  font-size:12px; font-weight:800; color:rgba(255,255,255,0.8);
+  letter-spacing:1px; text-transform:uppercase;
+}
+.vp.green {
+  background:rgba(27,94,32,0.35);
+  border-color:rgba(129,199,132,0.35); color:#a5d6a7;
+}
+
+/* ── BODY ── */
+.doc-body { background:white; padding:64px 80px; }
+
+/* Section headers */
+.section-marker {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:20px; margin-top:52px;
+}
+.section-marker:first-child { margin-top:0; }
+.marker-dot {
+  width:12px; height:12px; border-radius:50%;
+  background:#1565c0; flex-shrink:0;
+}
+.marker-dot.green { background:#1b5e20; }
+.section-marker .marker-label {
+  font-size:11px; font-weight:800; color:#1565c0;
+  letter-spacing:3px; text-transform:uppercase;
+}
+.section-marker .marker-label.green { color:#1b5e20; }
+.marker-line { flex:1; height:1px; background:#e8e8e8; }
+
+h2 {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:34px; color:#1a1a1a; line-height:1.3;
+  margin-bottom:20px;
+}
+h2 em { color:#1565c0; font-style:italic; }
+h2 em.green { color:#1b5e20; }
+
+p {
+  font-size:18px; color:#444; line-height:1.85;
+  font-weight:600; margin-bottom:18px;
+}
+p strong { color:#1a1a1a; }
+p em { font-style:italic; color:#555; }
+
+/* Pull quote */
+.pull-quote {
+  background:#e3f2fd;
+  border-left:5px solid #1565c0;
+  border-radius:0 12px 12px 0;
+  padding:22px 28px;
+  margin:32px 0;
+}
+.pull-quote.green {
+  background:#e8f5e9;
+  border-left-color:#1b5e20;
+}
+.pull-quote p {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:20px; color:#1a1a1a; font-style:italic;
+  font-weight:700; line-height:1.6; margin:0;
+}
+
+/* Candidate quotes */
+.candidate-quotes { margin:32px 0; display:flex; flex-direction:column; gap:16px; }
+.cq {
+  background:white; border-radius:14px;
+  border:1.5px solid #e8e8e8;
+  padding:22px 24px 18px;
+  box-shadow:0 3px 14px rgba(0,0,0,0.06);
+  display:flex; gap:16px; align-items:flex-start;
+}
+.cq:nth-child(1) { border-left:6px solid #1565c0; }
+.cq:nth-child(2) { border-left:6px solid #1b5e20; }
+.cq:nth-child(3) { border-left:6px solid #f5a623; }
+.cq-mark {
+  font-family:Georgia,serif; font-size:64px; color:#e3f2fd;
+  line-height:0.75; flex-shrink:0; margin-top:2px;
+}
+.cq:nth-child(2) .cq-mark { color:#e8f5e9; }
+.cq:nth-child(3) .cq-mark { color:#fff8e1; }
+.cq-body .cq-text {
+  font-size:16px; font-weight:700; color:#1a1a1a;
+  line-height:1.7; font-style:italic; margin-bottom:8px;
+}
+.cq-body .cq-tag {
+  font-size:11px; font-weight:800; color:#1565c0;
+  text-transform:uppercase; letter-spacing:1px;
+}
+
+/* Rule */
+.doc-rule { height:1px; background:#e8e8e8; margin:40px 0; }
+
+/* Footer */
+.doc-footer {
+  background:linear-gradient(135deg, #0d3d7a, #1565c0);
+  padding:40px 80px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.doc-footer .brand {
+  font-family:'Playfair Display', serif;
+  font-size:22px; color:white; font-weight:700;
+}
+.doc-footer .brand span { color:#a5d6a7; }
+.doc-footer .contact {
+  text-align:right;
+  font-size:13px; color:rgba(255,255,255,0.55);
+  font-weight:700; line-height:1.8;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-header">
+  <div class="eyebrow">People &amp; Culture &nbsp;·&nbsp; Taleemabad</div>
+  <h1>We Used to<br>Stay <em>Silent.</em></h1>
+  <div class="tagline">A story about two values — and what happened when we lived them.</div>
+  <div class="values-pills">
+    <div class="vp">Courageous Conversations</div>
+    <div class="vp green">Continuously Improve</div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="doc-body">
+
+  <!-- SECTION 1 -->
+  <div class="section-marker">
+    <div class="marker-dot"></div>
+    <div class="marker-label">The Before</div>
+    <div class="marker-line"></div>
+  </div>
+
+  <h2>Like most companies,<br>we didn&rsquo;t <em>respond.</em></h2>
+
+  <p>When a candidate&rsquo;s profile wasn&rsquo;t the right fit, we moved on quietly. No feedback. No closure. Just silence.</p>
+
+  <p>It felt like the safe choice. Saying nothing meant no risk of an awkward conversation, no chance of someone pushing back, no uncomfortable territory.</p>
+
+  <div class="pull-quote">
+    <p>But at some point, we asked ourselves a harder question: is silence actually kind — or is it just comfortable for us?</p>
+  </div>
+
+  <p>The answer was uncomfortable. <strong>Candidates put real effort into applying.</strong> They wrote cover letters. They tailored their CVs. They waited. And we were giving them nothing in return.</p>
+
+  <div class="doc-rule"></div>
+
+  <!-- SECTION 2 -->
+  <div class="section-marker">
+    <div class="marker-dot"></div>
+    <div class="marker-label">Value 01 &nbsp;·&nbsp; Courageous Conversations</div>
+    <div class="marker-line"></div>
+  </div>
+
+  <h2>We decided to say<br>the <em>hard thing.</em></h2>
+
+  <p>Telling someone their CV has gaps is not a comfortable thing to do. A candidate could feel judged. They could push back. They could leave with a worse impression of Taleemabad than if we had said nothing at all.</p>
+
+  <p><strong>That risk was real. We chose to take it anyway.</strong></p>
+
+  <p>We wrote honest, specific emails. We named the gap — directly, without softening it into meaninglessness. We acknowledged what was genuinely strong in each profile. We gave real, actionable direction.</p>
+
+  <div class="pull-quote">
+    <p>A courageous conversation isn&rsquo;t just saying the hard thing. It&rsquo;s saying it in a way the other person can actually receive.</p>
+  </div>
+
+  <div class="doc-rule"></div>
+
+  <!-- SECTION 3 -->
+  <div class="section-marker">
+    <div class="marker-dot green"></div>
+    <div class="marker-label green">Value 02 &nbsp;·&nbsp; Continuously Improve</div>
+    <div class="marker-line"></div>
+  </div>
+
+  <h2>We treated it as<br><em class="green">a craft.</em></h2>
+
+  <p>This wasn&rsquo;t just about being kind to candidates. It was about raising our own standard — improving how we communicate, even in moments that are easy to rush through or automate.</p>
+
+  <p>We read every CV before writing. We found something worth acknowledging in each one. We named the gap specifically, not vaguely. We gave direction that was actually useful — not just a consolation.</p>
+
+  <p><strong>It took more time. It was worth it.</strong></p>
+
+  <div class="pull-quote green">
+    <p>Continuously Improving Our Craft means getting better at the things that are easy to do badly — and deciding not to.</p>
+  </div>
+
+  <div class="doc-rule"></div>
+
+  <!-- SECTION 4 -->
+  <div class="section-marker">
+    <div class="marker-dot"></div>
+    <div class="marker-label">It could have gone badly. It didn&rsquo;t.</div>
+    <div class="marker-line"></div>
+  </div>
+
+  <h2>What candidates<br><em>wrote back.</em></h2>
+
+  <p>We were prepared for pushback. Rejection emails with real feedback are uncommon for a reason — people assume candidates won&rsquo;t receive them well. Dozens of candidates wrote back. Not to negotiate. Not to ask for another chance.</p>
+
+  <p><strong>Just to say thank you.</strong></p>
+
+  <div class="candidate-quotes">
+    <div class="cq">
+      <div class="cq-mark">&ldquo;</div>
+      <div class="cq-body">
+        <div class="cq-text">I&rsquo;ll be honest, receiving a rejection is never easy, but the way you delivered this one made all the difference. Thank you for seeing me as more than just an application.</div>
+        <div class="cq-tag">Candidate &nbsp;·&nbsp; Field Coordinator Role</div>
+      </div>
+    </div>
+    <div class="cq">
+      <div class="cq-mark">&ldquo;</div>
+      <div class="cq-body">
+        <div class="cq-text">This is one of the best rejections I have ever received. This is one of the reasons which always encourages me to be part of Taleemabad.</div>
+        <div class="cq-tag">Candidate &nbsp;·&nbsp; Field Coordinator Role</div>
+      </div>
+    </div>
+    <div class="cq">
+      <div class="cq-mark">&ldquo;</div>
+      <div class="cq-body">
+        <div class="cq-text">It is genuinely rare to receive a response this considered. It speaks well of Taleemabad&rsquo;s culture that you give applicants honest, constructive guidance rather than a standard reply.</div>
+        <div class="cq-tag">Candidate &nbsp;·&nbsp; Field Coordinator Role</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-rule"></div>
+
+  <!-- CLOSING -->
+  <div class="section-marker">
+    <div class="marker-dot green"></div>
+    <div class="marker-label green">What this means</div>
+    <div class="marker-line"></div>
+  </div>
+
+  <h2>Values aren&rsquo;t on a wall.<br>They&rsquo;re in the <em class="green">small decisions.</em></h2>
+
+  <p>Courageous Conversations and Continuously Improving Our Craft are not abstract ideas we discuss in team meetings. They are decisions made in ordinary moments — like how you tell someone no.</p>
+
+  <p>We started telling people no with honesty, care, and craft. That changed how candidates experience Taleemabad — even the ones who don&rsquo;t join us.</p>
+
+  <div class="pull-quote green">
+    <p>How we say no defines who we are.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="brand">Taleem<span>abad</span></div>
+  <div class="contact">
+    People &amp; Culture Team<br>
+    hiring@taleemabad.com &nbsp;·&nbsp; taleemabad.com
+  </div>
+</div>
+
+</body></html>

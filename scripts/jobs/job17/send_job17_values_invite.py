@@ -15,6 +15,10 @@ from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 PILOT_MODE  = False  # True = Ayesha only; False = all 6 candidates
@@ -279,7 +283,8 @@ def send_invite(to_email, to_name, cc_list=None):
     recipients = [to_email] + (cc_list or [])
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(SENDER, PASSWORD)
-        smtp.sendmail(SENDER, recipients, msg.as_string())
+        allow_candidate_addresses(recipients if isinstance(recipients, list) else [recipients])
+        safe_sendmail(smtp, SENDER, recipients, msg.as_string(), context='send_job17_values_invite')
 
     cc_str = f" (CC: {', '.join(cc_list)})" if cc_list else ""
     print(f"  Sent to {to_name} <{to_email}>{cc_str}")

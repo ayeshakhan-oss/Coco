@@ -1,0 +1,205 @@
+═══════════════════════════════════════════════════════════════════
+CREATIVE BRIEF — CANDIDATE COMMUNICATION SHOWCASE
+For: Nano Banana Pro Image Generation
+Prepared by: Coco (Taleemabad Talent Acquisition Agent)
+Date: March 2026
+═══════════════════════════════════════════════════════════════════
+
+PROJECT OVERVIEW
+────────────────
+We want to create a visually rich, illustrated social media asset
+showing how Taleemabad improved its candidate rejection emails —
+and the positive feedback we received as a result.
+
+This is a TRANSFORMATION STORY, not a testimonials post.
+
+Output needed:
+  • 3–5 illustrated slides (LinkedIn carousel, square 1080x1080px)
+  • 1 portrait PNG (WhatsApp group, 1080x1920px)
+
+
+VISUAL STYLE REFERENCE
+────────────────────────
+Style: TED-Ed animated explainer infographic
+Feel: Warm, illustrated, educational, approachable, human
+References: TED-Ed YouTube thumbnails, Kurzgesagt-lite,
+            Khan Academy explainer graphics
+
+Key characteristics:
+  - Illustrated cartoon characters (diverse, friendly, simple)
+  - Warm earthy color palette
+  - Bold section banner headers
+  - Icon-driven visual storytelling
+  - Speech/quote bubbles
+  - Clean readable typography
+
+
+COLOR PALETTE
+─────────────
+  Primary red/coral:  #E05A4E  (headers, banners)
+  Warm cream/sand:    #F5EDD8  (backgrounds)
+  Sky blue:           #4A8FD4  (accent, dividers)
+  Sunshine yellow:    #FFE066  (highlights, pills)
+  White:              #FFFFFF  (cards, bubbles)
+  Dark text:          #2C2C2C
+  Soft green:         #5CB85C  (positive accents)
+
+
+TYPOGRAPHY
+──────────
+  Headlines: Fredoka One or similar rounded bold (playful, TED-Ed style)
+  Body: Nunito or similar rounded sans-serif
+  Labels: All caps, tight tracking
+
+
+═══════════════════════════════════════════════════════════════════
+SLIDE 1 OF 5 — HOOK / TITLE SLIDE
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated infographic slide, 1080x1080px,
+warm coral-red background (#E05A4E). At the top center, bold white
+rounded headline text reads: 'What If Rejection Emails Didn't Feel
+Like Rejection?' with the word 'Rejection' in sunshine yellow
+(#FFE066). In the center, show two illustrated cartoon envelope
+characters side by side: left envelope has a sad face (drooping,
+grey-blue tone), right envelope has a happy/surprised face (warm
+yellow, smiling), connected by a large bright yellow arrow pointing
+right. Below the envelopes, a warm cream subtitle: 'A story of
+craft, courage, and care.' Bottom left: small 'Taleemabad' wordmark
+in white. Clean, minimal, lots of white space, friendly illustrated
+style. No photographic elements."
+
+
+═══════════════════════════════════════════════════════════════════
+SLIDE 2 OF 5 — THE PROBLEM
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated infographic slide, 1080x1080px,
+warm cream background (#F5EDD8). At the top, a bold coral-red
+(#E05A4E) banner bar spanning full width with white rounded text:
+'The Problem'. Below the banner, left side shows an illustrated
+cartoon person (gender-neutral, professional appearance) sitting at
+a desk with a sad/frustrated expression, looking at a computer
+screen showing a generic rejection email. The screen text reads:
+'We regret to inform you...' with a red X through it. Right side
+shows three bullet points in bold dark text with red X icons:
+'Generic', 'Cold', 'Forgettable'. Bottom of slide: a warm blue
+(#4A8FD4) divider bar with white rounded text: '— We decided that
+wasn't good enough. —' Friendly illustrated style, TED-Ed aesthetic,
+warm color palette."
+
+
+═══════════════════════════════════════════════════════════════════
+SLIDE 3 OF 5 — WHAT WE CHANGED
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated infographic slide, 1080x1080px,
+light sky-blue background (#EEF6FF). At the top center, a sunshine
+yellow (#FFE066) pill badge with dark text: 'Time for a Change'.
+Below, bold dark headline: 'We Chose to Do It Differently.'
+Main content: a 2x2 grid of four illustrated icon cards, each white
+rounded rectangle with a drop shadow. Card 1 (top-left): green
+checkmark illustration, title 'Clear Decisions', small desc 'Honest,
+direct feedback'. Card 2 (top-right): magnifying glass illustration,
+title 'Specific Feedback', desc 'We named the exact gap'. Card 3
+(bottom-left): speech bubble illustration, title 'Human Touch',
+desc 'Written like a human'. Card 4 (bottom-right): handshake
+illustration, title 'Respectful Language', desc 'Every candidate
+treated as a professional'. Each card has a colored top border.
+TED-Ed illustrated style, clean, warm palette."
+
+
+═══════════════════════════════════════════════════════════════════
+SLIDE 4 OF 5 — WHAT CANDIDATES SAID (KEY SLIDE)
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated infographic slide, 1080x1080px,
+warm cream background (#FFF8F0). At the top, bold coral-red (#E05A4E)
+banner: 'What Candidates Said 💬'. Below, three illustrated quote
+cards stacked vertically, each white rounded rectangle with a large
+sunshine yellow opening quotation mark. Each card has a small
+illustrated cartoon avatar (diverse characters: one South Asian man
+in professional attire, one young woman with hijab, one South Asian
+woman in casual professional). Quote 1 text: 'I'll be honest,
+receiving a rejection is never easy, but the way you delivered this
+one made all the difference. Thank you for seeing me as more than
+just an application.' Quote 2 text: 'This is one of the best
+rejections I have ever received.' Quote 3 text: 'It is genuinely
+rare to receive a response this considered. It speaks well of
+Taleemabad's culture.' Each card has a small tag below in blue:
+'Candidate · Field Coordinator Role'. TED-Ed illustrated style."
+
+
+═══════════════════════════════════════════════════════════════════
+SLIDE 5 OF 5 — CLOSING
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated infographic slide, 1080x1080px,
+warm coral-red gradient background (#E05A4E to #C84B3F). Center top:
+three illustrated icons in a row — a glowing light bulb, a pencil
+writing, and a heart — in sunshine yellow (#FFE066). Below, large
+bold white rounded headline text (Fredoka One style): 'Improving Our
+Craft with Courage & Care' — the words 'Courage' and 'Care' in
+sunshine yellow. Below that, white italic subtext: 'Because how we
+say no defines who we are.' At the bottom, an illustrated small
+diverse team of 3 cartoon figures (celebrating, arms raised) in
+warm yellow tones. Footer: 'Taleemabad · People & Culture ·
+taleemabad.com' in small white text. Decorative white semi-circles
+in corners as design elements. TED-Ed animated style."
+
+
+═══════════════════════════════════════════════════════════════════
+WHATSAPP PNG — FULL STORY (1080x1920px PORTRAIT)
+═══════════════════════════════════════════════════════════════════
+
+PROMPT FOR NANO BANANA PRO:
+"Create a TED-Ed style illustrated vertical infographic, 1080x1920px
+portrait format, for sharing on WhatsApp. Warm cream background
+(#F5EDD8) with colored section banners. Layout from top to bottom:
+
+SECTION 1 (coral-red banner): 'What If Rejection Emails Didn't Feel
+Like Rejection?' — two illustrated envelope characters, sad to happy,
+connected by yellow arrow.
+
+SECTION 2 (white card with red label 'The Problem'): illustrated
+frustrated person at computer, three bullet points: Generic · Cold ·
+Forgettable. Red X icons next to each.
+
+SECTION 3 (blue divider): '— We Chose to Do It Differently —'
+Four small illustrated icons in a row: checkmark, magnifying glass,
+speech bubble, handshake. Labels: Clear · Specific · Human · Respectful.
+
+SECTION 4 (coral banner 'What Candidates Said'): Three quote bubbles
+with small illustrated diverse character avatars. Quote texts as above.
+
+SECTION 5 (coral-red closing banner): 'Improving Our Craft with
+Courage & Care' in bold white/yellow text. Small illustrated
+celebrating team. Taleemabad branding.
+
+Overall style: TED-Ed animated explainer, illustrated, warm and
+approachable, friendly cartoon characters, clear visual hierarchy,
+educational infographic feel. No photographic elements. 1080x1920px."
+
+
+═══════════════════════════════════════════════════════════════════
+TIPS FOR USING IN NANO BANANA PRO
+═══════════════════════════════════════════════════════════════════
+
+1. Use each prompt exactly as written — they are detailed by design.
+2. If output is too busy, add: "minimalist, lots of white space,
+   clean layout" at the end of the prompt.
+3. If characters don't look right, add: "South Asian characters,
+   diverse team, professional but friendly cartoon style."
+4. For consistency across slides, generate slide 1 first, then
+   reference it: "Same illustration style as [image], now create..."
+5. Recommended model settings: High quality, 4K if available.
+
+═══════════════════════════════════════════════════════════════════
+END OF BRIEF
+Prepared by Coco · Taleemabad · March 2026
+═══════════════════════════════════════════════════════════════════

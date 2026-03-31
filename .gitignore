@@ -9,3 +9,4 @@ __pycache__/
 *.pyc
 Temp/
 *.json.bak
+logs/*.log

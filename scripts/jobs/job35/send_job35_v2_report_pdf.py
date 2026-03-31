@@ -29,6 +29,10 @@ from reportlab.platypus import (
 )
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 PILOT_MODE = True   # True = Ayesha only; False = full send to hiring manager
 
@@ -1012,7 +1016,8 @@ def send_email(pdf_path):
     all_recipients = RECIPIENTS + CC_LIST
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(SENDER, PASSWORD)
-        smtp.sendmail(SENDER, all_recipients, msg.as_string())
+        allow_candidate_addresses(all_recipients if isinstance(all_recipients, list) else [all_recipients])
+        safe_sendmail(smtp, SENDER, all_recipients, msg.as_string(), context='send_job35_v2_report_pdf')
 
     print(f"Email sent to: {', '.join(all_recipients)}")
     print(f"Subject: {msg['Subject']}")

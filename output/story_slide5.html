@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  width:1080px; height:1080px; overflow:hidden;
+  font-family:'Nunito', sans-serif;
+  background:#f8fafb;
+  display:flex; flex-direction:column;
+  position:relative;
+}
+.top-stripe { height:10px; background:linear-gradient(90deg,#1b5e20,#1565c0); }
+
+.content { flex:1; padding:52px 96px 0; z-index:1; display:flex; flex-direction:column; }
+.section-label { font-size:12px; font-weight:800; color:#1565c0;
+  letter-spacing:3px; text-transform:uppercase; margin-bottom:16px; }
+h2 { font-family:'Playfair Display', Georgia, serif;
+  font-size:46px; color:#1a1a1a; line-height:1.25; margin-bottom:8px; }
+h2 em { color:#1b5e20; font-style:italic; }
+.sub { font-size:17px; color:#777; font-weight:600; font-style:italic; margin-bottom:36px; }
+
+.quotes { display:flex; flex-direction:column; gap:20px; flex:1; }
+.qcard {
+  background:white; border-radius:18px;
+  padding:26px 28px 22px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.07);
+  display:flex; gap:18px; align-items:flex-start;
+  flex:1;
+}
+.qcard:nth-child(1) { border-left:6px solid #1565c0; }
+.qcard:nth-child(2) { border-left:6px solid #1b5e20; }
+.qcard:nth-child(3) { border-left:6px solid #f5a623; }
+
+.qmark { font-family:Georgia,serif; font-size:72px; color:#e3f2fd;
+  line-height:0.75; flex-shrink:0; margin-top:2px; }
+.qcard:nth-child(2) .qmark { color:#e8f5e9; }
+.qcard:nth-child(3) .qmark { color:#fff8e1; }
+
+.qbody { flex:1; }
+.qtext { font-size:17px; font-weight:700; color:#1a1a1a;
+  line-height:1.65; font-style:italic; }
+.qtag { font-size:11px; font-weight:800; color:#1565c0;
+  text-transform:uppercase; letter-spacing:1px; margin-top:10px; }
+
+.bottom { background:#1565c0; padding:24px 96px;
+  display:flex; align-items:center; justify-content:space-between; }
+.bottom .txt { font-size:15px; color:rgba(255,255,255,0.7); font-weight:700; }
+.bottom .num { font-size:13px; color:rgba(255,255,255,0.4); font-weight:700; }
+</style></head><body>
+<div class="top-stripe"></div>
+
+<div class="content">
+  <div class="section-label">It could have gone badly. It didn&rsquo;t.</div>
+  <h2>What candidates<br>wrote back.</h2>
+  <div class="sub">Unsolicited replies — they wrote to say thank you, not to negotiate.</div>
+
+  <div class="quotes">
+    <div class="qcard">
+      <div class="qmark">&ldquo;</div>
+      <div class="qbody">
+        <div class="qtext">I&rsquo;ll be honest, receiving a rejection is never easy, but the way you delivered this one made all the difference. Thank you for seeing me as more than just an application.</div>
+        <div class="qtag">Candidate · Field Coordinator Role</div>
+      </div>
+    </div>
+    <div class="qcard">
+      <div class="qmark">&ldquo;</div>
+      <div class="qbody">
+        <div class="qtext">This is one of the best rejections I have ever received. This is one of the reasons which always encourages me to be part of Taleemabad.</div>
+        <div class="qtag">Candidate · Field Coordinator Role</div>
+      </div>
+    </div>
+    <div class="qcard">
+      <div class="qmark">&ldquo;</div>
+      <div class="qbody">
+        <div class="qtext">It is genuinely rare to receive a response this considered. It speaks well of Taleemabad&rsquo;s culture that you give applicants honest, constructive guidance rather than a standard reply.</div>
+        <div class="qtag">Candidate · Field Coordinator Role</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="txt">Taleemabad · People &amp; Culture</div>
+  <div class="num">5 / 6</div>
+</div>
+</body></html>
