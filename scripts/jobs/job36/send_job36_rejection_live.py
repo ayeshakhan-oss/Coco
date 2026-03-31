@@ -10,11 +10,13 @@ Applies: we-voice, no em dashes, no markdown bold, confirmed HTML design.
 CC: hiring@taleemabad.com + ayesha.khan@taleemabad.com on every send.
 """
 
-import os, re, json, smtplib, time, base64
+import os, re, json, smtplib, time, base64, sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
@@ -424,7 +426,9 @@ def send_email(server, to_email, html):
         msg.attach(img)
 
     all_recipients = [to_email] + CC_LIST
-    server.sendmail(SENDER, all_recipients, msg.as_string())
+    allow_candidate_addresses([to_email])
+    safe_sendmail(server, SENDER, all_recipients, msg.as_string(),
+                  context=f"job36_rejection_{to_email}")
 
 
 def main():
