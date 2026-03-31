@@ -10,7 +10,11 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__)
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+, "../../..", ".env"))
 
 SENDER   = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -203,7 +207,8 @@ def send():
         server.ehlo()
         server.starttls()
         server.login(SENDER, PASSWORD)
-        server.sendmail(SENDER, [PILOT_TO], msg.as_string())
+        allow_candidate_addresses([PILOT_TO] if isinstance([PILOT_TO], list) else [[PILOT_TO]])
+        safe_sendmail(server, SENDER, [PILOT_TO], msg.as_string(), context='send_job36_misbah_pilot')
 
     print(f"Sent.")
     print(f"  TO:      {PILOT_TO}")

@@ -1,47 +1,38 @@
 """
-Job 17 — CPD Coach
-Values Interview (Zero In) Invitation — 6 female TFP Fellow candidates.
+Job 35 — Junior Research Associate – Impact & Policy
+Values Interview Invitation — Nain Tara (app_id 1534)
 
-WORKFLOW:
-  1. Run with PILOT_MODE = True  --> sends to Ayesha only for review.
-  2. On approval, set PILOT_MODE = False and run again --> sends to all 6.
+Steps:
+1. Updates DB status: rejected -> shortlisted
+2. Sends values invite email
 """
 
-import os
-import smtplib
+import os, smtplib, psycopg2
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path="c:/Agent Coco/.env")
 import sys as _sys
 _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-PILOT_MODE  = False  # True = Ayesha only; False = all 6 candidates
+POSITION     = "Junior Research Associate \u2013 Impact & Policy"
+SENDER       = "ayesha.khan@taleemabad.com"
+PASSWORD     = os.getenv("EMAIL_PASSWORD")
+HIRING_MGR   = "muzzammil.patel@taleemabad.com"
+CC_LIST      = ["hiring@taleemabad.com", HIRING_MGR, "jawwad.ali@taleemabad.com", "ayesha.khan@taleemabad.com"]
 
-POSITION    = "CPD Coach"
-SUBJECT     = "Zero In Call for CPD Coach"
-SENDER      = "ayesha.khan@taleemabad.com"
-PASSWORD    = os.getenv("EMAIL_PASSWORD")
-HIRING_MGR  = "Hasnat@niete.edu.pk"
-CC_STANDARD = [
-    "hiring@taleemabad.com",
-    HIRING_MGR,
-]
+CANDIDATE    = {"name": "Nain Tara", "email": "neno.farman@gmail.com", "app_id": 1534}
 
-PILOT_RECIPIENTS = [
-    {"email": "ayesha.khan@taleemabad.com", "name": "Ayesha"},
-]
+BOOKING_LINK = "https://calendar.app.google/W76uYNddZAgAHTPy5"
+JD_LINK      = ("https://docs.google.com/document/d/1AadGm4xtwKLnTOLaUuPfomI39XeqS_T2W7ZxTrJe7VQ"
+                "/edit?tab=t.0#heading=h.ukg679hibl9s")
 
-BOOKING_LINK = "https://calendar.app.google/62znuJxCMMwfvSk46"
-JD_LINK      = "https://docs.google.com/document/d/1pg58RoVWoVO6WQTlGePJPbW_VLF0GkcYrQeG2Ah6G6s/edit?tab=t.0"
-TEAMS_LINK   = ""   # add when confirmed
-
-ASSETS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets")
+ASSETS_DIR   = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets")
 
 INLINE_IMAGES = [
     ("logo_taleemabad", "logo_taleemabad.png"),
@@ -50,70 +41,42 @@ INLINE_IMAGES = [
     ("logo_linkedin",   "logo_linkedin.png"),
 ]
 
-# ── CANDIDATES (6 female TFP Fellows — Islamabad + Gilgit, status new/shortlisted)
-CANDIDATES = [
-    {"name": "Syeda Siddiqa Fatima", "email": "siddiqa.fatima@dil.org"},
-    {"name": "Fatima Saeed",         "email": "fatimasaeed030499@gmail.com"},
-    {"name": "Zara Bhayo",           "email": "zara.bhayo@gmail.com"},
-    {"name": "Irum Afzal",           "email": "irumafzal698@gmail.com"},
-    {"name": "Hajra Sajjad",         "email": "hajra2357@gmail.com"},
-    {"name": "Shazia Sahat",         "email": "shaziasahat@gmail.com"},
-]
+# ── STEP 1: UPDATE DB STATUS ──────────────────────────────────────────────────
+def update_status():
+    conn = psycopg2.connect(
+        host="ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech",
+        dbname="neondb",
+        user="neondb_owner",
+        password="npg_kBQ10OASHEmd",
+        sslmode="require",
+    )
+    cur  = conn.cursor()
+    cur.execute(
+        "UPDATE applications SET status = 'shortlisted' WHERE id = %s",
+        (CANDIDATE["app_id"],)
+    )
+    conn.commit()
+    print(f"DB updated: app_id {CANDIDATE['app_id']} -> shortlisted")
+    cur.close()
+    conn.close()
 
-
-# ── EMAIL: BUILD HTML ─────────────────────────────────────────────────────────
-def build_email_html(candidate_name):
-
-    booking_block = f"""
-        <tr>
-          <td align="center" style="padding:20px 0 8px 0;">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td bgcolor="#5b3fa6" style="border-radius:6px; padding:13px 28px;">
-                  <a href="{BOOKING_LINK}"
-                     style="color:#ffffff; font-size:15px; font-weight:bold;
-                            text-decoration:none; font-family:Arial,sans-serif;">
-                    &#128197;&nbsp; Book your Interview
-                  </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td align="center"
-              style="font-family:Arial,sans-serif; font-size:12px; color:#888888;
-                     padding:0 0 16px 0;">
-            Please submit the information at your earliest convenience.
-          </td>
-        </tr>"""
-
-    teams_row = ""
-    if TEAMS_LINK:
-        teams_row = f"""
-        <tr><td style="padding:6px 0;">
-          <b>Meeting link:</b>&nbsp;
-          <a href="{TEAMS_LINK}" style="color:#1a73e8;">Join on Microsoft Teams</a>
-        </td></tr>"""
-
-    html = f"""<!DOCTYPE html>
+# ── STEP 2: BUILD EMAIL HTML ──────────────────────────────────────────────────
+def build_html(name):
+    return f"""<!DOCTYPE html>
 <html>
 <body style="margin:0; padding:0; background-color:#f4f4f4;">
-
 <table cellpadding="0" cellspacing="0" border="0" width="100%"
        style="background-color:#f4f4f4;">
   <tr>
     <td align="center" style="padding:24px 16px;">
-
       <table cellpadding="0" cellspacing="0" border="0" width="620"
-             style="background-color:#ffffff; border-radius:8px;
-                    border:1px solid #dddddd;">
+             style="background-color:#ffffff; border-radius:8px; border:1px solid #dddddd;">
 
         <!-- Green header -->
         <tr>
           <td bgcolor="#2e7a4f" style="border-radius:8px 8px 0 0; padding:22px 32px;">
-            <span style="font-family:Arial,sans-serif; font-size:20px;
-                          font-weight:bold; color:#ffffff; letter-spacing:0.3px;">
+            <span style="font-family:Arial,sans-serif; font-size:20px; font-weight:bold;
+                         color:#ffffff; letter-spacing:0.3px;">
               Taleemabad &ndash; Talent Acquisition
             </span>
           </td>
@@ -124,7 +87,7 @@ def build_email_html(candidate_name):
           <td style="padding:28px 32px 8px 32px; font-family:Arial,sans-serif;
                      font-size:14px; color:#222222; line-height:1.6;">
 
-            <p style="margin:0 0 14px 0;">Hi {candidate_name},</p>
+            <p style="margin:0 0 14px 0;">Hi {name},</p>
 
             <p style="margin:0 0 14px 0;">
               Thanks for your interest in the <b>{POSITION}</b> role. As a next step,
@@ -142,8 +105,7 @@ def build_email_html(candidate_name):
               and you can explore more about Taleemabad through the following links:
             </p>
 
-            <table cellpadding="0" cellspacing="0" border="0"
-                   style="margin:0 0 14px 0;">
+            <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 14px 0;">
               <tr>
                 <td style="padding:3px 0 3px 14px;">
                   &#8226;&nbsp;
@@ -151,11 +113,9 @@ def build_email_html(candidate_name):
                      style="color:#1a73e8;">10 Years Of Impact - Taleemabad</a>
                 </td>
               </tr>
-              {teams_row}
             </table>
 
-            <p style="margin:0 0 14px 0;
-                      font-weight:bold; color:#1a73e8;">
+            <p style="margin:0 0 14px 0; font-weight:bold; color:#1a73e8;">
               This session will be recorded, and by joining, you consent to being a
               part of the recorded call.
             </p>
@@ -178,7 +138,28 @@ def build_email_html(candidate_name):
         <tr>
           <td>
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
-              {booking_block}
+              <tr>
+                <td align="center" style="padding:20px 0 8px 0;">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td bgcolor="#5b3fa6" style="border-radius:6px; padding:13px 28px;">
+                        <a href="{BOOKING_LINK}"
+                           style="color:#ffffff; font-size:15px; font-weight:bold;
+                                  text-decoration:none; font-family:Arial,sans-serif;">
+                          &#128197;&nbsp; Book your Interview
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center"
+                    style="font-family:Arial,sans-serif; font-size:12px; color:#888888;
+                           padding:0 0 16px 0;">
+                  Please submit the information at your earliest convenience.
+                </td>
+              </tr>
             </table>
           </td>
         </tr>
@@ -197,12 +178,10 @@ def build_email_html(candidate_name):
         <!-- Footer -->
         <tr>
           <td style="padding:20px 32px 28px 32px;">
-
             <p style="margin:0 0 10px 0; font-family:Arial,sans-serif;
                       font-size:13px; color:#555555;">
               Feel free to connect with us on our socials to get a sense of our culture:
             </p>
-
             <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
               <tr>
                 <td style="padding-right:12px;" valign="middle">
@@ -231,7 +210,6 @@ def build_email_html(candidate_name):
                 </td>
               </tr>
             </table>
-
             <p style="margin:0 0 4px 0; font-family:Arial,sans-serif;
                       font-size:14px; font-weight:bold; color:#222222;">
               See you soon,
@@ -240,37 +218,34 @@ def build_email_html(candidate_name):
                       font-size:14px; color:#222222;">
               Team Taleemabad
             </p>
-
-            <p style="margin:0; font-family:Arial,sans-serif;
-                      font-size:11px; color:#aaaaaa;">
+            <p style="margin:0; font-family:Arial,sans-serif; font-size:11px; color:#aaaaaa;">
               Coco &ndash; AI Assistant Taleemabad
             </p>
-
           </td>
         </tr>
 
       </table>
-
     </td>
   </tr>
 </table>
-
 </body>
 </html>"""
-    return html
 
 
-# ── EMAIL: SEND ───────────────────────────────────────────────────────────────
-def send_invite(to_email, to_name, cc_list=None):
-    msg            = MIMEMultipart("related")
-    msg["From"]    = SENDER
-    msg["To"]      = to_email
-    msg["Subject"] = f"{SUBJECT} - {to_name}"
-    if cc_list:
-        msg["Cc"] = ", ".join(cc_list)
+# ── STEP 3: SEND EMAIL ────────────────────────────────────────────────────────
+def send_invite():
+    name    = CANDIDATE["name"]
+    to      = CANDIDATE["email"]
+    subject = f"Invitation for the Values Interview for {POSITION} - {name}"
+
+    msg          = MIMEMultipart("related")
+    msg["From"]  = SENDER
+    msg["To"]    = to
+    msg["Subject"] = subject
+    msg["Cc"]    = ", ".join(CC_LIST)
 
     alt = MIMEMultipart("alternative")
-    alt.attach(MIMEText(build_email_html(to_name), "html"))
+    alt.attach(MIMEText(build_html(name), "html"))
     msg.attach(alt)
 
     for cid, fname in INLINE_IMAGES:
@@ -280,42 +255,22 @@ def send_invite(to_email, to_name, cc_list=None):
         img.add_header("Content-Disposition", "inline", filename=fname)
         msg.attach(img)
 
-    recipients = [to_email] + (cc_list or [])
+    recipients = [to] + CC_LIST
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(SENDER, PASSWORD)
         allow_candidate_addresses(recipients if isinstance(recipients, list) else [recipients])
-        safe_sendmail(smtp, SENDER, recipients, msg.as_string(), context='send_job17_values_invite')
+        safe_sendmail(smtp, SENDER, recipients, msg.as_string(), context='send_job35_nain_tara_invite')
 
-    cc_str = f" (CC: {', '.join(cc_list)})" if cc_list else ""
-    print(f"  Sent to {to_name} <{to_email}>{cc_str}")
+    print(f"Invite sent to {name} <{to}>")
+    print(f"CC: {', '.join(CC_LIST)}")
 
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
-def main():
-    print("=" * 60)
-    print(f"Job 17 — CPD Coach | Zero In Invites")
-    print(f"Mode: {'PILOT (Ayesha only)' if PILOT_MODE else 'FULL SEND (all 6 candidates)'}")
-    print("=" * 60)
-
-    if PILOT_MODE:
-        for p in PILOT_RECIPIENTS:
-            send_invite(p["email"], p["name"], cc_list=None)
-        print(f"\nPilot sent to Ayesha. Review then set PILOT_MODE = False to send to all 6.")
-    else:
-        sent, failed = 0, []
-        for c in CANDIDATES:
-            try:
-                send_invite(c["email"], c["name"], cc_list=CC_STANDARD)
-                sent += 1
-            except Exception as e:
-                print(f"  FAILED for {c['name']}: {e}")
-                failed.append(c["name"])
-        print(f"\nDone. {sent}/{len(CANDIDATES)} invites sent.")
-        if failed:
-            print(f"Failed: {', '.join(failed)}")
-
-    print("=" * 60)
-
-
 if __name__ == "__main__":
-    main()
+    print("=" * 60)
+    print("Job 35 — Nain Tara | Values Invite + Status Update")
+    print("=" * 60)
+    update_status()
+    send_invite()
+    print("Done.")
+    print("=" * 60)

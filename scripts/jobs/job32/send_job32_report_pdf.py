@@ -6,6 +6,10 @@ Budget: PKR 150,000 – 270,000
 Send to: ayesha.khan@taleemabad.com ONLY (no CC)
 """
 import smtplib, ssl, os, io
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -833,7 +837,8 @@ Coco — Taleemabad Talent Acquisition Agent &nbsp;|&nbsp; Confidential
     ctx = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as s:
         s.login(GMAIL_USER, GMAIL_APP_PW)
-        s.sendmail(GMAIL_USER, [TO_EMAIL], msg.as_string())
+        allow_candidate_addresses([TO_EMAIL] if isinstance([TO_EMAIL], list) else [[TO_EMAIL]])
+        safe_sendmail(s, GMAIL_USER, [TO_EMAIL], msg.as_string(), context='send_job32_report_pdf')
     print(f"Email sent to: {TO_EMAIL}")
 
 # ─── MAIN ──────────────────────────────────────────────────────────────────────

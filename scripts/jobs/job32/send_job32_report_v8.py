@@ -11,6 +11,10 @@ import matplotlib.patches as mpatches
 import numpy as np
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 RECIPIENT = "ayesha.khan@taleemabad.com"
 SENDER    = os.getenv("EMAIL_USER")
@@ -1024,6 +1028,7 @@ msg.attach(spider_img)
 
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
     server.login(SENDER, PASSWORD)
-    server.sendmail(SENDER, RECIPIENT, msg.as_string())
+    allow_candidate_addresses(RECIPIENT if isinstance(RECIPIENT, list) else [RECIPIENT])
+        safe_sendmail(server, SENDER, RECIPIENT, msg.as_string(), context='send_job32_report_v8')
 
 print("Email sent — CID inline charts embedded in email body.")

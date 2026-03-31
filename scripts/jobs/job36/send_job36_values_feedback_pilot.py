@@ -17,7 +17,11 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__)
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+, "../../..", ".env"))
 
 SENDER   = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -203,7 +207,8 @@ def send_email(subject, html, to_addr, label):
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
         server.login(SENDER, PASSWORD)
-        server.sendmail(SENDER, all_recipients, msg.as_string())
+        allow_candidate_addresses(all_recipients if isinstance(all_recipients, list) else [all_recipients])
+        safe_sendmail(server, SENDER, all_recipients, msg.as_string(), context='send_job36_values_feedback_pilot')
 
     print(f"Sent [{label}] -> TO: {to_addr} | CC: {', '.join(CC_LIVE)}")
 

@@ -8,6 +8,10 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
 load_dotenv()
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+
 
 SENDER   = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -209,7 +213,8 @@ def main():
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(SENDER, PASSWORD)
-        smtp.sendmail(SENDER, [TO], msg.as_string())
+        allow_candidate_addresses([TO] if isinstance([TO], list) else [[TO]])
+        safe_sendmail(smtp, SENDER, [TO], msg.as_string(), context='send_status_report')
 
     print(f"Status report sent to {TO}")
 
