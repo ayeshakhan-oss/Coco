@@ -1,6 +1,11 @@
 credentials.json
 token.json
 token_gmail.json
+token_gmail_labels.json
+token_sheets.json
+.env
+.mcp.json
 __pycache__/
 *.pyc
 Temp/
+*.json.bak
