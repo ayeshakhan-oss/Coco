@@ -1,0 +1,4 @@
+2026-03-31 14:37:13 | INFO | SENT | context=test1 | sender=ayesha.khan@taleemabad.com | recipients=['jawwad.ali@taleemabad.com']
+2026-03-31 14:38:22 | INFO | SENT | context=test1 | sender=ayesha.khan@taleemabad.com | recipients=['jawwad.ali@taleemabad.com']
+2026-03-31 14:38:22 | WARNING | BLOCKED | context=test2 | sender=ayesha.khan@taleemabad.com | blocked_recipients=['random.person@gmail.com'] | all_recipients=['random.person@gmail.com']
+2026-03-31 14:38:22 | INFO | SENT | context=test3 | sender=ayesha.khan@taleemabad.com | recipients=['noorscheherazade@gmail.com', 'hiring@taleemabad.com']
