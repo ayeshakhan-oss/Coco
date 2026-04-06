@@ -21,6 +21,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__)
 import sys as _sys
 _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+from scripts.utils.feedback_widget import feedback_widget
 , "../../..", ".env"))
 
 SENDER   = "ayesha.khan@taleemabad.com"
@@ -141,7 +142,7 @@ OMER_BODY = (
     FOOTER
 )
 
-OMER_HTML = wrap(OMER_SUBJECT, OMER_BODY)
+OMER_HTML = wrap(OMER_SUBJECT, OMER_BODY + feedback_widget("Muhammad Omer Khan", "Field Coordinator, Research & Impact Studies", 1789, 'Application Feedback'))
 
 
 # ── EMAIL 2: Faryal Afridi ────────────────────────────────────────────────────
@@ -175,7 +176,7 @@ FARYAL_BODY = (
     FOOTER
 )
 
-FARYAL_HTML = wrap(FARYAL_SUBJECT, FARYAL_BODY)
+FARYAL_HTML = wrap(FARYAL_SUBJECT, FARYAL_BODY + feedback_widget("Faryal Afridi", "Field Coordinator, Research & Impact Studies", 1442, 'Application Feedback'))
 
 
 # ── LOAD LOGO ─────────────────────────────────────────────────────────────────

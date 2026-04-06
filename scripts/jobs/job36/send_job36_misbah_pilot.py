@@ -14,6 +14,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__)
 import sys as _sys
 _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+from scripts.utils.feedback_widget import feedback_widget
 , "../../..", ".env"))
 
 SENDER   = "ayesha.khan@taleemabad.com"
@@ -184,7 +185,7 @@ BODY = (
 # ── Send ──────────────────────────────────────────────────────────────────────
 
 def send():
-    html = wrap(SUBJECT, BODY)
+    html = wrap(SUBJECT, BODY + feedback_widget("Misbah Zafar Iqbal", ROLE, 1401, 'Application Feedback'))
 
     msg = MIMEMultipart("related")
     msg["From"]    = SENDER
