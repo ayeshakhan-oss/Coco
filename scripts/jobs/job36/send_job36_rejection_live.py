@@ -17,6 +17,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+from scripts.utils.feedback_widget import feedback_widget
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
@@ -492,6 +493,7 @@ def main():
             try:
                 body_text = parse_email_file(raw)
                 body_html = text_to_html(body_text)
+                body_html += feedback_widget(name, ROLE_HTML, app_id, 'Application Feedback')
                 html      = build_html(body_html)
                 send_email(server, email, html)
                 results["sent"].append({"app_id": app_id, "name": name, "email": email})
