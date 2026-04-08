@@ -73,6 +73,7 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Host: ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech
 - Access: Read-only via MCP (config in .mcp.json — do NOT share this file)
 - Schema: see docs/schema.md
+- **values_scorecard schema — NON-NEGOTIABLE:** must use Markaz-compatible format {date, host, candidateName, noteTaker, values[], finalComments, proceedToRightSeat}. Wrong schema = data in DB but invisible on Markaz UI. Reference: write_job36_values_scorecards.py
 
 ## Screening Standards
 - Score every candidate on: JD match %, salary within budget (Y/N), experience fit, skills fit
@@ -97,6 +98,7 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Reference script for PDF format: send_job36_v3_report_pdf.py (or send_job35_report_pdf.py for large unscreened pools)
 - **Email HTML format (DCA v9):** DCA has Part A (master table all candidates) + Part B (detailed profiles #1–#10) + Part C (no-hire compact profiles grouped by category). Charts embedded at TOP via CID. Reference: send_job32_report_v9.py
 - **Candidate email theme (UNIVERSAL — confirmed 2026-03-31):** ALL candidate-facing emails use v8 design: white header + blue border (#1565c0) + CID logo + Georgia serif body 15px/1.8 + #f0f4f0 outer bg. Applies to feedback, rejections, values invites, and any future candidate comms. Reference: send_job32_values_invite.py (invites) · send_job36_values_feedback_pilot.py (feedback)
+- **Bulk rejection email CV truncation (confirmed 2026-04-08):** NEVER use `cv_text[:4500]` — minimum 10,000 chars. Flag CVs >8,000 chars before generation. Never suggest a skill the candidate demonstrably has. Post-generation: if CV >8k but email <900 words, flag for manual review. See memory.md → Bulk Rejection Email Generation.
 - **Feedback widget (confirmed 2026-04-06):** ALL personalised candidate emails (rejection, warm bench, warm hold, offer letter) must include the feedback widget. Import: `from scripts.utils.feedback_widget import feedback_widget`. Append to body before wrap(). DO NOT add to transactional emails (invites, reminders). Responses log to "Noah — Candidate Feedback" Google Sheet (Jawwad owns, shared). Reference: scripts/utils/feedback_widget.py
 - **Email greeting:** always address hiring manager by first name — query users table, never use generic name
 - **Email recipients:** TO = hiring manager email, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com (standard for all reports). Additional CCs per user instruction.
@@ -119,8 +121,8 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Subject lines: story-driven for values/warm-bench emails; simpler for CV-stage rejections
 - Warm bench vs values-failed closing: see memory/feedback_email_rules.md
 - Full rules + confirmed HTML design (v8) + pre-send checklist: memory/feedback_email_rules.md
-- Three email types: (1) CV-stage rejection 500w+ · (2) Values failed 800-1100w · (3) Warm bench with pipeline promise — see memory/feedback_email_rules.md
-- CV-stage rejections: minimum 500w, "we" voice, reflective not diagnostic, verify CV content from DB before sending, CC hiring@ + ayesha.khan@
+- Three email types: (1) CV-stage rejection 800w · (2) Values failed 800-1000w · (3) Warm bench with pipeline promise — see memory/feedback_email_rules.md
+- CV-stage rejections: minimum 800w, "we" voice, reflective not diagnostic, verify CV content from DB before sending, CC hiring@ + ayesha.khan@
 - Sign-off (exact): Warm regards, / People and Culture Team / Taleemabad / hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
 - Never mention Coco or AI in the email body
 
