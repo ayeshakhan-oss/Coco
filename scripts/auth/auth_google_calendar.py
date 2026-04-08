@@ -14,8 +14,8 @@ SCOPES = [
     'https://www.googleapis.com/auth/calendar.events',
 ]
 
-CREDENTIALS_FILE = os.path.join(os.path.dirname(__file__), 'credentials.json')
-TOKEN_FILE = os.path.join(os.path.dirname(__file__), 'token.json')
+CREDENTIALS_FILE = "c:/Agent Coco/credentials.json"
+TOKEN_FILE = "c:/Agent Coco/token.json"
 
 
 def main():

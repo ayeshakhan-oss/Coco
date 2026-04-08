@@ -13,6 +13,14 @@ The agent reads this file at the start of every session (right after CLAUDE.md).
 - Existing `ai_overall_score = 0.0` rows in applications were from a broken prior implementation — treat as unscreened.
 - Filter active jobs with: WHERE job_status = 'Active'
 - AI screening results are written to applications table: ai_jd_score, ai_jd_analysis, ai_budget_fit, ai_overall_score, ai_recommendation, ai_screening_summary, ai_screened_at
+- **`values_failed` is NOT a valid Markaz status** — Markaz will not render the scorecard for it. For values-failed candidates, set status = `rejected`. (learned 2026-04-07, Arsalan error)
+- **values_scorecard JSON schema — MUST match Markaz UI format exactly** (learned 2026-04-07, Arsalan error):
+  ```json
+  { "date": "Apr 2, 2026", "host": "Ayesha Khan", "candidateName": "...", "noteTaker": "",
+    "values": [{ "name": "...", "rating": "+", "deepDive": "...", "curveBall": "...", "microCase": "" }],
+    "finalComments": "...", "proceedToRightSeat": "No" }
+  ```
+  Wrong schema = data writes to DB but is invisible on Markaz. Reference: write_job36_values_scorecards.py
 
 ---
 
@@ -253,6 +261,24 @@ All reports are now delivered as **PDF attachment + brief email body**. Never em
 - Charts: matplotlib → `io.BytesIO` PNG → `RLImage(buf, width=..., height=...)`
 - `nonlocal row_idx, tbl_rows, tbl_style` needed if modifying these inside nested helper functions
 - Reference script: `send_job36_report_pdf.py`
+
+## Email Word Count Rules (confirmed 2026-04-07)
+- **CV-stage rejection:** minimum 800 words
+- **Values-failed feedback:** 800-1000 words
+- **Warm bench:** 800-1000 words
+Check word count before every pilot send.
+
+## Bulk Rejection Email Generation — CV Truncation Bug (2026-04-07)
+Sehrish Irfan (Job 35, app 1514) replied pushing back after her rejection email missed 6 years of experience, her SPSS/Python/SQL skills, and her econometrics background. Root cause: CV was 14,147 chars but generation prompt used `cv_text[:4500]` — the model only saw her 3 most recent projects.
+
+**Rules for all future bulk generation scripts:**
+1. **CV truncation minimum: 10,000 chars** — covers 95%+ of pool. Never use 4,500.
+2. **Flag long CVs:** any CV >8,000 chars gets a logged warning before generation.
+3. **Never suggest a skill the candidate already has** — add to system prompt: "Before suggesting the candidate develop any skill or take any course, verify it is not already present in the CV text provided."
+4. **Post-generation spot-check:** if CV is long (>8k) but generated email is short (<900 words), flag for manual review before including in pilot PDF.
+5. **Candidate reply protocol:** if a candidate pushes back with factual corrections, Ayesha replies personally — not Coco. Draft the reply but Ayesha sends it from her own voice.
+
+---
 
 ## CV-Stage Rejection Email Rules (confirmed 2026-03-25)
 
