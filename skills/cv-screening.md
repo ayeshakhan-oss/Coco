@@ -1,359 +1,345 @@
-# Skill: CV Screening
+---
+name: CV Screening / Resume Screening SOP
+description: Full manual review of all candidate profiles against JD with accurate ranking. No shortcuts on manual reading. Updated 2026-04-10.
+type: feedback
+---
 
-## Purpose
-Screen candidate CVs against a Job Description using structured, evidence-based analysis.
-Produce a ranked shortlist with tier decisions, interview questions, and a hiring recommendation.
+## Objective
+
+Evaluate all received candidate profiles against the job description with full manual review and accurate ranking. No skipping on manual reading of CVs/resumes. All candidates must be assessed fairly and thoroughly, regardless of volume.
 
 ---
 
-## Core Principles
-- Do NOT assume anything not explicitly written in the CV.
-- Do NOT infer missing experience — if it is not written, treat it as absent.
-- Do NOT assume competence from job titles alone.
-- Do NOT reward verbosity — quality of evidence beats quantity of text.
-- Do NOT fabricate salary — if missing, state "Expected salary not mentioned."
-- Every score must cite exact evidence from the CV.
-- Must-have criteria are non-negotiable. Missing one triggers a -15% penalty.
-- Process candidates one by one. Never batch or rush.
-- If a PDF cannot be parsed, state: "Resume could not be parsed. Text extraction failed."
+## SOP Steps (7-Step Process)
+
+### Step 1: Read the JD in Detail
+
+Carefully study the job description first. Understand:
+- Core requirements
+- Relevant experience needed
+- Salary or relocation constraints (if relevant)
+- Must-have vs nice-to-have criteria
+- Key differentiators between candidates
+
+**Do not skip this step.** You cannot accurately evaluate candidates without knowing the role deeply.
 
 ---
 
-## Prerequisites
-- Job Description text (from jobs.jd_text or jobs.description in DB)
-- Budget range (from jobs.min_budget / jobs.max_budget — may be NULL)
-- Candidate CVs (Base64-decoded PDFs from candidates.resume_data)
-- Python with PyPDF2, python-docx, pymupdf (fitz), pytesseract installed
-- Tesseract OCR at: C:\Program Files\Tesseract-OCR\tesseract.exe (for scanned PDFs)
+### Step 2: Review Every Single Profile Manually
+
+Read every profile received on Markaz.
+- Whether there are 100, 200, 500, or more applications, all must be reviewed
+- No profile should be skipped or filtered out algorithmically
+- Keyword scanners are a first-pass only — manual review is mandatory
+- Each candidate deserves human judgment
 
 ---
 
-## STEP 1 — Deconstruct the Job Description
+### Step 3: Download and Read the Resume Fully
 
-Before reading any CV, extract from the JD:
+From the profile on Markaz, download the resume.
+- Read the resume in full, manually (not skimmed)
+- Do NOT use resume text truncation or shortcuts
+- Minimum expected reading capacity: **14,000–15,000 characters per resume**
+- Do not flag CVs as too long until they exceed this threshold
+- Read thoroughly and extract relevant information
 
-**Role Mission**
-- What core outcome must this person deliver?
-- What problem is this role solving?
-
-**6–10 Success Outcomes**
-- What must be true in 6–12 months for this hire to be successful?
-
-**3–5 Must-Have Criteria** (non-negotiable — missing one = -15% score penalty)
-
-**3–5 Nice-to-Have Criteria**
-
-**Failure Conditions**
-- What would cause someone to fail in this role?
-
-Save this as a structured checklist before reading any CV.
+**Critical rule:** Never assume data from a CV. If you don't read it fully, you might miss critical experience.
 
 ---
 
-## STEP 2 — Parse Each CV
+### Step 4: Read Candidate Questions on the Profile
 
-Standard PDF extraction:
-```python
-import PyPDF2, base64, io
+Review the canned side-panel candidate questions, including:
+- Last salary
+- Current salary
+- Expected salary ← **Add to report table**
+- City / Current location ← **Add to report table**
+- Willingness to relocate ← **Add to report table as Y/N**
+- Available start date
+- Any other custom questions shown on the profile
 
-def parse_cv(resume_data_b64):
-    raw = base64.b64decode(resume_data_b64)
-    reader = PyPDF2.PdfReader(io.BytesIO(raw))
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text() or ""
-    return text
+**Flag missing answers** but do not block screening. Proceed even if candidate hasn't answered all questions.
+
+---
+
+### Step 5: Assess Experience Fit
+
+Check:
+- Total years of experience
+- Relevant years of experience for the role (state BOTH separately)
+- Alignment of prior work with the JD
+- Whether relevant experience meets JD minimum
+- Depth and quality of relevant work (not just duration)
+
+**Do not conflate:** impressive org ≠ actual relevant experience. A candidate with 8 years total but only 1 year relevant is different from someone with 5 years all relevant.
+
+---
+
+### Step 6: Prioritize Relevant Competitor Experience
+
+Candidates who have relevant experience AND have worked with Taleemabad competitors should be ranked based on:
+- Skills fit to JD (top priority)
+- Experience alignment to JD (top priority)
+- Competitor experience (supporting signal, not ranking boost)
+
+**Important:** Competitor experience alone does NOT boost ranking. Their overall skills and experience must still align with the JD. Rank candidates according to **skills and relevant experience first**. Skills + Experience = TOP criteria for us.
+
+---
+
+### Step 7: Maintain Existing Report Format
+
+Keep the same reporting style already being used (see Email Structure below).
+- Add new SOP requirements (full manual review, thorough experience assessment, new candidate data columns)
+- Do not change the reporting structure unnecessarily
+- Follow the email format exactly as specified
+
+---
+
+## Email Body Structure (Mandatory Format)
+
+### Header Block
+```
+Dark navy background (#1a2a3a or similar)
+- Small text (uppercase, gray): "People & Culture · Initial Screening Report"
+- Large title (white, bold): [Job Title]
+- Subtitle (light blue): "Job [X] · Taleemabad"
 ```
 
-Scanned PDF detection: if extracted text < 50 characters → switch to OCR:
-```python
-import fitz, pytesseract
-from PIL import Image
-
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-def ocr_pdf(raw_bytes):
-    doc = fitz.open(stream=raw_bytes, filetype='pdf')
-    text = ""
-    for page in doc:
-        mat = fitz.Matrix(2.0, 2.0)  # 2x zoom for quality
-        pix = page.get_pixmap(matrix=mat)
-        img = Image.frombytes('RGB', [pix.width, pix.height], pix.samples)
-        text += pytesseract.image_to_string(img, lang='eng')
-    return text
+### Greeting
+```
+"Hi [Hiring Manager],"
 ```
 
-Flag unreadable CVs in CHAT before sending the report — do not bury in email only.
+### Stat Boxes (4 colored boxes, horizontal layout)
+Create 4 boxes with colored backgrounds:
+1. **Total applications** (red/pink background) — count all received
+2. **Shortlisted** (blue background) — count final shortlist
+3. **Maybe** (yellow/orange background) — count borderline candidates
+4. **No hire** (gray background) — count screened-out candidates
+
+Each box shows: large number + label below
 
 ---
 
-## STEP 3 — Full Experience Extraction (Per Candidate)
+### Key Observation Section
+**Header:** Bold blue text with underline: "Key Observation"
 
-For each candidate, before scoring, extract and record:
+Write a 2–3 sentence observation about the candidate pool:
+- What patterns did you notice?
+- What filtered well/poorly?
+- Any surprising insights?
+- Were application questions more telling than CVs?
 
-- **Total years of experience**
-- **Relevant years of experience** (matched to JD requirements)
-- **Current role and organisation**
-- **Past organisations** (full names — spell out abbreviations)
-- **Education** (institution, degree, year)
-- **Scholarships / distinctions** (explicit only)
-- **Expected salary** (from marker field only — NEVER infer)
-
-Compare all extracted experience directly against must-have and nice-to-have criteria.
-Only count skills and experience that are **explicitly written** — do not assume from titles.
+Example: "35 of 42 applicants are traditional UI/UX designers with screen-based portfolios — this role attracted largely the wrong applicant type. Only 2 candidates have the behavioral science depth the JD requires. Application questions sorted candidates far more meaningfully than CVs alone."
 
 ---
 
-## STEP 4 — Organisation Signal Analysis
+### Shortlisted Candidates Section
 
-After extracting experience, flag any high-signal organisations. These are strategic signals —
-they do NOT automatically raise the score, but they should be explicitly called out in the report.
+**Header:** Bold blue with underline: "Shortlisted Candidates ([count])"
 
-### A. Competitor / EdTech / Startup Signal 🎓
-- The Citizens Foundation (TCF)
-- READ Foundation
-- Teach For Pakistan
-- Taleem / Tele-Taleem / EdTech startups
-- Education-focused startups or high-growth startup environments
+**Intro line:** "All [count] read and evaluated manually against the JD. Budget: [if applicable, state range or "not specified"]."
 
-### B. Impact / Research / Data Signal 📊
-- CERP (Centre for Economic Research in Pakistan)
-- World Bank
-- Research institutions / impact evaluation orgs
-- Data-heavy organisations or policy think tanks
+**Per candidate (repeat for each):**
 
-### C. International / Donor / Development Signal 🌐
-- United Nations (UN) agencies — UNICEF, UNDP, UN Women, UNFPA, etc.
-- FCDO (Foreign, Commonwealth & Development Office)
-- USAID (United States Agency for International Development)
-- GIZ (German Agency for International Cooperation)
-- Other bilateral/multilateral donors
-
-### D. Scholarship / Academic Excellence Signal 🏆
-- Erasmus scholarship
-- Chevening scholarship
-- Fulbright scholarship
-- Other major international merit-based scholarships
-
-**Mark qualifying organisations as: "High Strategic Signal"**
-
----
-
-## STEP 5 — CV Quality & Intent Signal
-
-Evaluate the CV itself as a signal of the candidate's professionalism and effort:
-
-| Rating | Criteria |
-|---|---|
-| **High effort** | Quantified achievements, role-specific tailoring, clear narrative arc, strong storytelling |
-| **Moderate effort** | Some quantification, partially tailored, readable structure, impact not consistently articulated |
-| **Low effort** | Generic language, no quantification, responsibilities listed without outcomes, poor structure |
-
-Provide a 2–3 line justification for the rating. This does not affect the numerical score but
-is included in the report to help the hiring manager calibrate confidence.
-
----
-
-## STEP 6 — Score Each Candidate Across 7 Dimensions
-
-Score each dimension **0–4**:
-
-| Score | Meaning |
-|---|---|
-| 0 | Missing — no evidence |
-| 1 | Weak / Adjacent — related but not the same |
-| 2 | Partial Match — some evidence, gaps present |
-| 3 | Strong Match — clear evidence, good fit |
-| 4 | Exceptional — clear evidence with measurable impact |
-
-**Evidence Rule (mandatory):**
-- Cite exact text from the CV for every score.
-- Label each piece of evidence as FACT (written in CV) or INFERENCE (logical deduction).
-- If responsibilities are listed without outcomes → reduce score by one level.
-- If a must-have is completely missing → apply automatic -15% penalty to final total.
-
-### Dimension 1 — Functional Match (25%)
-Does the candidate directly perform the core responsibilities of this role?
-- Same scope, ownership, and complexity?
-- Not just adjacent or supporting work — direct ownership.
-
-### Dimension 2 — Demonstrated Outcomes (20%)
-Quantified results only: revenue generated, grants won, budgets managed, growth numbers, systems built.
-- If no measurable outcomes are cited anywhere in the CV → cap this dimension at score 2.
-
-### Dimension 3 — Environment Fit (15%)
-- Similar industry, geography, organisational constraints, and pace?
-- For Taleemabad roles: Pakistani development sector, EdTech, NGO, or donor-funded orgs score highest.
-- Location: Islamabad-based or explicitly willing to relocate = acceptable.
-- Deal-breaker: Not Islamabad-based AND not willing to relocate.
-
-### Dimension 4 — Ownership & Execution (15%)
-Did the candidate actually build, lead, close, or drive outcomes — or just participate?
-- Built a function from scratch → high score
-- Led and closed deals/grants independently → high score
-- Was part of a team that did those things, role unclear → lower score
-
-### Dimension 5 — Stakeholder & Communication Strength (10%)
-- Executive exposure (C-suite, ministry, donor principal)?
-- Direct client/donor/government relationships?
-- Cross-functional or cross-organisational leadership?
-
-### Dimension 6 — Hard Skills / Technical Match (10%)
-- Tools, certifications, required platforms?
-- For fundraising roles: specific donor relationships, grant systems, proposal frameworks.
-- For technical roles: exact software/language proficiency.
-
-### Dimension 7 — Growth & Leadership Potential (5%)
-- Increasing scope of responsibility over career?
-- Team leadership or mentoring?
-- Strategic involvement beyond execution?
-
-### Score Calculation
 ```
-raw_score = (D1 × 0.25) + (D2 × 0.20) + (D3 × 0.15) + (D4 × 0.15)
-          + (D5 × 0.10) + (D6 × 0.10) + (D7 × 0.05)
+1. [Name — hyperlinked to Google Drive CV]  |  [RANKING LABEL]  |  [Score %]
+   (right-aligned)                          (center)            (right)
 
-# Each dimension is 0–4, max raw = 4.0
-# Normalise to 0–100:
-normalised = (raw_score / 4.0) × 100
+App ID: [####]  |  Total exp: ~[X] yrs  |  Relevant exp: ~[X] yrs  |  Expected Salary: [amount]  |  City: [location]  |  Relocate: [Y/N]  |  DB status: [status]
 
-# Apply must-have penalty (per missing must-have):
-final_score = normalised × (0.85 ^ missing_musthaves)
+[3–4 sentence description paragraph]
+- What makes them strong?
+- Specific evidence from CV/application
+- How they align with JD must-haves
+
+[Gap paragraph — brown/warning color]
+Gap: [1–2 specific gaps or concerns. Be specific.]
+
+[If DB shows wrong status — red warning box]
+⚠️ Currently marked [WRONG STATUS] in DB — needs re-evaluation
+```
+
+**Ranking labels:** "#1 — TOP PICK" / "#2 — TOP PICK" / "SHORTLIST"
+
+**DB status values:** "shortlisted" / "rejected" / "gwc_scheduled" / etc.
+
+---
+
+### Maybe / Borderline Section
+
+**Header:** Bold blue with underline: "Maybe — Worth a Conversation ([count])"
+
+**Format:** Table with 3 columns:
+- **Candidate** (hyperlinked to Google Drive CV)
+- **Match %** (JD alignment score)
+- **Note** (1-sentence reason for borderline status)
+
+Example row:
+```
+Asad Nawaz              | 28%  | Best AI product design exp; declined to answer core application question — concern for role requiring philosophical depth.
 ```
 
 ---
 
-## STEP 7 — Compensation Feasibility (Separate from Skill Ranking)
+### Special Flags Section (if applicable)
 
-Assess independently — do NOT let this affect the skill score above.
+**Header:** Bold blue with underline: "Product Manager Experience — Flagged (as requested)"
 
-- Salary desired (from marker field only — never infer) vs. role budget range
-- Budget fit labels:
-  - **In Budget**: salary ≤ max_budget
-  - **Out of Budget**: salary > max_budget → flag for hiring manager, specify exact gap
-  - **Missing**: salary not provided → note as "Expected salary not mentioned"
-  - **Budget Not Set**: jobs.max_budget is NULL → screen on JD/experience/skills only, note "budget TBD"
+**Format:** Table with 3 columns:
+- **Candidate** (hyperlinked)
+- **App ID**
+- **PM Experience Notes** (1–2 sentences on PM-adjacent work)
 
-Strong candidates who are over budget must be flagged separately. Never exclude silently.
+Use only if hiring manager specifically flagged PM experience as relevant.
 
 ---
 
-## STEP 8 — Decision Tier
+### Footer
 
-| Score | Tier | Action |
-|---|---|---|
-| 85–100 | **Tier A** | Strong Move Forward — interview immediately |
-| 70–84 | **Tier B** | Interview with focused validation on gaps |
-| 55–69 | **Tier C** | Risky / Backup — proceed only if pool is thin |
-| < 55 | **No-Hire** | Do not shortlist |
+```
+Dark gray background (#f5f5f5 or similar)
+Font: Georgia, serif; size 11px
 
----
-
-## STEP 9 — Shortlist Size Rules
-
-| Pool size | Shortlist |
-|---|---|
-| 20–40 applications | Top 7–10 |
-| 50–100 applications | Top 15–20 |
-| 100–200 applications | Top 25–30 |
-| < 20 applications | All viable candidates |
-
-Rank by final score → then by must-have strength → then by budget compatibility.
+Text: "Taleemabad Talent Acquisition  |  hiring@taleemabad.com  |  [Date]"
+```
 
 ---
 
-## STEP 10 — Output Per Shortlisted Candidate (Strict Structure)
+## Report Table Columns (For Shortlisted Candidate Info Row)
 
-For each shortlisted candidate provide:
+Each shortlisted candidate must show:
+1. **App ID** — application ID from Markaz
+2. **Total exp** — total years of experience (~X yrs)
+3. **Relevant exp** — years of experience relevant to this JD (~X yrs)
+4. **Expected Salary** ← **NEW: Add from candidate profile question**
+5. **City** ← **NEW: Add candidate's current city/location**
+6. **Willing to Relocate** ← **NEW: Add Y/N flag from candidate response**
+7. **DB status** — current pipeline status in Markaz
 
-1. **Candidate Name**
-2. **Budget Status**: In Budget / Out of Budget (state expected salary vs budget ceiling; "Exceeds budget by PKR X")
-3. **Total Experience** (years)
-4. **Relevant Experience** (years, matched to JD)
-5. **Current Role**
-6. **Key Strengths** (bullet points — evidence-based, cite CV)
-7. **Unique Value Proposition (USP)** — what makes this candidate distinctively valuable
-8. **Strategic Signal** — note any High Strategic Signal organisations or scholarships
-9. **Missing Areas / Grey Areas** — specific gaps against JD only; no assumptions
-10. **CV Quality Rating** — High / Moderate / Low effort + 2-line justification
-11. **5 Interview Questions** — targeted to validate gaps or unverified claims
-12. **Confidence Level** — High / Medium / Low (based on CV completeness and specificity)
-
----
-
-## STEP 11 — Report Structure (7 Sections)
-
-### Section 1: Screening Summary
-- Total Profiles Reviewed
-- Role
-- Budget Range
-- Recommended Shortlist Size
-- Overall Talent Quality Assessment (brief paragraph)
-
-### Section 2: JD Scorecard
-Present as a collapsible section. Include:
-
-**Must-Have Criteria**
-| Requirement | Candidate Match % | Evidence from CV |
-
-**Nice-to-Have Criteria**
-| Requirement | Candidate Match % | Evidence from CV |
-
-Overall JD Match Score: XX% at bottom.
-
-### Section 3: Ranked Shortlist
-Full profiles per STEP 10 above, ranked by final score.
-
-### Section 4: Deep Comparative Analysis — Top 3 Strongest
-Side-by-side comparison table covering:
-- Experience depth
-- Organisation quality
-- Strategic signal
-- Budget comparison
-- Long-term leadership potential
-- Risk factors
-
-If a top-3 candidate is out of budget, assess whether they fit a more senior role and recommend
-appropriate level (e.g., Manager vs Senior Manager vs Head).
-
-### Section 5: Strong Match but Out of Budget
-For each over-budget strong match:
-- Expected salary
-- Budget difference
-- Justification for whether the budget stretch is worth it
-
-### Section 6: Visual Analytics
-Generate exactly 3 charts — email-safe (HTML tables only, no SVG, no flexbox):
-1. **Heatmap** — Candidate vs JD criteria match (table with coloured cells per dimension)
-2. **Bar Chart** — Overall score comparison for shortlisted candidates (nested table bars)
-3. **Spider / Radar equivalent** — Top 3 skill depth comparison (star-grid comparison table)
-
-### Section 7: Why Others Did Not Make It
-Group rejected candidates by reason:
-- Insufficient relevant experience
-- No direct JD match
-- Junior profile vs required seniority
-- No impact ownership
-- No evidence of required technical skills
-
-Be respectful and empathetic. Do not use dismissive language.
+Example row:
+```
+App ID: 1315  |  Total exp: ~4 yrs  |  Relevant exp: ~4 yrs  |  Expected Salary: 120k  |  City: Karachi  |  Relocate: N  |  DB status: shortlisted
+```
 
 ---
 
-## STEP 12 — Send Report
+## Non-Negotiable Rules
 
-See skills/email-notification.md. Send only to the hiring manager on record (users table,
-via jobs.hiring_manager FK). Default recipient: ayesha.khan@taleemabad.com unless instructed otherwise.
+1. **Read EVERY profile manually** — No exceptions. Every candidate gets human judgment.
+
+2. **Read every resume in full** — Minimum capacity: 14,000–15,000 characters. Do not flag as too long before this threshold.
+
+3. **State both total AND relevant experience explicitly** — Never conflate. Examples:
+   - ✓ "Total exp: 8 yrs, Relevant exp: 2 yrs"
+   - ✗ "Experience: 8 yrs" (unclear which one)
+
+4. **Do not assume data** — If the CV doesn't say it, don't fill in the gap. Write "Not mentioned in CV" instead.
+
+5. **Candidate questions are mandatory** — Read expected salary, city, relocation willingness from the profile. Flag missing answers but proceed.
+
+6. **Skills & Experience = TOP criteria** — Rank by JD match + relevant experience fit. Competitor experience is supporting signal only.
+
+7. **No skipping based on demographics** — Never screen out based on name, gender, nationality, age, or origin. Judge purely on JD alignment and experience.
+
+8. **Shortlist size follows rules** — Default: top 20 candidates (can exceed if pool is large). If budget specified, flag over-budget candidates separately.
+
+9. **Over-budget candidates are flagged, not excluded** — If a strong JD match exceeds budget, include them with a budget flag. Hiring manager should see them.
+
+10. **Report format is exact** — Follow the email structure above. Do not change stat boxes, section order, or table layouts.
+
+11. **All candidate names hyperlinked** — Every name in every section (Shortlisted, Maybe, Special Flags) must be hyperlinked to Google Drive CV. Audit before sending.
+
+12. **Always ask for approval** — Before sending the screening report, ask Ayesha explicitly for approval. PILOT first, then LIVE.
 
 ---
 
-## Common Mistakes to Avoid
-- Never screen out over-budget strong matches — flag them separately
-- Never assume salary from title or years of experience — state "not mentioned" if absent
-- Never confuse activity with achievement (doing vs. delivering)
-- Never inflate scores for high-signal organisation names without proof of individual impact
-- Never use SVG or CSS flexbox in email HTML — use table-based charts only
-- Always flag unreadable CVs in chat BEFORE sending the report
-- Always read the JD fully before reading any CV
-- Never infer skills from adjacent roles — if not written, treat as missing
-- Never batch-process candidates — score one at a time
+## Common Mistakes
+
+1. **Skipping profiles** — "This CV looks weak, I'll skip it." Don't. Every profile must be reviewed.
+
+2. **Partial resume reading** — Reading first 2 pages only, missing relevant experience on page 4. Read the entire resume.
+
+3. **Assuming relevant experience** — "They worked at a big company, must be experienced in this area." No. Read the actual job descriptions. Duration ≠ relevance.
+
+4. **Conflating total and relevant exp** — Reporting "8 years experience" when only 1 year is relevant. Always state both.
+
+5. **Flagging CVs <14k chars as too long** — The threshold is 14,000–15,000 characters. Don't flag earlier.
+
+6. **Ranking by competitor signal alone** — "They worked at TFP, so they're top tier." No. They must also align with JD. Rank by skills + experience.
+
+7. **Missing candidate profile data** — Forgetting to check salary expectations, city, relocation willingness from the Markaz profile. This is in Step 4.
+
+8. **Wrong stat box counts** — Stat boxes don't add up (Total ≠ Shortlisted + Maybe + No Hire). Verify math before sending.
+
+9. **Changing report format** — Using different fonts, different colored boxes, different section order. Match the email structure exactly.
+
+10. **Not hyperlinking candidate names** — Hiring manager clicks on a name, nothing happens. Every name must be a hyperlink to Google Drive CV.
+
+11. **Sending without approval** — Hitting "send" before Ayesha reviews the report. Always ask first. PILOT → approval → LIVE.
+
+12. **Missing gap paragraphs** — Shortlisted candidates have no "Gap" section explaining weaknesses. Every shortlisted candidate needs a balanced view.
+
+---
+
+## Pre-Send Checklist
+
+- [ ] JD read carefully and understood (Step 1)
+- [ ] Every profile on Markaz reviewed manually (Step 2)
+- [ ] Every resume read in full, no shortcuts (Step 3)
+- [ ] Candidate profile questions checked (Step 4): salary, city, relocation
+- [ ] Experience fit assessed for all candidates (Step 5): both total and relevant exp stated
+- [ ] Competitor experience noted but not over-ranked (Step 6)
+- [ ] Stat boxes filled: totals correct, math verified (4 boxes)
+- [ ] Key Observation written (1–2 sentences, insights about pool)
+- [ ] Shortlisted candidates: names hyperlinked, descriptions written, gaps identified
+- [ ] Maybe candidates: match % and notes filled in table
+- [ ] Special flags section included if applicable
+- [ ] New columns added: Expected Salary, City, Willing to Relocate (Y/N)
+- [ ] All candidate names across all sections are hyperlinked to Google Drive CVs
+- [ ] DB status shown for each candidate (matches Markaz current status)
+- [ ] Report format matches email structure exactly (colors, fonts, section order)
+- [ ] Footer added: "Taleemabad Talent Acquisition | hiring@taleemabad.com | [Date]"
+- [ ] PILOT_MODE = True (will send to Ayesha + Jawwad only)
+- [ ] No typos, no spelling errors, no formatting breaks
+- [ ] Ready to ask Ayesha for approval before going live
+
+---
+
+## Reference Implementation
+
+**Email format reference:** Initial Screening — Soul Architect / Conversational UX Designer (2026-04-06)
+- Sender: ayesha.khan@taleemabad.com
+- Recipient: Waqas Tanveer (hiring manager)
+- Structure: Header → stat boxes → key observation → shortlisted (5) → maybe (7) → PM experience flags → footer
+- All names hyperlinked to Google Drive CVs
+- Consistent Georgia serif font, blue headings, colored stat boxes
+
+**Screening scripts (reference for implementation):**
+- scripts/jobs/job36/screen_job36_fetch.py — pulls candidates + CVs from DB
+- scripts/jobs/job32/screen_job32_new_candidates.py — candidate evaluation logic
+- scripts/jobs/job26/screen_job26_fetch.py — screening workflow example
+
+**Report generation:**
+- Email body: Use exact HTML structure from reference email above
+- Stat boxes: 4 colored boxes (red, blue, yellow, gray)
+- Candidate profiles: Hyperlinked names, scoring, gaps, DB status
+- Tables: Alternating row colors (white / light blue), borders, centered text where specified
+
+---
+
+## When to Escalate to User
+
+- CV is legitimately >15,000 chars AND contains critical information — ask Ayesha if you should still include
+- Candidate profile missing key required data (no expected salary, no city) — flag to Ayesha, proceed with screening
+- Conflicting signals (CV excellent, but application answer concerning) — include in report, flag for Ayesha's review
+- Budget constraint unclear from JD — ask Ayesha before applying budget filter
+- Tie between candidates (same score, similar profiles) — ask Ayesha how to break tie
+- Report is very large (>50 shortlisted candidates) — ask if format should change to handle volume
+
+---
+
+## Commitment (Coco, 2026-04-10)
+
+I will follow all 7 steps, read every resume fully (14k+ char capacity), state both total and relevant experience for every candidate, include new data columns (expected salary, city, relocation), and match the exact email format specified. All candidate names will be hyperlinked. I will ask for explicit approval before sending. No shortcuts. No skipping. Full manual review on every candidate.
