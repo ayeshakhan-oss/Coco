@@ -335,22 +335,50 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
+## Skills 11 & 12: Status & Open Questions (2026-04-10)
+
+### Skill 11: Database Query
+- **Status:** Locked in — no major update dictated
+- **Action:** Keep reviewing and expand SOP later as new needs arise
+- **Reference:** [skills/database-queries.md](skills/database-queries.md)
+
+### Skill 12: Teams Integration
+- **Current capability:** Can read Teams channels (especially Presence channel for attendance)
+- **Open question from Ayesha:** Can Coco also read individual Teams statuses (on leave, away, busy, in a call)?
+- **Status:** Open capability question — needs technical investigation
+- **Reference:** scripts/utils/teams_reader.py
+
+---
+
 ## How to Use This Index
 
 1. **Find a skill:** Search this file for skill name
 2. **Read full SOP:** Click the file link (e.g., [skills/cv-screening.md](skills/cv-screening.md))
 3. **Quick reference:** Check MEMORY.md for "Skill SOP: [Name]" files
 4. **All skills follow:** General Discipline SOP (10 core non-negotiable rules apply to every skill)
+5. **Priority reminders:** See MEMORY.md → "Priority Reminders Across All Skills" for 10 Always Do + 11 Must Enforce
 
 ---
 
 ## Key Principles (Apply to ALL Skills)
 
+**Core Disciplines (Always Do):**
 - **Memory first:** Read MEMORY.md before starting any task
+- **Session context:** Check SESSIONS.md for prior context
 - **Approval always:** Ask explicitly before sending anything externally
 - **Quality first:** Verify, QA, discipline before submitting
 - **Specific evidence:** Never assume or fabricate data
 - **Pilot then live:** Test with Ayesha + Jawwad first, then approve before going live
+
+**Must Enforce Immediately (2026-04-10):**
+- **Pilot emails → Ayesha + Jawad only** (never candidate in pilot)
+- **No external sends without explicit approval** (PILOT → approval → LIVE)
+- **Never fabricate** — use "Not mentioned" if data missing
+- **Read every CV manually** — human judgment required
+- **Check all sources** — Markaz + Gmail for case studies, Markaz + Gmail + Calendar for decision briefs
+- **Ask before Markaz submission** — values scorecard requires explicit approval
+- **Flag silent cases** — in attendance reports, flag people with no record anywhere
+- **Warm Bench separate** — not mixed with CV rejections (Skill 7)
 
 ---
 
