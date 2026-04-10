@@ -13,6 +13,7 @@ The agent reads this file at the start of every session (right after CLAUDE.md).
 - Existing `ai_overall_score = 0.0` rows in applications were from a broken prior implementation — treat as unscreened.
 - Filter active jobs with: WHERE job_status = 'Active'
 - AI screening results are written to applications table: ai_jd_score, ai_jd_analysis, ai_budget_fit, ai_overall_score, ai_recommendation, ai_screening_summary, ai_screened_at
+- **ALWAYS verify app_id against candidate email before any DB write** — never assume app_id from context. Query `SELECT a.id FROM applications a JOIN candidates c ON a.candidate_id = c.id WHERE c.email = '...'` first. Wrong app_id = data written to wrong candidate (Arsalan/Shahzad swap, 2026-04-08).
 - **`values_failed` is NOT a valid Markaz status** — Markaz will not render the scorecard for it. For values-failed candidates, set status = `rejected`. (learned 2026-04-07, Arsalan error)
 - **values_scorecard JSON schema — MUST match Markaz UI format exactly** (learned 2026-04-07, Arsalan error):
   ```json
