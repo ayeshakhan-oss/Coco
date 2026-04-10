@@ -159,7 +159,7 @@ def get_gmail_service():
 
 def check_values_invite_sent(service, candidate_email, position_title):
     """Check if values interview invite was sent to candidate. Returns (bool, date_str)."""
-    q = f'from:ayesha.khan@taleemabad.com to:{candidate_email} subject:(Invitation for Values OR "Zero In")'
+    q = f'to:{candidate_email} subject:(Invitation for Values OR "Zero In")'
 
     try:
         results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
@@ -167,57 +167,37 @@ def check_values_invite_sent(service, candidate_email, position_title):
 
         msgs = results.get("messages", [])
         if msgs:
-            # Get the email date
-            msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata",
-                                                  metadataHeaders=["Date"]).execute()
-            headers = {h["name"]: h["value"] for h in msg["payload"].get("headers", [])}
-            date_str = headers.get("Date", "")
-            return True, date_str
+            return True, ""
         return False, None
     except Exception as e:
-        print(f"[Gmail] Error checking values invite for {candidate_email}: {e}")
         return False, None
 
 
 def check_case_study_sent(service, candidate_email):
     """Check if case study was sent to candidate."""
-    q = f'from:ayesha.khan@taleemabad.com to:{candidate_email} subject:(case study OR KCD)'
+    q = f'to:{candidate_email} subject:(case study OR KCD assignment)'
 
     try:
         results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
         log_gmail_read(q, 1, "check_case_study_sent")
 
         msgs = results.get("messages", [])
-        if msgs:
-            msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata",
-                                                  metadataHeaders=["Date"]).execute()
-            headers = {h["name"]: h["value"] for h in msg["payload"].get("headers", [])}
-            date_str = headers.get("Date", "")
-            return True, date_str
-        return False, None
+        return (True, "") if msgs else (False, None)
     except Exception as e:
-        print(f"[Gmail] Error checking case study for {candidate_email}: {e}")
         return False, None
 
 
 def check_debrief_invite_sent(service, candidate_email):
     """Check if debrief invite was sent to candidate."""
-    q = f'from:ayesha.khan@taleemabad.com to:{candidate_email} subject:(debrief OR GWC)'
+    q = f'to:{candidate_email} subject:(debrief OR GWC discussion)'
 
     try:
         results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
         log_gmail_read(q, 1, "check_debrief_invite")
 
         msgs = results.get("messages", [])
-        if msgs:
-            msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata",
-                                                  metadataHeaders=["Date"]).execute()
-            headers = {h["name"]: h["value"] for h in msg["payload"].get("headers", [])}
-            date_str = headers.get("Date", "")
-            return True, date_str
-        return False, None
+        return (True, "") if msgs else (False, None)
     except Exception as e:
-        print(f"[Gmail] Error checking debrief invite for {candidate_email}: {e}")
         return False, None
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -771,7 +751,9 @@ def send_report(html):
 
 def main():
     """Run the full pipeline monitor."""
-    print("[Pipeline Monitor] Starting run at", datetime.now().isoformat())
+    now = datetime.now()
+    print(f"[Pipeline Monitor] Starting run at {now.isoformat()}", flush=True)
+    sys.stdout.flush()
 
     try:
         # Get Gmail and Calendar services
@@ -838,19 +820,31 @@ def main():
                 "candidates": candidates_data,
             })
 
-        print("[HTML] Building report...")
-        html = build_report_html(jobs_data)
+        print("[HTML] Building report...", flush=True)
+        sys.stdout.flush()
+        try:
+            html = build_report_html(jobs_data)
+            print(f"[HTML] Built report ({len(html)} bytes)", flush=True)
+        except Exception as html_err:
+            print(f"[HTML Error] {html_err}", flush=True)
+            import traceback
+            traceback.print_exc()
+            raise
 
-        print("[Send] Sending report...")
+        print("[Send] Sending report...", flush=True)
+        sys.stdout.flush()
         success = send_report(html)
 
         if success:
-            print("[Pipeline Monitor] Run completed successfully")
+            print("[Pipeline Monitor] Run completed successfully", flush=True)
+            sys.stdout.flush()
         else:
-            print("[Pipeline Monitor] Run completed with send error")
+            print("[Pipeline Monitor] Run completed with send error", flush=True)
+            sys.stdout.flush()
 
     except Exception as e:
-        print(f"[Error] Pipeline monitor failed: {e}")
+        print(f"[Error] Pipeline monitor failed: {e}", flush=True)
+        sys.stdout.flush()
         import traceback
         traceback.print_exc()
 
