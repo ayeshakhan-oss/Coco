@@ -123,11 +123,44 @@ Sent by Taleemabad Talent Acquisition Agent
 [Date]
 ```
 
+## Replying In an Existing Gmail Thread (confirmed 2026-04-08)
+
+To reply inside an existing thread (not start a new email):
+
+1. **Find the thread** via Gmail API:
+   ```python
+   results = svc.users().messages().list(userId='me', q='subject:"Exact Subject"').execute()
+   msg = svc.users().messages().get(userId='me', id=msg_id, format='metadata',
+       metadataHeaders=['From','To','Cc','Message-ID','References']).execute()
+   ```
+2. **Get the last message's Message-ID** header
+3. **Set threading headers** on your reply:
+   ```python
+   msg["Subject"]     = "Re: Original Subject"   # must match exactly
+   msg["In-Reply-To"] = "<last_msg_id@mail.gmail.com>"
+   msg["References"]  = "<original_id@...> <last_msg_id@...>"  # space-separated chain
+   ```
+4. **Reply-all recipients:** TO = original sender + all TO recipients (minus yourself), CC = all CC + hiring@
+5. Send via SMTP as normal — Gmail matches the thread via headers automatically
+
+Reference script: `scripts/jobs/combined/send_combined_impact_reply_pilot.py`
+
+## Combining Multiple Position Briefs in One Email (confirmed 2026-04-08)
+
+When a stakeholder asks for updates on multiple positions in one thread:
+- Use a shared intro paragraph addressing the stakeholder
+- Each position gets its own navy-header block ("Position 1 · Hiring Decision Brief", "Position 2 · ...")
+- Each block is self-contained: stat boxes, Where We Are, Debrief Schedule, Leading, Discussion, Pipeline
+- All candidate names hyperlinked in ALL sections — audit before sending
+- Reference script: `scripts/jobs/combined/send_combined_impact_reply_pilot.py`
+
 ## Common Mistakes
 - **Sending to wrong hiring manager**: Double-check recipient before sending
 - **Sending before report is complete**: Always confirm output file exists first
 - **Using personal email for sending**: Use Taleemabad domain email
 - **Storing email password in CLAUDE.md**: Use .env file only
+- **Missing CV hyperlinks**: Audit every section (Leading, Discussion, Pipeline, Debrief Schedule) against drive_links before sending — see memory/feedback_decision_brief_hyperlinks.md
+- **Asserting DB status as fact**: status='offer' ≠ offer sent; status='rejected' may be wrong — always flag, never assert
 
 ## Notes
 - CC the HR lead on every report regardless of position
