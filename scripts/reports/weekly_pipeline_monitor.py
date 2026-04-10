@@ -794,7 +794,7 @@ def main():
             print(f"[Job] Processing {job['title']} (ID {job['id']})")
 
             candidates = get_candidates_for_job(job["id"])
-            print(f"  → {len(candidates)} candidate(s) in pipeline")
+            print(f"  > {len(candidates)} candidate(s) in pipeline")
 
             candidates_data = []
 
