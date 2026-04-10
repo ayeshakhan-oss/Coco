@@ -1,18 +1,104 @@
 ---
-name: Attendance Reports SOP
-description: Daily attendance showing where OPL+OWT employees are. 7 sections, 8 stat boxes. PAYROLL_TOTAL=84 static. Check Markaz + Teams + sign-in + user feedback.
+name: Attendance Reports SOP (Updated 2026-04-10)
+description: Track office presence for I-10 Head Office. OPL+OWT employees. 6-step workflow + 7 sections + 8 stat boxes. PAYROLL_TOTAL=84. Check payroll, Markaz, Teams, on-site list. Flag silent cases.
 type: feedback
 ---
 
 ## Objective
 
-Daily attendance report showing where Taleemabad's active OPL+OWT employees are on a given day (onsite, leave, WFH, out of office, etc.). Used for operational planning, capacity visibility, and hiring team coordination.
+Track office presence and reporting discipline, especially for the I-10 Head Office. Report where Taleemabad's active OPL+OWT employees are on a given day (onsite, leave, WFH, out of office, etc.). Used for operational planning, capacity visibility, and accountability.
 
-**Scope:** OPL+OWT employees only (84 active as of 2026-04-09, static payroll count)
+**Purpose:** NOT micromanagement. Identify people who are absent or remote without informing anywhere (flag silent cases for follow-up).
+
+**Context:**
+- Three offices: I-10 (Head Office — focus), H-9, Rawalpindi
+- Fridays are organization-wide work from home
+- Main visibility focus: I-10 Head Office
+- Scope: OPL + OWT employees only (84 active as of 2026-04-09, static payroll count)
 
 **Frequency:** Daily (typically Mon–Thu for I-10 onsite office)
 
 **Recipients:** Ayesha Khan + Jawwad Ali + Aymen Abid
+
+---
+
+## 6-Step Data Collection Workflow (Updated 2026-04-10)
+
+### Step 1: Get Active Employee List from Payroll
+
+Use the relevant month's payroll to identify active employees.
+
+**Key rule:** Use the PREVIOUS month's payroll until current month is processed.
+- Example: While working in April, use March payroll
+- Example: When working in May, use April payroll
+
+**Action:** Query Neon DB for active OPL+OWT employees in the relevant payroll month.
+
+---
+
+### Step 2: Pull Names and Active Counts from Markaz
+
+Use Markaz to get:
+- Names of all active employees
+- Active employee count (should match payroll baseline)
+
+**Action:** Query Markaz database for active employees as of the reporting date.
+
+---
+
+### Step 3: Check Teams Presence Channel
+
+In Teams, check the relevant channel where people report:
+- Work from home status
+- Leave announcements
+- Status updates
+- Arrival/departure notifications
+
+**What to look for:**
+- "WFH today"
+- "Out sick"
+- "Annual leave"
+- "Arriving at [time]"
+- Any other presence-related updates
+
+**Action:** Read Teams Presence channel using scripts/utils/teams_reader.py.
+
+---
+
+### Step 4: Cross-Check Markaz for Leave/WFH Records
+
+If someone mentioned leave/WFH in Markaz (formal records), that counts.
+
+**Rule:** Teams is acceptable if Markaz was not updated, but check both sources.
+
+**Action:** Query Markaz leave records for the reporting date. Compare against Teams announcements.
+
+---
+
+### Step 5: Compare Against On-Site List Provided by Ayesha
+
+Ayesha may provide a separate list/sheet of who was physically on-site in I-10.
+
+**Rule:** Follow the same reporting pattern already used (careful name reading, accurate copying).
+
+**Quality note (2026-04-10):** Coco previously did not read the provided list carefully enough. Names from folder/chat must be read and copied accurately.
+
+**Action:** Accept Ayesha's on-site list as the ground truth for who was physically present. Use exact names and spelling provided.
+
+---
+
+### Step 6: Flag Silent Cases
+
+Flag people who:
+- Were NOT on the on-site list provided by Ayesha
+- Did NOT mention leave/WFH in Teams
+- Did NOT mention leave/WFH in Markaz
+
+**These are the people who need to be highlighted.**
+
+**Action:** Cross-check all 84 employees against all three sources (Ayesha's list, Teams, Markaz). Anyone not found in any source gets flagged in the FLAGGED section with status "No record found".
+
+**Note:** This is NOT for micromanagement. It is to identify people who are absent or remote without informing anywhere.
 
 ---
 
@@ -200,80 +286,128 @@ If sum ≠ 84, you have a data gap. Do not send report. Investigate and ask user
 
 ---
 
-## Step-by-Step Process
+## Report Generation Workflow (Steps 7–10)
 
-1. **Query Database** — Connect to Neon PostgreSQL. Pull all active OPL+OWT employees (should return 84). Note this count as PAYROLL_TOTAL (static).
+These steps follow the 6-step data collection workflow above.
 
-2. **Read Teams Presence Channel** — Call scripts/utils/teams_reader.py. Extract all leave announcements, WFH updates, arrival times from Presence channel. Save as teams_presence_data.json (or similar).
+### Step 7: Categorize Each Employee
 
-3. **Query Markaz for Leave Records** — Query jobs.applications table or leave table. Filter by reporting_date. Extract: employee name, leave type, date range. Save as markaz_leave_data.json.
-
-4. **Categorize Each Employee** — For each of the 84 employees:
-   - Check Markaz leave records → if hit, goes to ON LEAVE
-   - Check Teams Presence → if "WFH" announced, goes to WFH (UNLOGGED) OR ARRIVING LATER
-   - Check permanent WFH list → if yes, goes to WFH — CONFIRMED (regardless of other data)
-   - Check OOO records → if yes, goes to OUT OF OFFICE
-   - User says they were onsite → goes to ONSITE
-   - If no record found anywhere → goes to FLAGGED
-
-5. **Cross-Check Against User Feedback** — Ask user: "Does this look right for today?"
-   - Accept user corrections:
-     - "X should be onsite" → move X to ONSITE
-     - "Y is WFH but not confirmed WFH" → move Y to WFH (UNLOGGED)
-     - "Z is not in the list but should be flagged" → add to FLAGGED with status note
-   - Update categorization based on user input
-
-6. **Build Stat Boxes** — Count each section. Calculate: ONSITE + ON LEAVE + WFH (UNLOGGED) + WFH CONFIRMED + OOO + ARRIVING LATER + FLAGGED. Must equal 84. If not, ask user to clarify discrepancies before proceeding.
-
-7. **Generate PDF** — Use ReportLab (Python). Layout:
-   - Header with report date + "I-10 Attendance Report"
-   - 8 colored stat boxes
-   - 2-column ONSITE grid (names in first column, status in second)
-   - ON LEAVE table
-   - WFH UNLOGGED list
-   - WFH CONFIRMED list
-   - OUT OF OFFICE table
-   - ARRIVING LATER table
-   - FLAGGED table with status notes
-   - Footer: "Compiled by Coco, Nugget & Noah" + date + time
-
-8. **Verify PDF Format** — Check stat boxes are colored and readable, all names spelled correctly (user-corrected spelling), counts add up to 84, no duplicate names across sections, all flagged people have status notes.
-
-9. **Send Report** — Recipient list: ayesha.khan@taleemabad.com + jawwad.ali@taleemabad.com + aymen.abid@taleemabad.com
-   - Email body: brief summary (e.g., "56 onsite, 8 on leave, 2 WFH unlogged, 9 permanent WFH, 2 OOO, 1 arriving, 6 flagged")
-   - Attachment: PDF (filename: attendance_DDMMMYYYY.pdf, e.g., attendance_9apr2026.pdf)
-   - Safe_sendmail() bouncer (never smtplib directly)
-   - Audit log: context='attendance_report_DDMMMYYYY'
-
-10. **Document Corrections** — Save any user corrections to session notes. If flagged section changes, document why.
+For each of the 84 employees, place in appropriate section:
+- Check Markaz leave records → if hit, goes to ON LEAVE
+- Check Teams Presence → if "WFH" announced, goes to WFH (UNLOGGED) OR ARRIVING LATER
+- Check permanent WFH list → if yes, goes to WFH — CONFIRMED (regardless of other data)
+- Check Ayesha's on-site list → if yes, goes to ONSITE
+- Check OOO records → if yes, goes to OUT OF OFFICE
+- If no record found anywhere → goes to FLAGGED (with status "No record found")
 
 ---
 
-## Non-Negotiable Rules
+### Step 8: Verify Completeness Against All Sources
 
-1. **PAYROLL_TOTAL = 84 (static)** — Number of active OPL+OWT employees. Does NOT change day-to-day.
+**Cross-check:**
+- All names on Ayesha's on-site list are in ONSITE section
+- All names with Teams WFH announcement are in WFH (UNLOGGED)
+- All names with Markaz leave record are in ON LEAVE
+- All names with Markaz OOO are in OUT OF OFFICE
+- All 84 payroll employees are accounted for somewhere
 
-2. **TOTAL in stat box = PAYROLL_TOTAL** — Not the sum of attendance categories. Categories show WHERE the 84 are; TOTAL always shows 84.
+---
 
-3. **Categorization is mutually exclusive** — Each employee appears in ONE section only. No duplicate names across sections.
+### Step 9: Build Stat Boxes
 
-4. **WFH — CONFIRMED is permanent** — These 8 employees always in this section. Not "missing" — legitimately WFH by design. Excluded from "unlogged WFH".
+Count each section. Calculate:
+```
+ONSITE + ON LEAVE + WFH (UNLOGGED) + WFH CONFIRMED + OOO + ARRIVING LATER + FLAGGED = TOTAL (should be 84)
+```
 
-5. **FLAGGED section requires status notes** — Never just list a name. Always add reason: "RWP Team", "On severance", "Last month with org", "No record found".
+If sum ≠ 84, investigate discrepancies with user before proceeding. Do not send if math doesn't add up.
 
-6. **User corrections are final truth** — If user says "X was onsite", move X to ONSITE regardless of data. User feedback overrides all sources.
+---
 
-7. **Verify sum = 84 before sending** — Do the math: ONSITE + ON LEAVE + WFH (UNLOGGED) + WFH CONFIRMED + OOO + ARRIVING LATER + FLAGGED. Must equal 84. If not, ask user to clarify before sending.
+### Step 10: Generate PDF
 
-8. **PDF format must match pattern exactly** — Colored stat boxes, 2-column onsite grid, name|status tables. User will reject if format drifts.
+Use ReportLab (Python). Layout:
+- Header with report date + "I-10 Attendance Report"
+- 8 colored stat boxes
+- 2-column ONSITE grid (names in first column, status in second)
+- ON LEAVE table
+- WFH UNLOGGED list
+- WFH CONFIRMED list
+- OUT OF OFFICE table
+- ARRIVING LATER table
+- FLAGGED table with status notes
+- Footer: "Compiled by Coco, Nugget & Noah" + date + time
 
-9. **Teams Presence + Markaz + sign-in = three-source rule** — Don't rely on one source. Cross-check all three.
+---
 
-10. **Send only Mon–Thu** — Attendance reports for I-10 office days. Don't send Fri/Sat/Sun unless explicitly asked.
+### Step 11: Verify PDF Format
 
-11. **Audit log always** — safe_sendmail() bouncer with context logged. Every send is tracked in logs/email_audit.log.
+Check:
+- Stat boxes are colored and readable
+- All names spelled correctly (use Ayesha's provided spelling)
+- Counts add up to 84
+- No duplicate names across sections
+- All flagged people have status notes
 
-12. **Ask for approval before sending** — Confirm with user first (or get standing approval once per week).
+---
+
+### Step 12: Send Report
+
+**Recipients:** ayesha.khan@taleemabad.com + jawwad.ali@taleemabad.com + aymen.abid@taleemabad.com
+
+**Email body:** brief summary (e.g., "56 onsite, 8 on leave, 2 WFH unlogged, 9 permanent WFH, 2 OOO, 1 arriving, 6 flagged")
+
+**Attachment:** PDF (filename: attendance_DDMMMYYYY.pdf, e.g., attendance_9apr2026.pdf)
+
+**Safe send:** Use safe_sendmail() bouncer (never smtplib directly)
+
+**Audit log:** context='attendance_report_DDMMMYYYY'
+
+---
+
+### Step 13: Document Corrections
+
+Save any user corrections to session notes. If flagged section changes, document why.
+
+---
+
+## Non-Negotiable Rules (Updated 2026-04-10)
+
+1. **PAYROLL_TOTAL = 84 (static)** — Number of active OPL+OWT employees. Does NOT change day-to-day. Use payroll from previous month until current month is processed.
+
+2. **Use previous month's payroll** — While in April, use March payroll. While in May, use April payroll. Wait for current month processing.
+
+3. **TOTAL in stat box = PAYROLL_TOTAL** — Not the sum of attendance categories. Categories show WHERE the 84 are; TOTAL always shows 84.
+
+4. **Categorization is mutually exclusive** — Each employee appears in ONE section only. No duplicate names across sections.
+
+5. **Check all 3 sources (6-step workflow):** 
+   - Step 1: Get active employee list from payroll
+   - Step 2: Pull names from Markaz
+   - Step 3: Check Teams Presence channel
+   - Step 4: Cross-check Markaz leave/WFH records
+   - Step 5: Compare against Ayesha's on-site list
+   - Step 6: Flag silent cases (no record anywhere)
+
+6. **Names must be accurate and complete** — Read provided list/names carefully. Copy exactly as Ayesha provides them. Quality correction (2026-04-10): Coco previously did not read lists carefully enough.
+
+7. **WFH — CONFIRMED is permanent** — These 8 employees always in this section. Legitimately WFH by design. Excluded from "unlogged WFH".
+
+8. **FLAGGED section requires status notes** — Never just list a name. Always add reason: "RWP Team", "On severance", "Last month with org", "No record found".
+
+9. **Purpose is not micromanagement** — Flag silent cases to identify people absent/remote without informing anywhere. For accountability, not punishment.
+
+10. **User corrections are final truth** — If Ayesha says "X was onsite", move X to ONSITE regardless of data. User feedback overrides all sources.
+
+11. **Verify sum = 84 before sending** — Do the math: ONSITE + ON LEAVE + WFH (UNLOGGED) + WFH CONFIRMED + OOO + ARRIVING LATER + FLAGGED. Must equal 84. If not, investigate and ask user to clarify before sending.
+
+12. **PDF format must match pattern exactly** — Colored stat boxes, 2-column onsite grid, name|status tables. User will reject if format drifts.
+
+13. **Send only Mon–Thu** — Attendance reports for I-10 office days. Don't send Fri/Sat/Sun unless explicitly asked. (Fridays are org-wide WFH.)
+
+14. **Audit log always** — safe_sendmail() bouncer with context logged. Every send is tracked in logs/email_audit.log.
+
+15. **Ask for approval before sending** — Confirm with user first (or get standing approval once per week).
 
 ---
 
@@ -335,6 +469,19 @@ If sum ≠ 84, you have a data gap. Do not send report. Investigate and ask user
 
 ---
 
-## Commitment (Coco, 2026-04-10)
+## Commitment (Coco, 2026-04-10, Updated)
 
-I will check all three sources (Markaz, Teams, sign-in). I will categorize each employee in one section only. I will verify sum = 84 before sending. I will include status notes in flagged section. I will accept user corrections. I will match PDF format exactly. I will ask for approval before sending.
+I will:
+1. **Follow 6-step data collection:** Payroll → Markaz → Teams → Markaz cross-check → Ayesha's on-site list → Flag silent cases
+2. **Use previous month's payroll** until current month is processed
+3. **Read Ayesha's provided list carefully** and copy names with exact spelling (quality correction)
+4. **Check all 3 sources** (payroll, Markaz, Teams) — never rely on one alone
+5. **Categorize each employee in one section only** — no duplicates
+6. **Flag silent cases** — people not on Ayesha's list, not in Teams, not in Markaz
+7. **Verify sum = 84 before sending** (ONSITE + LEAVE + WFH(unlogged) + WFH(confirmed) + OOO + ARRIVING + FLAGGED)
+8. **Include status notes in flagged section** (RWP Team, On severance, Last month, No record, etc.)
+9. **Accept user corrections** as final truth
+10. **Match PDF format exactly** (colored stat boxes, 2-column grid, tables)
+11. **Ask for approval before sending**
+12. **Use safe_sendmail() bouncer** with audit log
+13. **Send Mon–Thu only** (I-10 office days)
