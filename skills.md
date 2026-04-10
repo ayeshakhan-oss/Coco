@@ -96,15 +96,15 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 4: Values Scorecard Scoring
+## Skill 4: Values Scorecard Scoring (Updated 2026-04-10)
 
 **File:** [skills/values-scorecard-scoring.md](skills/values-scorecard-scoring.md)
 
-**Status:** ✓ Documented (2026-04-10)
+**Status:** ✓ Locked in (2026-04-10) — 7-step SOP + approval-before-submit + interview feedback
 
-**Pipeline Position:** During Values Interview — interviewer scores candidate real-time
+**Pipeline Position:** After Values Interview — Ayesha provides transcript; Coco scores candidate
 
-**Objective:** Evaluate candidate's alignment with Taleemabad's 6 core values using a structured rating system. Produce PASS/OUT verdict and GWC assessment.
+**Objective:** Score candidates on 6 core values using interview transcript. Produce PASS/OUT verdict and GWC assessment. Ask Ayesha for approval before submitting on Markaz. Provide interview process feedback.
 
 **The 6 Values:**
 1. Don't Walk Away
@@ -114,6 +114,15 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 5. Don't Hold On Too Tight
 6. Practice Joy
 
+**7-Step SOP (Updated 2026-04-10):**
+1. **Read transcript fully** — understand complete context and flow
+2. **Score based on transcript evidence** — cite quotes/paraphrases; existing methodology largely correct
+3. **Ask before submitting** — explicit approval: "Should I go and submit this on Markaz or not?"
+4. **Confirm candidate + position** — verify name, app_id, role (prevent wrong data writes)
+5. **Personal examples acceptable** — valid if genuinely fits value; don't dismiss personal life examples
+6. **Be lenient when needed** — context-aware; don't penalize for interviewer phrasing issues
+7. **Provide interview feedback** — highlight question clarity, tone, process improvements for Ayesha
+
 **Key Requirements:**
 - Rating system: + (exhibits) / +/- (inconsistent) / - (does not exhibit)
 - Pass/Out logic: PASS = zero minuses AND ≤2 +/- | OUT = any minus OR ≥3 +/-
@@ -122,6 +131,8 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 - Markaz-compatible JSON schema (exact format required or invisible on UI)
 - No blank columns (state "Not directly evident in interview" if not observed)
 - Never assess GWC if candidate OUT
+- **CRITICAL (NEW):** Always ask Ayesha before submitting; confirm candidate identity + position
+- **NEW:** Accept personal examples; be fair on interviewer phrasing; provide process feedback
 
 ---
 
@@ -267,7 +278,7 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 | 1 | CV Screening | ✓ | Yes | 2026-04-10 |
 | 2 | Case Study Evaluation | ✓ | Yes | 2026-04-10 |
 | 3 | Values Feedback Emails | ✓ | Yes | 2026-04-10 |
-| 4 | Values Scorecard Scoring | ✓ | Yes | 2026-04-10 |
+| 4 | Values Scorecard Scoring | ✓ | Yes | 2026-04-10 (Updated) |
 | 5 | Decision Briefs | ✓ | Yes | 2026-04-10 |
 | 6 | Candidate Rejections (CV-Stage) | ✓ | Yes | 2026-04-10 |
 | 7 | Warm Bench Feedback Email | ✓ | Yes | 2026-04-10 |
