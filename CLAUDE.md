@@ -63,8 +63,10 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Candidate data: NEVER commit output/, data/, *.pdf, *.txt, or candidate JSON files — all in .gitignore.
 - Pending: git history scrub (filter-repo) — awaiting user approval.
 
-## Quick Reference
+## Quick Reference — Skill SOPs
 - **CV Screening SOP:** see [skills/cv-screening.md](skills/cv-screening.md) (7-step manual review, 14k-15k char capacity, stat boxes, hyperlinked names, new columns: Expected Salary/City/Relocate)
+- **Case Study Evaluation SOP:** see [skills/case-study-evaluation.md](skills/case-study-evaluation.md) (8-step process, check Markaz AND Gmail, auto-flag incomplete, weekly proactive reporting, flag AI/weak effort)
+- **Values Feedback Emails SOP:** see [skills/values-feedback-emails.md](skills/values-feedback-emails.md) (800-1100 words mandatory, v8 design, pilot to Ayesha+Jawad ONLY, specific interview evidence)
 - **General Discipline (10 Core SOPs):** see [skills/general-discipline.md](skills/general-discipline.md) (foundation of ALL work; no fabrication, memory mandatory, pilot-sharing, approval before sending, QA discipline)
 - KCD case study evaluation: see [skills/kcd-evaluation.md](skills/kcd-evaluation.md)
 - Report format: see [skills/report-generation.md](skills/report-generation.md)
