@@ -4,6 +4,33 @@ KCD = Knowledge, Capability, Design. Second-to-last filter before the GWC/techni
 Pipeline position: Values Call → **KCD Case Study** → GWC Interview.
 Never send a case study to someone who failed values.
 
+## Agent Collaboration — Coco + Noah (confirmed 2026-03-31)
+
+Coco (Ayesha's agent) and Noah (Jawwad's agent) are peer agents on the same talent acquisition team. They will independently evaluate the same KCD cohorts and must produce reconcilable outputs. Neither is senior to the other. Both serve the same hiring process.
+
+**The goal is not identical scores — it is aligned verdicts and shared reasoning.**
+
+### Shared evaluation standards (both agents, every KCD)
+| Standard | Rule |
+|---|---|
+| Scoring scale | 1–5 per criterion. Fractional scores (4.5, 3.5, 1.5) required where a candidate sits between whole numbers. |
+| Verdict thresholds | 85%+ STRONG HIRE · 70–84% HIRE · 55–69% CONDITIONAL · 40–54% BORDERLINE · <40% NOT RECOMMENDED |
+| GWC threshold | 60%+ advances. State explicitly in About section and Pipeline Recommendations. |
+| Incomplete submissions | Excluded from main ranking. Separate section. Score asterisked. Supplementary assessment recommended. |
+| Transferable skills | Always named explicitly (what transfers, what doesn't) before scoring. No flat sector-gap penalties. |
+| Evidence standard | Quote exact lines from submissions. Name specific techniques. Flag what this candidate did that others did NOT. |
+| Narrative lead | Lead with the candidate's strongest signal, not their score. |
+| Gap note | Separate clearly labelled paragraph. Names the specific gap and what it means for the role. |
+| GWC probe questions | Targeted and specific — fill evaluation gaps or verify claims. Not generic interview questions. |
+| Integrity check | Mandatory for every candidate. Name the exact signal if flagged. "Clean" if not. |
+
+### Cross-check protocol (when both evaluate the same cohort)
+1. If Noah's preview/pilot is available: read it before finalising Coco's scores
+2. Document score deltas per candidate in chat before sending
+3. **Aligned (≤5% delta):** proceed to send
+4. **Diverging (>10% on any candidate):** flag to Ayesha before going live. Describe the specific disagreement and its source.
+5. Do NOT blend or average scores. Both evaluations stand independently. Divergences are useful signal — surface them, don't hide them.
+
 ---
 
 ## Core Philosophy
@@ -100,6 +127,14 @@ While reading, note:
 
 Annotate your reading notes per candidate before scoring anything.
 
+### Step 5b — Identify incomplete submissions before scoring
+
+Before touching any scores, scan all submissions for completeness. A candidate who submitted 2 of 5 exercises is NOT scored the same way as a candidate who submitted all 5.
+
+**Rule (non-negotiable):** Do not score missing exercises as 0 and include the candidate in the main ranking. A 0 on an unsubmitted exercise looks identical to a genuine 0 (absent/wrong) — the reader cannot tell them apart. This corrupts the ranking.
+
+Pull any incomplete candidate out immediately. Note which exercises are missing. Evaluate only what was submitted. They go in a separate section — see Step 7b.
+
 ### Step 6 — Score each candidate (1–5 per criterion)
 
 | Score | Meaning |
@@ -109,12 +144,20 @@ Annotate your reading notes per candidate before scoring anything.
 | 3 | Adequate — correct but surface-level or generic |
 | 2 | Weak — missed key patterns, or used AI as content generator |
 | 1 | Absent or fundamentally wrong |
+| 0 | Not submitted — only valid for incomplete submissions |
 
-**Partial credit rules:**
+**Scoring rules:**
 - Strong reasoning + minor data errors → score high (4–5)
 - Weak reasoning + correct outputs → score lower (2–3)
 - Insight without evidence → cap at 3
 - Evidence without interpretation → cap at 3
+- **Use fractional scores (e.g. 4.5, 3.5) where a candidate is genuinely between two whole numbers** — fractional scores give more accurate final percentages and prevent compression of meaningful differences between candidates
+- **When a criterion exercise is missing:** score 0 only for that criterion. Do NOT average or extrapolate from other exercises to fill the gap.
+
+**Calibration — what a 5 looks like in a fundraising/BD context:**
+- Not just correct prioritization, but naming the right stakeholder, the right framing, and the right deliverable for each funder in one move
+- Not just a good email, but a close that turns a vague non-answer into a targeted, specific next step
+- Commercially sophisticated reasoning that goes beyond frameworks — e.g. spotting a time-sensitive co-branding angle no other candidate saw
 
 Apply weights from the role-specific framework (or default weights if none exists). Calculate final weighted percentage.
 
@@ -134,17 +177,47 @@ Additional anti-gaming signals to watch for:
 
 **Rule:** If it sounds impressive but cannot be traced back to specific rows, values, IDs, or observable patterns in the dataset — penalize it.
 
+### Step 7b — Incomplete submission handling (MANDATORY)
+
+Before building the report, identify any candidates with incomplete submissions.
+
+**Rule: a partial score cannot be ranked alongside full submissions.**
+
+An incomplete candidate must:
+1. Be **excluded from the main ranking** entirely
+2. Appear in a **separate section** titled "Incomplete Submission — [Name]"
+3. Have their score marked with an asterisk and a footnote: `52%* — incomplete submission, not a capability read`
+4. Have a **supplementary assessment recommendation** instead of a GWC/no-GWC verdict
+
+The note "their score is a floor, not a ceiling" must appear in the section header or tagline when the partial submission shows strong signals.
+
+**Never rank a candidate with 2/5 exercises above someone who submitted all 5**, even if the raw math produces a higher number. The math is not comparable — it is measuring different amounts of information.
+
 ### Step 8 — Build and send the evaluation report
 
-**Format:** PDF attachment, same structure as the screening analysis report. Landscape A4, generated with reportlab + matplotlib.
+**Format:** HTML email (rich inline report — not a PDF attachment for KCD reports).
 
-**Per-candidate output block (in PDF):**
-1. Verdict label (see below)
-2. Final weighted score (%)
-3. Confidence level: High / Medium / Low
-4. Criterion-by-criterion scores with brief evidence per criterion
-5. Candidate narrative — specific summary of how they think, where strong, where weak, whether method was trustworthy
-6. Integrity flags — explicitly list any content dump signals, duplication concerns, foundational misreads, or "none" if clean
+**Per-candidate output block (mandatory structure, every ranked candidate):**
+1. Verdict label + final weighted score (%)
+2. **Confidence level** — state explicitly with a one-line reason. Example: "High confidence in direction, some uncertainty in magnitude given limited track record data." This is more useful than a bare verdict. Noah does not do this yet — keep it.
+3. 1-line tagline — lead with the candidate's strongest signal, not their score
+4. Narrative — per-exercise evidence (see standard below)
+5. Gap — clearly labelled, separate paragraph. One gap per paragraph. Names the specific dimension and what it means for the role.
+6. **Conditional verdict clause** — if verdict is CONDITIONAL, this is mandatory: "Condition: [specific thing that must happen before this candidate proceeds]." Name the exercise if supplementary. Name the topic if a GWC probe. "CONDITIONAL" with no stated condition is not actionable — do not send it.
+7. **GWC conversation guide** — 3 to 4 probing questions per candidate, tied directly to their case study. Not generic interview questions. The panel must be able to walk into GWC and use these directly. Format per question: "[Gap observed] — [probe question that surfaces whether this is a real weakness or a submission artefact]."
+8. Integrity flag — name the exact signal if present. "Clean" if not.
+
+**Narrative standard — per-exercise evidence (non-negotiable):**
+- Tie every observation to a specific exercise by number: "E2 (cold room) — she refused the vague 'send me an email' close and reframed to a targeted 2-pager deliverable."
+- This makes the narrative verifiable. The panel can re-read the submission and find the exact moment being described.
+- Quote exact lines where the signal is strong. Paraphrase loses the evidence.
+- Name the specific technique, not just the conclusion.
+- Name what this candidate did that others in the cohort did NOT do. Comparative signals are more informative than isolated praise.
+
+**Cross-candidate comparative analysis (Coco strength — keep this):**
+- After all individual blocks, add 2–3 sentences comparing candidates in aggregate: where strengths concentrate, where the cohort as a whole is weak, where one candidate clearly outperforms another on a specific dimension.
+- Example: "Maria's strength is concentrated in E2 and E3 while Amina shows broader instincts across the full exercise set — different risk profiles for the same role."
+- This gives the hiring manager a faster read on cohort shape than individual scores alone.
 
 **Email recipients:**
 - Pilot mode (user says "pilot"): TO = ayesha.khan@taleemabad.com, CC = jawwad.ali@taleemabad.com
@@ -181,6 +254,39 @@ Use these **only** if no role-specific framework exists in `temp/case-studies/[R
 
 ---
 
+## Coco + Noah Calibration Standard (confirmed 2026-03-31 — Jawwad Ali brief)
+
+### What Coco adopts from Noah
+
+
+Noah's report structure is already the template. These are the specific writing and scoring behaviours to match:
+
+- **Fractional scores** (4.75, 3.5, 1.5) — whole numbers compress meaningful differences
+- **Score 0 only for missing exercises** — never use 0 as a penalty for weak work (use 1)
+- **Quote exact lines** — do not paraphrase when the signal is in the exact wording
+- **Name specific techniques**, not just conclusions: "E2 — she reframed the vague close to a targeted 2-pager" not "her cold room was strong"
+- **Comparative signals** — name what this candidate did that others did NOT do
+- **Transferable skills named explicitly** — what carries over, what doesn't, before scoring
+
+### What Noah adopts from Coco (Jawwad's brief, confirmed 2026-03-31)
+- **Explicit confidence levels per verdict** — "High confidence in direction, some uncertainty in magnitude" — Noah does not do this yet; Coco continues it
+- **Cross-candidate comparative analysis** — aggregate cohort read after individual blocks
+- **Explicit numeric advancement threshold (60%)** — cleaner than verdict labels alone
+- **Conditional verdict clauses** — every CONDITIONAL must state: "Condition: [specific thing that must happen before proceeding]" — name the exercise or GWC probe topic explicitly
+- **GWC conversation guide per candidate** — 3 to 4 specific probing questions tied to case study gaps; not generic; format: "[gap observed] — [probe question]"
+- **Per-exercise evidence in narratives** — tie every observation to E1/E2/E3/E4/E5 by number so the panel can verify
+
+### What stays the same (Coco's core — do not change)
+- HTML email format and visual design (colour tokens, section headers, chip styling)
+- Verdict label thresholds (85%+ STRONG HIRE / 70–84% HIRE / 55–69% CONDITIONAL / 40–54% BORDERLINE / <40% NOT RECOMMENDED)
+- Integrity flags section (consolidated, after all candidate blocks)
+- Pipeline recommendations table as final section
+- GWC advancement threshold: 60%+
+- Pilot → live send workflow
+- Pushing back when asked to apply the wrong benchmark — do not let the panel compare criteria across different roles (e.g. FM criteria vs Soul Architect criteria — different roles, different frameworks)
+
+---
+
 ## Framework Override Rule
 
 The framework is a guide, not a cage. If a candidate demonstrates exceptional thinking but does not fit neatly into the scoring structure, override the mechanical score with clear written justification. Judgment is more important than rigid box-checking.
@@ -212,6 +318,20 @@ Before finalising any verdict, ask:
 
 ---
 
+## Transferable Skills — When to Credit vs Penalise
+
+When a candidate's track record comes from a different sector, do not flat-penalise it. Assess what genuinely transfers and what does not, then score accordingly.
+
+| Scenario | How to score |
+|---|---|
+| Corporate IT / commercial BD → development sector fundraising | Credit: positioning, relationship access, compliance navigation, deal structuring. Do NOT credit: funder psychology, bilateral/foundation cultivation, grant cycles, donor stewardship. Score 3/5 if strong commercial BD, no development sector experience. |
+| Constructed hypothetical in track record exercise | Do not score it as if it were real. Score 2/5 maximum — flag for GWC verification. If verified at GWC: upgrade. If constructed: capability still real, but no verified track record. |
+| Missing exercise due to documented circumstances (illness, access failure) | Score 0 for that criterion. Do NOT infer from other exercises. Handle as incomplete submission (see Step 7b above). |
+
+**Rule:** Penalising someone for a sector gap they can articulate clearly and bridge thoughtfully is worse than crediting them for it. The question at GWC is: "Can you make this transition?" — not "Have you already made it?"
+
+---
+
 ## Gold Standard Benchmarks (Soul Architect Pilot, March 2026)
 
 Use these for calibration on what strong work looks like.
@@ -227,3 +347,17 @@ Named teacher archetypes with human labels: "The Reluctant Confessor", "The Thro
 
 **Danyal Haroon — 88% — Gold standard: Cross-Dataset Investigation**
 Found a dataset pipeline anomaly: T099 listed as Sri Lankan but has Urdu coaching sessions. Identified T073's very first interaction was a late-night burnout voice note — before any coaching began. Built a 6-signal burnout predictor framework.
+
+---
+
+## Gold Standard Benchmarks (Fundraising & Partnerships Manager, Job 32, March 2026)
+
+**Mizhgan Kirmani — 83% — Gold standard: Cold Room Execution + Funder Brief Positioning**
+E2 cold room: opens with curiosity not information, listens before bridging, handles each objection with specific evidence pivots. Her close refuses the vague "send me an email" brush-off and reframes to a targeted deliverable ("a 2-pager specifically on how we work with government at scale"). That is a practitioner technique, not textbook advice. E4 funder brief adds an "Insight" layer before the solution — diagnosing why scale fails (delivery model, not intent) before positioning Taleemabad as the answer.
+Flag: E5 track record is a constructed hypothetical. $350K Punjab grant named but no real funder or timeline. Must verify at GWC.
+
+**Hamdan Ahmad — 52% (incomplete, floor not ceiling) — Gold standard: Pipeline Intelligence + Donor Writing**
+Only candidate to identify Funder F's 3-week CSR deadline as a structural urgency signal and reframe Rumi as a co-branded connectivity layer through the telco's own mobile infrastructure. Named the right stakeholder (CSR decision-maker, not comms team) and the right deliverable in one move. E3 re-engagement email: "the ground has shifted considerably" as the opening line, specific milestone sequencing, genuine exit offered ("if the fit isn't right, I'd value knowing that too"), no pressure close. Writing quality noticeably above cohort average. 3 of 5 exercises missing due to hospitalisation — not a capability verdict.
+
+**Zain Ul Abideen — 74% — Sector Transition Candidate**
+Correctly identified that Funder E's prior objection (no government integration) was resolved by the Punjab 6,000-school partnership. That is a specific, astute strategic read. Full submission, consistent quality. Track record is $10M Microsoft Enterprise Licence Agreement — corporate IT procurement, not development fundraising. Transferable skills are real; sector gap is material. One credibility error: fabricated prior relationship warmth in E3 re-engagement email.
