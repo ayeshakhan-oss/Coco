@@ -335,6 +335,29 @@ None in this session.
 - **skills.md:** Already updated with Skill 7 numbering and warm bench details
 - **Status:** All updates saved and staged for commit
 
+#### 9. Hiring Decision Brief Skill Creation
+- **Objective:** Create comprehensive hiring brief for leadership combining pipeline progress + candidate recommendations
+- **Deliverable:** `skills/hiring-decision-brief.md` — 10-step SOP with:
+  - 10-step data collection from 3 sources (Markaz, Gmail, Calendar)
+  - 10 stat boxes showing complete pipeline flow (shortlisted → invited → booked → completed → passed/failed → case studies sent → debrief invites → debriefs booked → decision status)
+  - Complete pipeline summary grouped by candidate status
+  - Top candidate recommendations (hyperlinked CVs, tied to resume + values + case study)
+  - Recommendations framed as suggestions, not directives
+  - Email subject: "Hiring for [Position] – Decision Brief"
+  - For hiring managers + leadership team
+  - Extremely detailed, complete, nothing missing
+  - v8 design, inline HTML, approval before sending
+- **Key Requirement:** Check all 3 sources (Markaz + Gmail + Calendar) — never rely on single source
+- **Files updated:**
+  - `skills.md` — Added Skill 8 (Hiring Decision Brief), renumbered Skills 8-11 → 9-12
+  - `memory.md` — Added "Hiring Decision Brief — SOP" quick reference
+  - `CLAUDE.md` — Added to Quick Reference section
+- **Commits:**
+  - Commit 7282150: Created skills/hiring-decision-brief.md + updated skills.md
+  - Commit 500a012: Updated memory.md and CLAUDE.md
+- **Note:** Separate from Decision Briefs (Skill 5) — more comprehensive, leadership-focused, includes pipeline tracking
+- **Status:** Committed and pushed to GitHub
+
 ---
 
 ## OPEN ITEMS CARRIED FORWARD
@@ -342,14 +365,35 @@ None in this session.
 ### High Priority (Next Session)
 1. **Values Feedback Email Approval** — Awaiting Ayesha's approval on Junaid + Jawad Khan pilot emails before live send (BLOCKED per 1.4 Approval SOP)
 2. **Warm Bench Feedback Email Skill Live** — SOP documented and committed. Ready for use when warm bench candidates identified.
-3. **Continue General SOPs Review** — User may have additional rules or updates to existing SOPs
+3. **Hiring Decision Brief Skill Live** — SOP documented and committed. Ready for use on next hiring brief to leadership.
 
 ### Medium Priority
-1. **CLAUDE.md cleanup** — File now optimized with skill SOPs referenced. Verify it's under target length.
-2. **Memory updates finalized** — Confirm memory.md has all quick-reference SOPs indexed
+1. **CLAUDE.md optimization** — File now contains comprehensive skill SOPs referenced. Verify completeness.
+2. **Memory system complete** — All quick-reference SOPs indexed in memory.md for session startup
+3. **Skills index complete** — All 12 core skills (+ General Discipline meta-skill) documented in skills.md
 
 ### Deferred / Blocked
 - None
+
+---
+
+## Skills Locked In (2026-04-10)
+
+**12 Core Skills + General Discipline (Meta-Skill):**
+1. CV Screening — 7-step manual review, 14-15k char capacity
+2. Case Study Evaluation — 8-step process, check Markaz + Gmail, auto-flag incomplete
+3. Values Feedback Emails — 800-1100 words, rejection after values fail
+4. Values Scorecard Scoring — 7-step SOP, read transcript, ask before submit, confirm candidate/position
+5. Decision Briefs — 4-part email structure, post-all-rounds recommendations
+6. Candidate Rejections (CV-Stage) — 800+ words, specific CV evidence
+7. Warm Bench Feedback Email — 800-1000 words, values-passed but not selected
+8. Hiring Decision Brief — 10-step SOP, pipeline tracking + leadership recommendations
+9. Attendance Reports — 7 sections, 8 stat boxes, PAYROLL_TOTAL=84
+10. Database Queries — 6 query types, audit logging mandatory
+11. Report Generation — (no changes required)
+12. Email Notifications — (pending refresh)
+
+**General Discipline (Meta-Skill):** 10 core non-negotiable SOPs apply to ALL work
 
 ---
 
