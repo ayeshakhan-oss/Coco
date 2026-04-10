@@ -119,6 +119,25 @@ Full SOP saved in skills/warm-bench-feedback-email.md. Separate from CV-stage re
 **Non-negotiable:** 800–1000 words minimum · No em dashes · "We" voice · They/them pronouns · Feedback widget required · v8 design · Safe_sendmail bouncer · Pilot first (PILOT_MODE = True to Ayesha + Jawwad only)
 
 **Key difference from CV-stage rejection:** CV rejections explain gaps in experience/skills. Warm bench explains why role didn't advance due to role constraints, then signals specific future fit.
+
+---
+
+## Values Scorecard Scoring — SOP Updated (2026-04-10)
+
+Full SOP updated in skills/values-scorecard-scoring.md with 7 critical steps.
+
+**7-step SOP:**
+1. **Read transcript fully** — Don't skim. Understand complete context and flow.
+2. **Score based on transcript evidence** — Use 4-evidence system (Deep-Dive, Curve-Ball, Micro-Case, Rating).
+3. **Ask before submitting** — After preparing scorecard, ask Ayesha: "Should I go and submit this on Markaz or not?" Never submit automatically.
+4. **Confirm candidate + position** — Verify candidate name, app ID, and role match before submitting (recent error: wrong candidate/position submitted).
+5. **Personal examples acceptable** — If genuinely fits the value, personal life examples are valid evidence. Don't dismiss them.
+6. **Be lenient when needed** — Consider if interviewer phrasing caused confusion. Don't penalize for unclear questions. Rate on what they actually demonstrated.
+7. **Provide interview feedback** — Highlight where questions could be clearer, where interviewer tone was harsh, where process could improve.
+
+**Non-negotiable:** Read full transcript · Ask approval before submit · Confirm candidate/position · Markaz schema exact · GWC only for PASS candidates · One minus = OUT always
+
+**Key additions (2026-04-10):** Approval-before-submitting rule (prevent accidental submissions) · Candidate/position confirmation (prevent wrong data writes) · Personal examples valid (fairness) · Context-aware leniency (don't penalize for interview logistics) · Interview feedback to Ayesha (continuous improvement)
 - **Scoring:** 1–5 per criterion. Strong reasoning + minor errors → score high. Correct outputs + weak reasoning → score low. Insight without evidence → cap 3. Evidence without interpretation → cap 3.
 - **Verdict labels:** 85–100% STRONG HIRE · 70–84% HIRE · 55–69% CONDITIONAL · 40–54% BORDERLINE · <40% NOT RECOMMENDED
 - **Output format:** HTML email (rich inline report). Pilot: Ayesha + Jawwad. Live: TO = hiring manager, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com + any additional stakeholders requested by user.

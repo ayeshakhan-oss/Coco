@@ -142,13 +142,17 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Sign-off (exact): Warm regards, / People and Culture Team / Taleemabad / hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
 - Never mention Coco or AI in the email body
 
-## Values Scorecard Scoring — People Analyzer (confirmed 2026-03-17)
+## Values Scorecard Scoring — People Analyzer (updated 2026-04-10)
+- **7-step SOP:** Read transcript fully → Score based on evidence → Ask before submitting → Confirm candidate/position → Accept personal examples → Be lenient on phrasing issues → Provide interview feedback
+- **Critical:** Always ask Ayesha before submitting: "Should I go and submit this on Markaz or not?"
+- **Confirm:** Candidate identity (name, app_id) + Position (role, JD) before submission
 - Ratings: **+** (exhibits) · **+/-** (inconsistent) · **-** (does not exhibit)
 - **PASS:** zero minuses AND ≤2 +/- · **OUT:** any minus OR ≥3 +/-
 - GWC: Gets it / Wants it / Capacity — must be YES on all 3 (follows values pass)
 - 6 values: Don't Walk Away · All for One · Continuously Improve · Courageous Conversations · Don't Hold On Too Tight · Practice Joy
-- Scorecard columns: Deep-Dive evidence · Curve-Ball evidence · Micro-Case evidence · Rating
-- Full detail: memory/values_scoring.md
+- Personal examples valid if they genuinely fit the value
+- Provide interview feedback to Ayesha (question clarity, tone, process improvements)
+- Full detail: skills/values-scorecard-scoring.md
 
 ## Values Interview Invites
 - Template + rules: saved in memory.md → "Values Invite Template" section
