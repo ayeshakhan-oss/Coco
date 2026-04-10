@@ -98,6 +98,27 @@ Full SOP saved in skills/kcd-evaluation.md. Key facts for quick recall:
 - Files land in: `temp/case-studies/[Role]/` (assignment, datasets, framework, ideal answer, submissions)
 - Role-specific `CLAUDE.md` = primary scoring framework. Default 6 criteria = fallback only if none exists.
 - **Three failure modes:** content dump (AI paste, no synthesis) · mirror problem (identical stats across candidates, flag both) · foundational misread (wrong anchor figure, cascading errors)
+
+---
+
+## Warm Bench Feedback Emails — SOP (added 2026-04-10)
+
+Full SOP saved in skills/warm-bench-feedback-email.md. Separate from CV-stage rejections.
+
+**When to send:** Candidate cleared values interview with good GWC, but was NOT selected for the current role. Signal they're on the warm bench for future suitable roles.
+
+**Tone:** Warm, affectionate, human, storytelling-based — almost like a thoughtful personal letter.
+
+**5-section structure:**
+1. Opening: Warm greeting, thank them for their time
+2. What We Saw: Quote specific interview examples + values scorecard evidence
+3. GWC & Fit: Reference their GWC assessment, explain why THIS role didn't advance (focus on role needs, not their gaps)
+4. Warm Bench Signal: SPECIFIC future role/function/timeline (not vague "door open")
+5. Closing: Warm, encouraging, human
+
+**Non-negotiable:** 800–1000 words minimum · No em dashes · "We" voice · They/them pronouns · Feedback widget required · v8 design · Safe_sendmail bouncer · Pilot first (PILOT_MODE = True to Ayesha + Jawwad only)
+
+**Key difference from CV-stage rejection:** CV rejections explain gaps in experience/skills. Warm bench explains why role didn't advance due to role constraints, then signals specific future fit.
 - **Scoring:** 1–5 per criterion. Strong reasoning + minor errors → score high. Correct outputs + weak reasoning → score low. Insight without evidence → cap 3. Evidence without interpretation → cap 3.
 - **Verdict labels:** 85–100% STRONG HIRE · 70–84% HIRE · 55–69% CONDITIONAL · 40–54% BORDERLINE · <40% NOT RECOMMENDED
 - **Output format:** HTML email (rich inline report). Pilot: Ayesha + Jawwad. Live: TO = hiring manager, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com + any additional stakeholders requested by user.
