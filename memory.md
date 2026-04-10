@@ -141,6 +141,38 @@ Full SOP updated in skills/values-scorecard-scoring.md with 7 critical steps.
 
 ---
 
+## Attendance Reports — SOP Updated (2026-04-10)
+
+Full SOP updated in skills/attendance-reports.md with 6-step data collection workflow.
+
+**Objective:** Track office presence and reporting discipline for I-10 Head Office. NOT micromanagement — identify people absent/remote without informing anywhere.
+
+**Context:** Three offices (I-10 focus, H-9, Rawalpindi) · Fridays org-wide WFH · Scope: OPL+OWT (84 active)
+
+**6-Step Data Collection Workflow:**
+1. Get active employee list from payroll (use PREVIOUS month until current is processed)
+2. Pull names + active counts from Markaz
+3. Check Teams Presence channel (leave, WFH, status updates)
+4. Cross-check Markaz for leave/WFH records (Teams acceptable if Markaz not updated)
+5. Compare against on-site list provided by Ayesha (follow exact names/spelling)
+6. Flag silent cases (not on list, not in Teams, not in Markaz)
+
+**Then Report Generation (7 sections + 8 stat boxes):** ONSITE, ON LEAVE, WFH (UNLOGGED), WFH — CONFIRMED, OUT OF OFFICE, ARRIVING LATER, FLAGGED
+
+**Non-negotiable:** 
+- PAYROLL_TOTAL = 84 (static)
+- Use previous month's payroll (April uses March, May uses April)
+- Names must be accurate/complete (quality correction: read carefully)
+- Verify sum = 84 before sending
+- Flag silent cases for accountability
+- PDF format exact
+- Safe_sendmail bouncer
+- Mon–Thu only (unless asked)
+
+**Quality correction (2026-04-10):** Coco did not read provided lists carefully enough. Must copy names exactly as Ayesha provides them.
+
+---
+
 ## Hiring Decision Brief — SOP (added 2026-04-10)
 
 Full SOP saved in skills/hiring-decision-brief.md. NEW skill (Skill 8). Separate from Decision Briefs (Skill 5).
