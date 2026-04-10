@@ -335,7 +335,28 @@ None in this session.
 - **skills.md:** Already updated with Skill 7 numbering and warm bench details
 - **Status:** All updates saved and staged for commit
 
-#### 9. Hiring Decision Brief Skill Creation
+#### 9. Attendance Reports SOP Updated
+- **Objective:** Track office presence and reporting discipline for I-10 Head Office
+- **Context:** Three offices (I-10 focus), Fridays WFH, OPL+OWT scope (84 active)
+- **Deliverable:** Updated skills/attendance-reports.md with:
+  - 6-step data collection workflow (payroll → Markaz → Teams → cross-check → Ayesha's list → flag silent)
+  - Use PREVIOUS month's payroll until current is processed
+  - Flag silent cases (no record anywhere) for accountability
+  - 7 sections + 8 stat boxes for report generation
+  - 15 non-negotiable rules including payroll timing, name accuracy, purpose (not micromanagement)
+- **Quality Correction (2026-04-10):** Coco must read provided lists carefully and copy names exactly as Ayesha provides (previously did not do this)
+- **Key Updates:**
+  - Step 1: Get active employee list (use previous month payroll)
+  - Step 2: Pull from Markaz
+  - Step 3: Check Teams Presence
+  - Step 4: Cross-check Markaz
+  - Step 5: Compare to Ayesha's on-site list (exact names)
+  - Step 6: Flag silent cases (for follow-up)
+- **Files updated:** skills/attendance-reports.md
+- **Commit:** 8dc7fe7 "Update Attendance Reports SOP with 6-step workflow and quality corrections"
+- **Status:** Committed and pushed to GitHub
+
+#### 10. Hiring Decision Brief Skill Creation
 - **Objective:** Create comprehensive hiring brief for leadership combining pipeline progress + candidate recommendations
 - **Deliverable:** `skills/hiring-decision-brief.md` — 10-step SOP with:
   - 10-step data collection from 3 sources (Markaz, Gmail, Calendar)
@@ -388,7 +409,7 @@ None in this session.
 6. Candidate Rejections (CV-Stage) — 800+ words, specific CV evidence
 7. Warm Bench Feedback Email — 800-1000 words, values-passed but not selected
 8. Hiring Decision Brief — 10-step SOP, pipeline tracking + leadership recommendations
-9. Attendance Reports — 7 sections, 8 stat boxes, PAYROLL_TOTAL=84
+9. Attendance Reports — 6-step workflow + 7 sections + 8 stat boxes, PAYROLL_TOTAL=84, flag silent cases (UPDATED 2026-04-10)
 10. Database Queries — 6 query types, audit logging mandatory
 11. Report Generation — (no changes required)
 12. Email Notifications — (pending refresh)
