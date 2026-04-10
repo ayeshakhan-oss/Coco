@@ -231,23 +231,43 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 9: Attendance Reports
+## Skill 9: Attendance Reports (Updated 2026-04-10)
 
 **File:** [skills/attendance-reports.md](skills/attendance-reports.md)
 
-**Status:** ✓ Documented (2026-04-10)
+**Status:** ✓ Locked in (2026-04-10) — 6-step workflow + quality corrections
 
-**Objective:** Daily attendance report showing where Taleemabad's OPL+OWT employees are (onsite, leave, WFH, out of office, etc.).
+**Pipeline Position:** Daily tracking for I-10 Head Office operational planning
+
+**Objective:** Track office presence and reporting discipline for I-10 Head Office. Report where OPL+OWT employees are (onsite, leave, WFH, out of office). Purpose: accountability, NOT micromanagement. Flag silent cases (people absent/remote without informing).
+
+**Context:**
+- Three offices: I-10 (focus), H-9, Rawalpindi
+- Fridays: Org-wide WFH
+- Scope: OPL + OWT (84 active, static)
+
+**6-Step Data Collection Workflow (NEW 2026-04-10):**
+1. Get active employee list from payroll (use PREVIOUS month until current processes)
+2. Pull names + counts from Markaz
+3. Check Teams Presence channel (leave, WFH, status updates)
+4. Cross-check Markaz for leave/WFH records
+5. Compare to Ayesha's on-site list (exact names/spelling — quality correction)
+6. Flag silent cases (no record anywhere → follow-up needed)
+
+**Report Output (7 sections + 8 stat boxes):**
+- Onsite, On Leave, WFH (unlogged), WFH — Confirmed (permanent), Out of Office, Arriving Later, Flagged
+- TOTAL must = 84 (static payroll, not sum of categories)
+- Flagged section: status notes required (RWP Team, on severance, last month, no record found)
 
 **Key Requirements:**
-- Scope: OPL+OWT employees only (84 active as of 2026-04-09, static payroll total)
-- Data sources: Markaz (leave records) + Teams Presence (announcements) + sign-in records + user feedback
-- 7 sections: Onsite, On Leave, WFH (unlogged), WFH — Confirmed (permanent WFH), Out of Office, Arriving Later, Flagged (zero record)
-- 8 stat boxes showing count for each section (TOTAL must always = 84, the static payroll)
-- Flagged section includes status notes (RWP Team, on severance, last month, no record)
-- Email format: Header + 8 colored stat boxes + 2-column onsite grid + tables for other categories
+- Use PREVIOUS month's payroll (April uses March, May uses April)
+- Check all 3 sources (payroll + Markaz + Teams) — never rely on one
+- Read Ayesha's provided list carefully, copy names exactly (quality correction 2026-04-10)
+- Email: Header + 8 colored stat boxes + 2-column onsite grid + tables
 - Recipients: Ayesha Khan + Jawwad Ali + Aymen Abid
-- Verification formula: Sum of all sections must = 84 before sending
+- Verify sum = 84 before sending
+- Safe_sendmail bouncer, audit log
+- Mon–Thu only (unless asked)
 
 ---
 
@@ -308,7 +328,7 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 | 6 | Candidate Rejections (CV-Stage) | ✓ | Yes | 2026-04-10 |
 | 7 | Warm Bench Feedback Email | ✓ | Yes | 2026-04-10 |
 | 8 | Hiring Decision Brief | ✓ | Yes | 2026-04-10 |
-| 9 | Attendance Reports | ✓ | Yes | 2026-04-10 |
+| 9 | Attendance Reports | ✓ | Yes | 2026-04-10 (Updated) |
 | 10 | Database Queries | ✓ | Yes | 2026-04-10 |
 | 11 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
 | 12 | Email Notifications | ✓ | Existing | (pending refresh) |
