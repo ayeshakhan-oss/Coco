@@ -1,12 +1,14 @@
 ---
-name: Candidate Rejections SOP
-description: Reject candidates at various stages with warm, specific feedback. Two types: CV-stage rejection + warm bench email. v8 design. Feedback widget required.
+name: Candidate Rejections SOP (CV-Stage)
+description: Reject candidates during CV screening with warm, specific feedback tied to their actual CV. 800+ words. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see warm-bench-feedback-email.md.
 type: feedback
 ---
 
 ## Objective
 
-Reject candidates at various stages with specific, warm, reflective feedback tied to their actual CV or interview. Two main types: CV-stage rejections (during screening) and warm bench emails (after interviews).
+Reject candidates during CV screening phase with specific, warm, reflective feedback tied to their actual CV.
+
+**Note:** For candidates who cleared the values interview but weren't selected for the current role, see **skills/warm-bench-feedback-email.md** instead. That is a separate skill.
 
 ---
 
@@ -56,27 +58,6 @@ Reject candidates at various stages with specific, warm, reflective feedback tie
 
 ---
 
-## TYPE 2: WARM BENCH EMAIL (800-1000 words)
-
-**Purpose:** Reject a candidate now but signal they're valuable for future roles. Used after values interview or case study when they don't pass but show real potential.
-
-**Differences from CV-stage rejection:**
-
-1. **Tone:** More hopeful, less about gaps. Focus on "here's what we saw, here's when this might be a fit."
-
-2. **Closing statement (DIFFERENT):** Include pipeline reference. Example:
-   - "We're hiring for [Specific Future Role] in [Timeline]. Your background in X would be valuable for that conversation. We'll reach out when that opens."
-   - Never say "door open" — be specific about which door and when.
-
-3. **Body structure:**
-   - What we genuinely appreciated
-   - Where this role needed different strengths
-   - Specific future role or function we'd like to revisit
-
-4. **All other steps:** Identical to CV-stage rejection (word count 800–1000w, v8 design, feedback widget, recipients, approval, safe_sendmail, PILOT mode first).
-
----
-
 ## NON-NEGOTIABLE RULES (ALL REJECTION EMAILS)
 
 1. **Tone is "with" not "at"** — write as if reflecting together, not judging. Never use "you failed" or "you lack" phrasing.
@@ -109,8 +90,8 @@ Reject candidates at various stages with specific, warm, reflective feedback tie
 - [ ] 2–3 genuine strengths cited with specific CV text
 - [ ] 1–2 honest gaps explained reflectively
 - [ ] "What to do next" section is actionable
-- [ ] Closing matches type (CV-stage = "door open" / Warm bench = specific future role)
-- [ ] Word count ≥800 (warm bench: 800–1000)
+- [ ] Closing: "The door remains open. Keep an eye on our careers page at www.taleemabad.com."
+- [ ] Word count ≥800
 - [ ] v8 HTML design used (blue headings, green subheadings, Georgia serif, justified)
 - [ ] Feedback widget included with correct app_id
 - [ ] Sign-off is exact (Warm regards, / People and Culture Team / etc.)
@@ -154,4 +135,4 @@ Reject candidates at various stages with specific, warm, reflective feedback tie
 
 ## Commitment (Coco, 2026-04-10)
 
-I will reject candidates with warm, specific feedback tied to their actual CV or interview. I will use v8 design. I will include feedback widget. I will pilot first, get approval, then go live. No em dashes. "We" voice. They/them pronouns. Safe_sendmail bouncer. Verification before sending.
+I will reject CV-stage candidates with warm, specific feedback tied to their actual CV. I will use v8 design. I will include feedback widget. I will pilot first, get approval, then go live. No em dashes. "We" voice. They/them pronouns. Safe_sendmail bouncer. Verification before sending. For warm bench feedback (values-passed candidates not selected for role), I will use skills/warm-bench-feedback-email.md instead.

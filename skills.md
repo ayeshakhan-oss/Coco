@@ -148,32 +148,54 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 6: Candidate Rejections
+## Skill 6: Candidate Rejections (CV-Stage)
 
 **File:** [skills/candidate-rejections.md](skills/candidate-rejections.md)
 
 **Status:** ✓ Documented (2026-04-10)
 
-**Pipeline Position:** Various stages — CV screening, after case study, after debrief, etc.
+**Pipeline Position:** CV screening stage — candidates who don't advance to values interview
 
-**Objective:** Reject candidates at various stages with warm, specific feedback. Two types: CV-stage rejections and warm bench emails.
+**Objective:** Reject candidates during CV screening phase with warm, specific, reflective feedback tied to their actual CV.
 
-**Type 1: CV-Stage Rejection (800+ words)**
+**Key Requirements:**
+- 800+ words (minimum 800)
 - Warm, reflective tone (not diagnostic)
 - Specific CV evidence (don't make up observations)
-- Section: What we appreciated → Where we found questions → What to do next
+- 3 sections: What we appreciated → Where we found questions → What to do next
 - No em dashes, "we" voice, they/them pronouns
 - v8 HTML design, feedback widget required
-- Approval before sending
+- Safe_sendmail bouncer, approval before sending (PILOT first)
 
-**Type 2: Warm Bench Email (800-1000 words)**
-- Reject now but signal future fit
-- Different closing (specific future role + timeline, not just "door open")
-- Similar structure and format to Type 1
+**Note:** For candidates who passed values but weren't selected for current role, see **Skill 7: Warm Bench Feedback Email** instead.
 
 ---
 
-## Skill 7: Attendance Reports
+## Skill 7: Warm Bench Feedback Email
+
+**File:** [skills/warm-bench-feedback-email.md](skills/warm-bench-feedback-email.md)
+
+**Status:** ✓ Documented (2026-04-10)
+
+**Pipeline Position:** After values interview + case study + debrief — candidates who cleared values with good GWC but weren't selected for THIS role
+
+**Objective:** Send warm, storytelling-based feedback to candidates who passed values interview but weren't selected for the current role. Signal they remain on warm bench for future suitable roles.
+
+**Key Requirements:**
+- 800–1,000 words (minimum 800)
+- Warm, affectionate, almost like a thoughtful letter
+- Quote specific examples from their values interview
+- Reference values scorecard evidence
+- Reference GWC assessment (explain their GWC score)
+- Gently explain why role didn't advance (focus on role needs, not their gaps)
+- Clearly state they may be reconsidered for future roles (SPECIFIC role/function/timeline, not vague)
+- v8 HTML design, feedback widget required
+- Safe_sendmail bouncer, approval before sending (PILOT first)
+- NO em dashes, "we" voice, they/them pronouns
+
+---
+
+## Skill 9: Attendance Reports
 
 **File:** [skills/attendance-reports.md](skills/attendance-reports.md)
 
@@ -193,7 +215,7 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 8: Database Queries
+## Skill 10: Database Queries
 
 **File:** [skills/database-queries.md](skills/database-queries.md)
 
@@ -213,7 +235,7 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 9: Report Generation
+## Skill 11: Report Generation
 
 **File:** [skills/report-generation.md](skills/report-generation.md)
 
@@ -225,7 +247,7 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skill 10: Email Notifications
+## Skill 12: Email Notifications
 
 **File:** [skills/email-notification.md](skills/email-notification.md)
 
@@ -247,11 +269,12 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 | 3 | Values Feedback Emails | ✓ | Yes | 2026-04-10 |
 | 4 | Values Scorecard Scoring | ✓ | Yes | 2026-04-10 |
 | 5 | Decision Briefs | ✓ | Yes | 2026-04-10 |
-| 6 | Candidate Rejections | ✓ | Yes | 2026-04-10 |
-| 7 | Attendance Reports | ✓ | Yes | 2026-04-10 |
-| 8 | Database Queries | ✓ | Yes | 2026-04-10 |
-| 9 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
-| 10 | Email Notifications | ✓ | Existing | (pending refresh) |
+| 6 | Candidate Rejections (CV-Stage) | ✓ | Yes | 2026-04-10 |
+| 7 | Warm Bench Feedback Email | ✓ | Yes | 2026-04-10 |
+| 8 | Attendance Reports | ✓ | Yes | 2026-04-10 |
+| 9 | Database Queries | ✓ | Yes | 2026-04-10 |
+| 10 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
+| 11 | Email Notifications | ✓ | Existing | (pending refresh) |
 
 ---
 
