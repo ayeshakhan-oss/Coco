@@ -240,6 +240,36 @@ None in this session.
   - Saved to: skills/cv-screening.md + memory/skill_cv_screening_sop.md
 - **Status:** CV Screening locked in. 8 remaining skill SOPs pending user guidance
 
+### 4. Case Study Evaluation SOP (finalized 2026-04-10)
+- **8-step process:**
+  1. Check Markaz Candidate Communication (case study sent?)
+  2. Check submission status (text or file?)
+  3. Check Gmail (search for submission emails)
+  4. Download submission
+  5. Read original assignment first (know what was asked)
+  6. Read submission thoroughly (full read, one-by-one)
+  7. Evaluate quality + completeness (identify gaps specifically)
+  8. Flag AI use or weak effort
+- **Automation:** Auto-flag incomplete submissions to Ayesha same day/next morning
+- **Weekly reporting:** Proactively report who submitted, overdue, needs follow-up (no wait for ask)
+- **Critical rule:** Check BOTH Markaz AND Gmail (don't rely on one source only)
+- **Saved to:** skills/case-study-evaluation.md + memory/skill_case_study_evaluation_sop.md
+
+### 5. Values Feedback Emails SOP (finalized 2026-04-10)
+- **Word count requirement (CRITICAL):** 800–1100 words (800 minimum mandatory, no exceptions)
+- **Existing SOPs/steps:** All rules from memory/feedback_email_rules.md apply
+- **Pilot rule (CRITICAL):** Pilot goes ONLY to Ayesha Khan + Jawwad Ali, NEVER include candidate
+- **3 required sections:** What We Liked / Where We Found Questions / What To Do Next
+- **Specific interview evidence:** Every observation must cite candidate's actual values interview
+- **v8 HTML design:** Blue headings, green subheadings, Georgia serif, justified text
+- **Feedback widget:** Required at end of body
+- **Safe_sendmail bouncer:** Always use (never smtplib directly)
+- **Approval before live:** PILOT first, get approval, then switch PILOT_MODE = False
+- **Saved to:** skills/values-feedback-emails.md + memory/skill_values_feedback_emails_sop.md
+
+### 6. Report Generation SOP (2026-04-10)
+- **Status:** No changes required. Current methodology is fine.
+
 ---
 
 ## SCRIPTS CREATED / MODIFIED
