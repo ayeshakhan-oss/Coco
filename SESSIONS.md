@@ -301,16 +301,52 @@ None in this session.
 
 ---
 
+---
+
+## Session 001 Continuation | 2026-04-10 (Afternoon)
+**Focus:** Create Warm Bench Feedback Email skill (separate from CV rejections)
+
+### WHAT WAS COMPLETED
+
+#### 7. Warm Bench Feedback Email Skill Creation
+- **Objective:** Create dedicated SOP for warm bench emails (candidates who passed values but weren't selected for current role)
+- **Deliverable:** `skills/warm-bench-feedback-email.md` — comprehensive SOP with:
+  - When to send (cleared values, good GWC, not selected for THIS role, may fit future roles)
+  - Tone guidelines (warm, affectionate, human, storytelling-based, like a thoughtful letter)
+  - 5-section structure: Opening → What We Saw → GWC & Fit → Warm Bench Signal → Closing
+  - Content requirements: quote interview examples, values+GWC evidence, gentle explanation, SPECIFIC future role/timeline
+  - Word count: 800–1000 words minimum
+  - v8 HTML design, feedback widget required, safe_sendmail bouncer, pilot-first rule
+  - 8 common mistakes + pre-send checklist (17 items)
+- **Key difference from CV-stage rejection:** CV rejections explain gaps in CV; warm bench explains role constraints + signals specific future opportunity
+- **Files updated:**
+  - `skills.md` — Reorganized skill numbering, added Skill 7 (Warm Bench), renumbered subsequent skills
+  - `skills/candidate-rejections.md` — Clarified as CV-stage only, removed Type 2 warm bench, added cross-reference
+- **Commits:**
+  - Commit f40c209: "Add Warm Bench Feedback Email skill (separate from CV-stage rejections)"
+  - Files: skills/warm-bench-feedback-email.md, skills.md (updated), skills/candidate-rejections.md (updated)
+- **Status:** Committed and pushed to GitHub
+
+#### 8. Documentation Updates (memory.md, CLAUDE.md, skills.md)
+- **memory.md:** Added "Warm Bench Feedback Emails — SOP" section with quick reference (when to send, tone, structure, non-negotiable rules)
+- **CLAUDE.md:** 
+  - Added Warm Bench SOP to Quick Reference section
+  - Updated Candidate Feedback Email Rules section to clarify three email types (CV-stage, values-failed, warm-bench) with separate SOPs
+- **skills.md:** Already updated with Skill 7 numbering and warm bench details
+- **Status:** All updates saved and staged for commit
+
+---
+
 ## OPEN ITEMS CARRIED FORWARD
 
 ### High Priority (Next Session)
 1. **Values Feedback Email Approval** — Awaiting Ayesha's approval on Junaid + Jawad Khan pilot emails before live send (BLOCKED per 1.4 Approval SOP)
-2. **Continue General SOPs Review** — User may have additional rules or updates to existing SOPs
-3. **Skills SOPs Finalization** — If any skill SOP needs refinement or additional detail, user will direct
+2. **Warm Bench Feedback Email Skill Live** — SOP documented and committed. Ready for use when warm bench candidates identified.
+3. **Continue General SOPs Review** — User may have additional rules or updates to existing SOPs
 
 ### Medium Priority
-1. **CLAUDE.md cleanup** — File now under 100 lines with general SOPs referenced. Verify it's optimized.
-2. **Skill file creation** — Consider creating `skills/general-discipline.md` as reference (optional)
+1. **CLAUDE.md cleanup** — File now optimized with skill SOPs referenced. Verify it's under target length.
+2. **Memory updates finalized** — Confirm memory.md has all quick-reference SOPs indexed
 
 ### Deferred / Blocked
 - None

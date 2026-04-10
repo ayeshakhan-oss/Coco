@@ -67,6 +67,8 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - **CV Screening SOP:** see [skills/cv-screening.md](skills/cv-screening.md) (7-step manual review, 14k-15k char capacity, stat boxes, hyperlinked names, new columns: Expected Salary/City/Relocate)
 - **Case Study Evaluation SOP:** see [skills/case-study-evaluation.md](skills/case-study-evaluation.md) (8-step process, check Markaz AND Gmail, auto-flag incomplete, weekly proactive reporting, flag AI/weak effort)
 - **Values Feedback Emails SOP:** see [skills/values-feedback-emails.md](skills/values-feedback-emails.md) (800-1100 words mandatory, v8 design, pilot to Ayesha+Jawad ONLY, specific interview evidence)
+- **Warm Bench Feedback Email SOP:** see [skills/warm-bench-feedback-email.md](skills/warm-bench-feedback-email.md) (for values-passed candidates not selected for current role; 800-1000 words, warm storytelling tone, quote interview examples, reference values+GWC evidence, signal specific future role)
+- **Candidate Rejections SOP (CV-Stage):** see [skills/candidate-rejections.md](skills/candidate-rejections.md) (800+ words, specific CV evidence, reflective tone, v8 design, feedback widget)
 - **General Discipline (10 Core SOPs):** see [skills/general-discipline.md](skills/general-discipline.md) (foundation of ALL work; no fabrication, memory mandatory, pilot-sharing, approval before sending, QA discipline)
 - KCD case study evaluation: see [skills/kcd-evaluation.md](skills/kcd-evaluation.md)
 - Report format: see [skills/report-generation.md](skills/report-generation.md)
@@ -124,17 +126,19 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - **Decision brief CV hyperlinks (confirmed 2026-04-08):** audit ALL sections (Leading, Discussion, Pipeline, Debrief Schedule) before sending — every candidate name must be hyperlinked. See memory/feedback_decision_brief_hyperlinks.md.
 - **Gmail thread reply (confirmed 2026-04-08):** replying in an existing thread requires In-Reply-To + References headers. See memory/feedback_gmail_thread_reply.md.
 
-## Candidate Feedback Email Rules (confirmed 2026-03-25)
+## Candidate Feedback Email Rules (confirmed 2026-03-25, updated 2026-04-10)
 - Tone: considerate, open-handed, emotionally careful — no absolute/harsh phrasing, write WITH the candidate
 - No em dashes " —" anywhere — replace with period, comma, or colon (dashes look AI-generated)
 - Never refer to the email as a "letter" in the body — internal framing only
 - **They/them pronouns for all candidates** — never "he/she/his/her" — gender-neutral always
 - **"We" voice throughout all emails** — never "I"
-- Subject lines: story-driven for values/warm-bench emails; simpler for CV-stage rejections
-- Warm bench vs values-failed closing: see memory/feedback_email_rules.md
-- Full rules + confirmed HTML design (v8) + pre-send checklist: memory/feedback_email_rules.md
-- Three email types: (1) CV-stage rejection 800w · (2) Values failed 800-1000w · (3) Warm bench with pipeline promise — see memory/feedback_email_rules.md
+- Subject lines: story-driven for values-failed/warm-bench emails; simpler for CV-stage rejections
+- **Three email types (separate SOPs):**
+  1. **CV-Stage Rejection** (skill: candidate-rejections.md) — candidates rejected during screening, 800+ words, cite CV strengths/gaps
+  2. **Values-Failed Feedback** (skill: values-feedback-emails.md) — candidates who failed values interview, 800-1100 words, cite values interview evidence
+  3. **Warm Bench Feedback** (skill: warm-bench-feedback-email.md) — candidates who PASSED values but weren't selected for current role, 800-1000 words, quote interview examples, signal specific future role
 - CV-stage rejections: minimum 800w, "we" voice, reflective not diagnostic, verify CV content from DB before sending, CC hiring@ + ayesha.khan@
+- Warm bench: warm, affectionate, storytelling tone, reference values+GWC scorecard evidence, SPECIFIC future role/function/timeline
 - Sign-off (exact): Warm regards, / People and Culture Team / Taleemabad / hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
 - Never mention Coco or AI in the email body
 
