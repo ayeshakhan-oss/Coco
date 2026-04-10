@@ -206,6 +206,31 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
+## Skill 8: Hiring Decision Brief
+
+**File:** [skills/hiring-decision-brief.md](skills/hiring-decision-brief.md)
+
+**Status:** ✓ Documented (2026-04-10)
+
+**Pipeline Position:** After values interviews, case studies, debriefs — comprehensive brief for leadership/hiring manager
+
+**Objective:** Create comprehensive hiring brief for leadership combining complete pipeline progress (candidate counts at each stage) and detailed candidate recommendations based on resume + values + case study evaluations.
+
+**Key Requirements:**
+- 10-step SOP with data collection from 3 sources (Markaz + Gmail + Calendar)
+- 10 stat boxes showing pipeline flow (shortlisted → invited → booked → completed → passed/failed → case studies sent/debrief invites → debriefs booked/pending → decision status)
+- Complete pipeline summary grouped by candidate status
+- Top candidate recommendations (hyperlinked CVs, tied to all 3 components)
+- Recommendations framed as suggestions, not directives
+- Extremely detailed, complete, nothing missing
+- Email recipients: Hiring manager + hiring@ + ayesha.khan@ + leadership
+- v8 HTML design, inline (no PDF)
+- Approval before sending (pilot first)
+
+**Non-negotiable:** Check all 3 sources (no single source) · 10 stat boxes required · Every name hyperlinked · No candidates omitted · Complete pipeline accounting
+
+---
+
 ## Skill 9: Attendance Reports
 
 **File:** [skills/attendance-reports.md](skills/attendance-reports.md)
@@ -282,10 +307,11 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 | 5 | Decision Briefs | ✓ | Yes | 2026-04-10 |
 | 6 | Candidate Rejections (CV-Stage) | ✓ | Yes | 2026-04-10 |
 | 7 | Warm Bench Feedback Email | ✓ | Yes | 2026-04-10 |
-| 8 | Attendance Reports | ✓ | Yes | 2026-04-10 |
-| 9 | Database Queries | ✓ | Yes | 2026-04-10 |
-| 10 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
-| 11 | Email Notifications | ✓ | Existing | (pending refresh) |
+| 8 | Hiring Decision Brief | ✓ | Yes | 2026-04-10 |
+| 9 | Attendance Reports | ✓ | Yes | 2026-04-10 |
+| 10 | Database Queries | ✓ | Yes | 2026-04-10 |
+| 11 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
+| 12 | Email Notifications | ✓ | Existing | (pending refresh) |
 
 ---
 
