@@ -221,7 +221,7 @@ None in this session.
 
 ### 3. SOP Documentation Work Continues
 - **Completed SOPs (documented with full steps):**
-  - CV Screening (12 steps)
+  - ✓ CV Screening (7 steps + email format + 14k-15k char capacity + new columns)
   - Case Study Evaluation (8 steps)
   - Report Generation (7 sections)
   - Values Feedback Emails (complete structure)
@@ -230,7 +230,15 @@ None in this session.
   - Decision Briefs (4-part structure)
   - Attendance Reports (7 sections + stat boxes)
   - Database Queries (6 query types + audit logging)
-- **Status:** All 9 skill SOPs now documented with steps, rules, checklists, common mistakes, and references
+- **CV Screening SOP (finalized 2026-04-10):**
+  - 7-step full manual review process
+  - Minimum CV reading capacity: 14,000–15,000 characters (do not flag before)
+  - New candidate info columns: Expected Salary, City, Willing to Relocate (Y/N)
+  - Email format: Header → 4 stat boxes → Key Observation → Shortlisted (name hyperlinked, description, gaps) → Maybe table → Special Flags → Footer
+  - Non-negotiable rules: read EVERY profile, state both total AND relevant exp, no assumptions, skills+exp=top criteria
+  - Reference email: Initial Screening — Soul Architect/UX Designer (2026-04-06 Ayesha Khan)
+  - Saved to: skills/cv-screening.md + memory/skill_cv_screening_sop.md
+- **Status:** CV Screening locked in. 8 remaining skill SOPs pending user guidance
 
 ---
 

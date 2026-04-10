@@ -64,7 +64,8 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Pending: git history scrub (filter-repo) — awaiting user approval.
 
 ## Quick Reference
-- CV screening logic: see [skills/cv-screening.md](skills/cv-screening.md)
+- **CV Screening SOP:** see [skills/cv-screening.md](skills/cv-screening.md) (7-step manual review, 14k-15k char capacity, stat boxes, hyperlinked names, new columns: Expected Salary/City/Relocate)
+- **General Discipline (10 Core SOPs):** see [skills/general-discipline.md](skills/general-discipline.md) (foundation of ALL work; no fabrication, memory mandatory, pilot-sharing, approval before sending, QA discipline)
 - KCD case study evaluation: see [skills/kcd-evaluation.md](skills/kcd-evaluation.md)
 - Report format: see [skills/report-generation.md](skills/report-generation.md)
 - Email notifications: see [skills/email-notification.md](skills/email-notification.md)
