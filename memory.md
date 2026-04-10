@@ -138,6 +138,34 @@ Full SOP updated in skills/values-scorecard-scoring.md with 7 critical steps.
 **Non-negotiable:** Read full transcript · Ask approval before submit · Confirm candidate/position · Markaz schema exact · GWC only for PASS candidates · One minus = OUT always
 
 **Key additions (2026-04-10):** Approval-before-submitting rule (prevent accidental submissions) · Candidate/position confirmation (prevent wrong data writes) · Personal examples valid (fairness) · Context-aware leniency (don't penalize for interview logistics) · Interview feedback to Ayesha (continuous improvement)
+
+---
+
+## Hiring Decision Brief — SOP (added 2026-04-10)
+
+Full SOP saved in skills/hiring-decision-brief.md. NEW skill (Skill 8). Separate from Decision Briefs (Skill 5).
+
+**Objective:** Comprehensive hiring brief for leadership combining complete pipeline progress (counts at each stage) + detailed candidate recommendations based on resume + values + case study.
+
+**10-step SOP with data from 3 sources (Markaz + Gmail + Calendar):**
+1. Count shortlisted candidates (Markaz)
+2. Count values invite emails sent (Gmail)
+3. Count calendar bookings for values (Calendar)
+4. Count completed values calls (Calendar)
+5. Count values PASS/OUT verdicts (Markaz)
+6. Count case studies sent (Markaz + Gmail)
+7. Count case study debrief invites (Gmail)
+8. Count debrief bookings (Gmail + Calendar)
+9. Create header with 10 stat boxes (pipeline flow visualization)
+10. Provide top candidate recommendations (hyperlinked CVs, tied to all 3 components)
+
+**Email subject:** "Hiring for [Position] – Decision Brief"
+
+**10 Stat Boxes Required:** Shortlisted, Invited to Values, Booked Values, Completed Values, Cleared Values, Failed Values, Case Studies Sent, Debrief Invites, Debriefs Booked, Decision Status
+
+**Non-negotiable:** Check all 3 sources (never rely on one alone) · 10 boxes required · Every name hyperlinked · No candidates omitted · Complete pipeline accounting · Recommendations as suggestions, not directives · Extremely detailed, nothing missing
+
+**For:** Hiring managers + Leadership team (very detailed, comprehensive)
 - **Scoring:** 1–5 per criterion. Strong reasoning + minor errors → score high. Correct outputs + weak reasoning → score low. Insight without evidence → cap 3. Evidence without interpretation → cap 3.
 - **Verdict labels:** 85–100% STRONG HIRE · 70–84% HIRE · 55–69% CONDITIONAL · 40–54% BORDERLINE · <40% NOT RECOMMENDED
 - **Output format:** HTML email (rich inline report). Pilot: Ayesha + Jawwad. Live: TO = hiring manager, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com + any additional stakeholders requested by user.
