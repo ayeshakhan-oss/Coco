@@ -12,7 +12,7 @@ import subprocess
 import sys
 import os
 
-SCRIPT_PATH = os.path.join(os.path.dirname(__file__), "weekly_pipeline_monitor.py")
+SCRIPT_PATH = os.path.join(os.path.dirname(__file__), "weekly_pipeline_monitor_text.py")
 PYTHON_PATH = sys.executable
 
 def register_tasks():
@@ -36,12 +36,12 @@ def register_tasks():
             "/f"
         ]
         subprocess.run(cmd1, check=True, capture_output=True, text=True)
-        print("  ✓ Monday task registered")
+        print("  [OK] Monday task registered")
     except subprocess.CalledProcessError as e:
-        print(f"  ✗ Failed to register Monday task: {e.stderr}")
+        print(f"  [FAIL] Failed to register Monday task: {e.stderr}")
         return False
     except Exception as e:
-        print(f"  ✗ Error: {e}")
+        print(f"  [ERROR] {e}")
         return False
 
     print()
@@ -59,17 +59,17 @@ def register_tasks():
             "/f"
         ]
         subprocess.run(cmd2, check=True, capture_output=True, text=True)
-        print("  ✓ Friday task registered")
+        print("  [OK] Friday task registered")
     except subprocess.CalledProcessError as e:
-        print(f"  ✗ Failed to register Friday task: {e.stderr}")
+        print(f"  [FAIL] Failed to register Friday task: {e.stderr}")
         return False
     except Exception as e:
-        print(f"  ✗ Error: {e}")
+        print(f"  [ERROR] {e}")
         return False
 
     print()
     print("=" * 70)
-    print("✓ Both tasks registered successfully!")
+    print("[SUCCESS] Both tasks registered successfully!")
     print()
     print("To verify, run: schtasks /query /tn CocoPipelineMonitor*")
     print()
