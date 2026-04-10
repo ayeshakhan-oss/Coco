@@ -8,9 +8,11 @@ and internal budget, ranks candidates, and sends analysis reports to hiring mana
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
 ## Current Focus
-Job 36 Decision Brief approved (2026-04-03) — "Final Candidates & Decision View" format confirmed. Reference script: scripts/jobs/job36/send_job36_decision_brief_pilot.py. Same format now being applied to Job 32.
-Job 32 Decision Brief in progress (2026-04-03) — pilot to Ayesha + Jawwad before live send to Sabeena Abbasi.
+Job 35 + Job 36 Decision Briefs sent live (2026-04-08) — combined reply to Sabeena Abbasi's "Impact hiring Update" thread. Reference: scripts/jobs/combined/send_combined_impact_reply_pilot.py
+Job 32 Decision Brief still pending — pilot to Ayesha + Jawwad before live send to Sabeena Abbasi.
 Article on personalized rejection feedback drafted and finalized (2026-04-01). Ready to publish on LinkedIn/Medium. Reference: memory/project_article_rejection_feedback.md
+Attendance Report live (2026-04-09) — 9 April 2026 report with Permanent WFH section added. 8 stat boxes, 8 permanent WFH employees (Amina Tayyub, Zuhaib Shaikh, Ajlal Hasan, Zeest Hassan Qureshi, Ahwaz Akhtar, Shayan Ahmad, ABDUL AHAD, Zulfiqar Ahmed Mughal). Reference: scripts/reports/attendance_9apr2026_exact.py. Footer: "Compiled by Coco, Nugget & Noah".
+Teams Integration live (2026-04-08) — Coco reads all Teams channels via Microsoft Graph API. Presence channel = attendance source. Integrated into attendance report (2026-04-09).
 
 ## Peer Agent — Noah (Jawwad Ali's agent)
 Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function, same pipeline position as Coco.
@@ -32,13 +34,15 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - docs/schema.md: Neon PostgreSQL schema (populate after first DB connection)
 - context/project-background.md: Taleemabad org context, hiring criteria, key people
 
-## SOPs — NON-NEGOTIABLE (set by user 2026-03-09)
+## SOPs — NON-NEGOTIABLE (updated 2026-04-10)
+
+**General Non-Negotiable SOPs (10 core rules for ALL work):** see [memory/general_non_negotiable_sops.md](../memory/general_non_negotiable_sops.md) — covers no fabrication, Taleemabad context, pilot sharing, approval before sending, calendar/email restrictions, memory review, verification discipline, reading provided material, and core work principle.
+
+**Task-Specific Non-Negotiable SOPs:**
 1. **Manual CV screen against JD** — ALWAYS read each resume in full with human judgement. Do not rely on keyword scanner alone. After reading, compare directly against the JD requirements. No shortcuts.
 2. **Competitor match** — If a candidate has worked at a direct competitor (TCF, TFP, READ Foundation, EdTech Hub, etc.) AND has relevant experience matching the JD, rank them in the top tier. Competitor signal alone (without JD match) does NOT inflate ranking.
 3. **Relevant experience criteria** — Check the JD for the minimum experience requirement. Only rank candidates in top tiers if they meet it in RELEVANT experience — not total/overall experience. State both total exp and relevant exp explicitly for every shortlisted candidate.
-4. **Approval before everything** — ALWAYS ask for explicit user approval before taking any action: running scripts, querying DB, sending emails, writing or editing any file. No exceptions.
-5. **No assumed data** — NEVER make up or assume any candidate data (names, expected salary, experience, anything). Always fetch accurate data from Markaz DB. If data is missing, state "Not mentioned" — never fill in a gap.
-6. **Calendar SOP (set by user 2026-03-10)** — NEVER edit or delete any Google Calendar invite without explicit user permission. If a change is needed, notify the user via email first and wait for approval.
+4. **No assumed data** — NEVER make up or assume any candidate data (names, expected salary, experience, anything). Always fetch accurate data from Markaz DB. If data is missing, state "Not mentioned" — never fill in a gap.
 
 ## Key Rules
 1. ALWAYS read memory.md at the start of every session, right after this file.
@@ -67,6 +71,7 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Database setup: see [skills/database-connection.md](skills/database-connection.md)
 - Database schema: see [docs/schema.md](docs/schema.md)
 - Org context: see [context/project-background.md](context/project-background.md)
+- Teams reader: see [scripts/utils/teams_reader.py](scripts/utils/teams_reader.py) — reads all channels + Presence channel for attendance. Credentials in .env (TEAMS_TENANT_ID, TEAMS_CLIENT_ID, TEAMS_CLIENT_SECRET). See memory/project_teams_integration.md.
 
 ## Database
 - Type: PostgreSQL (Neon serverless)
@@ -111,6 +116,10 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
   4. Per-exercise evidence in narratives — tie every observation to E1/E2/E3/E4/E5 by number
 - **KCD report — keep these (Coco strengths confirmed by Jawwad):** explicit confidence levels · cross-candidate "Cohort Read" section · 60% numeric threshold · pushback on wrong benchmarks across roles
 - **First fully compliant report:** Job 32 KCD (2026-03-31) — reference script: send_job32_case_study_report.py
+- **Decision brief verdict labels (confirmed 2026-04-08):** post-debrief pre-decision = "PANEL DECISION" · values pass = "VALUES PASS" · debrief today = "DEBRIEF TODAY" · debrief confirmed = "DEBRIEF CONFIRMED" · case study submitted = "CASE STUDY IN" · case study sent = "CASE STUDY SENT" · overdue = "OVERDUE" · not interviewed = "NOT INTERVIEWED". NEVER use "OFFER OUT" or "OFFER STAGE" unless Ayesha explicitly confirms an offer was sent.
+- **DB status ≠ communication sent (confirmed 2026-04-08):** status='offer' is a Markaz pipeline stage, NOT a sent offer. status='rejected' may be a data entry error. Always flag DB anomalies to Ayesha — never assert them as fact in a brief.
+- **Decision brief CV hyperlinks (confirmed 2026-04-08):** audit ALL sections (Leading, Discussion, Pipeline, Debrief Schedule) before sending — every candidate name must be hyperlinked. See memory/feedback_decision_brief_hyperlinks.md.
+- **Gmail thread reply (confirmed 2026-04-08):** replying in an existing thread requires In-Reply-To + References headers. See memory/feedback_gmail_thread_reply.md.
 
 ## Candidate Feedback Email Rules (confirmed 2026-03-25)
 - Tone: considerate, open-handed, emotionally careful — no absolute/harsh phrasing, write WITH the candidate
