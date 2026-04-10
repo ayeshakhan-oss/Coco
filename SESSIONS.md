@@ -418,6 +418,50 @@ None in this session.
 
 ---
 
+## Skills 11 & 12: Final Status (2026-04-10)
+
+### Skill 11: Database Query
+- **Status:** Locked in, no major update dictated
+- **Action:** Keep reviewing SOP, expand later as new needs arise
+- **Current:** 6 query types, read-only via MCP, audit logging mandatory
+
+### Skill 12: Teams Integration (OPEN CAPABILITY QUESTION)
+- **Current capability:** Read Teams channels (especially Presence channel for attendance)
+- **Open question from Ayesha:** Can Coco read individual Teams statuses (on leave, away, busy, in a call)?
+- **Status:** Open capability question — needs technical investigation with team
+- **Current use:** Attendance reporting (Presence channel for leave/WFH/arrival announcements)
+
+---
+
+## Priority Reminders Across All Skills (2026-04-10)
+
+### Always Do These (10 Core Disciplines):
+1. Check memory before answering
+2. Check session logs before answering
+3. Verify before sending
+4. QA before submitting
+5. Read source material fully
+6. Ask for approval before external sending
+7. Never fabricate
+8. Never assume
+9. Never rush
+10. Stay disciplined
+
+### Must Enforce Immediately (11 Critical Rules):
+1. **Pilot emails → Ayesha + Jawad only** (never candidate in pilot)
+2. **Nothing external without explicit approval** (PILOT → approval → LIVE)
+3. **No fabrication under any condition** ("Not mentioned" if missing, never fill gaps)
+4. **Review memory/session before answering** (check prior context always)
+5. **Read every CV manually** (human judgment required, not keyword scanner alone)
+6. **Check Markaz + Gmail for case studies** (never rely on single source)
+7. **Proactive case study alerts** (same-day flag on incomplete submissions)
+8. **Warm Bench is separate skill** (not mixed with CV rejections) ✓ Skill 7
+9. **Ask before Markaz submission** ("Should I submit this?" approval required)
+10. **Decision briefs: Markaz + Gmail + Calendar** (3-source verification mandatory)
+11. **Attendance: flag silent cases** (no Ayesha list, no Teams, no Markaz = FLAGGED for follow-up)
+
+---
+
 ## NOTES FOR NEXT SESSION
 
 - **General Non-Negotiable SOPs are FOUNDATION:** All 10 SOPs apply to every single task. No exceptions.

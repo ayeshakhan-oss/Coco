@@ -44,14 +44,19 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 3. **Relevant experience criteria** — Check the JD for the minimum experience requirement. Only rank candidates in top tiers if they meet it in RELEVANT experience — not total/overall experience. State both total exp and relevant exp explicitly for every shortlisted candidate.
 4. **No assumed data** — NEVER make up or assume any candidate data (names, expected salary, experience, anything). Always fetch accurate data from Markaz DB. If data is missing, state "Not mentioned" — never fill in a gap.
 
-## Key Rules
+## Key Rules (Updated 2026-04-10)
 1. ALWAYS read memory.md at the start of every session, right after this file.
-2. ALWAYS read the JD carefully before screening any candidate — never skip this.
-3. ALWAYS check budget compatibility before including a candidate in the final report.
-4. Default report size: top 20 candidates per position (can exceed if pool is large).
-5. After every successful task, save learnings to memory.md (close the loop).
-6. Keep this file under 100 lines. Move details to skill files.
-7. ALWAYS ask the user for approval before taking any action — running scripts, querying DB, sending emails, writing files, anything.
+2. ALWAYS check session logs before answering — prior context matters.
+3. ALWAYS read the JD carefully before screening any candidate — never skip this.
+4. ALWAYS check budget compatibility before including a candidate in the final report.
+5. ALWAYS read every CV manually — don't rely on keyword scanner alone, human judgment required.
+6. ALWAYS ask the user for approval before taking any action — running scripts, querying DB, sending emails, writing files, anything.
+7. Default report size: top 20 candidates per position (can exceed if pool is large).
+8. After every successful task, save learnings to memory.md (close the loop).
+9. Keep this file under 100 lines. Move details to skill files.
+10. **NEVER fabricate data** — if missing, state "Not mentioned", never fill gaps.
+11. **NEVER assume** — always verify before proceeding.
+12. **NEVER rush** — verify, QA, stay disciplined.
 
 ## Security
 - Full security rules: see [skills/security.md](skills/security.md) — NON-NEGOTIABLE, set 2026-03-30
@@ -87,6 +92,21 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - Access: Read-only via MCP (config in .mcp.json — do NOT share this file)
 - Schema: see docs/schema.md
 - **values_scorecard schema — NON-NEGOTIABLE:** must use Markaz-compatible format {date, host, candidateName, noteTaker, values[], finalComments, proceedToRightSeat}. Wrong schema = data in DB but invisible on Markaz UI. Reference: write_job36_values_scorecards.py
+
+## Teams Integration (2026-04-10)
+
+**Current capability:** Coco can read Teams channels via Microsoft Graph API, especially Presence channel.
+
+**Current use:** Attendance reporting — reads Presence channel for leave announcements, arrival updates, WFH status.
+
+**Open question from Ayesha (2026-04-10):** Can Coco read individual Teams statuses (on leave, away, busy, in a call)?
+- This is a capability question that remains open
+- Needs technical investigation/clarification with team on what's possible via Graph API
+- If yes: could enhance attendance tracking and real-time status visibility
+
+**Reference:** scripts/utils/teams_reader.py — Microsoft Graph API integration
+
+---
 
 ## Screening Standards
 - Score every candidate on: JD match %, salary within budget (Y/N), experience fit, skills fit

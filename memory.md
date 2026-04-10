@@ -56,6 +56,35 @@ A Taleemabad sister project, launched in partnership with the Ministry of Federa
 - Hiring manager for Job 17 (CPD Coach): Hasnat Tariq — Hasnat@niete.edu.pk
 - Treat NIETE roles with the same mission-alignment lens as core Taleemabad roles — it is NOT a third party
 
+## Priority Reminders Across All Skills (2026-04-10)
+
+**ALWAYS DO THESE:**
+1. Check memory before answering
+2. Check session logs before answering
+3. Verify before sending
+4. QA before submitting
+5. Read source material fully
+6. Ask for approval before external sending
+7. Never fabricate
+8. Never assume
+9. Never rush
+10. Stay disciplined
+
+**MUST ENFORCE IMMEDIATELY:**
+1. **Pilot emails go only to Ayesha + Jawad** — never include candidate in pilot
+2. **Nothing gets sent externally without explicit approval** — PILOT first, then ask, then LIVE
+3. **No fabrication under any condition** — if data missing, state "Not mentioned", don't fill gaps
+4. **Review memory/session context before answering** — always check prior work and learnings
+5. **Read every CV manually** — don't rely on keyword scanner alone, human judgment required
+6. **Check both Markaz + Gmail for case studies** — never rely on single source
+7. **Send proactive case study alerts and overdue reports** — flag incomplete submissions same day
+8. **Separate Warm Bench into its own skill** — not mixed with CV rejections ✓ (Skill 7)
+9. **Ask before submitting values scorecard on Markaz** — "Should I go and submit this on Markaz or not?"
+10. **In decision briefs, check Markaz + Gmail + Calendar** — 3 sources, cross-verify all candidate counts
+11. **In attendance, flag people who informed nowhere** — no Ayesha list mention, no Teams, no Markaz = FLAGGED
+
+---
+
 ## Taleemabad Organisation Context (saved 2026-03-03)
 See full detail in context/project-background.md. Key facts for screening:
 
@@ -138,6 +167,28 @@ Full SOP updated in skills/values-scorecard-scoring.md with 7 critical steps.
 **Non-negotiable:** Read full transcript · Ask approval before submit · Confirm candidate/position · Markaz schema exact · GWC only for PASS candidates · One minus = OUT always
 
 **Key additions (2026-04-10):** Approval-before-submitting rule (prevent accidental submissions) · Candidate/position confirmation (prevent wrong data writes) · Personal examples valid (fairness) · Context-aware leniency (don't penalize for interview logistics) · Interview feedback to Ayesha (continuous improvement)
+
+---
+
+## Skills 11 & 12: Database Query + Teams Integration (2026-04-10)
+
+### Skill 11: Database Query
+**Status:** Locked in as documented. Keep reviewing and expand SOP later as new needs arise. No major update dictated here.
+
+**Current state:** 6 query types, read-only via MCP, audit logging mandatory via log_db_query(). See skills/database-queries.md.
+
+### Skill 12: Teams Integration (OPEN CAPABILITY QUESTION)
+**Current expectation:** Coco can read Teams channels, especially Presence channel. Ideally can read all channels when needed.
+
+**Open question from Ayesha:** Can Coco also read individual Teams statuses such as:
+- On leave
+- Away
+- Busy
+- In a call
+
+This remains an **open capability question**. Needs investigation/clarification with technical team on what's possible via Microsoft Graph API.
+
+**Current use:** Reading Presence channel for attendance reporting (leave announcements, arrival updates, WFH status).
 
 ---
 
