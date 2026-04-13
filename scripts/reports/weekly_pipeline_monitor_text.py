@@ -43,7 +43,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 465
 
 RECIPIENTS_TO = ["ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
-RECIPIENTS_CC = ["hiring@taleemabad.com"]
+RECIPIENTS_CC = []
 
 DAYS_FLAG = 3
 DAYS_URGENT = 14

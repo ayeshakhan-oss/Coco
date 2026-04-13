@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/jobs/job32/send_job32_decision_brief_pilot.py)",
+      "mcp__neon-postgres__query",
+      "Bash(python -)",
+      "Bash(python scripts/jobs/job26/send_job26_screening_report_pilot.py)",
+      "Bash(python -c ':*)",
+      "Bash(sed -n '280,295p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_rejection_pilot.py\")",
+      "Bash(sed -n '423,438p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_rejection_pilot_v2.py\")",
+      "Bash(sed -n '183,215p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_misbah_pilot.py\")",
+      "Bash(sed -n '140,185p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_values_feedback_pilot.py\")",
+      "Bash(python scripts/utils/send_feedback_widget_preview.py)"
+    ]
+  }
+}
