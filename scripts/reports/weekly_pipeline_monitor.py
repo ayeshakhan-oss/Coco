@@ -105,7 +105,7 @@ def get_open_jobs():
 
 
 def get_candidates_for_job(job_id):
-    """Fetch all shortlisted+ candidates for a job with full pipeline timeline."""
+    """Fetch all shortlisted+ candidates for a job with full pipeline timeline including communications."""
     conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
 
@@ -127,6 +127,30 @@ def get_candidates_for_job(job_id):
 
     candidates = []
     for row in rows:
+        app_id = row[0]
+
+        # Get communications history for this application
+        comm_query = """
+            SELECT email_type, sent_at FROM candidate_communications
+            WHERE application_id = %s
+            ORDER BY sent_at DESC
+        """
+        cur.execute(comm_query, (app_id,))
+        comms = cur.fetchall()
+
+        # Extract sent dates from communications
+        values_invite_sent_at = None
+        case_study_sent_at = None
+        debrief_invite_sent_at = None
+
+        for email_type, sent_at in comms:
+            if email_type and "values" in email_type.lower() and not values_invite_sent_at:
+                values_invite_sent_at = sent_at
+            if email_type and ("case study" in email_type.lower() or "kcd" in email_type.lower()) and not case_study_sent_at:
+                case_study_sent_at = sent_at
+            if email_type and "debrief" in email_type.lower() and not debrief_invite_sent_at:
+                debrief_invite_sent_at = sent_at
+
         candidates.append({
             "app_id": row[0],
             "candidate_id": row[1],
@@ -141,6 +165,9 @@ def get_candidates_for_job(job_id):
             "gwc_scorecard": row[10],
             "gwc_interview_date": row[11],
             "notes": row[12],
+            "values_invite_sent_at_markaz": values_invite_sent_at,
+            "case_study_sent_at_markaz": case_study_sent_at,
+            "debrief_invite_sent_at_markaz": debrief_invite_sent_at,
         })
 
     conn.close()
@@ -384,16 +411,9 @@ def classify_candidate(cand, gmail_data, calendar_data):
     debrief_invite_sent_date = parse_date(gmail_data.get("debrief_invite_sent_date"))
     gwc_interview_date = parse_date(cand["gwc_interview_date"])
 
-    # Check if case study was submitted (parse from notes or status)
-    case_study_submitted = False
-    case_study_submit_date = None
-    if cand["status"] in ("case_study_sent", "debrief_scheduled", "offer"):
-        case_study_submitted = True
-        # Try to extract date from notes if available
-        if cand["notes"]:
-            # Simple heuristic: if notes mention "submitted" or "received", use gwc_interview_date as proxy
-            if "submitted" in cand["notes"].lower() or "received" in cand["notes"].lower():
-                case_study_submit_date = gwc_interview_date or now - timedelta(days=1)
+    # Check if case study was submitted: EVIDENCE is gwc_interview_date (debrief happened, meaning case study was received and discussed)
+    case_study_submitted = bool(gwc_interview_date)  # If debrief happened, case study must have been submitted
+    case_study_submit_date = gwc_interview_date or case_study_sent_date
 
     notes = []
     draft_message = None
@@ -493,14 +513,35 @@ Taleemabad"""
                     action = None
                     days_stuck = 0
             else:
-                # Case study received, check debrief
-                if not gmail_data.get("debrief_invite_sent"):
-                    stage = "Case Study Received - No Debrief Invite"
-                    action = "Send debrief invite"
-                    days_stuck = (now - case_study_submit_date).days if case_study_submit_date else 0
-                    draft_message = {
-                        "subject": f"Let's Discuss Your Case Study — {cand['first_name']}",
-                        "body": f"""Hi {cand['first_name']},
+                # Case study received - check debrief stage (debrief_invite_sent may be in Gmail or Calendar may have the event)
+                # EVIDENCE OF DEBRIEF COMPLETION: gwc_interview_date exists
+
+                if gwc_interview_date:
+                    # Debrief HAS happened (gwc_interview_date exists)
+                    if gwc_interview_date > now:
+                        # Debrief is in future (scheduled)
+                        stage = "Debrief Scheduled"
+                        action = None
+                        days_stuck = 0
+                    else:
+                        # Debrief is in past (completed)
+                        if not cand["gwc_scorecard"]:
+                            stage = "Debrief Completed - GWC Scorecard Pending"
+                            action = "Fill GWC scorecard"
+                            days_stuck = (now - gwc_interview_date).days if gwc_interview_date else 0
+                        else:
+                            stage = "Panel Decision Pending"
+                            action = "Make panel decision"
+                            days_stuck = 0
+                else:
+                    # No debrief scheduled yet - check if invite was sent
+                    if not gmail_data.get("debrief_invite_sent"):
+                        stage = "Case Study Received - No Debrief Invite"
+                        action = "Send debrief invite"
+                        days_stuck = (now - case_study_submit_date).days if case_study_submit_date else 0
+                        draft_message = {
+                            "subject": f"Let's Discuss Your Case Study — {cand['first_name']}",
+                            "body": f"""Hi {cand['first_name']},
 
 Thank you for submitting your case study. We were impressed with your approach and would like to discuss it further in a debrief conversation.
 
@@ -512,32 +553,21 @@ Looking forward to hearing your thinking.
 Warm regards,
 Ayesha Khan & Team
 Taleemabad"""
-                    }
-                else:
-                    # Debrief invite sent, check if booked
-                    if not calendar_data.get("debrief_booked"):
-                        days_since_invite = (now - debrief_invite_sent_date).days if debrief_invite_sent_date else 0
-                        if days_since_invite > 5:
-                            stage = "Debrief Invite Sent - Not Booked (Overdue)"
-                            action = "Send reminder email"
-                            days_stuck = days_since_invite
-                        else:
-                            stage = "Awaiting Debrief Booking"
-                            action = None
-                            days_stuck = 0
+                        }
                     else:
-                        # Debrief booked, check if past
-                        if gwc_interview_date and gwc_interview_date <= now:
-                            # Debrief completed
-                            if not cand["gwc_scorecard"]:
-                                stage = "Debrief Completed - GWC Scorecard Pending"
-                                action = "Fill GWC scorecard"
-                                days_stuck = (now - gwc_interview_date).days if gwc_interview_date else 0
+                        # Debrief invite sent, check if booked
+                        if not calendar_data.get("debrief_booked"):
+                            days_since_invite = (now - debrief_invite_sent_date).days if debrief_invite_sent_date else 0
+                            if days_since_invite > 5:
+                                stage = "Debrief Invite Sent - Not Booked (Overdue)"
+                                action = "Send reminder email"
+                                days_stuck = days_since_invite
                             else:
-                                stage = "Panel Decision Pending"
-                                action = "Make panel decision"
+                                stage = "Awaiting Debrief Booking"
+                                action = None
                                 days_stuck = 0
                         else:
+                            # Calendar booked
                             stage = "Debrief Scheduled"
                             action = None
                             days_stuck = 0
@@ -1043,17 +1073,32 @@ def main():
             candidates_data = []
 
             for cand in candidates:
-                # Gather Gmail data from pre-fetched bulk lookup (no additional API calls)
-                values_sent, values_sent_date = check_values_invite_sent(email_lookup, cand["email"])
-                case_study_sent, case_study_sent_date = check_case_study_sent(email_lookup, cand["email"])
-                debrief_sent, debrief_sent_date = check_debrief_invite_sent(email_lookup, cand["email"])
+                # SOURCE OF TRUTH: Markaz communications table (not Gmail)
+                # Use Markaz first, fall back to Gmail if Markaz doesn't have it
+                values_sent_date = cand.get("values_invite_sent_at_markaz")
+                case_study_sent_date = cand.get("case_study_sent_at_markaz")
+                debrief_sent_date = cand.get("debrief_invite_sent_at_markaz")
+
+                # Fall back to Gmail if Markaz doesn't have the date
+                if not values_sent_date:
+                    gmail_values_sent, gmail_values_date = check_values_invite_sent(email_lookup, cand["email"])
+                    if gmail_values_sent:
+                        values_sent_date = gmail_values_date
+                if not case_study_sent_date:
+                    gmail_case_sent, gmail_case_date = check_case_study_sent(email_lookup, cand["email"])
+                    if gmail_case_sent:
+                        case_study_sent_date = gmail_case_date
+                if not debrief_sent_date:
+                    gmail_debrief_sent, gmail_debrief_date = check_debrief_invite_sent(email_lookup, cand["email"])
+                    if gmail_debrief_sent:
+                        debrief_sent_date = gmail_debrief_date
 
                 gmail_data = {
-                    "values_invite_sent": values_sent,
+                    "values_invite_sent": bool(values_sent_date),
                     "values_invite_sent_date": values_sent_date,
-                    "case_study_sent": case_study_sent,
+                    "case_study_sent": bool(case_study_sent_date),
                     "case_study_sent_date": case_study_sent_date,
-                    "debrief_invite_sent": debrief_sent,
+                    "debrief_invite_sent": bool(debrief_sent_date),
                     "debrief_invite_sent_date": debrief_sent_date,
                 }
 
