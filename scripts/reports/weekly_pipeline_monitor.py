@@ -158,67 +158,111 @@ def get_gmail_service():
     return build("gmail", "v1", credentials=creds)
 
 
-def check_values_invite_sent(service, candidate_email):
-    """Check if values interview invite was sent to candidate. Returns (bool, send_date_str)."""
-    q = f'to:{candidate_email} subject:(Invitation for Values OR "Zero In")'
+def fetch_all_sent_emails_bulk(service):
+    """
+    Batch-fetch ALL sent emails (values, case study, debrief) in one pass.
+    Returns dict: {email: {type: send_date}}
+    Reduces 750 queries to ~3-10 total queries.
+    """
+    lookup = {}
+
+    # QUERY 1: All values invites
     try:
-        results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
-        log_gmail_read(q, 1, "check_values_invite")
-        msgs = results.get("messages", [])
+        print("[Gmail] Fetching all values invites...", flush=True)
+        sys.stdout.flush()
+        q = 'subject:(Invitation for Values OR "Zero In")'
+        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        msg_ids = [m["id"] for m in results.get("messages", [])]
+        log_gmail_read(q, len(msg_ids), "batch_fetch_values")
 
-        if msgs:
+        for msg_id in msg_ids:
             try:
-                msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata").execute()
+                msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
+                to_addr = headers.get("To", "").lower()
                 send_date = headers.get("Date", "")
-                return True, send_date
+                if to_addr:
+                    lookup.setdefault(to_addr, {})["values_invite"] = send_date
             except:
-                return True, ""
-        return False, None
+                pass
+        print(f"[Gmail] Values invites: {len([k for k in lookup.values() if 'values_invite' in k])} recipients", flush=True)
+        sys.stdout.flush()
     except Exception as e:
-        return False, None
+        print(f"[Gmail] Error fetching values invites: {e}", flush=True)
 
-
-def check_case_study_sent(service, candidate_email):
-    """Check if case study was sent to candidate. Returns (bool, send_date_str)."""
-    q = f'to:{candidate_email} subject:(case study OR KCD assignment)'
+    # QUERY 2: All case study emails
     try:
-        results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
-        log_gmail_read(q, 1, "check_case_study_sent")
-        msgs = results.get("messages", [])
+        print("[Gmail] Fetching all case study assignments...", flush=True)
+        sys.stdout.flush()
+        q = 'subject:(case study OR KCD assignment)'
+        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        msg_ids = [m["id"] for m in results.get("messages", [])]
+        log_gmail_read(q, len(msg_ids), "batch_fetch_case_study")
 
-        if msgs:
+        for msg_id in msg_ids:
             try:
-                msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata").execute()
+                msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
+                to_addr = headers.get("To", "").lower()
                 send_date = headers.get("Date", "")
-                return True, send_date
+                if to_addr:
+                    lookup.setdefault(to_addr, {})["case_study"] = send_date
             except:
-                return True, ""
-        return False, None
+                pass
+        print(f"[Gmail] Case study sent: {len([k for k in lookup.values() if 'case_study' in k])} recipients", flush=True)
+        sys.stdout.flush()
     except Exception as e:
-        return False, None
+        print(f"[Gmail] Error fetching case studies: {e}", flush=True)
 
-
-def check_debrief_invite_sent(service, candidate_email):
-    """Check if debrief invite was sent to candidate. Returns (bool, send_date_str)."""
-    q = f'to:{candidate_email} subject:(debrief OR GWC discussion)'
+    # QUERY 3: All debrief invites
     try:
-        results = service.users().messages().list(userId="me", q=q, maxResults=1).execute()
-        log_gmail_read(q, 1, "check_debrief_invite")
-        msgs = results.get("messages", [])
+        print("[Gmail] Fetching all debrief invites...", flush=True)
+        sys.stdout.flush()
+        q = 'subject:(debrief OR GWC discussion)'
+        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        msg_ids = [m["id"] for m in results.get("messages", [])]
+        log_gmail_read(q, len(msg_ids), "batch_fetch_debrief")
 
-        if msgs:
+        for msg_id in msg_ids:
             try:
-                msg = service.users().messages().get(userId="me", id=msgs[0]["id"], format="metadata").execute()
+                msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
+                to_addr = headers.get("To", "").lower()
                 send_date = headers.get("Date", "")
-                return True, send_date
+                if to_addr:
+                    lookup.setdefault(to_addr, {})["debrief"] = send_date
             except:
-                return True, ""
-        return False, None
+                pass
+        print(f"[Gmail] Debrief invites: {len([k for k in lookup.values() if 'debrief' in k])} recipients", flush=True)
+        sys.stdout.flush()
     except Exception as e:
-        return False, None
+        print(f"[Gmail] Error fetching debriefs: {e}", flush=True)
+
+    return lookup
+
+
+def check_values_invite_sent(email_lookup, candidate_email):
+    """Check if values invite was sent. Uses pre-fetched lookup."""
+    email_lower = candidate_email.lower()
+    if email_lower in email_lookup and "values_invite" in email_lookup[email_lower]:
+        return True, email_lookup[email_lower]["values_invite"]
+    return False, None
+
+
+def check_case_study_sent(email_lookup, candidate_email):
+    """Check if case study was sent. Uses pre-fetched lookup."""
+    email_lower = candidate_email.lower()
+    if email_lower in email_lookup and "case_study" in email_lookup[email_lower]:
+        return True, email_lookup[email_lower]["case_study"]
+    return False, None
+
+
+def check_debrief_invite_sent(email_lookup, candidate_email):
+    """Check if debrief invite was sent. Uses pre-fetched lookup."""
+    email_lower = candidate_email.lower()
+    if email_lower in email_lookup and "debrief" in email_lookup[email_lower]:
+        return True, email_lookup[email_lower]["debrief"]
+    return False, None
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # SECTION 4: CALENDAR LAYER
@@ -962,6 +1006,13 @@ def main():
         print("[Auth] Authenticated to Gmail and Calendar", flush=True)
         sys.stdout.flush()
 
+        # Batch-fetch ALL Gmail sends (one-time, for all candidates)
+        print("[Gmail] Batch-fetching all sent emails...", flush=True)
+        sys.stdout.flush()
+        email_lookup = fetch_all_sent_emails_bulk(gmail_service)
+        print(f"[Gmail] Indexed {len(email_lookup)} recipient(s)", flush=True)
+        sys.stdout.flush()
+
         # Batch-fetch calendar events (one-time, for all candidates)
         print("[Calendar] Batch-fetching all calendar events...", flush=True)
         sys.stdout.flush()
@@ -992,10 +1043,10 @@ def main():
             candidates_data = []
 
             for cand in candidates:
-                # Gather Gmail data with send dates
-                values_sent, values_sent_date = check_values_invite_sent(gmail_service, cand["email"])
-                case_study_sent, case_study_sent_date = check_case_study_sent(gmail_service, cand["email"])
-                debrief_sent, debrief_sent_date = check_debrief_invite_sent(gmail_service, cand["email"])
+                # Gather Gmail data from pre-fetched bulk lookup (no additional API calls)
+                values_sent, values_sent_date = check_values_invite_sent(email_lookup, cand["email"])
+                case_study_sent, case_study_sent_date = check_case_study_sent(email_lookup, cand["email"])
+                debrief_sent, debrief_sent_date = check_debrief_invite_sent(email_lookup, cand["email"])
 
                 gmail_data = {
                     "values_invite_sent": values_sent,
