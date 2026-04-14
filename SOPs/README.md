@@ -10,6 +10,7 @@
 ```
 SOPs/
 ├── README.md (this file)
+├── SESSION_STARTUP_CHECKLIST.md (MANDATORY — run at session start)
 ├── EXECUTION_DISCIPLINE_PROTOCOL.md
 ├── 00_General_SOPs/
 │   ├── general_non_negotiable_sops.md
@@ -37,8 +38,9 @@ SOPs/
 ## QUICK NAVIGATION
 
 ### MANDATORY FIRST (Before Any Work)
-1. **[EXECUTION DISCIPLINE PROTOCOL](EXECUTION_DISCIPLINE_PROTOCOL.md)** — No guessing, no embellishment, verified sources only. Before task: search existing SOPs. Self-QA checklist before sending.
-2. **[General Non-Negotiable SOPs](00_General_SOPs/general_non_negotiable_sops.md)** — 10 core rules apply to ALL work
+1. **[SESSION STARTUP CHECKLIST](SESSION_STARTUP_CHECKLIST.md)** — RUN AT SESSION START, EVERY TIME. 7-step discipline check (memory load, protocol confirmation, task identification, source verification, prior work search, lock-in check). ~10 minutes. Prevents Session 002 problems.
+2. **[EXECUTION DISCIPLINE PROTOCOL](EXECUTION_DISCIPLINE_PROTOCOL.md)** — No guessing, no embellishment, verified sources only. Before task: search existing SOPs. Self-QA checklist before sending.
+3. **[General Non-Negotiable SOPs](00_General_SOPs/general_non_negotiable_sops.md)** — 10 core rules apply to ALL work
 
 ### GENERAL PROTOCOLS
 - **[General Discipline SOP](00_General_SOPs/general_discipline_sop.md)** — Meta-skill foundation
@@ -67,8 +69,18 @@ SOPs/
 
 ## HOW TO USE THIS SOP FOLDER
 
+### At Session Start (MANDATORY)
+0. **Run Session Startup Checklist first** — 7-step discipline check, ~10 minutes
+   - Memory load
+   - Protocol confirmation  
+   - Execution discipline check
+   - Task type identification
+   - Source material verification
+   - Prior work search
+   - Lock-in confirmation
+
 ### When Assigned a Task
-1. **Read Execution Discipline Protocol first** — Sets the standard for all work
+1. **Read Execution Discipline Protocol** — Sets the standard for all work
 2. **Identify task type** — Is this candidate communication? Evaluation? Reporting?
 3. **Find relevant SOP folder** — Go to the matching category above
 4. **Read the full SOP** — Don't skip, read completely
@@ -97,30 +109,35 @@ SOPs/
 
 ## CORE PRINCIPLES (Apply to ALL SOPs)
 
-1. **Execute Discipline Protocol** — No guessing, verified sources, locked formats, self-QA before sending
-2. **General Non-Negotiable SOPs** — 10 core rules apply to everything
-3. **Memory First** — Check MEMORY.md before starting any task
-4. **Reuse Templates** — Don't reinvent, use proven structure
-5. **No Fabrication** — Stay within verified source material
-6. **Format Locked** — Once corrected, maintain exactly
-7. **Self-QA Mandatory** — All 8 checklist items before sending
-8. **Ask When Uncertain** — Don't assume, don't guess
+1. **Session Startup Checklist MANDATORY** — Run at session start, every time. 7-step discipline check prevents regression.
+2. **Execute Discipline Protocol** — No guessing, verified sources, locked formats, self-QA before sending
+3. **General Non-Negotiable SOPs** — 10 core rules apply to everything
+4. **Memory First** — Check MEMORY.md before starting any task
+5. **Reuse Templates** — Don't reinvent, use proven structure
+6. **No Fabrication** — Stay within verified source material
+7. **Format Locked** — Once corrected, maintain exactly
+8. **Self-QA Mandatory** — All 8 checklist items before sending
+9. **Ask When Uncertain** — Don't assume, don't guess
 
 ---
 
 ## FILE LOCATIONS
 
 **Local (Memory System):**
+- `C:\Users\Dell\.claude\projects\c--Agent-Coco\memory\session_startup_checklist.md`
 - `C:\Users\Dell\.claude\projects\c--Agent-Coco\memory\execution_discipline_protocol.md`
 - `C:\Users\Dell\.claude\projects\c--Agent-Coco\memory\general_non_negotiable_sops.md`
 - `C:\Users\Dell\.claude\projects\c--Agent-Coco\memory\skill_*.md` (individual skill SOPs)
 
 **Project Root (Tracked in Git):**
-- `c:\Agent Coco\skills\*.md` (full skill SOP files)
+- `c:\Agent Coco\skills\skill_session_startup_checklist.md` (full session startup SOP)
+- `c:\Agent Coco\skills\*.md` (other full skill SOP files)
 - `c:\Agent Coco\CLAUDE.md` (current focus + rules)
 - `c:\Agent Coco\SESSIONS.md` (session logs)
 
-**This Folder (Reference):**
+**This Folder (Reference - Master Index):**
+- `c:\Agent Coco\SOPs\SESSION_STARTUP_CHECKLIST.md` (MANDATORY - run at session start)
+- `c:\Agent Coco\SOPs\EXECUTION_DISCIPLINE_PROTOCOL.md`
 - `c:\Agent Coco\SOPs\` (organized master index)
 
 ---
@@ -129,6 +146,7 @@ SOPs/
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.1 | 2026-04-14 | Added SESSION_STARTUP_CHECKLIST.md (MANDATORY at session start) |
 | 1.0 | 2026-04-14 | Initial SOP folder created with Execution Discipline Protocol |
 
 ---
