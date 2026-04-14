@@ -8,7 +8,55 @@ and internal budget, ranks candidates, and sends analysis reports to hiring mana
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
 ## Current Focus
-Hackathon 2026 GWC Rejection Emails finalized (2026-04-14) — All 6 candidates, merged PDF, warm-tone rejections. 3 transcript-based (Ali Jawad, Umair Solangi, Sultan Sheharyar) + 3 scorecard-based (Moaz Nadeem, Alishba Ramzan, Maryam Rafaqat). Final PDF: c:/Agent Coco/scripts/jobs/hackathon/GWC_Hackathon_2026_All_6_Candidates.pdf. Awaiting Ayesha review + approval for live send. **CRITICAL LEARNING:** Identified 10 systemic discipline problems that caused task to take longer than necessary (not capability issues, discipline issues). Reference: memory/coco_core_problems_identified.md
+**Hackathon 2026 GWC Rejection Emails FINAL (2026-04-14)**
+
+**Status:** ✓ PDF COMPLETED & SENT — Awaiting Ayesha review + approval for live send to candidates
+
+**6 Candidates (All warm-tone rejections, no fabrication on approved content):**
+1. **Ali Jawad** (ali.jawad6204@gmail.com) — Interview transcript, 950+ words
+   - Focus: Cricket prediction system, Gemini reliance, mid-interview pivot
+   - Message: Pick one problem, go deep on implementation
+   
+2. **Umair Solangi** (bscs2112203@szabist.pk) — Interview transcript, 950+ words
+   - Focus: Strong Laravel backend, React/frontend gap, alignment mismatch
+   - Message: Decide backend specialization OR full-stack (not both)
+   
+3. **Sultan Muhammad Hamad Sheharyar** (pirzadahammadzakori@gmail.com) — Interview transcript, 950+ words
+   - Focus: Breadth without depth, need to pick one domain
+   - Message: Choose one area, commit to going deep
+   
+4. **Moaz Nadeem** — GWC scorecard, ~450 words
+   - GWC: Get It 7/10, Want It 6.5/10, Capacity 8/10
+   - Message: Enthusiasm + technical ability = foundation of growth
+   
+5. **Alishba Ramzan** — GWC scorecard, ~400 words
+   - GWC: Get It 6/10, Want It 8/10, Capacity 6/10
+   - Message: Learning attitude is genuine strength, stay curious
+   
+6. **Maryam Rafaqat** — GWC scorecard, ~400 words
+   - GWC: Get It 3/10, Want It 4/10, Capacity 4/10
+   - Message: Gap between tool usage and conceptual understanding
+
+**Final PDF:** GWC_Hackathon_2026_All_6_Candidates.pdf (all 6 merged, sent to ayesha.khan@taleemabad.com)
+
+**Format (LOCKED & FINAL):**
+- Logo (Taleemabad) at top
+- Small blue header: "PEOPLE & CULTURE • REJECTION DECISION"
+- Large blue title: "We're reflecting on your Hackathon 2026 application"
+- Blue subtitle: "Hackathon 2026"
+- Blue horizontal line separator (2px, #1565c0)
+- Justified Georgia serif body (11pt, leading 16)
+- Section headings: blue bold, NO asterisks showing
+- "We" voice throughout
+- NO em dashes (all hyphens)
+- NO "Zero In Call" / "GWC" / interviewer/peer names
+- Reference: email_template_format_FINAL.md
+
+**Scorecard-Based Rule:** Word count OK at 400-450 when source data limited. No fabrication — only scorecard data used.
+
+**Reference:** memory/hackathon_gwc_all_6_final.md (complete project record)
+
+**CRITICAL LEARNING:** Session 002 identified 10 systemic discipline problems (not capability) that caused unnecessary time waste. All documented. Reference: memory/coco_core_problems_identified.md
 Job 35 + Job 36 Decision Briefs sent live (2026-04-08) — combined reply to Sabeena Abbasi's "Impact hiring Update" thread. Reference: scripts/jobs/combined/send_combined_impact_reply_pilot.py
 Job 32 Decision Brief still pending — pilot to Ayesha + Jawwad before live send to Sabeena Abbasi.
 Article on personalized rejection feedback drafted and finalized (2026-04-01). Ready to publish on LinkedIn/Medium. Reference: memory/project_article_rejection_feedback.md

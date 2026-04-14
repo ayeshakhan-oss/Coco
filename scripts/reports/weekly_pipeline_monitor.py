@@ -104,8 +104,59 @@ def get_open_jobs():
     return jobs
 
 
-def get_candidates_for_job(job_id):
-    """Fetch all shortlisted+ candidates for a job with full pipeline timeline including communications."""
+def fetch_all_communications():
+    """
+    Batch-fetch ALL pipeline data from applications table (not candidate_communications).
+    Returns {app_id: {pipeline_state dict}}
+    """
+    conn = psycopg2.connect(**DB_CONFIG)
+    cur = conn.cursor()
+
+    # Query applications directly for case_study_status, communication_history, etc.
+    query = """
+        SELECT id, case_study_status, case_study_submitted_at, communication_history
+        FROM applications
+        WHERE case_study_status IS NOT NULL
+           OR case_study_submitted_at IS NOT NULL
+           OR communication_history IS NOT NULL
+    """
+    cur.execute(query)
+    rows = cur.fetchall()
+    log_db_query(query, len(rows), "batch_fetch_all_applications_pipeline")
+
+    lookup = {}
+    for app_id, cs_status, cs_submitted_at, comm_history in rows:
+        if app_id not in lookup:
+            lookup[app_id] = {}
+
+        # Store case study status directly from applications table
+        if cs_status:
+            lookup[app_id]["case_study_status"] = cs_status
+        if cs_submitted_at:
+            lookup[app_id]["case_study_submitted_at"] = cs_submitted_at
+
+        # Extract dates from communication_history JSONB
+        if comm_history and isinstance(comm_history, list):
+            for comm in comm_history:
+                if isinstance(comm, dict):
+                    sent_at = comm.get("sentAt")
+                    comm_type = comm.get("type", "").lower()
+                    subject = comm.get("subject", "").lower()
+
+                    # Identify communication type by subject or type field
+                    if "values" in subject and "values_invite" not in lookup[app_id]:
+                        lookup[app_id]["values_invite_sent_at"] = sent_at
+                    if ("case study" in subject or "kcd" in subject) and "case_study_sent_at" not in lookup[app_id]:
+                        lookup[app_id]["case_study_sent_at"] = sent_at
+                    if "debrief" in subject and "debrief_sent_at" not in lookup[app_id]:
+                        lookup[app_id]["debrief_sent_at"] = sent_at
+
+    conn.close()
+    return lookup
+
+
+def get_candidates_for_job(job_id, comms_lookup):
+    """Fetch all shortlisted+ candidates for a job with full pipeline timeline."""
     conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
 
@@ -113,7 +164,8 @@ def get_candidates_for_job(job_id):
         SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
                a.status, a.applied_at,
                a.values_interview_result, a.values_interview_date, a.values_scorecard,
-               a.gwc_scorecard, a.gwc_interview_date, a.notes
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
         FROM applications a
         JOIN candidates c ON a.candidate_id = c.id
         WHERE a.job_id = %s
@@ -129,27 +181,8 @@ def get_candidates_for_job(job_id):
     for row in rows:
         app_id = row[0]
 
-        # Get communications history for this application
-        comm_query = """
-            SELECT email_type, sent_at FROM candidate_communications
-            WHERE application_id = %s
-            ORDER BY sent_at DESC
-        """
-        cur.execute(comm_query, (app_id,))
-        comms = cur.fetchall()
-
-        # Extract sent dates from communications
-        values_invite_sent_at = None
-        case_study_sent_at = None
-        debrief_invite_sent_at = None
-
-        for email_type, sent_at in comms:
-            if email_type and "values" in email_type.lower() and not values_invite_sent_at:
-                values_invite_sent_at = sent_at
-            if email_type and ("case study" in email_type.lower() or "kcd" in email_type.lower()) and not case_study_sent_at:
-                case_study_sent_at = sent_at
-            if email_type and "debrief" in email_type.lower() and not debrief_invite_sent_at:
-                debrief_invite_sent_at = sent_at
+        # Get communications from pre-fetched lookup (no DB query)
+        app_comms = comms_lookup.get(app_id, {})
 
         candidates.append({
             "app_id": row[0],
@@ -165,9 +198,11 @@ def get_candidates_for_job(job_id):
             "gwc_scorecard": row[10],
             "gwc_interview_date": row[11],
             "notes": row[12],
-            "values_invite_sent_at_markaz": values_invite_sent_at,
-            "case_study_sent_at_markaz": case_study_sent_at,
-            "debrief_invite_sent_at_markaz": debrief_invite_sent_at,
+            "case_study_status": row[13],
+            "case_study_submitted_at": row[14],
+            "values_invite_sent_at_markaz": app_comms.get("values_invite_sent_at"),
+            "case_study_sent_at_markaz": app_comms.get("case_study_sent_at"),
+            "debrief_invite_sent_at_markaz": app_comms.get("debrief_sent_at"),
         })
 
     conn.close()
@@ -185,11 +220,24 @@ def get_gmail_service():
     return build("gmail", "v1", credentials=creds)
 
 
+def extract_emails_from_header(header_value):
+    """Extract individual email addresses from a To:/Cc: header (can be comma-separated)."""
+    import re
+    if not header_value:
+        return []
+
+    # Extract emails from format like: "name <email@domain.com>" or plain "email@domain.com"
+    email_pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    emails = re.findall(email_pattern, header_value)
+    return [e.lower() for e in emails]
+
+
 def fetch_all_sent_emails_bulk(service):
     """
     Batch-fetch ALL sent emails (values, case study, debrief) in one pass.
     Returns dict: {email: {type: send_date}}
     Reduces 750 queries to ~3-10 total queries.
+    Properly parses multi-recipient To: headers.
     """
     lookup = {}
 
@@ -198,18 +246,20 @@ def fetch_all_sent_emails_bulk(service):
         print("[Gmail] Fetching all values invites...", flush=True)
         sys.stdout.flush()
         q = 'subject:(Invitation for Values OR "Zero In")'
-        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        results = service.users().messages().list(userId="me", q=q, maxResults=100).execute()
         msg_ids = [m["id"] for m in results.get("messages", [])]
         log_gmail_read(q, len(msg_ids), "batch_fetch_values")
 
-        for msg_id in msg_ids:
+        # Fetch metadata for first 50 only (limit to prevent timeout)
+        for msg_id in msg_ids[:50]:
             try:
                 msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
-                to_addr = headers.get("To", "").lower()
+                to_header = headers.get("To", "")
                 send_date = headers.get("Date", "")
-                if to_addr:
-                    lookup.setdefault(to_addr, {})["values_invite"] = send_date
+                emails = extract_emails_from_header(to_header)
+                for email in emails:
+                    lookup.setdefault(email, {})["values_invite"] = send_date
             except:
                 pass
         print(f"[Gmail] Values invites: {len([k for k in lookup.values() if 'values_invite' in k])} recipients", flush=True)
@@ -221,19 +271,21 @@ def fetch_all_sent_emails_bulk(service):
     try:
         print("[Gmail] Fetching all case study assignments...", flush=True)
         sys.stdout.flush()
-        q = 'subject:(case study OR KCD assignment)'
-        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        q = 'subject:(case study OR KCD assignment OR "Lets proceed")'
+        results = service.users().messages().list(userId="me", q=q, maxResults=100).execute()
         msg_ids = [m["id"] for m in results.get("messages", [])]
         log_gmail_read(q, len(msg_ids), "batch_fetch_case_study")
 
-        for msg_id in msg_ids:
+        # Fetch metadata for first 50 only (limit to prevent timeout)
+        for msg_id in msg_ids[:50]:
             try:
                 msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
-                to_addr = headers.get("To", "").lower()
+                to_header = headers.get("To", "")
                 send_date = headers.get("Date", "")
-                if to_addr:
-                    lookup.setdefault(to_addr, {})["case_study"] = send_date
+                emails = extract_emails_from_header(to_header)
+                for email in emails:
+                    lookup.setdefault(email, {})["case_study"] = send_date
             except:
                 pass
         print(f"[Gmail] Case study sent: {len([k for k in lookup.values() if 'case_study' in k])} recipients", flush=True)
@@ -245,19 +297,21 @@ def fetch_all_sent_emails_bulk(service):
     try:
         print("[Gmail] Fetching all debrief invites...", flush=True)
         sys.stdout.flush()
-        q = 'subject:(debrief OR GWC discussion)'
-        results = service.users().messages().list(userId="me", q=q, maxResults=500).execute()
+        q = 'subject:(debrief OR "case study debrief")'
+        results = service.users().messages().list(userId="me", q=q, maxResults=100).execute()
         msg_ids = [m["id"] for m in results.get("messages", [])]
         log_gmail_read(q, len(msg_ids), "batch_fetch_debrief")
 
-        for msg_id in msg_ids:
+        # Fetch metadata for first 50 only (limit to prevent timeout)
+        for msg_id in msg_ids[:50]:
             try:
                 msg = service.users().messages().get(userId="me", id=msg_id, format="metadata").execute()
                 headers = {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
-                to_addr = headers.get("To", "").lower()
+                to_header = headers.get("To", "")
                 send_date = headers.get("Date", "")
-                if to_addr:
-                    lookup.setdefault(to_addr, {})["debrief"] = send_date
+                emails = extract_emails_from_header(to_header)
+                for email in emails:
+                    lookup.setdefault(email, {})["debrief"] = send_date
             except:
                 pass
         print(f"[Gmail] Debrief invites: {len([k for k in lookup.values() if 'debrief' in k])} recipients", flush=True)
@@ -480,7 +534,13 @@ Taleemabad"""
     # ══════════════════════════════════════════════════════════════════════════
 
     if cand["values_result"] == "pass" and not stage:
-        if not gmail_data.get("case_study_sent"):
+        # Check if case study was sent (from applications table primary source)
+        case_study_sent_at = parse_date(cand.get("case_study_sent_at_markaz")) or parse_date(gmail_data.get("case_study_sent_date"))
+        case_study_status = cand.get("case_study_status")  # "submitted", "pending", null
+        case_study_submitted_at = parse_date(cand.get("case_study_submitted_at"))
+
+        if not case_study_sent_at and not case_study_status:
+            # No case study sent yet
             stage = "Values Passed - No Case Study"
             action = "Send case study assignment"
             days_stuck = (now - values_interview_date).days if values_interview_date else 0
@@ -501,9 +561,13 @@ Ayesha Khan & Team
 Taleemabad"""
             }
         else:
-            # Case study sent, check if submitted
+            # Case study sent - check if submitted
+            case_study_submitted = (case_study_status == "submitted") or bool(case_study_submitted_at) or bool(gwc_interview_date)
+            case_study_submit_date = case_study_submitted_at or case_study_sent_at
+
             if not case_study_submitted:
-                days_since_sent = (now - case_study_sent_date).days if case_study_sent_date else 0
+                # Case study sent but not submitted yet
+                days_since_sent = (now - case_study_sent_at).days if case_study_sent_at else 0
                 if days_since_sent > 7:
                     stage = "Case Study Overdue"
                     action = "Send reminder to candidate"
@@ -513,7 +577,7 @@ Taleemabad"""
                     action = None
                     days_stuck = 0
             else:
-                # Case study received - check debrief stage (debrief_invite_sent may be in Gmail or Calendar may have the event)
+                # Case study received - check debrief stage
                 # EVIDENCE OF DEBRIEF COMPLETION: gwc_interview_date exists
 
                 if gwc_interview_date:
@@ -535,7 +599,10 @@ Taleemabad"""
                             days_stuck = 0
                 else:
                     # No debrief scheduled yet - check if invite was sent
-                    if not gmail_data.get("debrief_invite_sent"):
+                    debrief_sent_at = parse_date(cand.get("debrief_invite_sent_at_markaz")) or parse_date(gmail_data.get("debrief_invite_sent_date"))
+
+                    if not debrief_sent_at:
+                        # No debrief invite sent yet
                         stage = "Case Study Received - No Debrief Invite"
                         action = "Send debrief invite"
                         days_stuck = (now - case_study_submit_date).days if case_study_submit_date else 0
@@ -556,8 +623,9 @@ Taleemabad"""
                         }
                     else:
                         # Debrief invite sent, check if booked
-                        if not calendar_data.get("debrief_booked"):
-                            days_since_invite = (now - debrief_invite_sent_date).days if debrief_invite_sent_date else 0
+                        debrief_booked = calendar_data.get("debrief_booked", (False, None, False))
+                        if not debrief_booked[0]:
+                            days_since_invite = (now - debrief_sent_at).days if debrief_sent_at else 0
                             if days_since_invite > 5:
                                 stage = "Debrief Invite Sent - Not Booked (Overdue)"
                                 action = "Send reminder email"
@@ -590,111 +658,6 @@ Taleemabad"""
         "draft_message": draft_message,
         "urgency": urgency,
         "verification_notes": notes
-    }
-
-    if cand["values_result"] == "pass":
-        # Check if case study sent
-        if not gmail_data.get("case_study_sent"):
-            return {
-                "stage": "Values Pass — No Case Study Sent",
-                "days_stuck": days_stuck,
-                "next_action": "Send case study assignment",
-                "draft_message": draft_case_study_send(cand),
-                "urgency": urgency
-            }
-        else:
-            # Case study was sent, check if received
-            if not cand["gwc_scorecard"]:
-                return {
-                    "stage": "Case Study Pending",
-                    "days_stuck": days_stuck,
-                    "next_action": "Await submission / follow up if overdue",
-                    "draft_message": draft_case_study_reminder(cand) if urgency != "normal" else None,
-                    "urgency": urgency
-                }
-            else:
-                # Case study received, check debrief
-                if not gmail_data.get("debrief_invite_sent"):
-                    return {
-                        "stage": "Case Study Received — No Debrief Invite",
-                        "days_stuck": days_stuck,
-                        "next_action": "Send debrief invitation",
-                        "draft_message": draft_debrief_invite(cand),
-                        "urgency": urgency
-                    }
-                else:
-                    # Debrief invited, check booked
-                    if not calendar_data.get("debrief_booked"):
-                        return {
-                            "stage": "Debrief Invited — Not Booked",
-                            "days_stuck": days_stuck,
-                            "next_action": "Follow up to book slot",
-                            "draft_message": draft_debrief_reminder(cand) if urgency != "normal" else None,
-                            "urgency": urgency
-                        }
-                    else:
-                        if calendar_data.get("debrief_past"):
-                            return {
-                                "stage": "Debrief Completed",
-                                "days_stuck": days_stuck,
-                                "next_action": "Panel decision pending",
-                                "draft_message": None,
-                                "urgency": "normal"
-                            }
-                        else:
-                            return {
-                                "stage": "Debrief Booked",
-                                "days_stuck": days_stuck,
-                                "next_action": "Monitor",
-                                "draft_message": None,
-                                "urgency": "normal"
-                            }
-
-    # Values result not yet captured
-    if cand["status"] == "shortlisted":
-        if not gmail_data.get("values_invite_sent"):
-            return {
-                "stage": "Shortlisted — No Invite Sent",
-                "days_stuck": days_stuck,
-                "next_action": "Send values interview invite",
-                "draft_message": draft_values_invite(cand),
-                "urgency": urgency
-            }
-        else:
-            # Invite sent, check booking
-            if not calendar_data.get("values_booked"):
-                return {
-                    "stage": "Values Invited — Not Booked",
-                    "days_stuck": days_stuck,
-                    "next_action": "Follow up to book slot",
-                    "draft_message": draft_values_reminder(cand) if urgency != "normal" else None,
-                    "urgency": urgency
-                }
-            else:
-                if calendar_data.get("values_past"):
-                    return {
-                        "stage": "Values Completed",
-                        "days_stuck": days_stuck,
-                        "next_action": "Enter scorecard on Markaz",
-                        "draft_message": None,
-                        "urgency": "normal"
-                    }
-                else:
-                    return {
-                        "stage": "Values Booked",
-                        "days_stuck": days_stuck,
-                        "next_action": "Monitor",
-                        "draft_message": None,
-                        "urgency": "normal"
-                    }
-
-    # Fallback
-    return {
-        "stage": "Unknown Stage",
-        "days_stuck": days_stuck,
-        "next_action": "Review candidate status",
-        "draft_message": None,
-        "urgency": "normal"
     }
 
 
@@ -1050,6 +1013,13 @@ def main():
         print(f"[Calendar] Indexed {len(calendar_lookup)} attendee(s)", flush=True)
         sys.stdout.flush()
 
+        # Batch-fetch ALL communications from Markaz (one-time, for all candidates)
+        print("[Markaz] Batch-fetching all communications...", flush=True)
+        sys.stdout.flush()
+        comms_lookup = fetch_all_communications()
+        print(f"[Markaz] Indexed {len(comms_lookup)} application(s) with communications", flush=True)
+        sys.stdout.flush()
+
         # Get all open jobs
         jobs = get_open_jobs()
         print(f"[DB] Found {len(jobs)} open position(s)", flush=True)
@@ -1066,7 +1036,7 @@ def main():
             print(f"[Job] Processing {job['title']} (ID {job['id']})", flush=True)
             sys.stdout.flush()
 
-            candidates = get_candidates_for_job(job["id"])
+            candidates = get_candidates_for_job(job["id"], comms_lookup)
             print(f"  > {len(candidates)} candidate(s) in pipeline", flush=True)
             sys.stdout.flush()
 

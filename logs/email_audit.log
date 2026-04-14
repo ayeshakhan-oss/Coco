@@ -30840,3 +30840,767 @@ es_fetched=1
           AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
         ORDER BY a.applied_at DESC
      | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 15:14:56 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:14:58 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:14:59 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 15:17:01 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment)' | messages_fetched=0
+2026-04-13 15:17:01 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR GWC discussion)' | messages_fetched=0
+2026-04-13 15:17:06 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 15:17:08 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 15:17:21 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 15:17:41 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 15:18:40 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 15:34:17 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:34:19 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:34:20 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 15:36:17 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment)' | messages_fetched=0
+2026-04-13 15:36:17 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR GWC discussion)' | messages_fetched=0
+2026-04-13 15:36:20 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 15:36:22 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 15:36:36 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 15:36:56 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 15:37:55 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 15:39:06 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=95 | rows=pipeline_monitor_job_34
+2026-04-13 15:45:57 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:45:59 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:46:00 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 15:47:58 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment)' | messages_fetched=0
+2026-04-13 15:47:58 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR GWC discussion)' | messages_fetched=0
+2026-04-13 15:48:02 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 15:48:04 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 15:48:17 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 15:48:37 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 15:49:35 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 15:50:43 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=95 | rows=pipeline_monitor_job_34
+2026-04-13 15:53:18 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:53:20 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 15:53:21 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 15:55:21 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment)' | messages_fetched=0
+2026-04-13 15:55:21 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR GWC discussion)' | messages_fetched=0
+2026-04-13 15:55:24 | INFO | DB_READ | context=unknown | table=SELECT application_id, email_type, sent_at FROM candidate_communications ORDER BY application_id, sent_at DESC | filters=12 | rows=batch_fetch_all_communications
+2026-04-13 15:55:26 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 15:55:29 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 15:55:31 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 15:55:33 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 15:55:36 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 15:55:39 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=95 | rows=pipeline_monitor_job_34
+2026-04-13 15:55:40 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=6 | rows=pipeline_monitor_job_33
+2026-04-13 15:55:43 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=72 | rows=pipeline_monitor_job_32
+2026-04-13 15:55:45 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=42 | rows=pipeline_monitor_job_26
+2026-04-13 15:55:48 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=57 | rows=pipeline_monitor_job_24
+2026-04-13 15:55:55 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=209 | rows=pipeline_monitor_job_20
+2026-04-13 15:56:00 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=270 | rows=pipeline_monitor_job_17
+2026-04-13 15:56:03 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=184 | rows=pipeline_monitor_job_13
+2026-04-13 15:56:05 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=110 | rows=pipeline_monitor_job_10
+2026-04-13 15:56:23 | INFO | SENT | context=hiring_pipeline_monitor | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-13 16:02:35 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:02:36 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:02:37 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 16:04:41 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment)' | messages_fetched=0
+2026-04-13 16:04:42 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR GWC discussion)' | messages_fetched=0
+2026-04-13 16:04:46 | INFO | DB_READ | context=unknown | table=
+        SELECT id, case_study_status, case_study_submitted_at, communication_history
+        FROM applications
+        WHERE case_study_status IS NOT NULL
+           OR case_study_submitted_at IS NOT NULL
+           OR communication_history IS NOT NULL
+     | filters=2212 | rows=batch_fetch_all_applications_pipeline
+2026-04-13 16:04:49 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 16:04:51 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 16:04:53 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 16:04:55 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 16:04:58 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 16:05:00 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=95 | rows=pipeline_monitor_job_34
+2026-04-13 16:05:02 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=6 | rows=pipeline_monitor_job_33
+2026-04-13 16:05:05 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=72 | rows=pipeline_monitor_job_32
+2026-04-13 16:05:07 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=42 | rows=pipeline_monitor_job_26
+2026-04-13 16:05:09 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=57 | rows=pipeline_monitor_job_24
+2026-04-13 16:05:11 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=209 | rows=pipeline_monitor_job_20
+2026-04-13 16:05:14 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=270 | rows=pipeline_monitor_job_17
+2026-04-13 16:05:16 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=184 | rows=pipeline_monitor_job_13
+2026-04-13 16:05:18 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=110 | rows=pipeline_monitor_job_10
+2026-04-13 16:05:34 | INFO | SENT | context=hiring_pipeline_monitor | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-13 16:12:25 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:12:26 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:12:27 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 16:14:28 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment OR "Lets proceed")' | messages_fetched=407
+2026-04-13 16:16:31 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR "case study debrief")' | messages_fetched=393
+2026-04-13 16:35:59 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:36:00 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:36:02 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=412
+2026-04-13 16:38:02 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment OR "Lets proceed")' | messages_fetched=407
+2026-04-13 16:40:03 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR "case study debrief")' | messages_fetched=393
+2026-04-13 16:40:32 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:40:34 | INFO | file_cache is only supported with oauth2client<4.0.0
+2026-04-13 16:40:35 | INFO | GMAIL_READ | context=batch_fetch_values | query='subject:(Invitation for Values OR "Zero In")' | messages_fetched=100
+2026-04-13 16:40:50 | INFO | GMAIL_READ | context=batch_fetch_case_study | query='subject:(case study OR KCD assignment OR "Lets proceed")' | messages_fetched=100
+2026-04-13 16:41:04 | INFO | GMAIL_READ | context=batch_fetch_debrief | query='subject:(debrief OR "case study debrief")' | messages_fetched=100
+2026-04-13 16:41:24 | INFO | DB_READ | context=unknown | table=
+        SELECT id, case_study_status, case_study_submitted_at, communication_history
+        FROM applications
+        WHERE case_study_status IS NOT NULL
+           OR case_study_submitted_at IS NOT NULL
+           OR communication_history IS NOT NULL
+     | filters=2212 | rows=batch_fetch_all_applications_pipeline
+2026-04-13 16:41:26 | INFO | DB_READ | context=unknown | table=
+        SELECT j.id, j.job_id, j.title, j.department,
+               j.hiring_manager, u.email as hm_email, u.first_name as hm_first_name
+        FROM jobs j
+        LEFT JOIN users u ON j.hiring_manager = u.id
+        WHERE j.job_status = 'Active'
+        ORDER BY j.created_at DESC
+     | filters=13 | rows=pipeline_monitor_open_jobs
+2026-04-13 16:41:28 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=48 | rows=pipeline_monitor_job_38
+2026-04-13 16:41:30 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=75 | rows=pipeline_monitor_job_37
+2026-04-13 16:41:33 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=237 | rows=pipeline_monitor_job_36
+2026-04-13 16:41:36 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=291 | rows=pipeline_monitor_job_35
+2026-04-13 16:41:38 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=95 | rows=pipeline_monitor_job_34
+2026-04-13 16:41:40 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=6 | rows=pipeline_monitor_job_33
+2026-04-13 16:41:42 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=72 | rows=pipeline_monitor_job_32
+2026-04-13 16:41:46 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=42 | rows=pipeline_monitor_job_26
+2026-04-13 16:41:48 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=57 | rows=pipeline_monitor_job_24
+2026-04-13 16:41:50 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=209 | rows=pipeline_monitor_job_20
+2026-04-13 16:41:53 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=270 | rows=pipeline_monitor_job_17
+2026-04-13 16:41:55 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=184 | rows=pipeline_monitor_job_13
+2026-04-13 16:41:58 | INFO | DB_READ | context=unknown | table=
+        SELECT a.id, a.candidate_id, c.first_name, c.last_name, c.email,
+               a.status, a.applied_at,
+               a.values_interview_result, a.values_interview_date, a.values_scorecard,
+               a.gwc_scorecard, a.gwc_interview_date, a.notes,
+               a.case_study_status, a.case_study_submitted_at
+        FROM applications a
+        JOIN candidates c ON a.candidate_id = c.id
+        WHERE a.job_id = %s
+          AND (a.status != 'applied' OR a.values_interview_result IS NOT NULL)
+        ORDER BY a.applied_at DESC
+     | filters=110 | rows=pipeline_monitor_job_10
+2026-04-13 16:42:14 | INFO | SENT | context=hiring_pipeline_monitor | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-13 16:46:18 | INFO | SENT | context=attendance_13apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-13 16:54:32 | INFO | SENT | context=attendance_13apr2026_corrected | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-13 16:57:38 | INFO | SENT | context=attendance_13apr2026_updated | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-13 17:02:46 | INFO | SENT | context=attendance_13apr2026_final | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-13 17:19:12 | INFO | SENT | context=payroll_status_list | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-13 17:26:31 | INFO | SENT | context=payroll_complete_list | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-13 17:51:30 | INFO | SENT | context=attendance_13apr2026_final_corrected | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-13 17:55:31 | INFO | SENT | context=attendance_13apr2026_91_total | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com', 'aymen.abid@taleemabad.com']
+2026-04-14 12:05:58 | INFO | SENT | context=GWC_rejection_pilot_Moaz_Nadeem | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:05:59 | INFO | SENT | context=GWC_rejection_pilot_Alishba_Ramzan | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:06:01 | INFO | SENT | context=GWC_rejection_pilot_Umair_Solangi | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:06:02 | INFO | SENT | context=GWC_rejection_pilot_Ali_Jawad | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:06:03 | INFO | SENT | context=GWC_rejection_pilot_Maryam_Rafaqat | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:06:04 | INFO | SENT | context=GWC_rejection_pilot_Sultan_Muhammad_Hamad_Sheharyar | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:08:02 | INFO | SENT | context=GWC_rejection_emails_pilot_pdf | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:24 | INFO | SENT | context=GWC_rejection_pilot_Moaz_Nadeem | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:26 | INFO | SENT | context=GWC_rejection_pilot_Alishba_Ramzan | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:28 | INFO | SENT | context=GWC_rejection_pilot_Umair_Solangi | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:29 | INFO | SENT | context=GWC_rejection_pilot_Ali_Jawad | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:31 | INFO | SENT | context=GWC_rejection_pilot_Maryam_Rafaqat | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:13:33 | INFO | SENT | context=GWC_rejection_pilot_Sultan_Muhammad_Hamad_Sheharyar | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:45 | INFO | SENT | context=GWC_rejection_pilot_Moaz_Nadeem | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:47 | INFO | SENT | context=GWC_rejection_pilot_Alishba_Ramzan | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:49 | INFO | SENT | context=GWC_rejection_pilot_Umair_Solangi | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:50 | INFO | SENT | context=GWC_rejection_pilot_Ali_Jawad | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:52 | INFO | SENT | context=GWC_rejection_pilot_Maryam_Rafaqat | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:14:54 | INFO | SENT | context=GWC_rejection_pilot_Sultan_Muhammad_Hamad_Sheharyar | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:46 | INFO | SENT | context=GWC_rejection_pilot_Moaz_Nadeem | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:48 | INFO | SENT | context=GWC_rejection_pilot_Alishba_Ramzan | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:49 | INFO | SENT | context=GWC_rejection_pilot_Umair_Solangi | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:51 | INFO | SENT | context=GWC_rejection_pilot_Ali_Jawad | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:52 | INFO | SENT | context=GWC_rejection_pilot_Maryam_Rafaqat | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 12:16:54 | INFO | SENT | context=GWC_rejection_pilot_Sultan_Muhammad_Hamad_Sheharyar | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com', 'jawwad.ali@taleemabad.com']
+2026-04-14 17:01:24 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:02:29 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:09:39 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:51:52 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:53:00 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:55:11 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 17:59:04 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:00:50 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:01:15 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:03:48 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:04:07 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:19:00 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 18:25:33 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 19:07:00 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 19:08:55 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-04-14 19:14:01 | INFO | SENT | context=attendance_14apr2026 | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
