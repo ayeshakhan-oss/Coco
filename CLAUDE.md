@@ -8,6 +8,7 @@ and internal budget, ranks candidates, and sends analysis reports to hiring mana
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
 ## Current Focus
+Hackathon 2026 GWC Rejection Emails finalized (2026-04-14) — All 6 candidates, merged PDF, warm-tone rejections. 3 transcript-based (Ali Jawad, Umair Solangi, Sultan Sheharyar) + 3 scorecard-based (Moaz Nadeem, Alishba Ramzan, Maryam Rafaqat). Final PDF: c:/Agent Coco/scripts/jobs/hackathon/GWC_Hackathon_2026_All_6_Candidates.pdf. Awaiting Ayesha review + approval for live send. **CRITICAL LEARNING:** Identified 10 systemic discipline problems that caused task to take longer than necessary (not capability issues, discipline issues). Reference: memory/coco_core_problems_identified.md
 Job 35 + Job 36 Decision Briefs sent live (2026-04-08) — combined reply to Sabeena Abbasi's "Impact hiring Update" thread. Reference: scripts/jobs/combined/send_combined_impact_reply_pilot.py
 Job 32 Decision Brief still pending — pilot to Ayesha + Jawwad before live send to Sabeena Abbasi.
 Article on personalized rejection feedback drafted and finalized (2026-04-01). Ready to publish on LinkedIn/Medium. Reference: memory/project_article_rejection_feedback.md
@@ -89,8 +90,10 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 ## Database
 - Type: PostgreSQL (Neon serverless)
 - Host: ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech
-- Access: Read-only via MCP (config in .mcp.json — do NOT share this file)
-- Schema: see docs/schema.md
+- Access: Read via direct connection (credentials in scripts/utils files)
+- Dual schema:
+  - **Talent Acquisition:** jobs, candidates, applications (see docs/schema.md)
+  - **HR/Markaz:** leave_requests, employee_profiles, user_roles, etc.
 - **values_scorecard schema — NON-NEGOTIABLE:** must use Markaz-compatible format {date, host, candidateName, noteTaker, values[], finalComments, proceedToRightSeat}. Wrong schema = data in DB but invisible on Markaz UI. Reference: write_job36_values_scorecards.py
 
 ## Teams Integration (2026-04-10)
@@ -117,6 +120,29 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - ALWAYS audit directly relevant years of experience separately — state total exp AND relevant exp for every shortlisted candidate. Do not conflate impressive orgs with actual experience duration.
 - TFP Fellow = teaching role, NOT M&E/field research. Never count as research/M&E experience.
 - Keyword scanner scores are a first-pass only — always validate top candidates with manual CV read before finalising shortlist
+
+## Attendance Reports (2026-04-14 Finalized)
+- **Source:** Markaz leave_requests DB + Teams presence channel + user's on-site check
+- **Format:** 10-section ReportLab PDF (landscape A4)
+- **Section Order:**
+  1. Header (navy background)
+  2. Stat Boxes (7 total: Total Active, Onsite Today, On Leave, WFH, WFH Confirmed, Arriving Later, Flagged)
+  3. Present Onsite (2-column name-only grid, alternating light green/white)
+  4. Arriving Later — Teams Update (Name|Status table)
+  5. On Leave (Name|Status table)
+  6. Working From Home (Name|Status table, if any)
+  7. WFH — Confirmed (Name|Status table, 8 permanent)
+  8. Out of Office (Name|Status table, if any)
+  9. Flagged — No Attendance Record (Name|Status table)
+  10. Archived/Parked (NIETE) (Name|Status table, purple header)
+  11. Additional in Attendance — Not OPL+OWT (Name|Status table, blue header)
+  12. **[NEW] Pending Leaves/WFH** (Name|Status table, orange header) — submitted but not yet approved in Markaz
+  13. Footer (2-column: org/contact left, compiled by right)
+- **Critical Rule:** Names in ONSITE/all lists MUST match ALL_PAYROLL exactly (e.g., "Muhammad Zeeshan Usaid", not "Zeeshan Usaid")
+- **Teams Integration:** get_presence_updates() pulls last 24h from Presence channel
+- **Markaz Integration:** Query leave_requests table WHERE status = 'pending' for pending section
+- **Recipients:** TO = ayesha.khan@taleemabad.com (via safe_sendmail)
+- **Script:** scripts/reports/attendance_14apr2026.py (master template, copy for future dates)
 
 ## My Preferences
 - **Delivery format:** PDF attachment + brief email body (never embed full analysis in email)
