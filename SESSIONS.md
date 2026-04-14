@@ -129,7 +129,46 @@
 **Format:** 10-section PDF (landscape A4)
 **Data:** Teams-verified, Markaz-verified, user-corrected
 
+---
+
+## SESSION 002 OUTCOME: EXECUTION DISCIPLINE PROTOCOL ESTABLISHED
+
+**Following Session 002 analysis, user established mandatory protocol for all recurring work:**
+
+### Protocol Name
+**Execution Discipline Protocol** (2026-04-14)
+
+### Why Established
+Session 002 demonstrated that speed-over-discipline leads to:
+- Fabrication (violated SOP 1.1)
+- Multiple revision cycles (should be single-pass)
+- Regression on format/tone same day locked
+- User doing QA that Coco should own
+
+### Core Rules
+1. **Before starting:** Search for existing SOP/template. Reuse proven structure.
+2. **When working:** Verified sources only. No guessing, no embellishment, no fabrication.
+3. **Format locked:** Once corrected, maintain exactly. No regression.
+4. **Self-QA mandatory:** All 8 checklist items before sending.
+5. **Failsafe:** Stop and ask instead of assume/infer/create without checking.
+
+### Full Documentation
+See: memory/execution_discipline_protocol.md
+
+### Applies To
+All recurring work (rejection emails, feedback, reports, scorecards, case studies, attendance, etc.)
+
+### Enforcement
+- Primary: Coco self-discipline + failsafe behavior
+- Secondary: User feedback if violated
+
+### Status
+**LOCKED IN — effective immediately, applies to all future work**
+
+---
+
 ### Next Session
 - Create markaz_reader.py utility for reusable pending leaves queries
 - Wire into weekly_pipeline_monitor.py for automated flagging
 - Test attendance report for April 15-17 (rest of week)
+- Apply Execution Discipline Protocol to all work
