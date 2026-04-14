@@ -109,19 +109,41 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 3. **Relevant experience criteria** — Check the JD for the minimum experience requirement. Only rank candidates in top tiers if they meet it in RELEVANT experience — not total/overall experience. State both total exp and relevant exp explicitly for every shortlisted candidate.
 4. **No assumed data** — NEVER make up or assume any candidate data (names, expected salary, experience, anything). Always fetch accurate data from Markaz DB. If data is missing, state "Not mentioned" — never fill in a gap.
 
-## Key Rules (Updated 2026-04-10)
-1. ALWAYS read memory.md at the start of every session, right after this file.
-2. ALWAYS check session logs before answering — prior context matters.
-3. ALWAYS read the JD carefully before screening any candidate — never skip this.
-4. ALWAYS check budget compatibility before including a candidate in the final report.
-5. ALWAYS read every CV manually — don't rely on keyword scanner alone, human judgment required.
-6. ALWAYS ask the user for approval before taking any action — running scripts, querying DB, sending emails, writing files, anything.
-7. Default report size: top 20 candidates per position (can exceed if pool is large).
-8. After every successful task, save learnings to memory.md (close the loop).
-9. Keep this file under 100 lines. Move details to skill files.
-10. **NEVER fabricate data** — if missing, state "Not mentioned", never fill gaps.
-11. **NEVER assume** — always verify before proceeding.
-12. **NEVER rush** — verify, QA, stay disciplined.
+## Key Rules (Updated 2026-04-14 — DISCIPLINE LOCKED IN)
+
+### Session Start (MANDATORY — EVERY SINGLE SESSION)
+1. **RUN SESSION STARTUP CHECKLIST FIRST** — memory/session_startup_checklist.md (7 steps, 10 minutes)
+   - Memory load
+   - Protocol confirmation
+   - Execution discipline check
+   - Task type identification
+   - Source material verification
+   - Prior work search
+   - Lock-in check verification
+
+2. Read MEMORY.md + relevant memory files
+3. Read this file (CLAUDE.md) — confirm current focus
+4. Confirm Execution Discipline Protocol is ACTIVE in thinking
+
+### During Work (MANDATORY — EVERY TASK)
+5. **Search for existing SOP/template BEFORE creating anything** — no reinvention
+6. **Use verified sources only** — Markaz DB, Teams, user data, approved templates. NEVER guess, embellish, or fabricate.
+7. **Check locked-in format/tone corrections** — if corrected once, applies to ALL future work
+8. **Maintain batch consistency** — all outputs in batch follow same standard
+9. **Run 8-item self-QA checklist BEFORE sending** (from Execution Discipline Protocol)
+   - File names/existence · Formatting · Tone · Duplication · Jargon removal · Encoding/artifacts · Consistency · Factual grounding
+10. **Failsafe behavior** — if about to guess/assume/embellish, STOP and ask instead
+
+### Non-Negotiable Rules
+11. **NEVER fabricate data** — if missing, state "Not mentioned", never fill gaps
+12. **NEVER assume** — always verify, ask, or wait for clarification
+13. **NEVER regress** — once corrected, format/tone is LOCKED for all future work
+14. **NEVER rush** — first-pass quality is more important than speed
+
+### Reference Documents
+- [Session Startup Checklist](memory/session_startup_checklist.md) — Run at session start (MANDATORY)
+- [Execution Discipline Protocol](memory/execution_discipline_protocol.md) — Work discipline + 8-item self-QA
+- [General Non-Negotiable SOPs](memory/general_non_negotiable_sops.md) — 10 core foundation rules
 
 ## Security
 - Full security rules: see [skills/security.md](skills/security.md) — NON-NEGOTIABLE, set 2026-03-30

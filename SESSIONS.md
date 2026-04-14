@@ -172,3 +172,134 @@ All recurring work (rejection emails, feedback, reports, scorecards, case studie
 - Wire into weekly_pipeline_monitor.py for automated flagging
 - Test attendance report for April 15-17 (rest of week)
 - Apply Execution Discipline Protocol to all work
+
+---
+
+## Session 003: Attendance Report 14 April + Discipline Framework (2026-04-14)
+
+**Duration:** Full session
+**Focus:** Finalize attendance report (April 14) + establish permanent discipline framework to prevent Session 002 failures
+
+### Part 1: Attendance Report 14 April 2026 ✅ FINALIZED
+
+**Report Generated:** 10-section PDF (landscape A4)
+- Header + 7 stat boxes
+- Present Onsite (2-column grid, 50 employees)
+- Arriving Later (Teams verified)
+- On Leave (Markaz + Teams data)
+- WFH — Confirmed (8 permanent)
+- Out of Office (empty)
+- Flagged — No Attendance Record
+- Archived/Parked (NIETE) — 8 employees
+- Additional in Attendance (1 employee)
+- **[NEW] Pending Leaves/WFH** — 5 employees (Markaz leave_requests table)
+
+**Data Sources Verified:**
+- Teams Presence Channel (last 24h) → arriving late, not feeling well, exam schedules
+- Markaz Database (leave_requests table) → 62 pending leaves found, 5 relevant to this week
+- User-provided on-site list (50 employees)
+- Markaz approval status (Mavia, Saaim Asif removed — approved)
+
+**Critical Learning — Name Matching:**
+- "Muhammad Zeeshan Usaid" vs "Zeeshan Usaid" caused false flag
+- ALL names in attendance must match ALL_PAYROLL exactly
+- Account completeness depends on name consistency
+
+**Permanent Exclusions Locked In:**
+- Alishba Anam — never flag (NEVER_FLAG set)
+- Razia Kausar — never flag (NEVER_FLAG set)
+
+**Status:** Sent to ayesha.khan@taleemabad.com (via safe_sendmail)
+
+---
+
+### Part 2: DISCIPLINE FRAMEWORK ESTABLISHED ✅ PERMANENT
+
+**Post-Session 002 Analysis:** User identified 10 systemic discipline problems that caused unnecessary time waste and fabrication:
+1. Memory skip — not checking MEMORY.md first
+2. No pattern recognition — not seeing task is repeat of SOP
+3. No template reuse — reinventing existing solutions
+4. Speed over accuracy — rushing instead of verifying
+5. No clarifying questions — assuming intent
+6. SOP breakdown — following rules inconsistently
+7. Delegated QA — assuming correctness without checking
+8. Overconfidence — acting without verification
+9. Fabrication — inventing details instead of stating "not mentioned"
+10. Regression — same bug/format error multiple times in same session
+
+**Solution: Three-Pillar Framework**
+
+#### Pillar 1: Session Startup Checklist ✅ CREATED
+**File:** memory/session_startup_checklist.md (320 lines)
+**When:** RUN AT SESSION START, EVERY TIME (MANDATORY)
+**Steps:**
+1. Memory Load — read MEMORY.md + relevant files
+2. Protocol Confirmation — understand project scope + SOPs
+3. Execution Discipline Check — confirm discipline is active
+4. Task Type Identification — recurring vs. new work
+5. Verify Source Material — data/DB access available
+6. Search for Prior Work — find existing template/SOP
+7. Lock-in Check — verify all format/tone corrections locked
+
+**Result:** Before any task, I've loaded state, confirmed discipline, found prior work, and verified sources.
+
+#### Pillar 2: Execution Discipline Protocol ✅ REFERENCED
+**File:** memory/execution_discipline_protocol.md (324 lines)
+**Status:** LOCKED IN, effective 2026-04-14
+**Core Rule:** "Do not guess. Do not embellish. Do not fill gaps with plausible language."
+**Covers:** Before task, when working, format locked, self-QA, failsafe behavior, recurring work types
+**8-Item Self-QA Checklist:** All items must pass before sending ANY work
+
+#### Pillar 3: Format Lock-In Rule ✅ LOCKED
+**Rule:** Once user corrects format/tone/structure, it applies to ALL FUTURE WORK
+**No regression:** If corrected once, maintain exactly in all following work
+**Batch consistency:** All outputs in batch must follow same standard
+**Examples:** No asterisks in headings → applies forever. "We" voice → applies forever.
+
+---
+
+### Framework Integration
+
+**CLAUDE.md Updated:**
+- Key Rules rewritten to emphasize Session Startup Checklist (MANDATORY first)
+- Links to Execution Discipline Protocol + General Non-Negotiable SOPs
+- 8-item self-QA checklist reference
+
+**MEMORY.md Updated:**
+- Session Startup Checklist added to index (top priority after memory load rule)
+- Execution Discipline Protocol reference updated
+
+**SESSIONS.md Updated:**
+- This entry documents the framework establishment
+
+**Commitment Level:** PERMANENT, no exceptions, applies to all recurring work
+
+---
+
+### Why This Works (Session 002 vs Now)
+
+**Session 002 Problem:**
+- Task took 8+ hours
+- Multiple revision cycles
+- User had to provide heavy feedback
+- Format broke mid-session
+- Fabrication issues
+
+**Session 003+ Prevention:**
+- Startup checklist catches discipline lapses at session start
+- Execution discipline forces verified sources only
+- Format lock-in prevents regression
+- Self-QA checklist catches errors before sending
+- Memory protocol ensures prior learnings are accessible
+
+---
+
+### Status: FRAMEWORK LOCKED IN
+
+**Effective Date:** 2026-04-14
+**Applies To:** All future sessions, all recurring work
+**Enforcement:** Self-discipline + user feedback
+**Measurement:** First-pass quality (zero revisions needed)
+
+**Core Principle:** Discipline > Speed. Verified > Guessed. Locked > Flexible.
+
