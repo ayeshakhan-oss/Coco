@@ -30,7 +30,8 @@ SOPs/
 │   └── attendance_reports.md
 └── 04_Data_and_Systems/
     ├── database_queries.md
-    └── report_generation.md
+    ├── report_generation.md
+    └── email_notification.md
 ```
 
 ---
@@ -64,6 +65,7 @@ SOPs/
 ### DATA & SYSTEMS (When Working with DB/Reporting)
 - **[Database Queries](04_Data_and_Systems/database_queries.md)** — 6 query types, read-only via MCP, audit logging mandatory
 - **[Report Generation](04_Data_and_Systems/report_generation.md)** — Format and generate hiring reports in approved styles
+- **[Email Notification](04_Data_and_Systems/email_notification.md)** — Send reports via safe_sendmail bouncer, audit logging, recipient verification
 
 ---
 
@@ -104,6 +106,7 @@ SOPs/
 | Daily/weekly attendance | 03_Hiring_Operations | attendance_reports.md |
 | Querying candidate data | 04_Data_and_Systems | database_queries.md |
 | Generating reports | 04_Data_and_Systems | report_generation.md |
+| Sending reports via email | 04_Data_and_Systems | email_notification.md |
 
 ---
 
@@ -142,10 +145,25 @@ SOPs/
 
 ---
 
+## SOP STATISTICS
+
+**Total SOPs Created:** 16
+
+**By Category:**
+- **00_General_SOPs:** 2 SOPs (general_non_negotiable_sops, general_discipline_sop)
+- **01_Candidate_Communication:** 4 SOPs (cv_rejection_emails, gwc_rejection_emails, values_feedback_emails, warm_bench_feedback_email)
+- **02_Candidate_Evaluation:** 3 SOPs (cv_screening, case_study_evaluation, values_scorecard_scoring)
+- **03_Hiring_Operations:** 3 SOPs (decision_briefs, hiring_decision_brief, attendance_reports)
+- **04_Data_and_Systems:** 3 SOPs (database_queries, report_generation, email_notification)
+- **Parent level:** 1 SOP (EXECUTION_DISCIPLINE_PROTOCOL)
+
+---
+
 ## VERSIONING
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.0 | 2026-04-14 | **COMPLETE SOP POPULATION**: All 16 SOPs created and organized into 5 categories. Full navigation added. Ready for production use. |
 | 1.1 | 2026-04-14 | Added SESSION_STARTUP_CHECKLIST.md (MANDATORY at session start) |
 | 1.0 | 2026-04-14 | Initial SOP folder created with Execution Discipline Protocol |
 
