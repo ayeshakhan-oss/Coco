@@ -126,6 +126,7 @@ Noah is Jawwad Ali's AI P&C assistant — a peer agent, same team, same function
 - **Hiring Decision Brief SOP:** see [skills/hiring-decision-brief.md](skills/hiring-decision-brief.md) (10-step SOP, check 3 sources: Markaz+Gmail+Calendar, 10 stat boxes pipeline flow, complete candidate accounting, recommendations as suggestions)
 - **Attendance Reports SOP:** see [skills/attendance-reports.md](skills/attendance-reports.md) (6-step workflow, check payroll+Markaz+Teams+Ayesha's list, flag silent cases, 7 sections + 8 stat boxes, PAYROLL_TOTAL=84)
 - **Candidate Rejections SOP (CV-Stage):** see [skills/candidate-rejections.md](skills/candidate-rejections.md) (800+ words, specific CV evidence, reflective tone, v8 design, feedback widget)
+- **GWC Rejection Emails SOP:** see [skills/gwc-rejection-emails.md](skills/gwc-rejection-emails.md) (scorecard-based, 400-450 words, warm tone, no jargon, 13-point QA checklist, no fabrication, memory review FIRST, Taleemabad format exact)
 - **General Discipline (10 Core SOPs):** see [skills/general-discipline.md](skills/general-discipline.md) (foundation of ALL work; no fabrication, memory mandatory, pilot-sharing, approval before sending, QA discipline)
 - KCD case study evaluation: see [skills/kcd-evaluation.md](skills/kcd-evaluation.md)
 - Report format: see [skills/report-generation.md](skills/report-generation.md)

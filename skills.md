@@ -315,7 +315,31 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 
 ---
 
-## Skills Status Summary (as of 2026-04-10)
+## Skill 13: GWC Rejection Emails
+
+**File:** [skills/gwc-rejection-emails.md](skills/gwc-rejection-emails.md)
+
+**Status:** ✓ Locked in (2026-04-14)
+
+**Pipeline Position:** Candidate Communication — GWC Cohort (post-values interview)
+
+**Objective:** Generate warm-tone rejection emails for candidates who completed GWC interviews but were not selected. Based on GWC scorecard data (not interview transcripts). No fabrication — scorecard data only.
+
+**Key Requirements:**
+- Source: GWC scorecard JSON from Markaz applications table
+- Structure: 5-section email (Opening → What We Saw → The Gap → What Matters Next → Closing)
+- Format: Taleemabad template (logo, blue header/title/subtitle, blue line, justified Georgia)
+- Tone: Warm, mentoring, evidence-based, no jargon ("GWC", "Zero In Call", interviewer names)
+- Word count: 400-450 words minimum (shorter acceptable if scorecard data limited)
+- Internal QA: 13-point checklist before sending
+- Non-negotiable: NO fabrication beyond scorecard, memory review first, format exactly, warm tone always, evidence-based only
+- Reference: GWC Hackathon 2026 emails (2026-04-14)
+
+**When to Use:** GWC scores available in Markaz, no interview transcript, candidate needs warm feedback + honest gap identification
+
+---
+
+## Skills Status Summary (as of 2026-04-14)
 
 | # | Skill | Status | Locked | Updated |
 |---|-------|--------|--------|---------|
@@ -332,21 +356,27 @@ This file indexes all of Coco's core skills for Taleemabad hiring operations. Ea
 | 10 | Database Queries | ✓ | Yes | 2026-04-10 |
 | 11 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
 | 12 | Email Notifications | ✓ | Existing | (pending refresh) |
+| 13 | GWC Rejection Emails | ✓ | Yes | 2026-04-14 |
 
 ---
 
-## Skills 11 & 12: Status & Open Questions (2026-04-10)
+## Skills 11, 12 & 13: Status & Open Questions (2026-04-14)
 
 ### Skill 11: Database Query
 - **Status:** Locked in — no major update dictated
 - **Action:** Keep reviewing and expand SOP later as new needs arise
 - **Reference:** [skills/database-queries.md](skills/database-queries.md)
 
-### Skill 12: Teams Integration
-- **Current capability:** Can read Teams channels (especially Presence channel for attendance)
-- **Open question from Ayesha:** Can Coco also read individual Teams statuses (on leave, away, busy, in a call)?
-- **Status:** Open capability question — needs technical investigation
-- **Reference:** scripts/utils/teams_reader.py
+### Skill 12: Email Notifications
+- **Status:** Existing (may need refresh)
+- **Reference:** [skills/email-notification.md](skills/email-notification.md)
+
+### Skill 13: GWC Rejection Emails (NEW — 2026-04-14)
+- **Status:** ✓ Locked in and production ready
+- **Purpose:** Warm-tone rejections for GWC cohort (scorecard-based, no fabrication)
+- **Key features:** 5-section structure, Taleemabad format, 400-450 words, no jargon, 13-point QA checklist
+- **Reference:** [skills/gwc-rejection-emails.md](skills/gwc-rejection-emails.md)
+- **Implementation:** Hackathon 2026 GWC emails (6 candidates, 2026-04-14)
 
 ---
 
