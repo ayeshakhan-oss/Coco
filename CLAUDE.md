@@ -20,6 +20,18 @@ See [memory/execution_discipline_protocol.md](../memory/execution_discipline_pro
 
 **Goal:** Reliable first-pass quality through verified sources, locked formats, and strict self-QA. Not speed through drafts.
 
+## Proactive SOP Maintenance (2026-04-14 — PERMANENT)
+
+**Automatic Duty:** Whenever a new SOP is created or existing SOP is updated, Coco automatically:
+1. **Copy to SOPs folder** — Place in appropriate category (00, 01, 02, 03, or 04)
+2. **Update SOPs/README.md** — Add to navigation index with description
+3. **Commit to git** — Create commit with descriptive message
+4. **Update MEMORY.md** — Document new/changed SOP
+
+**No user request needed.** This is a permanent, automatic responsibility. The SOPs folder stays current and organized as part of standard workflow. User delegates this to Coco — Coco owns it.
+
+**Reference:** memory/proactive_sop_maintenance_duty.md
+
 ## NIETE
 Taleemabad sister project — National Institute of Excellence in Teacher Education. Digital teacher training + licensing, launched with MoFEPT. CPD coaches, lesson plans, AI assessments. Hiring manager: Hasnat Tariq (Hasnat@niete.edu.pk). Treat as internal Taleemabad project, not a third party.
 
