@@ -1,0 +1,54 @@
+{
+  "soul-architect": {
+    "title": "Soul Architect",
+    "description": "Product leader/UX strategist for AI-powered learning tools",
+    "required_skills": ["product management", "UX design", "strategy", "AI", "learning/education", "storytelling"],
+    "location": "Pakistan",
+    "seniority": "5+ years relevant experience",
+    "target_count": 50,
+    "github_search_queries": [
+      "EdTech product management",
+      "learning platform UX design",
+      "AI product strategy",
+      "education technology product",
+      "learning product Python",
+      "educational platform",
+      "product strategy repos"
+    ],
+    "linkedin_search_queries": [
+      "site:linkedin.com/in product manager OR architect Pakistan education OR EdTech",
+      "site:linkedin.com/in UX strategy OR product strategy Pakistan learning",
+      "site:linkedin.com/in AI product OR machine learning Pakistan education",
+      "site:linkedin.com/in product design OR UX lead Pakistan EdTech OR education"
+    ],
+    "google_search_queries": [
+      "product manager OR architect Pakistan education EdTech AI",
+      "UX strategy lead Pakistan learning technology",
+      "EdTech product leader Pakistan Islamabad Karachi Lahore",
+      "AI education product Pakistan startup OR nonprofit"
+    ],
+    "tier_thresholds": {
+      "t1": {
+        "min_years_experience": 7,
+        "min_github_score": 70,
+        "description": "Senior product leaders, 7+ years in EdTech/AI, strong public presence"
+      },
+      "t2": {
+        "min_years_experience": 5,
+        "min_github_score": 50,
+        "description": "Mid-level product/UX leads, 5-7 years relevant experience, active contributions"
+      },
+      "t3": {
+        "min_years_experience": 3,
+        "min_github_score": 30,
+        "description": "Emerging product professionals, 3-5 years experience, growth potential"
+      }
+    },
+    "dedup_fields": ["email", "linkedin_url"],
+    "confidence_thresholds": {
+      "high": 0.8,
+      "medium": 0.6,
+      "low": 0.4
+    }
+  }
+}

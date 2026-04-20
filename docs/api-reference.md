@@ -41,7 +41,7 @@ Authorization: Bearer YOUR_TOKEN
 
 | Service | Purpose | Setup Guide |
 |---------|---------|-------------|
-| PostgreSQL | Query product databases | skills/database-connection.md |
-| Google Sheets | Read/write spreadsheet data | Add skill file when needed |
-| Notion | Access project documentation | Add skill file when needed |
-| Slack | Send notifications | Add skill file when needed |
+| PostgreSQL | Query product databases | [SOPs/04_Data_and_Systems/database_connection.md](../SOPs/04_Data_and_Systems/database_connection.md) |
+| Google Sheets | Read/write spreadsheet data | Add SOP file when needed |
+| Notion | Access project documentation | Add SOP file when needed |
+| Slack | Send notifications | Add SOP file when needed |

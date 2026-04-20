@@ -240,9 +240,9 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 ## Reference Implementations
 
-**Warm bench pattern + tone:** Similar structure to values feedback email but future-focused closing. See skills/values-feedback-emails.md for v8 design details.
+**Warm bench pattern + tone:** Similar structure to values feedback email but future-focused closing. See [values_feedback_emails.md](values_feedback_emails.md) for v8 design details.
 
-**GWC reference:** Markaz scorecard values + GWC assessment should be cited explicitly. See skills/values-scorecard-scoring.md for GWC structure.
+**GWC reference:** Markaz scorecard values + GWC assessment should be cited explicitly. See [../02_Candidate_Evaluation/values_scorecard_scoring.md](../02_Candidate_Evaluation/values_scorecard_scoring.md) for GWC structure.
 
 **Safe_sendmail usage:** All sends use scripts/utils/safe_sendmail.py bouncer. PILOT_MODE = True sends to Ayesha + Jawwad only.
 

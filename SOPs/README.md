@@ -1,5 +1,5 @@
 # COCO SOPs MASTER INDEX
-**Last Updated:** 2026-04-14  
+**Last Updated:** 2026-04-16  
 **Location:** c:/Agent Coco/SOPs/  
 **Purpose:** Central reference for all Standard Operating Procedures and discipline protocols
 
@@ -28,10 +28,12 @@ SOPs/
 │   ├── decision_briefs.md
 │   ├── hiring_decision_brief.md
 │   └── attendance_reports.md
-└── 04_Data_and_Systems/
-    ├── database_queries.md
-    ├── report_generation.md
-    └── email_notification.md
+├── 04_Data_and_Systems/
+│   ├── database_queries.md
+│   ├── report_generation.md
+│   └── email_notification.md
+└── 05_Talent_Sourcing/
+    └── talent_sourcing.md
 ```
 
 ---
@@ -53,7 +55,7 @@ SOPs/
 - **[Warm Bench Feedback Email](01_Candidate_Communication/warm_bench_feedback_email.md)** — Passed values but not selected, 800-1000 words, signal future role
 
 ### CANDIDATE EVALUATION (When Screening/Assessing)
-- **[CV Screening](02_Candidate_Evaluation/cv_screening.md)** — 7-step manual review, 14-15k char minimum, skills + experience = top criteria
+- **[CV Screening](02_Candidate_Evaluation/cv_screening.md)** — 8-step process + execution discipline; multi-criterion evaluation; Google Drive hyperlinks non-negotiable; format locking mandatory; 14-15k char minimum; 8-item self-QA before send
 - **[Case Study Evaluation](02_Candidate_Evaluation/case_study_evaluation.md)** — 8-step process, check Markaz AND Gmail, auto-flag incomplete, proactive reporting
 - **[Values Scorecard Scoring](02_Candidate_Evaluation/values_scorecard_scoring.md)** — 7-step SOP, read transcript, ask before submitting, Markaz schema compliance
 
@@ -66,6 +68,9 @@ SOPs/
 - **[Database Queries](04_Data_and_Systems/database_queries.md)** — 6 query types, read-only via MCP, audit logging mandatory
 - **[Report Generation](04_Data_and_Systems/report_generation.md)** — Format and generate hiring reports in approved styles
 - **[Email Notification](04_Data_and_Systems/email_notification.md)** — Send reports via safe_sendmail bouncer, audit logging, recipient verification
+
+### TALENT SOURCING (When Sourcing Passive Candidates)
+- **[Talent Sourcing](05_Talent_Sourcing/talent_sourcing.md)** — 7-step SOP, 3-layer search (org pages → targeted Google → LinkedIn), personalized LinkedIn DMs, Markaz integration only after confirmed interest
 
 ---
 
@@ -107,6 +112,9 @@ SOPs/
 | Querying candidate data | 04_Data_and_Systems | database_queries.md |
 | Generating reports | 04_Data_and_Systems | report_generation.md |
 | Sending reports via email | 04_Data_and_Systems | email_notification.md |
+| Sourcing passive candidates | 05_Talent_Sourcing | talent_sourcing.md |
+| Drafting outreach DMs | 05_Talent_Sourcing | talent_sourcing.md |
+| Adding sourced candidate to Markaz | 05_Talent_Sourcing | talent_sourcing.md |
 
 ---
 
@@ -147,7 +155,7 @@ SOPs/
 
 ## SOP STATISTICS
 
-**Total SOPs Created:** 16
+**Total SOPs Created:** 17
 
 **By Category:**
 - **00_General_SOPs:** 2 SOPs (general_non_negotiable_sops, general_discipline_sop)
@@ -155,6 +163,7 @@ SOPs/
 - **02_Candidate_Evaluation:** 3 SOPs (cv_screening, case_study_evaluation, values_scorecard_scoring)
 - **03_Hiring_Operations:** 3 SOPs (decision_briefs, hiring_decision_brief, attendance_reports)
 - **04_Data_and_Systems:** 3 SOPs (database_queries, report_generation, email_notification)
+- **05_Talent_Sourcing:** 1 SOP (talent_sourcing)
 - **Parent level:** 1 SOP (EXECUTION_DISCIPLINE_PROTOCOL)
 
 ---
@@ -163,6 +172,7 @@ SOPs/
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.1 | 2026-04-16 | **Added 05_Talent_Sourcing Category**: Talent Sourcing SOP created. 3-layer search strategy (org pages → targeted Google → LinkedIn via Google), personalized LinkedIn DMs, Markaz integration after confirmed interest. Total SOPs: 17. |
 | 2.0 | 2026-04-14 | **COMPLETE SOP POPULATION**: All 16 SOPs created and organized into 5 categories. Full navigation added. Ready for production use. |
 | 1.1 | 2026-04-14 | Added SESSION_STARTUP_CHECKLIST.md (MANDATORY at session start) |
 | 1.0 | 2026-04-14 | Initial SOP folder created with Execution Discipline Protocol |
@@ -179,5 +189,5 @@ For questions on SOPs or protocol violations, reference:
 ---
 
 **SOP Folder maintained by:** Coco  
-**Last audit:** 2026-04-14  
-**Status:** ACTIVE — All SOPs current and locked in
+**Last audit:** 2026-04-16  
+**Status:** ACTIVE — All SOPs current and locked in. Talent Sourcing SOP added (05_Talent_Sourcing).

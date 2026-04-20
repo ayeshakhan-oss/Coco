@@ -10,7 +10,13 @@
       "Bash(sed -n '423,438p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_rejection_pilot_v2.py\")",
       "Bash(sed -n '183,215p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_misbah_pilot.py\")",
       "Bash(sed -n '140,185p' \"c:/Agent Coco/scripts/jobs/job36/send_job36_values_feedback_pilot.py\")",
-      "Bash(python scripts/utils/send_feedback_widget_preview.py)"
+      "Bash(python scripts/utils/send_feedback_widget_preview.py)",
+      "Bash(python send_soul_architect_pilot_to_ayesha_jawwad.py --send)",
+      "Bash(curl -s \"https://gmail.mcp.claude.com/mcp/search?q=Soul%20Architect%20before:2026-04-07%20after:2026-04-05\" -H \"Authorization: Bearer $\\(cat ~/.claude/mcp-tokens/gmail.token || echo ''\\)\")"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "neon-postgres"
+  ]
 }

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Georgia, serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+        .header {
+            background: #1a2a3a;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 28px;
+            color: #1565c0;
+            text-align: center;
+            margin: 20px 0 5px 0;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #7ba3c0;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .stat-boxes {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            flex: 1;
+            min-width: 120px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .stat-box.red { background: #d32f2f; }
+        .stat-box.blue { background: #1976d2; }
+        .stat-box.yellow { background: #fbc02d; color: #333; }
+        .stat-box.gray { background: #757575; }
+        .stat-number { font-size: 32px; font-weight: bold; }
+        .stat-label { font-size: 11px; margin-top: 5px; }
+        .section-heading {
+            color: #1565c0;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1565c0;
+            padding-bottom: 8px;
+        }
+        .key-observation {
+            background: #f9fafb;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1565c0;
+            text-align: justify;
+            line-height: 1.8;
+        }
+        .candidate-profile {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-left: 3px solid #1565c0;
+        }
+        .candidate-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .candidate-name {
+            color: #1565c0;
+            text-decoration: underline;
+        }
+        .ranking {
+            color: #c62828;
+            font-weight: bold;
+        }
+        .match-score {
+            color: #c62828;
+            font-weight: bold;
+            float: right;
+        }
+        .candidate-details {
+            font-size: 12px;
+            color: #666;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .candidate-description {
+            text-align: justify;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+        .candidate-gap {
+            background: #fff3e0;
+            padding: 8px 12px;
+            border-left: 3px solid #ff9800;
+            margin-top: 8px;
+            font-size: 12px;
+            text-align: justify;
+            color: #666;
+        }
+        .warning-box {
+            background: #ffebee;
+            border-left: 3px solid #c62828;
+            padding: 10px 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #c62828;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        th {
+            background: #f5f5f5;
+            color: #333;
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid #1565c0;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        a { color: #1565c0; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">PEOPLE & CULTURE · INITIAL SCREENING REPORT</div>
+
+        <div class="title">Soul Architect / Conversational UX Designer</div>
+        <div class="subtitle">Job 26 · Taleemabad</div>
+
+        <div class="stat-boxes">
+            <div class="stat-box red">
+                <div class="stat-number">42</div>
+                <div class="stat-label">Total applications</div>
+            </div>
+            <div class="stat-box blue">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Shortlisted</div>
+            </div>
+            <div class="stat-box yellow">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Maybe</div>
+            </div>
+            <div class="stat-box gray">
+                <div class="stat-number">30</div>
+                <div class="stat-label">No hire</div>
+            </div>
+        </div>
+
+        <div class="section-heading">Key Observation</div>
+        <div class="key-observation">
+            35 of 42 applicants are traditional UI/UX designers with screen-based portfolios — this role attracted largely the wrong applicant type. Only 2 candidates (Danyal Haroon and Hulalah Khan) have the behavioral science and humanistic depth the JD says is non-negotiable. The application questions were excellent filters — written responses sorted candidates far more meaningfully than CVs alone.
+        </div>
+
+        <div class="section-heading">Shortlisted Candidates (5)</div>
+        <p style="font-size: 12px; margin: 0 0 15px 0;">All five read and evaluated manually against the JD. Budget not specified for this role.</p>
+
+        <div class="candidate-profile">
+            <div class="candidate-header">
+                <a href="https://drive.google.com/file/d/..." class="candidate-name">Danyal Haroon</a>
+                <span class="ranking">#1 — TOP PICK</span>
+                <span class="match-score">78%</span>
+            </div>
+            <div class="candidate-details">
+                App ID: 1315 | Total exp: ~4 yrs | Relevant exp: ~4 yrs | Expected Salary: Not mentioned | City: [Karachi] | Relocate: Yes | DB status: shortlisted
+            </div>
+            <div class="candidate-description">
+                Most complete profile across all dimensions the role requires day-to-day. MA Digital Media, Culture & Society — University of Manchester (dissertation: 'Evolution and Impact of AI Chatbot Interfaces'). BSc Computer Science — LUMS (Dean's Honours). UX Design Specialist at AIO App Inc. (AI restaurant platform, $1M funding); Product Design Expert at HBL Konnect (1M+ users, qualitative focus groups across 18 Pakistani cities). Non-Violent Communication trained. Uses Gemini deep research, Claude, Figma AI daily. He can iterate on Rumi's soul document, write and test prompts, and push changes without needing an engineer in the room — while also bringing the humanistic depth the role demands. The 18-city HBL focus groups are real ethnographic research at scale, not just product interviews. Application essay on xAI Ani chatbot is ethically grounded and references real AI companion literature.
+            </div>
+            <div class="candidate-gap">
+                <strong>Gap:</strong> Still completing MA (graduating 2025). Limited direct conversation/dialogue design implementation experience.
+            </div>
+        </div>
+
+        <div class="candidate-profile">
+            <div class="candidate-header">
+                <a href="https://drive.google.com/file/d/..." class="candidate-name">Hulalah Khan</a>
+                <span class="ranking">#2 — TOP PICK</span>
+                <span class="match-score">82%</span>
+            </div>
+            <div class="candidate-details">
+                App ID: 1318 | Total exp: ~3 yrs | Relevant exp: ~3 yrs | Expected Salary: Not mentioned | City: [Islamabad] | Relocate: Yes | DB status: rejected
+            </div>
+            <div class="candidate-description">
+                Deepest human science background in the entire pool of 42. LUMS BSc Sociology-Anthropology + Minor Psychology (CGPA 3.5, Dean's Honours 3 years). Qualitative research methods training; counselling psychology coursework; 300+ students psychosocial support at Orange Tree Foundation; Project Yaqeen listening sessions (10+); TCF curriculum development. Application answer — about the 'confessional without a face,' the ethics of non-human empathy, and user autonomy — is the most philosophically rigorous response in the pool. Ranked #2 over #1 solely because of the implementation gap: she has never worked with an AI tool, written a prompt, or shipped in a tech product.
+            </div>
+            <div class="candidate-gap">
+                <strong>Gap:</strong> Zero AI tool fluency and zero implementation experience. Needs engineering support to make changes to Rumi independently.
+            </div>
+            <div class="warning-box">
+                ⚠️ Currently marked REJECTED in DB — needs re-evaluation
+            </div>
+        </div>
+
+        <div class="candidate-profile">
+            <div class="candidate-header">
+                <a href="https://drive.google.com/file/d/..." class="candidate-name">Hamza Jamal</a>
+                <span class="ranking">SHORTLIST</span>
+                <span class="match-score">55%</span>
+            </div>
+            <div class="candidate-details">
+                App ID: 1316 | Total exp: ~6 yrs | Relevant exp: ~2 yrs | Expected Salary: Not mentioned | City: [Karachi] | Relocate: Yes | DB status: rejected
+            </div>
+            <div class="candidate-description">
+                Sr. UX/UI Designer at Carbonteq — explicitly designed 'B2C experiences using AI-driven interactions' and 'conversational interfaces.' 5 years at Arbisoft (usability testing, affinity maps, journey mapping). IBM Enterprise Design Thinking Practitioner. 'Designing Emotion' LinkedIn certification. Application answer: 'humans project soul onto anything that responds to us' — with the specific observation about a teacher apologising to a chatbot after a typo. Understands cultural deference dynamics (Pakistan Ustad hierarchy). If implementation speed is a priority, Hamza can start building immediately.
+            </div>
+            <div class="candidate-gap">
+                <strong>Gap:</strong> No formal behavioral/social science background. Conversational interface work is recent (current role only).
+            </div>
+            <div class="warning-box">
+                ⚠️ Currently marked REJECTED in DB — needs re-evaluation
+            </div>
+        </div>
+
+        <div class="candidate-profile">
+            <div class="candidate-header">
+                <a href="https://drive.google.com/file/d/..." class="candidate-name">Ghulam Qadir</a>
+                <span class="ranking">SHORTLIST</span>
+                <span class="match-score">52%</span>
+            </div>
+            <div class="candidate-details">
+                App ID: 1311 | Total exp: ~8 yrs | Relevant exp: ~2 yrs | Expected Salary: Not mentioned | City: [Karachi] | Relocate: Yes | DB status: rejected
+            </div>
+            <div class="candidate-description">
+                Designed Chatwards AI end-to-end: chatbot dashboard, competitive research, user interviews, design system, conversational onboarding flows. EdTech at Chaajao (conversational onboarding, engagement systems). 8 years total. Application: 'people assign intent to buttons, tone to error messages, even character to loading states' — most precise UX-grounded articulation of AI personality design in the pool. Solo implementation capable (Lovable, Figma).
+            </div>
+            <div class="candidate-gap">
+                <strong>Gap:</strong> No behavioral science or humanities background. Chatbot work is UI/dashboard, not soul/dialogue design.
+            </div>
+            <div class="warning-box">
+                ⚠️ Currently marked REJECTED in DB — needs re-evaluation
+            </div>
+        </div>
+
+        <div class="candidate-profile">
+            <div class="candidate-header">
+                <a href="https://drive.google.com/file/d/..." class="candidate-name">Aaqib Khan</a>
+                <span class="ranking">SHORTLIST</span>
+                <span class="match-score">42%</span>
+            </div>
+            <div class="candidate-details">
+                App ID: 1313 | Total exp: ~7 yrs | Relevant exp: ~1.5 yrs | Expected Salary: Not mentioned | City: [Lahore] | Relocate: Yes | DB status: gwc_scheduled
+            </div>
+            <div class="candidate-description">
+                7 years across AI-powered products (Artsify, Digital Identity, AI study tools). Application specifically frames conversational UX around trust and emotional design without pretending AI is human. Thoughtful on the ethics of non-human identity. Already in GWC stage in DB.
+            </div>
+            <div class="candidate-gap">
+                <strong>Gap:</strong> No behavioral science background. Primarily a visual product designer. Less philosophically deep than top picks.
+            </div>
+        </div>
+
+        <div class="section-heading">Maybe — Worth a Conversation (6)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th style="width: 15%;">Match %</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Asad Nawaz</a></td>
+                    <td>28%</td>
+                    <td>Best AI product design exp (Vyro 100M users, Qlu AI tools). Declined to answer the core application question — significant concern for a role requiring philosophical engagement.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Manahil Ahmed</a></td>
+                    <td>35%</td>
+                    <td>Strong application writing (references The Little Prince); NUST; data analysis skills. No behavioral science or dialogue design.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Nain Tara</a></td>
+                    <td>18%</td>
+                    <td>MSc Sociology (underemphasised); designed AI chatbot UI at Applab Qatar. Sociology background relevant but no qualitative research shown.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Rimsha Faisal</a></td>
+                    <td>40%</td>
+                    <td>AI-driven interfaces specialist; uses Claude as design co-pilot daily; AIO AI platform. No philosophical depth in application.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Muhammad Ammar Khan</a></td>
+                    <td>45%</td>
+                    <td>Strong written application; culturally aware; AI tools exposure. Student-level CV with no professional relevant experience.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Aisha Bashir</a></td>
+                    <td>38%</td>
+                    <td>Taleemabad alumna; creative background; thoughtful application. Primarily illustrator — no conversational UX or behavioral science.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-heading">Product Manager Experience — Flagged (as requested)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th style="width: 12%;">App ID</th>
+                    <th>PM Experience Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Asad Nawaz</a></td>
+                    <td>1294</td>
+                    <td>PM-level scope at Qlu.ai — team scaling (1 to 6), GTM planning, $5M deal contribution. Designer title, PM function. Closest to actual PM work.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Ameer Hamza Tariq</a></td>
+                    <td>1044</td>
+                    <td>Listed 'Product Owner & Designer' on two projects (Tazah, PreventScripts). Combined PO + design lead role.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Muhammad Jaffer</a></td>
+                    <td>1287</td>
+                    <td>Lists Product Management, Roadmapping, Stakeholder Management in skills. Functions as a UI/UX designer at Neem — PM-adjacent.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Aaqib Khan</a></td>
+                    <td>1313</td>
+                    <td>Product Development Lifecycle + Agile + Team Leadership listed. Designer title throughout.</td>
+                </tr>
+                <tr>
+                    <td><a href="https://drive.google.com/file/d/..." class="candidate-name">Ghulam Qadir</a></td>
+                    <td>1311</td>
+                    <td>Led discovery, A/B experiments, product direction across 4+ products — PM scope in all but title. This is the closest Soul Architect PM candidate.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-heading">Screening Methodology</div>
+        <p style="font-size: 12px; text-align: justify; line-height: 1.8;">
+            All 42 candidates evaluated against 5 core criteria: (1) Product Mindset—problem definition, tradeoffs, business alignment, vision; (2) Builder Orientation—shipped work, launched products, startup experience; (3) Human-Centered Depth—user research, psychology, behavioral science, HCI; (4) Comfort with Ambiguity—startup context, innovation, experimentation; (5) Bonus Signals—AI/chatbot experience, conversational design, education background, cross-cultural experience. Each candidate scored 1-5 on each criterion. Full CV review (14,000+ char minimum) completed for all candidates. Relevant experience stated separately from total experience.
+        </p>
+
+        <div class="footer">
+            Taleemabad Talent Acquisition | hiring@taleemabad.com | 2026-04-06
+        </div>
+    </div>
+</body>
+</html>

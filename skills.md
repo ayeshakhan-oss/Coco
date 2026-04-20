@@ -1,415 +1,110 @@
 # Coco's Skills — Master Index
 
-**Last Updated:** 2026-04-10
+**Last Updated:** 2026-04-20 (Consolidated to SOPs/ folder structure)
 
-This file indexes all of Coco's core skills for Taleemabad hiring operations. Each skill has a dedicated .md file in the `skills/` directory with detailed SOPs, non-negotiable rules, checklists, and reference implementations.
-
----
-
-## Meta-Skill: General Discipline
-
-**File:** [skills/general-discipline.md](skills/general-discipline.md)
-
-**Status:** ✓ Locked in (2026-04-10)
-
-**Description:** 10 core non-negotiable SOPs that apply to ALL work across all skills. Foundation of partnership and quality.
-
-**Key Rules:**
-1. No fabrication, no assumptions
-2. Always use Taleemabad context
-3. Pilot sharing rule (Ayesha + Jawwad only, never candidate)
-4. Approval before sending anything
-5. Calendar restrictions
-6. Email restrictions
-7. Memory and session review mandatory
-8. Verification, QA, and discipline
-9. Read all provided material thoroughly
-10. Core work principle (verify, don't rush, use memory, follow SOPs)
+All of Coco's operational skills have been reorganized into the **SOPs/ folder** for better navigation and maintenance.
 
 ---
 
-## Skill 1: CV Screening / Resume Screening
+## 📌 Quick Navigation
 
-**File:** [skills/cv-screening.md](skills/cv-screening.md)
+**For detailed skill documentation, see:** [SOPs/README.md](SOPs/README.md)
 
-**Status:** ✓ Locked in (2026-04-10)
+All skills are organized by category:
 
-**Pipeline Position:** Entry point — candidate CVs come in
-
-**Objective:** Evaluate all candidate profiles against JD with full manual review and accurate ranking. No shortcuts on reading.
-
-**Key Requirements:**
-- 7-step manual review process (read JD → review all profiles → read resume fully → check candidate questions → assess exp → competitor exp → maintain format)
-- Minimum CV reading capacity: 14,000–15,000 characters (do not flag before this threshold)
-- New candidate info columns: Expected Salary, City, Willing to Relocate (Y/N)
-- Email format: Header → 4 stat boxes → Key Observation → Shortlisted (hyperlinked names, descriptions, gaps) → Maybe → Special Flags → Footer
-- Skills + Experience = TOP criteria for ranking (not competitor experience alone)
-- Non-negotiable: read EVERY profile, state both total AND relevant experience separately, no assumptions, no demographic filtering
-- Approval before sending (PILOT → approval → LIVE)
-
-**Reference Email:** Initial Screening — Soul Architect / Conversational UX Designer (2026-04-06)
+| Category | Location | Skills |
+|----------|----------|--------|
+| **00. General** | [SOPs/00_General_SOPs/](SOPs/00_General_SOPs/) | Execution Discipline, General Non-Negotiable SOPs |
+| **01. Candidate Communication** | [SOPs/01_Candidate_Communication/](SOPs/01_Candidate_Communication/) | CV Rejection Emails, GWC Rejection Emails, Values Feedback Emails, Warm Bench Feedback Emails |
+| **02. Candidate Evaluation** | [SOPs/02_Candidate_Evaluation/](SOPs/02_Candidate_Evaluation/) | CV Screening, Case Study Evaluation, Values Scorecard Scoring, KCD Evaluation |
+| **03. Hiring Operations** | [SOPs/03_Hiring_Operations/](SOPs/03_Hiring_Operations/) | Decision Briefs, Hiring Decision Brief, Attendance Reports, Hiring Pipeline Weekly Report |
+| **04. Data & Systems** | [SOPs/04_Data_and_Systems/](SOPs/04_Data_and_Systems/) | Database Connection, Database Queries, Report Generation, Data Analysis, Security |
+| **05. Talent Sourcing** | [SOPs/05_Talent_Sourcing/](SOPs/05_Talent_Sourcing/) | Talent Sourcing (7-step SOP) |
 
 ---
 
-## Skill 2: Case Study Evaluation
+## 🎯 Find a Skill
 
-**File:** [skills/case-study-evaluation.md](skills/case-study-evaluation.md)
+### Candidate Communication
+- **CV-Stage Rejections:** [SOPs/01_Candidate_Communication/cv_rejection_emails.md](SOPs/01_Candidate_Communication/cv_rejection_emails.md) — 800+ words, specific CV evidence
+- **GWC Rejection Emails:** [SOPs/01_Candidate_Communication/gwc_rejection_emails.md](SOPs/01_Candidate_Communication/gwc_rejection_emails.md) — Scorecard-based, 400-450 words
+- **Values Feedback Emails:** [SOPs/01_Candidate_Communication/values_feedback_emails.md](SOPs/01_Candidate_Communication/values_feedback_emails.md) — 800-1100 words mandatory
+- **Warm Bench Feedback:** [SOPs/01_Candidate_Communication/warm_bench_feedback_email.md](SOPs/01_Candidate_Communication/warm_bench_feedback_email.md) — 800-1000 words, storytelling
 
-**Status:** ✓ Locked in (2026-04-10)
+### Candidate Evaluation
+- **CV Screening:** [SOPs/02_Candidate_Evaluation/cv_screening.md](SOPs/02_Candidate_Evaluation/cv_screening.md) — 8-step manual review with multi-criterion framework
+- **Case Study Evaluation:** [SOPs/02_Candidate_Evaluation/case_study_evaluation.md](SOPs/02_Candidate_Evaluation/case_study_evaluation.md) — 8-step process, weekly reporting
+- **Values Scorecard Scoring:** [SOPs/02_Candidate_Evaluation/values_scorecard_scoring.md](SOPs/02_Candidate_Evaluation/values_scorecard_scoring.md) — 7-step SOP, PASS/OUT logic
+- **KCD Evaluation:** [SOPs/02_Candidate_Evaluation/kcd_evaluation.md](SOPs/02_Candidate_Evaluation/kcd_evaluation.md) — Full case study evaluation pipeline
 
-**Pipeline Position:** After Values Call — if candidate passes values, they receive case study
+### Hiring Operations
+- **Decision Briefs:** [SOPs/03_Hiring_Operations/decision_briefs.md](SOPs/03_Hiring_Operations/decision_briefs.md) — 4-part inline HTML, CV hyperlinks required
+- **Hiring Decision Brief:** [SOPs/03_Hiring_Operations/hiring_decision_brief.md](SOPs/03_Hiring_Operations/hiring_decision_brief.md) — 10-step SOP, 10 stat boxes
+- **Attendance Reports:** [SOPs/03_Hiring_Operations/attendance_reports.md](SOPs/03_Hiring_Operations/attendance_reports.md) — 6-step workflow, 7 sections
+- **Hiring Pipeline Monitor:** [SOPs/03_Hiring_Operations/hiring_pipeline_weekly_report.md](SOPs/03_Hiring_Operations/hiring_pipeline_weekly_report.md) — Weekly automated reporting
 
-**Objective:** Track submissions, assess quality, identify missing parts, keep Ayesha proactively informed.
+### Data & Systems
+- **Database Connection:** [SOPs/04_Data_and_Systems/database_connection.md](SOPs/04_Data_and_Systems/database_connection.md) — Neon PostgreSQL setup
+- **Database Queries:** [SOPs/04_Data_and_Systems/database_queries.md](SOPs/04_Data_and_Systems/database_queries.md) — 6 common query types
+- **Report Generation:** [SOPs/04_Data_and_Systems/report_generation.md](SOPs/04_Data_and_Systems/report_generation.md) — Template structure and formatting
+- **Email Notifications:** [SOPs/04_Data_and_Systems/email_notification.md](SOPs/04_Data_and_Systems/email_notification.md) — safe_sendmail bouncer, audit logging
+- **Data Analysis:** [SOPs/04_Data_and_Systems/data_analysis.md](SOPs/04_Data_and_Systems/data_analysis.md) — Analytics and insights
+- **Security:** [SOPs/04_Data_and_Systems/security.md](SOPs/04_Data_and_Systems/security.md) — Data protection, audit trails, credential management
 
-**Key Requirements:**
-- 8-step process (check Markaz → check submission status → check Gmail → download → read assignment → read submission → evaluate → flag AI/weak effort)
-- Check BOTH Markaz AND Gmail (critical: don't rely on one source only)
-- Automation: Auto-flag incomplete submissions to Ayesha same day/next morning
-- Weekly proactive reporting: who submitted, who's overdue, who needs follow-up (without being asked)
-- Read full submission one-by-one (no batching, no skipping sections)
-- Identify missing parts specifically (name exactly what's missing)
-- Flag AI-generated answers and weak effort
-
----
-
-## Skill 3: Values Feedback Emails
-
-**File:** [skills/values-feedback-emails.md](skills/values-feedback-emails.md)
-
-**Status:** ✓ Locked in (2026-04-10)
-
-**Pipeline Position:** After Values Interview — candidates who fail values round get feedback email
-
-**Objective:** Write rejection feedback emails for candidates who fail values round. Personalized, emotionally careful, evidence-based.
-
-**Key Requirements:**
-- Word count: 800–1100 words (800 minimum mandatory, no exceptions)
-- 3 required sections: What We Liked Most About You / Where We Found Ourselves Sitting With Questions / What We Think You Should Do Next
-- Specific evidence from their values interview (not generic feedback)
-- v8 HTML design: blue #1565c0 headings, green #1b5e20 subheadings, Georgia serif, justified text
-- Feedback widget required at end of body
-- Pilot rule: CRITICAL — send ONLY to Ayesha Khan + Jawwad Ali, NEVER include candidate in pilot
-- No em dashes (replace with period/comma/colon)
-- "We" voice throughout (never "I"), they/them pronouns (gender-neutral)
-- Approval before live send (PILOT first, approval, then PILOT_MODE = False)
-- Safe_sendmail bouncer (never smtplib directly)
+### Talent Sourcing
+- **Talent Sourcing:** [SOPs/05_Talent_Sourcing/talent_sourcing.md](SOPs/05_Talent_Sourcing/talent_sourcing.md) — 7-step proactive candidate search
 
 ---
 
-## Skill 4: Values Scorecard Scoring (Updated 2026-04-10)
+## 📚 Foundational Skills (Read These First)
 
-**File:** [skills/values-scorecard-scoring.md](skills/values-scorecard-scoring.md)
+**Before any specific skill, always read:**
 
-**Status:** ✓ Locked in (2026-04-10) — 7-step SOP + approval-before-submit + interview feedback
-
-**Pipeline Position:** After Values Interview — Ayesha provides transcript; Coco scores candidate
-
-**Objective:** Score candidates on 6 core values using interview transcript. Produce PASS/OUT verdict and GWC assessment. Ask Ayesha for approval before submitting on Markaz. Provide interview process feedback.
-
-**The 6 Values:**
-1. Don't Walk Away
-2. All for One
-3. Continuously Improve
-4. Courageous Conversations
-5. Don't Hold On Too Tight
-6. Practice Joy
-
-**7-Step SOP (Updated 2026-04-10):**
-1. **Read transcript fully** — understand complete context and flow
-2. **Score based on transcript evidence** — cite quotes/paraphrases; existing methodology largely correct
-3. **Ask before submitting** — explicit approval: "Should I go and submit this on Markaz or not?"
-4. **Confirm candidate + position** — verify name, app_id, role (prevent wrong data writes)
-5. **Personal examples acceptable** — valid if genuinely fits value; don't dismiss personal life examples
-6. **Be lenient when needed** — context-aware; don't penalize for interviewer phrasing issues
-7. **Provide interview feedback** — highlight question clarity, tone, process improvements for Ayesha
-
-**Key Requirements:**
-- Rating system: + (exhibits) / +/- (inconsistent) / - (does not exhibit)
-- Pass/Out logic: PASS = zero minuses AND ≤2 +/- | OUT = any minus OR ≥3 +/-
-- GWC assessment (for PASS candidates only): Gets it? Wants it? Capacity? (all 3 must be YES)
-- 4 evidence columns per value: Deep-Dive, Curve-Ball, Micro-Case, Rating
-- Markaz-compatible JSON schema (exact format required or invisible on UI)
-- No blank columns (state "Not directly evident in interview" if not observed)
-- Never assess GWC if candidate OUT
-- **CRITICAL (NEW):** Always ask Ayesha before submitting; confirm candidate identity + position
-- **NEW:** Accept personal examples; be fair on interviewer phrasing; provide process feedback
+1. **[SOPs/00_General_SOPs/general_non_negotiable_sops.md](SOPs/00_General_SOPs/general_non_negotiable_sops.md)** — 10 core rules for ALL work
+2. **[SOPs/EXECUTION_DISCIPLINE_PROTOCOL.md](SOPs/EXECUTION_DISCIPLINE_PROTOCOL.md)** — Mandatory discipline standard
+3. **[memory/session_startup_checklist.md](memory/session_startup_checklist.md)** — 7-step startup checklist
 
 ---
 
-## Skill 5: Decision Briefs
+## 🔄 Progressive Disclosure
 
-**File:** [skills/decision-briefs.md](skills/decision-briefs.md)
-
-**Status:** ✓ Documented (2026-04-10)
-
-**Pipeline Position:** After all interview rounds complete — present final recommendations to hiring manager
-
-**Objective:** Summarize hiring recommendations and candidate verdicts after CV → case study → values → debrief are complete.
-
-**Key Requirements:**
-- 4-part structure: Header & Stat Boxes → Leading Candidates (top recommendations) → Pipeline Summary (grouped by status) → Debrief Schedule & Next Steps
-- Inline HTML email (no PDF attachment)
-- 4 stat boxes at top (candidates screened, values interviews conducted, shortlisted, decision status)
-- Every candidate name hyperlinked to Google Drive CV (audit all sections)
-- Verdict labels must match approved list exactly (no "OFFER OUT" unless offer confirmed)
-- DB status ≠ actual status (flag anomalies, never assert DB as truth)
-- GWC explicitly stated for values PASS candidates
-- Email recipients: TO = hiring manager, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com
-- Approval before sending (PILOT → approval → LIVE)
+Each skill file includes:
+- **Load this when:** When to use this skill
+- **Token cost:** Approximate context size
+- **Prerequisites:** What to read first
+- **When to load more:** Deeper sections available
 
 ---
 
-## Skill 6: Candidate Rejections (CV-Stage)
+## ✅ Skills Status Summary
 
-**File:** [skills/candidate-rejections.md](skills/candidate-rejections.md)
-
-**Status:** ✓ Documented (2026-04-10)
-
-**Pipeline Position:** CV screening stage — candidates who don't advance to values interview
-
-**Objective:** Reject candidates during CV screening phase with warm, specific, reflective feedback tied to their actual CV.
-
-**Key Requirements:**
-- 800+ words (minimum 800)
-- Warm, reflective tone (not diagnostic)
-- Specific CV evidence (don't make up observations)
-- 3 sections: What we appreciated → Where we found questions → What to do next
-- No em dashes, "we" voice, they/them pronouns
-- v8 HTML design, feedback widget required
-- Safe_sendmail bouncer, approval before sending (PILOT first)
-
-**Note:** For candidates who passed values but weren't selected for current role, see **Skill 7: Warm Bench Feedback Email** instead.
-
----
-
-## Skill 7: Warm Bench Feedback Email
-
-**File:** [skills/warm-bench-feedback-email.md](skills/warm-bench-feedback-email.md)
-
-**Status:** ✓ Documented (2026-04-10)
-
-**Pipeline Position:** After values interview + case study + debrief — candidates who cleared values with good GWC but weren't selected for THIS role
-
-**Objective:** Send warm, storytelling-based feedback to candidates who passed values interview but weren't selected for the current role. Signal they remain on warm bench for future suitable roles.
-
-**Key Requirements:**
-- 800–1,000 words (minimum 800)
-- Warm, affectionate, almost like a thoughtful letter
-- Quote specific examples from their values interview
-- Reference values scorecard evidence
-- Reference GWC assessment (explain their GWC score)
-- Gently explain why role didn't advance (focus on role needs, not their gaps)
-- Clearly state they may be reconsidered for future roles (SPECIFIC role/function/timeline, not vague)
-- v8 HTML design, feedback widget required
-- Safe_sendmail bouncer, approval before sending (PILOT first)
-- NO em dashes, "we" voice, they/them pronouns
+| # | Skill | Category | Status | Locked | Updated |
+|----|-------|----------|--------|--------|---------|
+| Meta | General Discipline | 00_General | ✓ | Yes | 2026-04-10 |
+| 1 | CV Screening | 02_Evaluation | ✓ | Yes | 2026-04-15 |
+| 2 | Case Study Evaluation | 02_Evaluation | ✓ | Yes | 2026-04-10 |
+| 3 | Values Feedback Emails | 01_Communication | ✓ | Yes | 2026-04-10 |
+| 4 | Values Scorecard Scoring | 02_Evaluation | ✓ | Yes | 2026-04-10 |
+| 5 | Decision Briefs | 03_Operations | ✓ | Yes | 2026-04-10 |
+| 6 | Candidate Rejections | 01_Communication | ✓ | Yes | 2026-04-10 |
+| 7 | Warm Bench Feedback | 01_Communication | ✓ | Yes | 2026-04-10 |
+| 8 | Hiring Decision Brief | 03_Operations | ✓ | Yes | 2026-04-10 |
+| 9 | Attendance Reports | 03_Operations | ✓ | Yes | 2026-04-14 |
+| 10 | Database Queries | 04_Data | ✓ | Yes | 2026-04-10 |
+| 11 | Report Generation | 04_Data | ✓ | Yes | 2026-04-10 |
+| 12 | Email Notifications | 04_Data | ✓ | Yes | 2026-04-10 |
+| 13 | GWC Rejection Emails | 01_Communication | ✓ | Yes | 2026-04-14 |
+| 14 | Talent Sourcing | 05_Sourcing | ✓ | Yes | 2026-04-16 |
 
 ---
 
-## Skill 8: Hiring Decision Brief
+## 📖 How to Use
 
-**File:** [skills/hiring-decision-brief.md](skills/hiring-decision-brief.md)
-
-**Status:** ✓ Documented (2026-04-10)
-
-**Pipeline Position:** After values interviews, case studies, debriefs — comprehensive brief for leadership/hiring manager
-
-**Objective:** Create comprehensive hiring brief for leadership combining complete pipeline progress (candidate counts at each stage) and detailed candidate recommendations based on resume + values + case study evaluations.
-
-**Key Requirements:**
-- 10-step SOP with data collection from 3 sources (Markaz + Gmail + Calendar)
-- 10 stat boxes showing pipeline flow (shortlisted → invited → booked → completed → passed/failed → case studies sent/debrief invites → debriefs booked/pending → decision status)
-- Complete pipeline summary grouped by candidate status
-- Top candidate recommendations (hyperlinked CVs, tied to all 3 components)
-- Recommendations framed as suggestions, not directives
-- Extremely detailed, complete, nothing missing
-- Email recipients: Hiring manager + hiring@ + ayesha.khan@ + leadership
-- v8 HTML design, inline (no PDF)
-- Approval before sending (pilot first)
-
-**Non-negotiable:** Check all 3 sources (no single source) · 10 stat boxes required · Every name hyperlinked · No candidates omitted · Complete pipeline accounting
+1. **Find your task** in the category above
+2. **Click the skill file link** to read full SOP
+3. **Check prerequisites** (listed at top of each skill file)
+4. **Load deeper sections as needed** using progressive disclosure pattern
 
 ---
 
-## Skill 9: Attendance Reports (Updated 2026-04-10)
-
-**File:** [skills/attendance-reports.md](skills/attendance-reports.md)
-
-**Status:** ✓ Locked in (2026-04-10) — 6-step workflow + quality corrections
-
-**Pipeline Position:** Daily tracking for I-10 Head Office operational planning
-
-**Objective:** Track office presence and reporting discipline for I-10 Head Office. Report where OPL+OWT employees are (onsite, leave, WFH, out of office). Purpose: accountability, NOT micromanagement. Flag silent cases (people absent/remote without informing).
-
-**Context:**
-- Three offices: I-10 (focus), H-9, Rawalpindi
-- Fridays: Org-wide WFH
-- Scope: OPL + OWT (84 active, static)
-
-**6-Step Data Collection Workflow (NEW 2026-04-10):**
-1. Get active employee list from payroll (use PREVIOUS month until current processes)
-2. Pull names + counts from Markaz
-3. Check Teams Presence channel (leave, WFH, status updates)
-4. Cross-check Markaz for leave/WFH records
-5. Compare to Ayesha's on-site list (exact names/spelling — quality correction)
-6. Flag silent cases (no record anywhere → follow-up needed)
-
-**Report Output (7 sections + 8 stat boxes):**
-- Onsite, On Leave, WFH (unlogged), WFH — Confirmed (permanent), Out of Office, Arriving Later, Flagged
-- TOTAL must = 84 (static payroll, not sum of categories)
-- Flagged section: status notes required (RWP Team, on severance, last month, no record found)
-
-**Key Requirements:**
-- Use PREVIOUS month's payroll (April uses March, May uses April)
-- Check all 3 sources (payroll + Markaz + Teams) — never rely on one
-- Read Ayesha's provided list carefully, copy names exactly (quality correction 2026-04-10)
-- Email: Header + 8 colored stat boxes + 2-column onsite grid + tables
-- Recipients: Ayesha Khan + Jawwad Ali + Aymen Abid
-- Verify sum = 84 before sending
-- Safe_sendmail bouncer, audit log
-- Mon–Thu only (unless asked)
-
----
-
-## Skill 10: Database Queries
-
-**File:** [skills/database-queries.md](skills/database-queries.md)
-
-**Status:** ✓ Documented (2026-04-10)
-
-**Objective:** Access Taleemabad's candidate, job, budget, and employee data from Neon PostgreSQL for CV screening, attendance, case study evaluation, and hiring decisions.
-
-**Key Requirements:**
-- Type: PostgreSQL (Neon serverless, read-only via MCP)
-- 6 common query types: Candidate CV data, Application status & pipeline, JD & budget, Values scorecard data, Leave & attendance, Employee roster & payroll
-- Connection via .mcp.json (DO NOT commit, in .gitignore)
-- Schema: docs/schema.md (must be read first)
-- Audit logging: ALL queries must call log_db_query() from scripts/utils/audit_log.py (logged to logs/read_audit.log)
-- Minimum reading capacity: 14,000–15,000 characters for Base64-decoded CV PDFs
-- Never assume data consistency; verify before using
-- Base64 decoding required for resume_data fields
-
----
-
-## Skill 11: Report Generation
-
-**File:** [skills/report-generation.md](skills/report-generation.md)
-
-**Status:** ✓ No changes required (2026-04-10)
-
-**Objective:** Format and generate hiring reports (CV screening, case study evaluation, decision briefs, etc.) in user-approved format.
-
-**Current Methodology:** Fine, no updates needed.
-
----
-
-## Skill 12: Email Notifications
-
-**File:** [skills/email-notification.md](skills/email-notification.md)
-
-**Status:** ✓ Existing (may need refresh)
-
-**Objective:** Send completed reports and notifications to hiring managers and HR stakeholders.
-
-**Current Method:** Gmail API or SMTP, safe_sendmail bouncer, logged to email_audit.log.
-
----
-
-## Skill 13: GWC Rejection Emails
-
-**File:** [skills/gwc-rejection-emails.md](skills/gwc-rejection-emails.md)
-
-**Status:** ✓ Locked in (2026-04-14)
-
-**Pipeline Position:** Candidate Communication — GWC Cohort (post-values interview)
-
-**Objective:** Generate warm-tone rejection emails for candidates who completed GWC interviews but were not selected. Based on GWC scorecard data (not interview transcripts). No fabrication — scorecard data only.
-
-**Key Requirements:**
-- Source: GWC scorecard JSON from Markaz applications table
-- Structure: 5-section email (Opening → What We Saw → The Gap → What Matters Next → Closing)
-- Format: Taleemabad template (logo, blue header/title/subtitle, blue line, justified Georgia)
-- Tone: Warm, mentoring, evidence-based, no jargon ("GWC", "Zero In Call", interviewer names)
-- Word count: 400-450 words minimum (shorter acceptable if scorecard data limited)
-- Internal QA: 13-point checklist before sending
-- Non-negotiable: NO fabrication beyond scorecard, memory review first, format exactly, warm tone always, evidence-based only
-- Reference: GWC Hackathon 2026 emails (2026-04-14)
-
-**When to Use:** GWC scores available in Markaz, no interview transcript, candidate needs warm feedback + honest gap identification
-
----
-
-## Skills Status Summary (as of 2026-04-14)
-
-| # | Skill | Status | Locked | Updated |
-|---|-------|--------|--------|---------|
-| Meta | General Discipline | ✓ | Yes | 2026-04-10 |
-| 1 | CV Screening | ✓ | Yes | 2026-04-10 |
-| 2 | Case Study Evaluation | ✓ | Yes | 2026-04-10 |
-| 3 | Values Feedback Emails | ✓ | Yes | 2026-04-10 |
-| 4 | Values Scorecard Scoring | ✓ | Yes | 2026-04-10 (Updated) |
-| 5 | Decision Briefs | ✓ | Yes | 2026-04-10 |
-| 6 | Candidate Rejections (CV-Stage) | ✓ | Yes | 2026-04-10 |
-| 7 | Warm Bench Feedback Email | ✓ | Yes | 2026-04-10 |
-| 8 | Hiring Decision Brief | ✓ | Yes | 2026-04-10 |
-| 9 | Attendance Reports | ✓ | Yes | 2026-04-10 (Updated) |
-| 10 | Database Queries | ✓ | Yes | 2026-04-10 |
-| 11 | Report Generation | ✓ | No (no changes) | 2026-04-10 |
-| 12 | Email Notifications | ✓ | Existing | (pending refresh) |
-| 13 | GWC Rejection Emails | ✓ | Yes | 2026-04-14 |
-
----
-
-## Skills 11, 12 & 13: Status & Open Questions (2026-04-14)
-
-### Skill 11: Database Query
-- **Status:** Locked in — no major update dictated
-- **Action:** Keep reviewing and expand SOP later as new needs arise
-- **Reference:** [skills/database-queries.md](skills/database-queries.md)
-
-### Skill 12: Email Notifications
-- **Status:** Existing (may need refresh)
-- **Reference:** [skills/email-notification.md](skills/email-notification.md)
-
-### Skill 13: GWC Rejection Emails (NEW — 2026-04-14)
-- **Status:** ✓ Locked in and production ready
-- **Purpose:** Warm-tone rejections for GWC cohort (scorecard-based, no fabrication)
-- **Key features:** 5-section structure, Taleemabad format, 400-450 words, no jargon, 13-point QA checklist
-- **Reference:** [skills/gwc-rejection-emails.md](skills/gwc-rejection-emails.md)
-- **Implementation:** Hackathon 2026 GWC emails (6 candidates, 2026-04-14)
-
----
-
-## How to Use This Index
-
-1. **Find a skill:** Search this file for skill name
-2. **Read full SOP:** Click the file link (e.g., [skills/cv-screening.md](skills/cv-screening.md))
-3. **Quick reference:** Check MEMORY.md for "Skill SOP: [Name]" files
-4. **All skills follow:** General Discipline SOP (10 core non-negotiable rules apply to every skill)
-5. **Priority reminders:** See MEMORY.md → "Priority Reminders Across All Skills" for 10 Always Do + 11 Must Enforce
-
----
-
-## Key Principles (Apply to ALL Skills)
-
-**Core Disciplines (Always Do):**
-- **Memory first:** Read MEMORY.md before starting any task
-- **Session context:** Check SESSIONS.md for prior context
-- **Approval always:** Ask explicitly before sending anything externally
-- **Quality first:** Verify, QA, discipline before submitting
-- **Specific evidence:** Never assume or fabricate data
-- **Pilot then live:** Test with Ayesha + Jawwad first, then approve before going live
-
-**Must Enforce Immediately (2026-04-10):**
-- **Pilot emails → Ayesha + Jawad only** (never candidate in pilot)
-- **No external sends without explicit approval** (PILOT → approval → LIVE)
-- **Never fabricate** — use "Not mentioned" if data missing
-- **Read every CV manually** — human judgment required
-- **Check all sources** — Markaz + Gmail for case studies, Markaz + Gmail + Calendar for decision briefs
-- **Ask before Markaz submission** — values scorecard requires explicit approval
-- **Flag silent cases** — in attendance reports, flag people with no record anywhere
-- **Warm Bench separate** — not mixed with CV rejections (Skill 7)
-
----
-
-**Created:** 2026-04-10 | **Maintained by:** Coco | **For:** Taleemabad Talent Acquisition
+**Last Updated:** 2026-04-20 | **Maintained by:** Coco | **For:** Taleemabad Talent Acquisition

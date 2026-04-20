@@ -1,6 +1,6 @@
 ---
 name: CV Screening / Resume Screening SOP
-description: Full manual review of all candidate profiles against JD with accurate ranking. No shortcuts on manual reading. Updated 2026-04-10.
+description: Full manual review of all candidate profiles against JD with multi-criterion evaluation, accurate ranking, Google Drive CV hyperlinks, and strict execution discipline. No shortcuts. Updated 2026-04-15 (Job 26 finalized).
 type: feedback
 ---
 
@@ -87,12 +87,51 @@ Candidates who have relevant experience AND have worked with Taleemabad competit
 
 ---
 
-### Step 7: Maintain Existing Report Format
+### Step 7: Apply Multi-Criterion Evaluation (If Specified)
 
-Keep the same reporting style already being used (see Email Structure below).
-- Add new SOP requirements (full manual review, thorough experience assessment, new candidate data columns)
-- Do not change the reporting structure unnecessarily
-- Follow the email format exactly as specified
+Some positions require scoring against specific criteria (beyond simple JD matching). Example: **Job 26 (Soul Architect)** used 5 criteria:
+
+1. **Product Mindset** — Problem definition, tradeoffs, business alignment, vision
+2. **Builder Orientation** — Shipped work, launched products, startup/founder experience
+3. **Human-Centered Depth** — User research, psychology, behavioral science, HCI
+4. **Comfort with Ambiguity** — Startup/emerging context, innovation, experimentation
+5. **Bonus Signals** — AI/chatbot, conversational design, education, cross-cultural experience
+
+**How to apply:**
+- Read JD and understand the 3–5 criteria specified by hiring manager
+- For each candidate, score 1–5 on each criterion (1=does not exhibit, 5=perfect fit)
+- Calculate average or weighted score depending on hiring manager guidance
+- Tier candidates: TOP (4.5+), CONSIDER (3–4.4), MAYBE (1.5–2.9), NO-HIRE (<1.5)
+- Document evidence for each criterion in shortlisted candidate profile
+
+**Implementation note:** Do not invent criteria. Always confirm 3–5 criteria with hiring manager before screening.
+
+---
+
+### Step 8: Maintain Exact Report Format (Format Locking Rule)
+
+Once a report format is established and approved for a position, it is **LOCKED IN** for all future reports in that category.
+
+**Critical discipline:** If format is corrected once, it must be replicated exactly in all subsequent work. No variations, no "improvements", no regressions.
+
+**How to maintain format lock:**
+1. Find the reference/approved report email from prior screening
+2. Read every component line-by-line: header, stat boxes, section order, fonts, colors, spacing, table layouts
+3. Replicate the structure exactly in your new report
+4. Before sending: audit ALL sections for format consistency
+5. Send to Ayesha for approval (PILOT first, then LIVE after approval)
+
+**Example:** Job 26 format (April 6, 2026 reference email)
+- Dark navy header (#1a2a3a background)
+- "People & Culture · Initial Screening Report" (small gray text)
+- Job title (large white bold)
+- Subtitle "Job X · Taleemabad" (light blue)
+- 4 colored stat boxes (red/blue/yellow/gray)
+- Georgia serif font throughout
+- Blue section headings with underlines
+- 5 shortlisted profiles (name hyperlinked | verdict | match % | details | strength | gap)
+- 7 maybe candidates in table (Name | Match % | Note)
+- Footer with contact info
 
 ---
 
@@ -196,6 +235,78 @@ Use only if hiring manager specifically flagged PM experience as relevant.
 
 ---
 
+## Google Drive CV Hyperlinks (Non-Negotiable, Added 2026-04-15)
+
+All shortlisted and maybe candidates must have their CVs **uploaded to Google Drive** and **hyperlinked by name** in the report. This is not optional.
+
+**Complete workflow:**
+1. **Fetch CVs** — Download base64-encoded PDFs from Markaz database (candidates.resume_data)
+2. **Decode and save** — Decode base64 to binary, save as PDF files locally
+3. **Authenticate** — Use OAuth 2.0 to authenticate with Google Drive (browser-based auth flow recommended: `flow.run_local_server(open_browser=True)`)
+4. **Upload to Drive** — Upload each PDF with descriptive filename (e.g., "Muhammad Abdullah Safdar — CV (Job 26 Soul Architect).pdf")
+5. **Set permissions** — Make each file shareable (anyone with link can view)
+6. **Extract links** — Get Google Drive shareable link: `https://drive.google.com/file/d/[FILE_ID]/view`
+7. **Inject into report** — Replace candidate name with `<a href="[LINK]">[NAME]</a>` HTML hyperlink
+
+**Critical audit before sending:**
+- [ ] Every candidate name in Shortlisted section is hyperlinked
+- [ ] Every candidate name in Maybe section is hyperlinked
+- [ ] Every candidate name in Special Flags (if any) is hyperlinked
+- [ ] All links are valid and shareable (test by clicking)
+- [ ] No missing links, no placeholder text
+
+**Reference implementation:** Job 26 workflow using oauth_upload_cvs.py
+- Database fetch: 12 CVs downloaded successfully
+- OAuth: Browser-based authentication with flow.run_local_server()
+- Google Drive: 12 CVs uploaded with descriptive names
+- Links: Extracted to job26_cv_links.json
+- Report: Names hyperlinked in HTML report
+
+---
+
+## Execution Discipline Protocol (2026-04-15)
+
+All CV screening work must follow strict execution discipline. This is not optional.
+
+**BEFORE you start screening:**
+1. Search memory and prior work for existing template/reference format
+2. Confirm 3–5 evaluation criteria with hiring manager
+3. Read the JD thoroughly (not skimmed)
+4. Verify database access and CV availability
+5. Plan the complete workflow: screening → Google Drive upload → hyperlink injection → report generation
+
+**WHEN you are screening:**
+1. Use verified sources only (Markaz database, CV text, application questions)
+2. NEVER guess, embellish, or fabricate candidate data
+3. If data is missing: write "Not mentioned" (do not fill gaps)
+4. Read EVERY candidate profile and resume in full (no shortcuts)
+5. State both total AND relevant experience separately for each candidate
+6. Document evidence for each evaluation criterion (no vague scores)
+
+**FORMAT IS LOCKED:**
+1. Once a report format is corrected/approved, it applies to ALL future work
+2. No regressions (format forgotten same day after approval)
+3. No variations (all subsequent reports must match exactly)
+4. Audit every section before sending for consistency
+
+**SELF-QA CHECKLIST (All 8 items required before sending):**
+1. **File names/existence** — CVs saved correctly, links valid, JSON files created
+2. **Formatting** — Stat boxes, section order, fonts, colors match reference exactly
+3. **Tone** — Professional, respectful, no jargon, consistent "we" voice
+4. **Duplication** — No candidate listed twice, no sections duplicated
+5. **Jargon removal** — No internal terms (KCD, GWC, Zero In Call) in candidate-facing content
+6. **Encoding/artifacts** — No Unicode errors, no broken HTML, no special character corruption
+7. **Consistency** — All candidates scored same way, all sections follow same format
+8. **Factual grounding** — Every claim tied to CV evidence or JD requirement, no unsupported assertions
+
+**FAILSAFE BEHAVIOR:**
+- If unsure, ASK instead of guessing
+- If data missing, flag to Ayesha (don't invent)
+- If format unclear, find reference before starting
+- If self-QA fails, STOP and fix before sending
+
+---
+
 ## Common Mistakes
 
 1. **Keyword scanning only** — Relying on keyword scanner without manual CV read. Every CV must be read fully by human judgment.
@@ -218,30 +329,84 @@ Use only if hiring manager specifically flagged PM experience as relevant.
 
 10. **No reference to JD** — Nowhere in the report does it explain what the role actually requires. Always anchor comments to JD requirements.
 
+11. **Missing Google Drive hyperlinks** — Candidate names are plain text instead of hyperlinked to CVs. Every name must be clickable.
+
+12. **Database blob reliance** — Assuming database resume_data blobs are always readable. They may be corrupted or image-based. Verify 1–2 CVs can be extracted before committing to automated approach.
+
+13. **Excuses instead of solutions** — "This is too much data to read" or "PDFs are corrupted, I can't do it." Coco has screened 200+ resumes before; there are no excuses for not reading all profiles. Find technical solutions instead.
+
+14. **Format regression** — Report format approved on Monday, used different format on Tuesday. Lock the format after approval and maintain it exactly.
+
+15. **Delegating to user** — Pushing Google Drive OAuth, CV uploads, or link extraction work to user. Coco owns the complete end-to-end workflow.
+
+16. **Missing criterion documentation** — When multi-criterion scoring (e.g., 5 criteria for Soul Architect), not showing evidence for each criterion. Every score must be justified.
+
+17. **Unverified data in report** — Including candidate information (salary, city, experience) without checking source. Cross-reference Markaz profile and CV.
+
 ---
 
-## Pre-Send Checklist
+## Pre-Send Checklist (Updated 2026-04-15)
 
-- [ ] JD read in full and understood
+**Research & Planning:**
+- [ ] Prior reference format found for this job position (or hiring manager provided template)
+- [ ] Evaluation criteria confirmed (3–5 criteria specific to JD)
+- [ ] JD read in full and deeply understood
+- [ ] Database access verified (Markaz profiles + resume_data available)
+
+**Screening Execution:**
 - [ ] Every CV on Markaz opened and read manually (no keyword scanner only)
 - [ ] Minimum 14k-15k character reading per CV confirmed
 - [ ] Candidate questions read (salary, city, relocate status captured)
 - [ ] Experience assessed: BOTH total AND relevant years stated separately for each candidate
+- [ ] Multi-criterion scoring (if applicable): each criterion scored with CV evidence
 - [ ] Competitor candidates identified and ranked by skills/experience (not competitor signal alone)
-- [ ] Report format matches existing style exactly
-- [ ] Stat boxes created and totals verified
+- [ ] No fabrication: all candidate data verified from Markaz profile or CV
+- [ ] No guessing: missing data marked "Not mentioned" (not filled in)
+
+**Google Drive & Hyperlinks (Added 2026-04-15):**
+- [ ] All shortlisted + maybe candidate CVs fetched from database (base64 PDF)
+- [ ] CVs decoded and saved as PDF files locally
+- [ ] Google OAuth 2.0 authentication completed (browser-based)
+- [ ] All CVs uploaded to Google Drive (12+, depending on screening tier)
+- [ ] Google Drive files set to shareable (anyone with link can view)
+- [ ] Shareable links extracted: `https://drive.google.com/file/d/[ID]/view`
+- [ ] Links saved to JSON mapping file (candidate_name → URL)
+- [ ] AUDIT: Every name in Shortlisted section hyperlinked to CV
+- [ ] AUDIT: Every name in Maybe section hyperlinked to CV
+- [ ] AUDIT: Every name in Special Flags (if any) hyperlinked to CV
+- [ ] AUDIT: Test 2–3 links by clicking to verify they load
+
+**Report Generation:**
+- [ ] Report format matches reference exactly (header, stat boxes, section order, fonts, colors)
+- [ ] Stat boxes created and totals verified (sum = total applications)
 - [ ] Key Observation written (patterns noted, insights shared)
-- [ ] Shortlisted candidates listed with rankings and JD evidence
+- [ ] Shortlisted candidates listed with rankings, match %, and JD evidence
 - [ ] Expected Salary, City, Relocate columns filled for all shortlisted
 - [ ] Gaps identified with specific CV/JD evidence (not vague)
-- [ ] Maybe/Borderline section created (if applicable)
-- [ ] DB status flags noted (if wrong status in Markaz)
-- [ ] All candidate names hyperlinked to Google Drive CVs
+- [ ] Maybe/Borderline section created with match % and notes
+- [ ] DB status flags noted for each shortlisted candidate
+- [ ] Georgia serif font applied consistently
+- [ ] Blue headings (#1565c0) used for all section titles
+- [ ] No special characters or encoding issues in email/PDF
+
+**Self-QA (All 8 Items Required):**
+- [ ] File names/existence — CVs saved, links valid, all JSON created
+- [ ] Formatting — Stat boxes, colors, fonts, spacing match reference exactly
+- [ ] Tone — Professional, respectful, "we" voice, no jargon
+- [ ] Duplication — No candidate listed twice, no section duplicated
+- [ ] Jargon removal — No internal terms (KCD, GWC) in content
+- [ ] Encoding/artifacts — No Unicode errors, no HTML breaks, no character corruption
+- [ ] Consistency — All candidates scored same way, all sections follow same format
+- [ ] Factual grounding — Every claim tied to CV evidence or JD requirement
+
+**Final Review:**
 - [ ] No keyword-only assessment — every candidate assessed by human judgment
-- [ ] Ready to share with hiring manager
+- [ ] All data sourced from Markaz database or Markaz profile questions (not assumptions)
+- [ ] Format audit passed: matches reference report line-by-line
+- [ ] Ready for Ayesha review (PILOT first, then LIVE after approval)
 
 ---
 
-## Commitment (Coco, 2026-04-10)
+## Commitment (Coco, Updated 2026-04-15)
 
-I will screen all CVs manually and in full. I will read every candidate profile. I will state total experience AND relevant experience separately. I will rank by JD fit and skills, not by company name or keyword matching. I will verify all data with human judgment. I will include Expected Salary, City, and Relocate status for all candidates. I will flag DB discrepancies. I will keep the report format consistent and accurate.
+I will screen all CVs manually and in full. I will read every candidate profile and resume without shortcuts. I will state total experience AND relevant experience separately for each candidate. I will apply multi-criterion evaluation when specified, with evidence for each criterion. I will rank by JD fit and skills, never by company name or keyword matching alone. I will verify all data with human judgment. I will include Expected Salary, City, and Relocate status for all candidates. I will flag DB discrepancies. I will download all CVs, upload to Google Drive, extract shareable links, and hyperlink every candidate name in the report. I will follow format locking discipline — once approved, format is maintained exactly with no regressions. I will complete the full end-to-end workflow (screening → upload → hyperlinks → report) without delegating steps to user. I will run all 8 self-QA items before sending. I will ask for explicit approval before going live.

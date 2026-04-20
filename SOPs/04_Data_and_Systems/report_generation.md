@@ -10,7 +10,7 @@ type: feedback
 Generate a structured, professional candidate screening report for hiring managers.
 
 ## Prerequisites
-- Candidate scoring complete (see skills/cv-screening.md)
+- Candidate scoring complete (see [../02_Candidate_Evaluation/cv_screening.md](../02_Candidate_Evaluation/cv_screening.md))
 - All candidates ranked by composite score
 - Top recommendation identified
 

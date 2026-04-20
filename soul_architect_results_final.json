@@ -1,0 +1,439 @@
+{
+  "TOP_TIER": [
+    {
+      "id": 1047,
+      "name": "Muhammad Taimoor",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1048,
+      "name": "Arslan Saleem",
+      "score": 4.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1060,
+      "name": "Muhammad Ibrahim Khan",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1061,
+      "name": "Zia Ullah",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1064,
+      "name": "Muhammad Abdullah Safdar",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 384,
+      "name": "Hamza Ahmed",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1078,
+      "name": "Asad Nawaz",
+      "score": 4.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1084,
+      "name": "Manahil Ahmed",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1090,
+      "name": "Zikra Fiaz",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1094,
+      "name": "Ghulam Qadir",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1096,
+      "name": "Aaqib Khan",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1099,
+      "name": "Hamza Jamal",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1101,
+      "name": "Hulalah Khan",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1102,
+      "name": "Talal Hassan Khan",
+      "score": 3.5,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1111,
+      "name": "Hadia Sajjad",
+      "score": 5.0,
+      "verdict": "TOP_TIER",
+      "criteria": [
+        "Product Mindset",
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    }
+  ],
+  "CONSIDER": [
+    {
+      "id": 817,
+      "name": "Muhammad Ammar Khan",
+      "score": 2.5,
+      "verdict": "CONSIDER",
+      "criteria": [
+        "Builder Orientation",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 823,
+      "name": "Aisha Bashir",
+      "score": 2.5,
+      "verdict": "CONSIDER",
+      "criteria": [
+        "Product Mindset",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1051,
+      "name": "Ahmad Hamdan Akram",
+      "score": 3.0,
+      "verdict": "CONSIDER",
+      "criteria": [
+        "Builder Orientation",
+        "Human-Centered Depth",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1085,
+      "name": "Zehra Rashid",
+      "score": 2.5,
+      "verdict": "CONSIDER",
+      "criteria": [
+        "Product Mindset",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    }
+  ],
+  "MAYBE": [
+    {
+      "id": 1058,
+      "name": "UIxFly (Moheed)",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Human-Centered Depth",
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1071,
+      "name": "Syed Manan Ali",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Builder Orientation",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1075,
+      "name": "Majid Raffique",
+      "score": 1.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1079,
+      "name": "Muhammad Ali",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Product Mindset",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1087,
+      "name": "Saad imran",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Product Mindset",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1098,
+      "name": "Danyal Haroon",
+      "score": 1.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Ambiguity Comfort",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1103,
+      "name": "Nain Tara",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Builder Orientation",
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1105,
+      "name": "Rimsha Faisal",
+      "score": 2.0,
+      "verdict": "MAYBE",
+      "criteria": [
+        "Builder Orientation",
+        "Bonus Signals"
+      ]
+    }
+  ],
+  "NO_HIRE": [
+    {
+      "id": 819,
+      "name": "Sholmiyat Adnan",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "CV unreadable"
+    },
+    {
+      "id": 867,
+      "name": "Ameer Hamza Tariq",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1050,
+      "name": "zennab Applicant",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "No CV data"
+    },
+    {
+      "id": 1056,
+      "name": "Muhammad Wasi Haider",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "CV unreadable"
+    },
+    {
+      "id": 1066,
+      "name": "Muhammad Taufeeq",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1072,
+      "name": "Sanaullah Mukhtar",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1073,
+      "name": "Muhammad Jaffer",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1074,
+      "name": "Hassan Bin Tariq",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "criteria": []
+    },
+    {
+      "id": 1076,
+      "name": "Sameen Ali",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1080,
+      "name": "Saad Sajid",
+      "score": 0.5,
+      "verdict": "NO_HIRE",
+      "criteria": [
+        "Bonus Signals"
+      ]
+    },
+    {
+      "id": 1083,
+      "name": "Muhammad Ali",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "CV unreadable"
+    },
+    {
+      "id": 1088,
+      "name": "wajihazainab Applicant",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "No CV data"
+    },
+    {
+      "id": 1092,
+      "name": "Asma Butt",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "CV unreadable"
+    },
+    {
+      "id": 1097,
+      "name": "hamza Applicant",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "reason": "No CV data"
+    },
+    {
+      "id": 1109,
+      "name": "Faizan Ullah",
+      "score": 0,
+      "verdict": "NO_HIRE",
+      "criteria": []
+    }
+  ]
+}
