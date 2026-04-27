@@ -1,10 +1,7 @@
+#!/usr/bin/env python3
 """
 Job 17 — CPD Coach
-Values Interview (Zero In) Invitation — 6 female TFP Fellow candidates.
-
-WORKFLOW:
-  1. Run with PILOT_MODE = True  --> sends to Ayesha only for review.
-  2. On approval, set PILOT_MODE = False and run again --> sends to all 6.
+Values Interview (Zero In) Invitation — Usman Ahmed Khan
 """
 
 import os
@@ -13,57 +10,42 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
-
-load_dotenv()
-import sys as _sys
-_sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
+load_dotenv()
 
-# ── CONFIG ────────────────────────────────────────────────────────────────────
-PILOT_MODE  = True  # True = Ayesha only; False = all 6 candidates
-
-POSITION    = "CPD Coach"
-SUBJECT     = "Zero In Call for CPD Coach"
-SENDER      = "ayesha.khan@taleemabad.com"
-PASSWORD    = os.getenv("EMAIL_PASSWORD")
-HIRING_MGR  = "abdul.waheed@niete.edu.pk"
+POSITION = "CPD Coach"
+SUBJECT = "Zero In Call for CPD Coach"
+SENDER = "ayesha.khan@taleemabad.com"
+PASSWORD = os.getenv("EMAIL_PASSWORD")
+HIRING_MGR = "abdul.waheed@niete.edu.pk"
 CC_STANDARD = [
     "hiring@taleemabad.com",
     HIRING_MGR,
 ]
 
-PILOT_RECIPIENTS = [
-    {"email": "ayesha.khan@taleemabad.com", "name": "Ayesha"},
-]
-
 BOOKING_LINK = "https://calendar.app.google/YvKqEK16Tax7PGyy5"
-JD_LINK      = "https://docs.google.com/document/d/1pg58RoVWoVO6WQTlGePJPbW_VLF0GkcYrQeG2Ah6G6s/edit?tab=t.0"
-TEAMS_LINK   = ""   # add when confirmed
+JD_LINK = "https://docs.google.com/document/d/1pg58RoVWoVO6WQTlGePJPbW_VLF0GkcYrQeG2Ah6G6s/edit?tab=t.0"
+TEAMS_LINK = ""
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets")
 
 INLINE_IMAGES = [
     ("logo_taleemabad", "logo_taleemabad.png"),
-    ("logo_facebook",   "logo_facebook.png"),
-    ("logo_instagram",  "logo_instagram.png"),
-    ("logo_linkedin",   "logo_linkedin.png"),
+    ("logo_facebook", "logo_facebook.png"),
+    ("logo_instagram", "logo_instagram.png"),
+    ("logo_linkedin", "logo_linkedin.png"),
 ]
 
-# ── CANDIDATES (6 female TFP Fellows — Islamabad + Gilgit, status new/shortlisted)
-CANDIDATES = [
-    {"name": "Syeda Siddiqa Fatima", "email": "siddiqa.fatima@dil.org"},
-    {"name": "Fatima Saeed",         "email": "fatimasaeed030499@gmail.com"},
-    {"name": "Zara Bhayo",           "email": "zara.bhayo@gmail.com"},
-    {"name": "Irum Afzal",           "email": "irumafzal698@gmail.com"},
-    {"name": "Hajra Sajjad",         "email": "hajra2357@gmail.com"},
-    {"name": "Shazia Sahat",         "email": "shaziasahat@gmail.com"},
-]
+CANDIDATE = {
+    "name": "Usman Ahmed Khan",
+    "email": "usmanumar646@gmail.com"
+}
 
 
-# ── EMAIL: BUILD HTML ─────────────────────────────────────────────────────────
 def build_email_html(candidate_name):
-
     booking_block = f"""
         <tr>
           <td align="center" style="padding:20px 0 8px 0;">
@@ -267,11 +249,10 @@ def build_email_html(candidate_name):
     return html
 
 
-# ── EMAIL: SEND ───────────────────────────────────────────────────────────────
 def send_invite(to_email, to_name, cc_list=None):
-    msg            = MIMEMultipart("related")
-    msg["From"]    = SENDER
-    msg["To"]      = to_email
+    msg = MIMEMultipart("related")
+    msg["From"] = SENDER
+    msg["To"] = to_email
     msg["Subject"] = f"{SUBJECT} - {to_name}"
     if cc_list:
         msg["Cc"] = ", ".join(cc_list)
@@ -291,38 +272,18 @@ def send_invite(to_email, to_name, cc_list=None):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(SENDER, PASSWORD)
         allow_candidate_addresses(recipients if isinstance(recipients, list) else [recipients])
-        safe_sendmail(smtp, SENDER, recipients, msg.as_string(), context='send_job17_values_invite')
+        safe_sendmail(smtp, SENDER, recipients, msg.as_string(), context='send_job17_usman_values_invite')
 
     cc_str = f" (CC: {', '.join(cc_list)})" if cc_list else ""
-    print(f"  Sent to {to_name} <{to_email}>{cc_str}")
-
-
-# ── MAIN ──────────────────────────────────────────────────────────────────────
-def main():
-    print("=" * 60)
-    print(f"Job 17 — CPD Coach | Zero In Invites")
-    print(f"Mode: {'PILOT (Ayesha only)' if PILOT_MODE else 'FULL SEND (all 6 candidates)'}")
-    print("=" * 60)
-
-    if PILOT_MODE:
-        for p in PILOT_RECIPIENTS:
-            send_invite(p["email"], p["name"], cc_list=None)
-        print(f"\nPilot sent to Ayesha. Review then set PILOT_MODE = False to send to all 6.")
-    else:
-        sent, failed = 0, []
-        for c in CANDIDATES:
-            try:
-                send_invite(c["email"], c["name"], cc_list=CC_STANDARD)
-                sent += 1
-            except Exception as e:
-                print(f"  FAILED for {c['name']}: {e}")
-                failed.append(c["name"])
-        print(f"\nDone. {sent}/{len(CANDIDATES)} invites sent.")
-        if failed:
-            print(f"Failed: {', '.join(failed)}")
-
-    print("=" * 60)
+    print(f"Sent to {to_name} <{to_email}>{cc_str}")
 
 
 if __name__ == "__main__":
-    main()
+    print("=" * 60)
+    print(f"Job 17 — CPD Coach | Zero In Invite")
+    print(f"Candidate: {CANDIDATE['name']}")
+    print("=" * 60)
+
+    send_invite(CANDIDATE["email"], CANDIDATE["name"], cc_list=CC_STANDARD)
+
+    print("=" * 60)

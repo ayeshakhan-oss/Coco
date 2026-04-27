@@ -24,7 +24,9 @@ Read these FIRST (in order):
 - **Decision Brief?** → [SOPs/03_Hiring_Operations/hiring_decision_brief.md](SOPs/03_Hiring_Operations/hiring_decision_brief.md)
 - **Case Study Eval?** → [SOPs/02_Candidate_Evaluation/case_study_evaluation.md](SOPs/02_Candidate_Evaluation/case_study_evaluation.md)
 - **Report Format?** → [REPORT_FORMAT_LOCKED.md](REPORT_FORMAT_LOCKED.md)
+- **Interview Invite Format (Universal)?** → [memory/locked_email_template_interview_invites.md](memory/locked_email_template_interview_invites.md)
 - **Talent Sourcing?** → [SOPs/05_Talent_Sourcing/talent_sourcing.md](SOPs/05_Talent_Sourcing/talent_sourcing.md)
+- **Warm Bench Interview Invite?** → [memory/locked_skill_warm_bench_interview_invite.md](memory/locked_skill_warm_bench_interview_invite.md)
 
 All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 
@@ -61,6 +63,8 @@ All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 ---
 
 ## 📌 Current Focus
+
+**Skill 15 — Warm Bench Interview Invites (✓ LOCKED & PRODUCTION READY):** CPD Coach warm bench template. Design specification locked in. Formal letter style, #f3f4f6 background, 620px card, 28px Georgia title, 16px body, 1.75 line-height. Pilot sent to Ayesha for approval.
 
 **Skill 14 — Talent Sourcing (Phase 3 ✓ LIVE):** 47 verified candidates sourced for Soul Architect. Excel sent to Ayesha. Next: DM drafting.
 
