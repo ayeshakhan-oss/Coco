@@ -1,18 +1,16 @@
 # MEMORY INDEX — Coco (Real Files Only)
 
-**Last Updated:** 2026-04-20  
-**Status:** CLEAN — Only references files that actually exist
+**Last Updated:** 2026-04-28  
+**Status:** CONSOLIDATED — Phase 1 refactor complete. Duplicate files merged into single sources of truth.
 
 ---
 
-## CRITICAL — Read These FIRST
+## 🔴 MUST READ THESE FIRST (Session Start + Every Task)
 
-### Startup (Every Session)
-- [Session Startup Checklist](session_startup_checklist.md) — 7-step discipline check before any task
-
-### Discipline (Every Task)
-- [Execution Discipline Protocol](execution_discipline_protocol.md) — No guessing, no fabrication, verified sources, 8-item self-QA
-- [General Non-Negotiable SOPs](general_non_negotiable_sops.md) — 10 core rules for ALL work
+- [CORE_DISCIPLINE.md](CORE_DISCIPLINE.md) — **SINGLE SOURCE:** All 10 rules + execution protocol. Read before any task.
+- [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) — **8 ITEMS REQUIRED:** Run before submitting ANY work.
+- [TASK_SOP_MAP.md](TASK_SOP_MAP.md) — **TASK REFERENCE:** Maps each task to its SOP + template + checklist.
+- [Session Startup Checklist](session_startup_checklist.md) — 7-step check (run at session start)
 
 ---
 

@@ -10,23 +10,28 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 Read these FIRST (in order):
 
 1. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (10 min)
-2. **[Execution Discipline Protocol](memory/execution_discipline_protocol.md)** — Never guess, no fabrication
-3. **[General Non-Negotiable SOPs](memory/general_non_negotiable_sops.md)** — 10 core rules
+2. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — Single source of truth: 10 rules + protocol (all rules)
+3. **[SELF_QA_CHECKLIST](memory/SELF_QA_CHECKLIST.md)** — 8-item mandatory checklist (run before sending)
+4. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Quick ref: task type → SOP → template
 
 ---
 
 ## 📋 What Task Are You Doing?
 
-- **CV Screening?** → [SOPs/02_Candidate_Evaluation/cv_screening.md](SOPs/02_Candidate_Evaluation/cv_screening.md)
-- **Values Feedback Email?** → [SOPs/01_Candidate_Communication/values_feedback_emails.md](SOPs/01_Candidate_Communication/values_feedback_emails.md)
+**Use [TASK_SOP_MAP](memory/TASK_SOP_MAP.md) for quick reference.** Each task maps to:
+- Required SOP file
+- Locked template (in [templates/](templates/))
+- Self-QA checklist (run before sending)
+
+Or go directly to your task:
+- **CV Screening?** → [SOPs/02_Candidate_Evaluation/cv_screening.md](SOPs/02_Candidate_Evaluation/cv_screening.md) + [REPORT_FORMAT_LOCKED.md](REPORT_FORMAT_LOCKED.md)
+- **Interview Invites (all stages)?** → [templates/interview_invite.html](templates/interview_invite.html) (universal, locked)
 - **Rejection Email?** → [SOPs/01_Candidate_Communication/cv_rejection_emails.md](SOPs/01_Candidate_Communication/cv_rejection_emails.md)
+- **Values Feedback Email?** → [SOPs/01_Candidate_Communication/values_feedback_emails.md](SOPs/01_Candidate_Communication/values_feedback_emails.md)
 - **Attendance Report?** → [SOPs/03_Hiring_Operations/attendance_reports.md](SOPs/03_Hiring_Operations/attendance_reports.md)
 - **Decision Brief?** → [SOPs/03_Hiring_Operations/hiring_decision_brief.md](SOPs/03_Hiring_Operations/hiring_decision_brief.md)
 - **Case Study Eval?** → [SOPs/02_Candidate_Evaluation/case_study_evaluation.md](SOPs/02_Candidate_Evaluation/case_study_evaluation.md)
-- **Report Format?** → [REPORT_FORMAT_LOCKED.md](REPORT_FORMAT_LOCKED.md)
-- **Interview Invite Format (Universal)?** → [memory/locked_email_template_interview_invites.md](memory/locked_email_template_interview_invites.md)
 - **Talent Sourcing?** → [SOPs/05_Talent_Sourcing/talent_sourcing.md](SOPs/05_Talent_Sourcing/talent_sourcing.md)
-- **Warm Bench Interview Invite?** → [memory/locked_skill_warm_bench_interview_invite.md](memory/locked_skill_warm_bench_interview_invite.md)
 
 All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 
@@ -35,8 +40,11 @@ All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 ## 🔑 The Three Core Rules
 
 1. **No guessing.** No fabrication. No embellishment. Verified sources only.
-2. **Check memory first.** Before asking or assuming, read [memory/MEMORY.md](memory/MEMORY.md)
-3. **Run self-QA.** 8-item checklist before sending anything (in Execution Protocol).
+   → [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md) (Rule 1)
+2. **Check memory first.** Read [memory/MEMORY.md](memory/MEMORY.md) before any task.
+   → [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md) (Rule 2)
+3. **Run self-QA.** 8-item checklist MANDATORY before sending anything.
+   → [SELF_QA_CHECKLIST](memory/SELF_QA_CHECKLIST.md)
 
 ---
 
@@ -94,7 +102,7 @@ All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 - Regress on locked-in formats/tone
 - Rush (first-pass quality > speed)
 
-**See:** [General Non-Negotiable SOPs](memory/general_non_negotiable_sops.md) (all 10 rules)
+**See:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md) (all 10 rules + execution protocol)
 
 ---
 
