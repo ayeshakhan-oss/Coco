@@ -14,15 +14,15 @@ type: feedback
 
 ## Quick Reference Table
 
-| When You See This Task | Read This SOP | Read This Template | Run This Checklist |
+| When You See This Task | Read This SOP | Template | Checklist |
 |---|---|---|---|
 | **CV Screening** | [cv_screening.md](../SOPs/02_Candidate_Evaluation/cv_screening.md) | [REPORT_FORMAT_LOCKED.md](../REPORT_FORMAT_LOCKED.md) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Rejection Email** | [cv_rejection_emails.md](../SOPs/01_Candidate_Communication/cv_rejection_emails.md) | [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Values Feedback Email** | [values_feedback_emails.md](../SOPs/01_Candidate_Communication/values_feedback_emails.md) | [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Interview Invite (Any Stage)** | [interview_invite.md](../SOPs/01_Candidate_Communication/) | [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Attendance Report** | [attendance_reports.md](../SOPs/03_Hiring_Operations/attendance_reports.md) | [attendance_report.html](../templates/attendance_report.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Decision Brief** | [hiring_decision_brief.md](../SOPs/03_Hiring_Operations/hiring_decision_brief.md) | [decision_brief.html](../templates/decision_brief.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
-| **Case Study Evaluation** | [case_study_evaluation.md](../SOPs/02_Candidate_Evaluation/case_study_evaluation.md) | (No HTML template) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Rejection Email** | [cv_rejection_emails.md](../SOPs/01_Candidate_Communication/cv_rejection_emails.md) | ✅ [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Values Feedback Email** | [values_feedback_emails.md](../SOPs/01_Candidate_Communication/values_feedback_emails.md) | ✅ [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Interview Invite (Any Stage)** | [interview_invite.md](../SOPs/01_Candidate_Communication/) | ✅ [interview_invite.html](../templates/interview_invite.html) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Attendance Report** | [attendance_reports.md](../SOPs/03_Hiring_Operations/attendance_reports.md) | ⏳ attendance_report.html (TBD) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Decision Brief** | [hiring_decision_brief.md](../SOPs/03_Hiring_Operations/hiring_decision_brief.md) | ⏳ decision_brief.html (TBD) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
+| **Case Study Evaluation** | [case_study_evaluation.md](../SOPs/02_Candidate_Evaluation/case_study_evaluation.md) | (No template) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
 | **Talent Sourcing** | [talent_sourcing.md](../SOPs/05_Talent_Sourcing/talent_sourcing.md) | (Output: markdown + Excel) | [SELF_QA_CHECKLIST.md](SELF_QA_CHECKLIST.md) |
 
 ---
