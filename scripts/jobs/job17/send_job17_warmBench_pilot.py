@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
+from scripts.utils.template_loader import format_interview_invite
 
 load_dotenv()
 
@@ -44,74 +45,10 @@ PILOT_RECIPIENT = {
 
 
 def build_email_html(candidate_name):
-    html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Georgia,serif;">
+    """Build warm bench interview invite HTML using locked template."""
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f3f4f6;">
-  <tr>
-    <td align="center" style="padding:60px 0;">
-      <table cellpadding="0" cellspacing="0" border="0" width="620" style="background-color:#ffffff; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-
-        <!-- Logo -->
-        <tr>
-          <td align="center" style="padding:60px 70px 24px 70px;">
-            <img src="cid:logo_taleemabad" width="48" height="48" alt="Taleemabad" style="display:block;border:0;">
-          </td>
-        </tr>
-
-        <!-- Top Label -->
-        <tr>
-          <td align="center" style="padding:0 70px 24px 70px;">
-            <p style="font-family:Arial,sans-serif; font-size:12px; color:#4b6cb7; letter-spacing:2px; font-weight:bold; margin:0; text-transform:uppercase;">
-              PEOPLE & CULTURE • WARM BENCH OPPORTUNITY
-            </p>
-          </td>
-        </tr>
-
-        <!-- Main Title -->
-        <tr>
-          <td align="center" style="padding:0 70px 10px 70px;">
-            <h1 style="font-family:Georgia,serif; font-size:28px; font-weight:bold; color:#2f4fa2; margin:0; line-height:1.3;">
-              {POSITION}
-            </h1>
-          </td>
-        </tr>
-
-        <!-- Subtitle -->
-        <tr>
-          <td align="center" style="padding:0 70px 32px 70px;">
-            <p style="font-family:Georgia,serif; font-size:15px; color:#5a6ea8; margin:0; line-height:1.4;">
-              A New Role Aligned With Your Expertise
-            </p>
-          </td>
-        </tr>
-
-        <!-- Divider -->
-        <tr>
-          <td style="padding:30px 70px 50px 70px;">
-            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-              <tr>
-                <td style="height:1px; background-color:#2f4fa2;"></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- Body Content -->
-        <tr>
-          <td style="padding:0 70px 50px 70px;">
-
-            <p style="font-family:Georgia,serif; font-size:20px; color:#2f4fa2; font-weight:bold; margin:0 0 18px 0; line-height:1.3;">
-              Hi {candidate_name},
-            </p>
-
-            <p style="font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75; margin:0 0 18px 0; text-align:left;">
-              You're one of our <span style="color:#2f4fa2; font-weight:bold;">warm bench candidates</span> — someone we believe is a strong cultural and values fit for Taleemabad. A position has recently opened up in the <span style="font-weight:bold;">{POSITION}</span> role, and our hiring manager would like to have a <span style="font-weight:bold;">quick conversation</span> to understand your skills and see if this is the right next step for you.
+    body_html = f"""<p style="font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75; margin:0 0 18px 0; text-align:left;">
+              You're one of our <span style="color:#2f4fa2; font-weight:bold;">warm bench candidates</span> — someone we believe is a strong cultural and values fit for Taleemabad. A position has recently opened up in the <span style="color:#2f4fa2; font-weight:bold;">{POSITION}</span> role, and our hiring manager would like to have a <span style="color:#2f4fa2; font-weight:bold;">quick conversation</span> to understand your skills and see if this is the right next step for you.
             </p>
 
             <p style="font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75; margin:0 0 18px 0; text-align:left;">
@@ -122,7 +59,6 @@ def build_email_html(candidate_name):
               The JD for this position is <a href="{JD_LINK}" style="color:#2f4fa2; text-decoration:none; font-weight:bold;">here</a>, and you can explore more about Taleemabad through the following links:
             </p>
 
-            <!-- Links -->
             <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 18px 0;">
               <tr>
                 <td style="padding:8px 0; font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75;">
@@ -142,103 +78,18 @@ def build_email_html(candidate_name):
 
             <p style="font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75; margin:0 0 18px 0; text-align:left;">
               Please go through the <a href="https://docs.google.com/document/d/1TBbBAimVX9PxSR6-rT13bLKf38itNdbp5v6EbWuDtkg/edit?tab=t.0" style="color:#2f4fa2; text-decoration:none; font-weight:bold;">interview prep guide</a> to understand the process.
-            </p>
+            </p>"""
 
-            <p style="font-family:Georgia,serif; font-size:16px; color:#000000; line-height:1.75; margin:0 0 40px 0; text-align:left;">
-              Let us know if you need anything ahead of the conversation.
-            </p>
-
-          </td>
-        </tr>
-
-        <!-- Button -->
-        <tr>
-          <td align="center" style="padding:0 70px 50px 70px;">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td bgcolor="#2f4fa2" style="border-radius:4px; padding:14px 32px;">
-                  <a href="{BOOKING_LINK}" style="color:#ffffff; font-size:15px; font-weight:bold; text-decoration:none; font-family:Georgia,serif; display:block;">
-                    📅 Lock the Calendar
-                  </a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <tr>
-          <td align="center" style="padding:0 70px 60px 70px;">
-            <p style="font-family:Georgia,serif; font-size:14px; color:#5a6ea8; margin:0; line-height:1.5;">
-              Please lock a slot at your earliest convenience.
-            </p>
-          </td>
-        </tr>
-
-        <!-- Footer Divider -->
-        <tr>
-          <td style="padding:0 70px;">
-            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-              <tr>
-                <td style="height:1px; background-color:#e8e8e8;"></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- Footer -->
-        <tr>
-          <td style="padding:50px 70px 60px 70px;">
-
-            <p style="font-family:Georgia,serif; font-size:14px; color:#5a6ea8; margin:0 0 20px 0; line-height:1.6;">
-              Feel free to connect with us on our socials to get a sense of our culture:
-            </p>
-
-            <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px 0;">
-              <tr>
-                <td style="padding-right:16px;" valign="middle">
-                  <a href="https://taleemabad.com" style="text-decoration:none;">
-                    <img src="cid:logo_taleemabad" width="32" height="48" alt="Taleemabad" style="display:block;border:0;">
-                  </a>
-                </td>
-                <td style="padding-right:12px;" valign="middle">
-                  <a href="https://www.facebook.com/taleemabad" style="text-decoration:none;">
-                    <img src="cid:logo_facebook" width="36" height="36" alt="Facebook" style="display:block;border:0;border-radius:4px;">
-                  </a>
-                </td>
-                <td style="padding-right:12px;" valign="middle">
-                  <a href="https://www.instagram.com/taleemabad" style="text-decoration:none;">
-                    <img src="cid:logo_instagram" width="36" height="36" alt="Instagram" style="display:block;border:0;border-radius:4px;">
-                  </a>
-                </td>
-                <td valign="middle">
-                  <a href="https://www.linkedin.com/company/taleemabad" style="text-decoration:none;">
-                    <img src="cid:logo_linkedin" width="36" height="36" alt="LinkedIn" style="display:block;border:0;border-radius:4px;">
-                  </a>
-                </td>
-              </tr>
-            </table>
-
-            <p style="font-family:Georgia,serif; font-size:16px; color:#000000; font-weight:bold; margin:0 0 6px 0; line-height:1.4;">
-              See you soon,
-            </p>
-            <p style="font-family:Georgia,serif; font-size:16px; color:#000000; margin:0 0 16px 0; line-height:1.4;">
-              Team Taleemabad
-            </p>
-            <p style="font-family:Georgia,serif; font-size:13px; color:#5a6ea8; margin:0; line-height:1.4;">
-              Coco – AI Assistant Taleemabad
-            </p>
-
-          </td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
-</table>
-
-</body>
-</html>"""
-    return html
+    return format_interview_invite(
+        candidate_name=candidate_name,
+        position=POSITION,
+        label="PEOPLE & CULTURE • WARM BENCH OPPORTUNITY",
+        subtitle="A New Role Aligned With Your Expertise",
+        body_html=body_html,
+        booking_link=BOOKING_LINK,
+        button_text="📅 Lock the Calendar",
+        button_subtext="Please lock a slot at your earliest convenience."
+    )
 
 
 def send_pilot(to_email, to_name):
