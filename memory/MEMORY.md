@@ -14,6 +14,12 @@
 
 ---
 
+## SYSTEM ARCHITECTURE & CONSOLIDATION (2026-04-28)
+
+- [System Consolidation Complete](system_consolidation_2026_04_28.md) — Major refactor: consolidated discipline docs, extracted templates to code, created task mapping. Read this to understand new system architecture.
+
+---
+
 ## WHAT WENT WRONG & HOW WE FIXED IT
 
 ### Session 002 Failures
