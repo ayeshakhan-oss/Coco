@@ -21,13 +21,13 @@ from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-PILOT_MODE  = True  # True = Ayesha only; False = all 6 candidates
+PILOT_MODE  = False  # True = Ayesha only; False = all 6 candidates
 
 POSITION    = "CPD Coach"
 SUBJECT     = "Zero In Call for CPD Coach"
 SENDER      = "ayesha.khan@taleemabad.com"
 PASSWORD    = os.getenv("EMAIL_PASSWORD")
-HIRING_MGR  = "abdul.waheed@niete.edu.pk"
+HIRING_MGR  = "Hasnat@niete.edu.pk"
 CC_STANDARD = [
     "hiring@taleemabad.com",
     HIRING_MGR,
@@ -37,7 +37,7 @@ PILOT_RECIPIENTS = [
     {"email": "ayesha.khan@taleemabad.com", "name": "Ayesha"},
 ]
 
-BOOKING_LINK = "https://calendar.app.google/YvKqEK16Tax7PGyy5"
+BOOKING_LINK = "https://calendar.app.google/62znuJxCMMwfvSk46"
 JD_LINK      = "https://docs.google.com/document/d/1pg58RoVWoVO6WQTlGePJPbW_VLF0GkcYrQeG2Ah6G6s/edit?tab=t.0"
 TEAMS_LINK   = ""   # add when confirmed
 
@@ -147,15 +147,8 @@ def build_email_html(candidate_name):
               <tr>
                 <td style="padding:3px 0 3px 14px;">
                   &#8226;&nbsp;
-                  <a href="https://www.youtube.com/watch?v=jb4hWQDNEos"
-                     style="color:#1a73e8;">Magic of Taleemabad</a>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:3px 0 3px 14px;">
-                  &#8226;&nbsp;
-                  <a href="https://drive.google.com/file/d/1xhITDW5RjYjwKkULfewI1ZPL7iNlI1he/view"
-                     style="color:#1a73e8;">Impact in a one-minute video</a>
+                  <a href="https://impact-microsite.vercel.app/"
+                     style="color:#1a73e8;">10 Years Of Impact - Taleemabad</a>
                 </td>
               </tr>
               {teams_row}

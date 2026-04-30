@@ -19,8 +19,8 @@ from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 SENDER    = os.getenv("EMAIL_USER")
 PASSWORD  = os.getenv("EMAIL_PASSWORD")
-TO        = ["muzzammil.patel@taleemabad.com"]
-CC        = ["hiring@taleemabad.com", "ayesha.khan@taleemabad.com", "sabeena.abbasi@taleemabad.com"]
+TO        = ["ayesha.khan@taleemabad.com"]
+CC        = ["jawwad.ali@taleemabad.com"]
 SUBJECT   = "Field Coordinator / Research & Impact Studies — Case Study Evaluation | 10 Candidates | March 2026 (Updated)"
 EVAL_DATE = date.today().strftime("%d %B %Y")
 
@@ -321,9 +321,7 @@ def build_html():
                  f'Moiz Khan, Shazmina, and Muhammad Abubakr completed GWC calls before case study submission; '
                  f'their scores reflect the written submission only, independent of GWC outcomes. '
                  f'Usman Ahmed Khan score is provisional (71%) pending tracker file receipt — '
-                 f'4 of 5 criteria scored. Asad Farooq and Zubair Hussain are new additions evaluated in this batch. '
-                 f'<strong>Advancement threshold: candidates scoring 60% or above will proceed to the GWC round. '
-                 f'9 of 10 candidates meet this threshold. Zubair Hussain (42%) does not qualify for advancement.</strong></p>')
+                 f'4 of 5 criteria scored. Asad Farooq and Zubair Hussain are new additions evaluated in this batch.</p>')
 
     # SCORING FRAMEWORK
     parts.append(section_header("Scoring Framework"))
@@ -469,10 +467,6 @@ def build_html():
 
     # PIPELINE RECOMMENDATIONS
     parts.append(section_header("Pipeline Recommendations"))
-    parts.append(f'<p style="font-size:13px;color:{DARK};line-height:1.6;margin:0 0 12px">'
-                 f'<strong>Advancement threshold: 60% and above.</strong> '
-                 f'We will be proceeding to the GWC round with all candidates who scored 60% or above. '
-                 f'9 of 10 candidates qualify. Zubair Hussain (42%) is not recommended for advancement.</p>')
     parts.append(f'<table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse">')
     parts.append(f'<tr>{th("Candidate")}{th("Current Stage")}{th("Recommendation")}</tr>')
     pipeline = [

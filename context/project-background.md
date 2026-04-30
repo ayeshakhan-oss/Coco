@@ -209,10 +209,10 @@ Automates CV screening: ingest CVs → score vs JD + budget → ranked report �
 ### Pipeline
 1. Read JD from `jobs.jd_text` (fallback: `jobs.description`)
 2. Read CVs from `candidates.resume_data` (Base64 PDF → decode → parse → OCR if needed)
-3. Score with 7-dimension framework (see [SOPs/02_Candidate_Evaluation/cv_screening.md](SOPs/02_Candidate_Evaluation/cv_screening.md))
+3. Score with 7-dimension framework (see skills/cv-screening.md)
 4. Apply Taleemabad-specific lenses from this file
-5. Generate 7-section HTML report (see [SOPs/04_Data_and_Systems/report_generation.md](SOPs/04_Data_and_Systems/report_generation.md))
-6. Email to hiring manager (see [SOPs/04_Data_and_Systems/email_notification.md](SOPs/04_Data_and_Systems/email_notification.md))
+5. Generate 7-section HTML report (see skills/report-generation.md)
+6. Email to hiring manager (see skills/email-notification.md)
 
 ### Data Sources (confirmed)
 - CVs: Neon DB, `candidates.resume_data` (Base64-encoded PDF)

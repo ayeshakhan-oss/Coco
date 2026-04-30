@@ -12,7 +12,7 @@ import subprocess
 import sys
 import os
 
-SCRIPT_PATH = os.path.join(os.path.dirname(__file__), "weekly_pipeline_monitor.py")
+SCRIPT_PATH = os.path.join(os.path.dirname(__file__), "weekly_pipeline_monitor_text.py")
 PYTHON_PATH = sys.executable
 
 def register_tasks():
