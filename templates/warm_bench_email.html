@@ -1,0 +1,102 @@
+<!-- LOCKED WARM BENCH FEEDBACK EMAIL TEMPLATE (2026-05-04)
+     Status: PRODUCTION READY
+     Use for: Warm bench rejection emails (values passed + strong GWC, not selected for current role)
+     Design specification LOCKED — do NOT modify colors/fonts/spacing/layout
+
+     Colors:
+     - Background: #f3f4f6 (light gray)
+     - Card: #ffffff (white)
+     - Header label: #5B8DBE (teal-ish blue)
+     - Title/name: #1565C0 (dark blue)
+     - Subtitle: #7986CB (muted blue)
+     - Divider: #1565C0 (dark blue)
+
+     Fonts:
+     - Georgia serif, 16px body, 32px title, 14px subtitle, 1.75 line-height
+
+     Layout:
+     - 620px card width
+     - 70px padding
+     - 60px top/bottom margins
+     - Logo: 48x48px
+
+     Usage in Python:
+     html_body = WARM_BENCH_TEMPLATE.format(
+         candidate_name="X",
+         position="Y",
+         body_content="<p>...</p>"
+     )
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:Georgia,serif;">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f3f4f6;">
+  <tr>
+    <td align="center" style="padding:60px 0;">
+      <table cellpadding="0" cellspacing="0" border="0" width="620" style="background-color:#ffffff; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+
+        <!-- Logo -->
+        <tr>
+          <td align="center" style="padding:60px 70px 24px 70px;">
+            <img src="cid:logo_taleemabad" width="48" height="48" alt="Taleemabad" style="display:block;border:0;">
+          </td>
+        </tr>
+
+        <!-- Top Label -->
+        <tr>
+          <td align="center" style="padding:0 70px 24px 70px;">
+            <p style="font-family:Arial,sans-serif; font-size:12px; color:#5B8DBE; letter-spacing:2px; font-weight:bold; margin:0; text-transform:uppercase;">
+              PEOPLE &amp; CULTURE • POSITION UPDATE
+            </p>
+          </td>
+        </tr>
+
+        <!-- Candidate Name -->
+        <tr>
+          <td align="center" style="padding:0 70px 10px 70px;">
+            <h1 style="font-family:Georgia,serif; font-size:32px; font-weight:bold; color:#1565C0; margin:0; line-height:1.2;">
+              {candidate_name}
+            </h1>
+          </td>
+        </tr>
+
+        <!-- Position -->
+        <tr>
+          <td align="center" style="padding:0 70px 32px 70px;">
+            <p style="font-family:Georgia,serif; font-size:14px; color:#7986CB; margin:0; line-height:1.4;">
+              {position}
+            </p>
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td style="padding:30px 70px 50px 70px;">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="height:2px; background-color:#1565C0;"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body Content -->
+        <tr>
+          <td style="padding:0 70px 50px 70px;">
+            {body_content}
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -28,6 +28,7 @@ Or go directly to your task:
 - **Interview Invites (all stages)?** → [templates/interview_invite.html](templates/interview_invite.html) (universal, locked)
 - **Rejection Email?** → [SOPs/01_Candidate_Communication/cv_rejection_emails.md](SOPs/01_Candidate_Communication/cv_rejection_emails.md)
 - **Values Feedback Email?** → [SOPs/01_Candidate_Communication/values_feedback_emails.md](SOPs/01_Candidate_Communication/values_feedback_emails.md)
+- **Warm Bench Feedback Email?** → [skills/warm-bench-feedback-email.md](skills/warm-bench-feedback-email.md) + [memory/warm_bench_final_locked_approach.md](memory/warm_bench_final_locked_approach.md) (Haroon Yasin framework, 800-1100 words, poetic subjects, no prescriptive advice)
 - **Attendance Report?** → [SOPs/03_Hiring_Operations/attendance_reports.md](SOPs/03_Hiring_Operations/attendance_reports.md)
 - **Decision Brief?** → [SOPs/03_Hiring_Operations/hiring_decision_brief.md](SOPs/03_Hiring_Operations/hiring_decision_brief.md)
 - **Case Study Eval?** → [SOPs/02_Candidate_Evaluation/case_study_evaluation.md](SOPs/02_Candidate_Evaluation/case_study_evaluation.md)
@@ -71,6 +72,8 @@ All SOPs organized in [SOPs/](SOPs/) by category (00-05)
 ---
 
 ## 📌 Current Focus
+
+**Skill 16 — Warm Bench Feedback Emails (✓ LOCKED & PRODUCTION READY):** Haroon Yasin framework. 800-1100 words MANDATORY. Poetic subjects tied to interview moments. 4 sections + P.S. Three blue headings. Specific timestamps. "We" voice. No prescriptive advice. Simple HTML signature. Tested with 4 JRA candidates. Master reference: memory/warm_bench_final_locked_approach.md.
 
 **Skill 15 — Warm Bench Interview Invites (✓ LOCKED & PRODUCTION READY):** CPD Coach warm bench template. Design specification locked in. Formal letter style, #f3f4f6 background, 620px card, 28px Georgia title, 16px body, 1.75 line-height. Pilot sent to Ayesha for approval.
 

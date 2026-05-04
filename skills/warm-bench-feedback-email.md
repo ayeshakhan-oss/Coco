@@ -1,8 +1,15 @@
 ---
 name: Warm Bench Feedback Email
-description: Rejection emails for candidates who passed values + had good GWC but weren't selected for current role. Signal future opportunity. 800-1000 words. Storytelling tone. Separate from CV-stage rejections.
+description: Rejection-keep-warm emails for candidates who cleared values + strong GWC but weren't selected for current role. Haroon Yasin framework (Jan 29, 2026). 800-1100 words MANDATORY. Poetic subject lines. 4 sections + P.S. "We" voice with specific timestamps. LOCKED & PRODUCTION READY (2026-05-04).
 type: feedback
+status: LOCKED & PRODUCTION READY (2026-05-04) — HAROON-ALIGNED
 ---
+
+## 🔐 CRITICAL REFERENCE
+
+**READ FIRST:** [Warm Bench Feedback Emails - Final Locked Approach](../memory/warm_bench_final_locked_approach.md) (memory/warm_bench_final_locked_approach.md)
+
+This skill is based on Haroon Yasin's warm bench email training guide (Jan 29, 2026). The memory file above is the SINGLE SOURCE OF TRUTH for all specifications. All non-negotiable rules, language requirements, and self-QA checklist are there.
 
 ## Objective
 
@@ -30,124 +37,145 @@ Send a warm bench email when:
 
 ---
 
-## Content Structure (5 Sections)
+## Content Structure (5 Parts — Haroon Yasin Framework)
 
-### 1. Opening (1 paragraph, warm greeting)
+### Subject Line (POETIC & STORY-BASED)
 
-Address candidate by name. Thank them for their time and energy through the interview process. Set emotional tone: thoughtful, respectful, human.
+**MANDATORY:** Subject must be tied to a specific interview moment that left impact. NOT generic.
+
+Examples:
+- "When Gestures Speak Louder" (tied to how candidate helped a colleague)
+- "200 Voices, One Choice, Endless Grit" (tied to a specific anecdote)
+- "The Journal That Proved Your Resilience" (tied to a personal reflection they shared)
+
+**Never generic:** ❌ "Your Application", ❌ "Position Update", ❌ "Next Steps"
+
+---
+
+### 1. Opening (1 paragraph)
+
+Lead with the decision. Use exact phrasing: **"This isn't a yes for now."**
+
+Then immediately reference a specific interview moment + company vulnerability.
 
 Example:
 ```
-Hi [Name],
+This isn't a yes for now. But we need to tell you something about what we saw 
+in your interview that the panel kept discussing afterward, because it reveals 
+something important about who you are.
 
-I wanted to reach out personally to say thank you. Over the past few weeks, 
-we've had the privilege of getting to know you through our screening and values 
-conversations, and I've been reflecting on what you brought to those exchanges.
+[At 18 minutes in, when we asked about your biggest failure, you paused and...]
+[The room felt different when you told us about...]
+```
+
+**Key:** Specific timestamps ("At 18 minutes in..."), company vulnerability (show the panel's reaction), "we" voice always.
+
+---
+
+### 2. "What Genuinely Impressed Us" (Blue #1565C0 heading)
+
+1-2 additional interview moments (different from opening). Each with specific timestamp.
+
+Deep analysis: Why does this matter? What does it reveal about their character? Why is this rare/valuable?
+
+Example:
+```
+At about 35 minutes in, when we pushed back on your approach to delegation, 
+you didn't get defensive. You asked clarifying questions and genuinely considered 
+whether our framing was fair. That openness to input—especially when challenged—
+is uncommon. Most people protect their ideas first. You prioritized learning.
 ```
 
 ---
 
-### 2. What We Saw (2–3 paragraphs, evidence-based storytelling)
+### 3. "Here's the Part We Need to Be Honest About" (Blue #1565C0 heading)
 
-**Cite specific moments from values interview.** Quote their own words or reference specific examples they shared. Show that you listened deeply and remembered.
-
-**Include:** Values scorecard observations — which values they clearly demonstrated, specific moments that showed their alignment.
+Name the gap directly. Frame as role-specific, NOT a personal failing.
 
 Example:
 ```
-In your values conversation, when we asked about a time you'd pushed back on 
-a team decision, you told us about [specific situation]. The way you described 
-your approach—balancing directness with care—showed us real strength in 
-Courageous Conversations. You didn't just say you valued it; we saw it in 
-how you think about team dynamics.
-
-Your reflection on [another moment] also highlighted something important to us: 
-you're someone who learns from feedback. You didn't frame mistakes as external; 
-you owned them and articulated what you'd do differently. That's Continuously 
-Improve in action.
+In our technical interview, we found that your background was strong in 
+[domain X] but less developed in [domain Y]. For this role, at this moment, 
+that gap matters because [specific reason]. It's not a weakness on you—it's 
+a need for this specific position right now.
 ```
 
 ---
 
-### 3. GWC & Fit Assessment (1–2 paragraphs, transparent and honest)
+### 4. "Here's Where We Want to Leave Things" (Blue #1565C0 heading)
 
-Explain what the GWC assessment showed. Be specific about what "yes" or "conditional" meant. Reference the Markaz scorecard if applicable.
+**CRITICAL:** Do NOT suggest what they should do.
 
-Gently explain why this role didn't move forward, WITHOUT making it about their fit. Focus on: "the current role's constraints," "different priorities," "timing," NOT "you weren't strong enough."
-
-Example:
-```
-Our GWC conversation surfaced something clear: you understand our mission deeply, 
-you're genuinely energized by our work, and you have the capacity to show up on 
-our values daily. That's the full Yes across the board.
-
-Where this role didn't advance isn't about your strengths—it's about the specific 
-needs of this position and the team composition we're building right now. We were 
-looking for [specific technical/contextual requirement] as a lead strength, and 
-while you have this background, we needed someone with deeper [domain] experience 
-for this particular cycle.
-```
+❌ "You should study X"
+❌ "We recommend taking courses in Y"
+✅ "We'd genuinely like to stay connected. If opportunity aligns with your experience and strengths, we'd welcome talking again."
 
 ---
 
-### 4. The Warm Bench Signal (1–2 paragraphs, future-focused)
+### 5. P.S. (Before signature)
 
-**This is the key section.** Signal clearly and specifically that they're not permanently out.
-
-Mention the TYPE of future role they'd be strong for, or the timeline when relevant roles open. Make it specific enough to feel real, not generic.
+The ONE thing the room will remember. Tied to subject line's story. Positive reinforcement.
 
 Example:
 ```
-Here's what I want you to know: we're not closing the door. In fact, we're 
-keeping it open deliberately.
-
-We're actively building out our [specific function/team] over the next 6–9 months, 
-and your background in [area] combined with your values alignment makes you someone 
-we'd want to revisit when those conversations start. I'm going to flag your name 
-in our internal talent pool, and when we start sourcing for roles that match your 
-strengths, we'll reach out proactively.
-
-Keep an eye on our careers page (www.taleemabad.com/careers), but also know that 
-you'll hear from us directly when opportunities align.
-```
-
----
-
-### 5. Closing (1 short paragraph)
-
-Warm, encouraging, human. Not a generic "best of luck" but something that acknowledges their worth.
-
-Example:
-```
-Thank you again for investing your energy in getting to know us. Your thoughtfulness 
-and integrity came through in every conversation, and that matters. We're thinking 
-of you as we build the team we need.
-
-In the meantime, if you come across insights or opportunities that feel relevant 
-to what we're doing, we'd love to hear from you.
+P.S. That moment when you showed us the journal entry from your first month 
+at your last role? The vulnerability. The learning you extracted from difficulty. 
+That's who you are. And people like that belong here eventually.
 ```
 
 ---
 
 ## Format & Design
 
-**Word count:** 800–1,000 words (minimum 800)
+**Word count:** 800–1,100 words **MANDATORY** (NOT 800-1000; minimum 800 verified before sending)
 
-**HTML design:** v8 design only
-- Blue headings (#1565c0)
-- Green subheadings (#1b5e20)
-- Georgia serif body, 15px/1.8, justified (TA_JUSTIFY)
-- White background, structured tables for organization
-- CID logo inline if appropriate
+Achieve 800+ by including multiple interview moments + deep analysis, NOT filler.
 
-**Sign-off (exact):**
-```
-Warm regards,
-People and Culture Team
-Taleemabad
-hiring@taleemabad.com | www.taleemabad.com
+**HTML design:** Locked specification (2026-05-04)
+- Blue section headings: #1565C0 (3 mandatory headings: "What Genuinely Impressed Us", "Here's the Part We Need to Be Honest About", "Here's Where We Want to Leave Things")
+- Georgia serif body, 14px, 1.6 line-height, justified
+- Simple <p> tags only (NO complex divs with border-top — triggers Gmail "..." menu)
+- Logo inline via Content-ID (48x48px)
+- Card design: 620px width, 70px padding
+
+**Signature HTML (EXACT — prevents Gmail menu artifacts):**
+```html
+<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
+Warm regards,<br/>
+<span style="font-weight:bold;">People and Culture Team</span><br/>
+<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
+</p>
+
+<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
+<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
+</p>
+
+<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
 Sent on behalf of Talent Acquisition Team by Coco
+</p>
 ```
+
+**Why simple HTML:** Complex styling with border-top divs causes Gmail to render "..." menu and hide content. Use only <p> with minimal inline styles.
+
+---
+
+## Language Rules (CRITICAL)
+
+✅ **DO:**
+- "This isn't a yes for now" (exact opening phrasing)
+- "Technical interview" (not "GWC" — internal jargon)
+- Hyphens ONLY in compound words (co-founder, etc.)
+- Specific timestamps throughout ("At 18 minutes...", "About 35 minutes in...")
+- Company context in opening ("the room felt...", "we were worried...")
+- "We" voice exclusively
+
+❌ **DON'T:**
+- Em dashes (— becomes - or remove entirely)
+- Prescriptive advice in final section ("You should do X")
+- "I" voice (never "I wanted", always "we saw")
+- Generic timestamps ("In the interview" is too vague)
+- "GWC", "KCD", "TBC" terminology
+- Interviewer names
 
 ---
 
@@ -163,7 +191,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 5. **GWC transparency** — explain what their GWC was and what it means. If CONDITIONAL, state the condition clearly.
 
-6. **Future role is SPECIFIC** — not vague "we'll keep you in mind." State actual function/timeline/domain if possible. If unknown, say: "When hiring resumes for [function] in [timeframe]."
+6. **Warm welcome for future applications** — extend a genuine, personal invitation without making specific role promises. Focus on: "we'd welcome your application," "you're the kind of person we want to build with," "we'd be delighted to consider you for future roles."
 
 7. **Feedback widget mandatory** — all personalised emails include it. Import: `from scripts.utils.feedback_widget import feedback_widget`. Append before wrap().
 
@@ -175,34 +203,37 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 ---
 
-## Pre-Send Checklist
+## Pre-Send Checklist (Self-QA — MANDATORY)
 
-- [ ] Candidate cleared values interview (Values PASS confirmed)
-- [ ] GWC data reviewed from Markaz scorecard
-- [ ] Values scorecard evidence extracted (quote specific moments)
-- [ ] Opening thanks candidate by name, warm greeting
-- [ ] "What We Saw" section quotes actual interview examples (not assumptions)
-- [ ] GWC assessment explained clearly (YES on all 3? CONDITIONAL on what?)
-- [ ] Reason for not selecting THIS role explained gently (not about their fit)
-- [ ] Future role is SPECIFIC: function/domain/timeline mentioned
-- [ ] Closing is warm and encouraging (not generic)
-- [ ] Word count ≥800 (target 800–1000)
-- [ ] v8 HTML design applied (blue headings, Georgia serif, justified)
-- [ ] No em dashes anywhere (search + replace " — " with period/comma)
-- [ ] "We" voice throughout (never "I")
-- [ ] They/them pronouns only (no he/she/his/her)
-- [ ] Feedback widget included with correct app_id
-- [ ] Sign-off is exact (Warm regards, / People and Culture Team / etc.)
-- [ ] Recipients: TO = candidate, CC = hiring@ + ayesha.khan@
-- [ ] PILOT_MODE = True (sends to Ayesha + Jawwad only)
+- [ ] Word count 800-1100 words minimum (verified by counting)
+- [ ] All 4 section headings present and BLUE (#1565C0): Opening, "What Genuinely Impressed Us", "Here's the Part We Need to Be Honest About", "Here's Where We Want to Leave Things", P.S.
+- [ ] Subject line is POETIC & STORY-BASED (not generic; tied to specific interview moment)
+- [ ] Opening starts with "This isn't a yes for now"
+- [ ] Opening has specific timestamp + company vulnerability (e.g., "the room felt...", "we were worried...")
+- [ ] "What Genuinely Impressed Us" has 1-2 new moments (different from opening) with specific timestamps
+- [ ] Each interview moment includes DEEP ANALYSIS: "Why does this matter? What does it reveal?"
+- [ ] "Here's the Part We Need to Be Honest About" names the gap directly and frames as ROLE-SPECIFIC (not personal failing)
+- [ ] "Here's Where We Want to Leave Things" does NOT prescribe advice (❌ "you should study X"; ✅ "we'd welcome talking again")
+- [ ] P.S. is memorable and tied to subject line's story
+- [ ] Candidate cleared values interview (Values PASS confirmed from Markaz)
+- [ ] GWC scorecard reviewed + incorporated into feedback
+- [ ] Candidate is NOT selected for THIS role (all 4 emails are rejections)
+- [ ] No "GWC", "KCD", "TBC" terminology (use "technical interview")
+- [ ] No "I" voice (always "we")
+- [ ] No em dashes (— becomes - or remove)
+- [ ] No interviewer names mentioned
+- [ ] Simple HTML signature in place (no border-top divs; uses simple <p> tags)
+- [ ] Signature not hidden behind "..." menu (test by reviewing MIME structure)
+- [ ] Recipients: TO = candidate email, CC = hiring@taleemabad.com, ayesha.khan@taleemabad.com
+- [ ] PILOT_MODE = True (sends to Ayesha + Jawwad only before approval)
 - [ ] safe_sendmail() bouncer used, context logged
-- [ ] Ready to ask Ayesha for approval before going live
+- [ ] Ready to request Ayesha's approval before going live
 
 ---
 
 ## Common Mistakes
 
-1. **Vague future promise** — "We'll reach out if something comes up" is too soft. State actual role type/timeline.
+1. **Cold or dismissive closing** — avoid "We'll reach out if something comes up" (too transactional). Instead: "we'd genuinely welcome your application," "you're exactly the kind of person we want to build with," "we'd be delighted to consider you." Keep it warm and personal.
 
 2. **Making it about their weakness** — "You didn't have enough [skill]" sounds like rejection. Focus on role needs, not their gaps.
 
@@ -233,8 +264,8 @@ Sent on behalf of Talent Acquisition Team by Coco
 | **Tone** | Warm, reflective, appreciative of effort | Warm, affectionate, storytelling, almost like a personal letter |
 | **Evidence source** | CV text only | Values interview + GWC scorecard |
 | **Focus** | Skills/experience gaps + strengths from CV | Interview moments + values alignment + GWC assessment |
-| **Closing promise** | "Door remains open. Keep an eye on careers page." | "We're flagging you for future [specific role/function]. We'll reach out proactively." |
-| **Signal strength** | Generic (applies to all candidates) | Specific (signals real future opportunity) |
+| **Closing promise** | "Door remains open. Keep an eye on careers page." | "We'd genuinely welcome your application. You're exactly the kind of person we want to build with." |
+| **Signal strength** | Generic (applies to all candidates) | Personal (signals warm, genuine welcome for future applications) |
 
 ---
 
@@ -248,6 +279,66 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 ---
 
-## Commitment (Coco, 2026-04-10)
+## LOCKED ASSETS (2026-05-04 — HAROON-ALIGNED)
 
-I will send warm bench emails only to candidates who cleared values with strong GWC. I will quote their actual interview examples. I will reference their GWC assessment. I will specify the future role/function/timeline. I will use v8 design. I will include feedback widget. I will pilot first, get approval, then go live. No em dashes. "We" voice. They/them pronouns. Safe_sendmail bouncer. Word count verified before sending.
+**Full Specification (Authoritative):**
+- File: `memory/warm_bench_final_locked_approach.md`
+- Status: MASTER REFERENCE for all specifications
+- Contains: Non-negotiable requirements, language rules, section breakdown, signature HTML, color scheme, self-QA checklist, lessons learned
+- Last Updated: May 5, 2026 (tested with 4 JRA candidates)
+
+**Template (LOCKED):**
+- File: `templates/warm_bench_email.html`
+- Status: LOCKED design specification
+- Colors: #1565C0 (blue headings + links + accent)
+- Fonts: Georgia serif, 14px body, 1.6 line-height
+- Logo: 48x48px embedded via Content-ID
+- Layout: 620px card, 70px padding
+- Design spec note: Simple <p> tags only (no border-top divs—triggers Gmail "..." menu)
+
+**Script (LOCKED & GENERIC):**
+- File: `scripts/warm_bench_locked.py`
+- Status: PRODUCTION READY
+- Parameterized: accepts candidate_name, candidate_email, position, body_html, subject (optional)
+- No hardcoding of role/position/body
+- Includes CLI interface + programmatic usage
+- Handles logo attachment via MIME Content-ID
+- Supports pilot mode + live send
+- Updated 2026-05-04: accepts optional subject parameter for poetic/story-based subjects
+
+**Usage (Programmatic):**
+```python
+from scripts.warm_bench_locked import send_warm_bench_email
+
+send_warm_bench_email(
+    candidate_name="Dur E Nayab",
+    candidate_email="email@domain.com",
+    position="Junior Research Associate",
+    body_html="<p>This isn't a yes for now...</p>",
+    subject="When Gestures Speak Louder",  # Poetic subject tied to interview moment
+    pilot_mode=True,
+    pilot_recipients=["ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
+)
+```
+
+**Usage (CLI):**
+```bash
+python scripts/warm_bench_locked.py \
+  --candidate "Dur E Nayab" \
+  --email "email@domain.com" \
+  --position "Junior Research Associate" \
+  --body-file path/to/body.html \
+  --pilot
+```
+
+**Reference Implementation (Tested):**
+- File: `scripts/warm_bench_jra_4candidates_haroon_final.py`
+- Status: Working example with 4 JRA candidates
+- Contains: Dur E Nayab, Daniyah Noor, Hassan Zafar, Mahnoor Hasan
+- All emails: 800-1100 words, Haroon-aligned, pilot tested
+
+---
+
+## Commitment (Coco, 2026-05-04 — HAROON-ALIGNED LOCKED)
+
+I will send warm bench feedback emails ONLY to candidates who cleared values interview + had strong GWC + are NOT selected for the current role. I will lead with "This isn't a yes for now." I will quote their actual interview moments with specific timestamps. I will include 1-2 additional moments with deep analysis of why they matter. I will reference their GWC scorecard. I will include 3 blue section headings exactly: "What Genuinely Impressed Us", "Here's the Part We Need to Be Honest About", "Here's Where We Want to Leave Things". I will NOT prescribe advice in the final section. I will use poetic, story-based subject lines tied to interview moments. I will use the locked signature HTML (simple <p> tags, no border-top divs). I will write 800-1100 words minimum (verified by counting). I will avoid all jargon ("GWC", "KCD", "TBC"). I will use "we" voice exclusively. I will pilot first to Ayesha + Jawwad, get approval, then go live. Template, script, and specification are LOCKED for production use. No exceptions.
