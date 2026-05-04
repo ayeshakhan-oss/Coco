@@ -61,11 +61,28 @@ def send_warm_bench_email(candidate_name, candidate_email, position, body_html, 
         True if sent successfully, False otherwise
     """
 
+    # Append signature to body content
+    signature_html = """<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
+Warm regards,<br/>
+<span style="font-weight:bold;">People and Culture Team</span><br/>
+<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
+</p>
+
+<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
+<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
+</p>
+
+<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
+Sent on behalf of Talent Acquisition Team by Coco
+</p>"""
+
+    body_with_signature = body_html + signature_html
+
     # Format template with candidate name, position, and body
     html_body = EMAIL_TEMPLATE.format(
         candidate_name=candidate_name,
         position=position,
-        body_content=body_html
+        body_content=body_with_signature
     )
 
     # Create email
