@@ -37,91 +37,179 @@ Send a warm bench email when:
 
 ---
 
-## Content Structure (5 Parts — Haroon Yasin Framework)
+## Content Structure (5 Parts — Haroon Yasin Framework - UPDATED May 5 2026)
 
-### Subject Line (POETIC & STORY-BASED)
+### Subject Line (POETIC & STORY-BASED - LOCKED)
 
-**MANDATORY:** Subject must be tied to a specific interview moment that left impact. NOT generic.
+**MANDATORY:** Subject MUST be tied to specific interview moment that left impact. NOT generic.
 
-Examples:
-- "When Gestures Speak Louder" (tied to how candidate helped a colleague)
-- "200 Voices, One Choice, Endless Grit" (tied to a specific anecdote)
-- "The Journal That Proved Your Resilience" (tied to a personal reflection they shared)
+**Locked Examples:**
+- "When Gestures Speak Louder" — Dur E Nayab (how they helped colleague)
+- "200 Voices, One Choice, Endless Grit" — Daniyah Noor (200 signatories campaign)
+- "The Journal That Proved Your Resilience" — Hassan Zafar (interview notes reflection)
+- "The Language That Fixed Everything" — Mahnoor Hasan (MATLAB-to-Python pivot)
 
 **Never generic:** ❌ "Your Application", ❌ "Position Update", ❌ "Next Steps"
 
+**Why this matters:** Candidate sees subject, recognizes their own story, feels truly seen
+
 ---
 
-### 1. Opening (1 paragraph)
+### 1. Opening Paragraph (EXACT WORDING - LOCKED)
 
-Lead with the decision. Use exact phrasing: **"This isn't a yes for now."**
+**Exact phrasing (NON-NEGOTIABLE):**
+```
+This isn't a yes for now. But we need to tell you something about what we saw 
+in your interview that the panel kept discussing afterward, because it reveals 
+something important about who you are.
+```
 
-Then immediately reference a specific interview moment + company vulnerability.
+**Then IMMEDIATELY:** Specific interview moment + company vulnerability
 
-Example:
+**Structure:**
+- Lead with decision
+- Show PANEL'S emotional state: "We were worried...", "The room felt...", "By the third interview..."
+- Specific moment with EXACT timestamp: "At 18 minutes in...", "About 35 minutes into..."
+- Deep analysis: What this reveals about their character
+- NOT just what they did, but why it matters
+
+**Example opening:**
 ```
 This isn't a yes for now. But we need to tell you something about what we saw 
 in your interview that the panel kept discussing afterward, because it reveals 
 something important about who you are.
 
-[At 18 minutes in, when we asked about your biggest failure, you paused and...]
-[The room felt different when you told us about...]
+There's a moment from your values interview that has stayed with us ever since 
+the panel ended. By the time we reached the third interview, we were genuinely 
+worried. We had met smart candidates; there were strong CVs, accomplished 
+professionals. But we were searching for something that couldn't be taught or 
+trained, and it felt like we might not find it. Then you walked in, and at about 
+10 minutes in, when we asked about teaching C++ with zero prior knowledge, you 
+told us something that immediately changed the energy in the room. You said you 
+were assigned to teach it with zero knowledge. You could have asked to reschedule. 
+You didn't. Instead, you self-studied. You showed up prepared. You received 80% 
+positive feedback from students. That's not luck. That's someone who doesn't make 
+excuses and who cares about doing the job right. That's someone with integrity.
 ```
 
-**Key:** Specific timestamps ("At 18 minutes in..."), company vulnerability (show the panel's reaction), "we" voice always.
+**Key Points:**
+- Specific timestamps ("At X minutes", "About Y minutes in")
+- Company vulnerability ("we were worried", "the room felt")
+- Analysis of character/trait revealed
+- "We" voice always
 
 ---
 
-### 2. "What Genuinely Impressed Us" (Blue #1565C0 heading)
+### 2. "What Genuinely Impressed Us" Section (Blue #1565C0 - LOCKED)
 
-1-2 additional interview moments (different from opening). Each with specific timestamp.
+**Heading:** `<span style="font-weight:bold; color:#1565C0;">What Genuinely Impressed Us</span>`
 
-Deep analysis: Why does this matter? What does it reveal about their character? Why is this rare/valuable?
+**Content Requirements:**
+- 1-2 ADDITIONAL interview moments (completely different from opening)
+- EACH with SPECIFIC timestamp
+- DEEP analysis: Why does this matter? What does it reveal? Why is this rare?
 
-Example:
+**Structure per moment:**
+1. Describe moment with timestamp
+2. Quote their exact words if possible
+3. Analyze WHY this is valuable/rare
+4. Compare to typical candidate behavior
+
+**Example:**
 ```
-At about 35 minutes in, when we pushed back on your approach to delegation, 
-you didn't get defensive. You asked clarifying questions and genuinely considered 
-whether our framing was fair. That openness to input—especially when challenged—
-is uncommon. Most people protect their ideas first. You prioritized learning.
+About 30 minutes into the conversation, we asked you about helping a colleague 
+with Excel. And you said something that the entire panel wrote down: "Gestures 
+should be unspoken." You didn't need credit. You didn't need the conversation. 
+You helped Ikra because she needed help. You didn't frame it as a favor or 
+mentorship. You just did it. And when we pressed you on why, you explained that 
+real, quiet leadership isn't about being seen or acknowledged. It's about making 
+the right move. We've interviewed hundreds of candidates. We can count on one 
+hand how many people actually live this way. Most people help and expect 
+acknowledgment. You just wanted the problem solved.
+```
+
+**Critical:** Make it specific, quote-heavy, rare/unusual trait highlighted
+
+---
+
+### 3. "Here's the Part We Need to Be Honest About" Section (Blue #1565C0 - LOCKED)
+
+**Heading:** `<span style="font-weight:bold; color:#1565C0;">Here's the Part We Need to Be Honest About</span>`
+
+**Requirements:**
+- Name the gap DIRECTLY
+- Frame as ROLE-SPECIFIC, NOT personal failing
+- Show we understand their potential
+- Explain why it matters for THIS role at THIS moment
+
+**NOT:** "You lack X" / "You're not strong in Y"
+**YES:** "In our technical interview, we found... For this role, at this moment, that gap matters because..."
+
+**Example:**
+```
+In our technical interview, we found that while your background was strong in 
+project coordination, you're less developed in the specific data analysis tools 
+this role requires. For this position, at this moment, that gap matters because 
+we need someone who can hit the ground running with those tools. It's not a 
+weakness on you—it's a need for this specific role right now. This isn't about 
+your capability; you've proven you can learn hard things. It's about the 
+particular fit for this role, right now.
 ```
 
 ---
 
-### 3. "Here's the Part We Need to Be Honest About" (Blue #1565C0 heading)
+### 4. "Here's Where We Want to Leave Things" Section (Blue #1565C0 - LOCKED)
 
-Name the gap directly. Frame as role-specific, NOT a personal failing.
+**Heading:** `<span style="font-weight:bold; color:#1565C0;">Here's Where We Want to Leave Things</span>`
 
-Example:
+**⚠️ CRITICAL RULE: Do NOT suggest what they should do**
+
+**WRONG:**
+- ❌ "You should study X"
+- ❌ "We recommend taking courses in Y"
+- ❌ "Go learn Z"
+- ❌ Any prescriptive advice
+
+**RIGHT:**
+- ✅ "We'd genuinely like to stay connected."
+- ✅ "If opportunity aligns with your experience and strengths, we'd welcome talking again."
+- ✅ "You're exactly the kind of person we want to build with."
+
+**Example:**
 ```
-In our technical interview, we found that your background was strong in 
-[domain X] but less developed in [domain Y]. For this role, at this moment, 
-that gap matters because [specific reason]. It's not a weakness on you—it's 
-a need for this specific position right now.
+Your grit is real. Your integrity is real. Your ability to lead without needing 
+to be seen is genuinely rare. We'd genuinely like to stay connected. If an 
+opportunity comes up that aligns with your experience and strengths, we'd 
+welcome talking again.
 ```
+
+**Why this matters:** Prescriptive advice ("you should do X") triggers defensiveness. Keep it open and warm instead.
 
 ---
 
-### 4. "Here's Where We Want to Leave Things" (Blue #1565C0 heading)
+### 5. P.S. (BEFORE signature - LOCKED)
 
-**CRITICAL:** Do NOT suggest what they should do.
+**Position:** MUST be BEFORE signature, not after
 
-❌ "You should study X"
-❌ "We recommend taking courses in Y"
-✅ "We'd genuinely like to stay connected. If opportunity aligns with your experience and strengths, we'd welcome talking again."
+**Content Requirements:**
+- The ONE thing the room will remember
+- Tied to subject line's story
+- Positive reinforcement
+- Screenshot-worthy
+- Bold the key phrase in blue
 
----
+**Structure:**
+1. Reference the subject line story
+2. Highlight the key moment/trait
+3. Make it emotional and memorable
 
-### 5. P.S. (Before signature)
-
-The ONE thing the room will remember. Tied to subject line's story. Positive reinforcement.
-
-Example:
+**Example:**
 ```
-P.S. That moment when you showed us the journal entry from your first month 
-at your last role? The vulnerability. The learning you extracted from difficulty. 
-That's who you are. And people like that belong here eventually.
+P.S.; That MATLAB-to-Python pivot still stands out. That kind of initiative—
+seeing what's broken and fixing it instead of accepting it—is genuinely rare.
 ```
+
+**Why:** This is what candidates screenshot and send to their spouse/family. Make it count.
 
 ---
 
