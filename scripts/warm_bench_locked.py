@@ -44,7 +44,7 @@ TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), '../templates/warm_bench
 with open(TEMPLATE_PATH, 'r', encoding='utf-8') as f:
     EMAIL_TEMPLATE = f.read()
 
-def send_warm_bench_email(candidate_name, candidate_email, position, body_html, subject=None, pilot_mode=True, pilot_recipients=None):
+def send_warm_bench_email(candidate_name, candidate_email, position, body_html, subject=None, pilot_mode=True, pilot_recipients=None, cc_list=None):
     """
     Send warm bench feedback email with locked design.
 
@@ -97,8 +97,13 @@ Sent on behalf of Talent Acquisition Team by Coco
         print(f"[PILOT] {candidate_name} -> {recipients}")
     else:
         msg['To'] = candidate_email
-        msg['Cc'] = 'hiring@taleemabad.com, ayesha.khan@taleemabad.com'
-        recipients = [candidate_email, 'hiring@taleemabad.com', 'ayesha.khan@taleemabad.com']
+        # Use provided CC list or default
+        if cc_list:
+            cc_string = ', '.join(cc_list)
+        else:
+            cc_string = 'hiring@taleemabad.com, ayesha.khan@taleemabad.com'
+        msg['Cc'] = cc_string
+        recipients = [candidate_email] + (cc_list if cc_list else ['hiring@taleemabad.com', 'ayesha.khan@taleemabad.com'])
         print(f"[LIVE] {candidate_name} -> {candidate_email}")
 
     # Attach HTML
