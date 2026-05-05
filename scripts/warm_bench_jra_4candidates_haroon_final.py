@@ -21,7 +21,7 @@ Candidates (ALL REJECTIONS — KEEP WARM):
 All pilot to: ayesha.khan@taleemabad.com, jawwad.ali@taleemabad.com
 """
 
-from scripts.warm_bench_locked import send_warm_bench_email
+from warm_bench_locked import send_warm_bench_email
 
 # ============================================
 # CANDIDATE 1: DUR E NAYAB (OFFER)
@@ -72,21 +72,6 @@ Your grit is real. Your integrity is real. <span style="font-weight:bold; color:
 P.S.; The thing we'll remember about you: you don't lead by being seen. <span style="font-weight:bold; color:#1565C0;">You lead by staying quiet and making the right move.</span> That's the kind of person we need.
 </p>
 
-
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
-Warm regards,<br/>
-<span style="font-weight:bold;">People and Culture Team</span><br/>
-<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
-<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
 """
 
 
@@ -140,21 +125,6 @@ Here's Where We Want to Leave Things
 P.S.; <span style="font-weight:bold; color:#1565C0;">The 200 signatories matter.</span> That's not just activism. That's you understanding that systems are made of people, and people deserve better.
 </p>
 
-
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
-Warm regards,<br/>
-<span style="font-weight:bold;">People and Culture Team</span><br/>
-<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
-<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
 """
 
 # ============================================
@@ -206,21 +176,6 @@ Your grit is real. Your integrity is real. <span style="font-weight:bold; color:
 P.S.; <span style="font-weight:bold; color:#1565C0;">The Q1 journal work still matters.</span> That's the part that shows who you are. You didn't give up when it would have been easy to abandon the Masters. That resilience is real.
 </p>
 
-
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
-Warm regards,<br/>
-<span style="font-weight:bold;">People and Culture Team</span><br/>
-<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
-<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
 """
 
 # ============================================
@@ -276,21 +231,6 @@ You have both the technical skills and the drive to solve real problems. <span s
 P.S.; <span style="font-weight:bold; color:#1565C0;">That MATLAB-to-Python pivot still stands out.</span> That kind of initiative; seeing what's broken and fixing it instead of accepting it; is genuinely rare.
 </p>
 
-
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
-Warm regards,<br/>
-<span style="font-weight:bold;">People and Culture Team</span><br/>
-<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
-<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
 """
 
 # ============================================
