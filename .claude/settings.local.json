@@ -33,7 +33,9 @@
       "Bash(xargs wc -l)",
       "Bash(rm -rf Attendance/ \"Case Study Submission/\" \"Case Study/\" case-studies/ \"Field Coordinator/\" \"Fundraising & Partnerships Manager/\" \"Google Sheet Integration/\" \"Json File/\" Screenshot/ Transcription/)",
       "Bash(rm -f *.txt *.pdf *.png)",
-      "Bash(du -sh .)"
+      "Bash(du -sh .)",
+      "Bash(mkdir -p archive/data-snapshots)",
+      "Bash(mv data/job32_new_candidates.json data/job32_new_cvtext.json data/job36_prescreened.json data/job36_top25_cvtext.json data/job36_case_study_gmail_check.json data/extracted/all_candidates_cvs.json archive/data-snapshots/)"
     ]
   },
   "enableAllProjectMcpServers": true,
