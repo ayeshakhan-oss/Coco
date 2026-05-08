@@ -17,6 +17,7 @@
 ## LESSONS LEARNED (Continuous)
 
 - [Lessons Learned Log](lessons_learned.md) — Structured append-only log: date, task, mistake, correction, rule. Updated by Stop hook. Max 50 entries.
+- [Active Session Scratchpad](session_active.md) — Live notes for current session: task, decisions, mistakes, files modified. Wiped at session start.
 
 ---
 
