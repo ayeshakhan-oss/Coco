@@ -1225,6 +1225,6 @@ msg.attach(spider_img)
 with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
     server.login(SENDER, PASSWORD)
     allow_candidate_addresses(RECIPIENT if isinstance(RECIPIENT, list) else [RECIPIENT])
-        safe_sendmail(server, SENDER, RECIPIENT, msg.as_string(), context='send_job32_report_v10')
+    safe_sendmail(server, SENDER, RECIPIENT, msg.as_string(), context='send_job32_report_v10')
 
 print("Email sent — CID inline charts embedded in email body.")

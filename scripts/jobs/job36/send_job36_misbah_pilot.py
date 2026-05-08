@@ -10,12 +10,12 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__)
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".env"))
+
 import sys as _sys
 _sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 from scripts.utils.feedback_widget import feedback_widget
-, "../../..", ".env"))
 
 SENDER   = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
