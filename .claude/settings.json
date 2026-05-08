@@ -1,0 +1,27 @@
+{
+  "enabledPlugins": ["superpowers", "context7", "skill-creator"],
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:/Agent Coco/scripts/memory/session_stop_hook.py\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:/Agent Coco/scripts/memory/prompt_submit_hook.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
