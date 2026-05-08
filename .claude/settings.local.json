@@ -35,7 +35,15 @@
       "Bash(rm -f *.txt *.pdf *.png)",
       "Bash(du -sh .)",
       "Bash(mkdir -p archive/data-snapshots)",
-      "Bash(mv data/job32_new_candidates.json data/job32_new_cvtext.json data/job36_prescreened.json data/job36_top25_cvtext.json data/job36_case_study_gmail_check.json data/extracted/all_candidates_cvs.json archive/data-snapshots/)"
+      "Bash(mv data/job32_new_candidates.json data/job32_new_cvtext.json data/job36_prescreened.json data/job36_top25_cvtext.json data/job36_case_study_gmail_check.json data/extracted/all_candidates_cvs.json archive/data-snapshots/)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Agent Coco\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)",
+      "Bash(git mv *)",
+      "Bash([ -f \"skills/$f.md\" ])",
+      "Bash(ls -1 memory/skill_*.md)",
+      "Bash(rm memory/skill_*.md)",
+      "Bash(ls -1 memory/_session/skill_warm_bench*)",
+      "Bash(ls -1 memory/skill_warm_bench*)"
     ]
   },
   "enableAllProjectMcpServers": true,
