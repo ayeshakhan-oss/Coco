@@ -43,7 +43,10 @@
       "Bash(ls -1 memory/skill_*.md)",
       "Bash(rm memory/skill_*.md)",
       "Bash(ls -1 memory/_session/skill_warm_bench*)",
-      "Bash(ls -1 memory/skill_warm_bench*)"
+      "Bash(ls -1 memory/skill_warm_bench*)",
+      "Bash(grep -o \"[^/]*$\")",
+      "Bash(git restore *)",
+      "Bash(git reset *)"
     ]
   },
   "enableAllProjectMcpServers": true,
