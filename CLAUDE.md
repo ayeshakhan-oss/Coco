@@ -13,6 +13,20 @@ Read these FIRST (in order):
 2. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — Single source of truth: 10 rules + protocol (all rules)
 3. **[SELF_QA_CHECKLIST](memory/SELF_QA_CHECKLIST.md)** — 8-item mandatory checklist (run before sending)
 4. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Quick ref: task type → SOP → template
+5. **[lessons_learned.md](memory/lessons_learned.md)** — Structured log of past mistakes + rules. Read if task type matches a past failure.
+6. **[session_active.md](memory/session_active.md)** — Live scratchpad: write decisions, mistakes, files touched. Stop hook summarizes this.
+
+---
+
+## 🧠 Memory System (Three Tiers)
+
+| Tier | File | Purpose | Updated by |
+|------|------|---------|------------|
+| Active | memory/session_active.md | Current session notes | Coco during work |
+| Curated | memory/MEMORY.md + *.md | Project knowledge | Coco after sessions |
+| History | memory/lessons_learned.md | Mistake→rule log | Stop hook automatically |
+
+**Hooks active:** UserPromptSubmit injects relevant memory files automatically at session start. Stop hook summarizes session mistakes into lessons_learned.md at session end.
 
 ---
 
