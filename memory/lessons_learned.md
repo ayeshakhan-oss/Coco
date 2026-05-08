@@ -32,6 +32,12 @@ max_entries: 50
 
 ---
 
+
+## 2026-05-08 — General
+- **Mistake:** Used wrong template
+- **Correction:** Re-read locked template file before regenerating.
+- **Rule:** [Coco: add rule summary here]
+
 ## Archived Rules
 <!-- Condensed from entries older than 60 days -->
 - Never use cv_text[:4500] — minimum 10k chars for CV truncation (2026-04-08)

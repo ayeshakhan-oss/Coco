@@ -5,16 +5,23 @@ Token saved to token_sheets.json.
 """
 
 from google_auth_oauthlib.flow import InstalledAppFlow
+from pathlib import Path
 import json
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets.readonly",
+    "https://www.googleapis.com/auth/drive.readonly",
 ]
 
-flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+# Use absolute paths
+script_dir = Path(__file__).parent.parent.parent
+creds_file = script_dir / "data" / "credentials.json"
+token_file = script_dir / "token_sheets.json"
+
+flow = InstalledAppFlow.from_client_secrets_file(str(creds_file), SCOPES)
 creds = flow.run_local_server(port=0)
 
-with open("token_sheets.json", "w") as f:
+with open(str(token_file), "w") as f:
     f.write(creds.to_json())
 
 print("Done. token_sheets.json saved.")

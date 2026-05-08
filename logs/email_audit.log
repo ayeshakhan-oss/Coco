@@ -371,3 +371,6 @@
 2026-04-07 19:57:41 | INFO | SENT | context=job35_cv_rejection_live_Muhammad_Hassan_Ishaq | sender=ayesha.khan@taleemabad.com | recipients=['mishaq998@outlook.com', 'hiring@taleemabad.com', 'ayesha.khan@taleemabad.com']
 2026-04-07 19:57:45 | INFO | SENT | context=job35_cv_rejection_live_Usama_Aijaz | sender=ayesha.khan@taleemabad.com | recipients=['usamaaijaz707@gmail.com', 'hiring@taleemabad.com', 'ayesha.khan@taleemabad.com']
 2026-04-07 19:57:47 | INFO | SENT | context=job35_cv_rejection_live_Usama_Aijaz | sender=ayesha.khan@taleemabad.com | recipients=['usamaaijaz707@gmail.com', 'hiring@taleemabad.com', 'ayesha.khan@taleemabad.com']
+2026-05-05 16:28:05 | INFO | SENT | context=screening_report_fundraising_partnerships | sender=ayesha.khan@taleemabad.com | recipients=['zeshan.dhillon@taleemabad.com']
+2026-05-05 16:30:07 | INFO | SENT | context=screening_report_fundraising_partnerships | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-05-08 15:00:09 | INFO | SENT | context=pipeline_monitor_error | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']

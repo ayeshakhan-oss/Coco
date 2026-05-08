@@ -1,5 +1,9 @@
 {
-  "enabledPlugins": ["superpowers", "context7", "skill-creator"],
+  "enabledPlugins": {
+    "superpowers": true,
+    "context7": true,
+    "skill-creator": true
+  },
   "hooks": {
     "Stop": [
       {
