@@ -20,6 +20,18 @@ None
 
 ## Files Modified
 - Created: DOCUMENTATION_AUDIT_AND_REFACTOR_PLAN.md (comprehensive audit + 5-phase refactor plan)
+- Refactored: CLAUDE.md (136 → 95 lines, removed task routing + technical context)
+- Created: SOPs/CLAUDE.md (task router + format rules for candidate tasks)
+- Created: scripts/CLAUDE.md (technical context + patterns for Python scripts)
+- Created: PROGRESSIVE_DISCLOSURE_SUMMARY.md (before/after comparison + token impact)
+- Updated: memory/session_active.md (this file)
+
+## Summary
+✅ Phase 1-2 COMPLETE: Progressive disclosure refactor
+- Root CLAUDE.md reduced 41% (136 → 95 lines)
+- 3-level architecture implemented (L1 root + L2 subdirs + L3 on-demand)
+- Token savings: ~1.5k/session (~150k cumulative)
+- All changes reversible in git (1 commit)
 
 ## Pre-Send Checks
 - [ ] Self-QA 8-item checklist run
