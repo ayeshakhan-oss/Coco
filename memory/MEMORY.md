@@ -1,7 +1,7 @@
 # MEMORY INDEX — Coco (Real Files Only)
 
 **Last Updated:** 2026-05-08  
-**Status:** PHASE 3 COMPLETE — Progressive disclosure + de-duplication + reorganization. Deleted 19 duplicate files (13 from skills/, 6 from memory/). Organized memory/ into 5 categories (_core, _session, _locked, _project, _feedback). Single source of truth = SOPs/. Zero regressions.
+**Status:** PHASE 3 COMPLETE — Consolidated RULES.md master reference. 21 irrelevant files deleted. Single source of truth: RULES.md + SOPs/ + memory/. Zero regressions.
 
 ---
 
@@ -23,6 +23,18 @@
 
 ---
 
+## 🎯 MASTER REFERENCE (NEW — 2026-05-08)
+
+### Consolidated Rules & Skills
+- **[RULES.md](../RULES.md)** — **MASTER REFERENCE** (20.8 KB). Consolidates all 7 skills, locked approaches, discipline rules, and integration requirements into single authoritative source. Read this instead of scattered files. Includes:
+  - 7 Core Discipline Rules
+  - 7 Skill-Specific Rules (CV Screening, Rejection Emails, Warm Bench, Attendance Reports, Interview Invites, Decision Briefs, Talent Sourcing)
+  - Locked Approaches (exact specs for each skill)
+  - Integration & Testing Rules
+  - Discrepancy Minimization table
+
+---
+
 ## PRODUCTION RULES (Locked & Reference)
 
 ### Locked Approaches & Templates (_locked/)
@@ -36,14 +48,10 @@
 ## SYSTEM ARCHITECTURE & OPTIMIZATION
 
 ### Progressive Disclosure Documentation
-- [DOCUMENTATION_AUDIT_AND_REFACTOR_PLAN.md](../DOCUMENTATION_AUDIT_AND_REFACTOR_PLAN.md) — Comprehensive 5-phase refactor plan + audit findings (Phase 1-2 complete).
-- [PROGRESSIVE_DISCLOSURE_SUMMARY.md](../PROGRESSIVE_DISCLOSURE_SUMMARY.md) — Before/after comparison, token impact analysis, success metrics.
-- [DOCUMENTATION_AUDIT_FINDINGS.md](../DOCUMENTATION_AUDIT_FINDINGS.md) — Redundancy analysis, 20+ duplicate files identified, solutions implemented.
-- [DOCUMENTATION_STRUCTURE_BEFORE_AFTER.md](../DOCUMENTATION_STRUCTURE_BEFORE_AFTER.md) — Visual folder structure diagrams + context loading patterns.
-- [PHASE3_DEDUPLICATION_ANALYSIS.md](../PHASE3_DEDUPLICATION_ANALYSIS.md) — Phase 3 detailed plan (reorganization + testing).
+- [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md) — Final architecture after Phase 3. Before/after file counts, context loading flow, single source of truth hierarchy.
 
 ### Project Cleanup & Consolidation
-- [Project Cleanup Complete (2026-05-08)](../CLEANUP_COMPLETE_2026_05_08.md) — 3-phase cleanup: Phase 1 (deleted 6.9 MB dead files), Phase 2 (consolidated 20 memory files → 4 canonical), Phase 3 (archived 5.2 MB historical data). Git commits preserved, zero functionality lost.
+- [Project Cleanup Complete (2026-05-08)](../CLEANUP_COMPLETE_2026_05_08.md) — *(DELETED — superseded by RULES.md)* 
 - [System Consolidation Complete](_project/system_consolidation_2026_04_28.md) — Major refactor: consolidated discipline docs, extracted templates to code, created task mapping. (April 28 snapshot)
 
 ---
@@ -108,15 +116,16 @@
 
 **When Starting a Task:**
 1. Check TASK_SOP_MAP in _core/ → Find your task type
-2. Go to SOPs/ folder, load SOPs/CLAUDE.md (L2 context)
-3. Read the exact SOP for your task
-4. Load relevant locked template from _locked/ (if applicable)
-5. Check _feedback/ for relevant rules/lessons (feedback docs)
-6. Run SELF_QA_CHECKLIST before sending
+2. Go to RULES.md (root) → Find skill section
+3. Read exact locked specifications for that skill
+4. Load SOPs/CLAUDE.md (L2 context if needed)
+5. Load relevant locked template from _locked/ (if applicable)
+6. Check _feedback/ for relevant rules/lessons (feedback docs)
+7. Run SELF_QA_CHECKLIST before sending
 
 **When Writing Code:**
 1. Load scripts/CLAUDE.md (L2 context)
-2. Read relevant data/systems SOP from SOPs/04_Data_and_Systems/
+2. Read relevant data/systems section from RULES.md
 3. Load _project/ context (if task-specific)
 4. Check scripts/utils/ and scripts/jobs/ for similar code
 
@@ -124,6 +133,7 @@
 1. Search _feedback/ for discipline rules / lessons learned
 2. Search _project/ for prior work on similar task
 3. Check _locked/ for locked approaches that might apply
+4. Check RULES.md discrepancy table for common issues
 
 ### Folder Structure (Organized by Purpose)
 
@@ -158,13 +168,17 @@ memory/
 
 ## SINGLE SOURCE OF TRUTH
 
-**SOPs/ is the PRIMARY source for all procedures and standards.**
+**PRIMARY: RULES.md (root)** — All 7 skills, locked specs, discipline rules consolidated.
 
-After Phase 3 de-duplication:
-- ✅ Zero duplicate files (deleted 19 duplicates)
-- ✅ memory/ is pure reference/project-specific (no duplicate SOPs)
-- ✅ skills/ contains only unique/extended reference files (5 files)
-- ✅ SOPs/ is the ONLY place with master procedure definitions
+**SECONDARY: SOPs/** — Skill procedure definitions (reference material).
+
+**TERTIARY: memory/** — Project context, feedback, lessons learned.
+
+After Phase 3 consolidation:
+- ✅ RULES.md created (20.8 KB master reference)
+- ✅ 21 irrelevant files deleted (audit docs, drafts, duplicates)
+- ✅ Zero regressions: all Python scripts compile, integrations tested
+- ✅ Single source of truth hierarchy established
 
 ---
 
@@ -182,5 +196,6 @@ When learning something new:
 ---
 
 **Owner:** Coco  
-**Status:** ACTIVE — Phase 3 COMPLETE. Reorganized, de-duplicated, single source of truth established (SOPs/).  
-**Last Action:** Deleted 19 duplicate files (13 from skills/, 6 from memory/). Reorganized memory/ into 5 categories. Updated index paths.
+**Status:** ACTIVE — Phase 3 COMPLETE. RULES.md created. Consolidated all skills. Deleted 21 irrelevant files. Single source of truth established (RULES.md). Zero regressions.  
+**Last Action:** Commit 2 (docs: delete irrelevant audit and draft files). Phase 3 testing complete.
+
