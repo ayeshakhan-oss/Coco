@@ -1,6 +1,6 @@
 ---
 name: Talent Sourcing — 7-Step Complete Reference
-description: Complete 7-step SOP for talent sourcing. Intake → Platform Resolution → 3-Layer Searches → Extract → Present → Draft DMs → Save Output → Add to Markaz. All non-negotiables, examples, and infrastructure locked in. 2026-04-16.
+description: Complete 7-step SOP for talent sourcing. Intake → Platform Resolution → 3-Layer Searches → Extract → Present → Draft DMs → Save Output → Add to Markaz. All non-negotiables, examples, and infrastructure locked in. 2026-04-16. CANONICAL VERSION (supersedes talent_sourcing_steps_explained.md, coco_talent_sourcing_skill.md, noah_talent_sourcing_skill.md, noah_skill_talent_sourcing_original.md).
 type: project
 originSessionId: 50203d1f-d855-41c4-b12a-dba80a622e87
 ---

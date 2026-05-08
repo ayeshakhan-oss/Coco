@@ -1,6 +1,6 @@
 ---
 name: Hackathon 2026 GWC - All 6 Candidates FINAL
-description: Complete warm-tone rejection emails (6 candidates), merged PDF, ready for review and live send
+description: Complete warm-tone rejection emails (6 candidates), merged PDF, ready for review and live send. CANONICAL VERSION (supersedes individual email files).
 type: project
 ---
 

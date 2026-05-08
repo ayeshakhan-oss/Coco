@@ -1,6 +1,6 @@
 ---
 name: Attendance Report Template (Complete)
-description: Full ReportLab PDF + HTML email template for daily I-10 attendance reports. Colors, layouts, stat boxes, tables—everything locked in.
+description: Full ReportLab PDF + HTML email template for daily I-10 attendance reports. Colors, layouts, stat boxes, tables—everything locked in. CANONICAL VERSION (supersedes project_attendance_report_format.md, project_attendance_14apr2026_finalized.md, project_attendance_report_markaz_integration.md, project_attendance_payroll_total.md, project_attendance_permanent_wfh.md, project_attendance_pdf_pattern.md).
 type: reference
 ---
 
