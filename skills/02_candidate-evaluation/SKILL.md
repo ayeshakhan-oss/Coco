@@ -10,6 +10,21 @@ Screen, evaluate, and score candidates across CV, case study, values interview, 
 
 ---
 
+## Architecture
+
+**This skill is an orchestration layer** that references the detailed SOPs in `SOPs/02_Candidate_Evaluation/`.
+
+- **SKILL.md (this file):** Master orchestration, universal rules, execution discipline
+- **SOPs folder (source of truth):** Detailed procedures for each evaluation type
+
+When you use this skill, you get:
+1. Universal rules and checklist (from this SKILL.md)
+2. Detailed procedures (from linked SOPs — the source of truth)
+
+**Important:** SOPs are maintained as the single source of truth. If procedures change, they update in SOPs/ and are automatically reflected here.
+
+---
+
 ## When to Use This Skill
 
 Trigger this skill when:
@@ -21,9 +36,11 @@ Trigger this skill when:
 
 ---
 
-## Related SOPs
+## Related SOPs (Source of Truth)
 
-All evaluation SOPs fall under this skill:
+**Location:** `SOPs/02_Candidate_Evaluation/`
+
+This skill orchestrates the following detailed procedures:
 
 1. **CV Screening** — `SOPs/02_Candidate_Evaluation/cv_screening.md`
    - 14-15k character minimum
