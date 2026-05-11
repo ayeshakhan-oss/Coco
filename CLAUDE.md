@@ -28,7 +28,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 **Level 1 (Root):** This file — project overview + core rules  
 **Level 2 (Subdirectories):** Context-aware CLAUDE.md files for specific areas:
-- `SOPs/CLAUDE.md` — Task routing + format rules (read when working on candidate work)
+- `.claude/sops/CLAUDE.md` — Task routing + format rules (read when working on candidate work)
 - `scripts/CLAUDE.md` — Database + email context (read when writing code)
 
 **Level 3 (On-demand):** Skill-specific rules loaded only when task matches
@@ -41,7 +41,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 | Need | Location |
 |------|----------|
-| Task-specific SOPs | [SOPs/](SOPs/) (organized by category 00-05) |
+| Core rules & constraints | [.claude/RULES.md](.claude/RULES.md) |
+| Task-specific SOPs | [.claude/sops/](.claude/sops/) (organized by category 00-05) |
 | Project memory | [memory/MEMORY.md](memory/MEMORY.md) |
 | Lessons learned | [memory/lessons_learned.md](memory/lessons_learned.md) |
 | Session focus | [SESSIONS.md](SESSIONS.md) |
@@ -60,4 +61,4 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ---
 
-**Ready?** Run Session Startup Checklist → check MEMORY.md → go to [SOPs/](SOPs/) or [scripts/](scripts/) for task-specific context.
+**Ready?** Run Session Startup Checklist → check MEMORY.md → go to [.claude/sops/](.claude/sops/) or [scripts/](scripts/) for task-specific context.
