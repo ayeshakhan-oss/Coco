@@ -1,4 +1,3 @@
-# scripts/memory/session_stop_hook.py
 """
 Claude Code Stop hook.
 Reads session_active.md, extracts Mistakes/Corrections section,
@@ -13,13 +12,13 @@ import json
 from pathlib import Path
 from datetime import date
 
-MEMORY_DIR = Path("C:/Agent Coco/memory")
+MEMORY_DIR = Path("c:/Agent Coco/memory")
 LESSONS_FILE = MEMORY_DIR / "lessons_learned.md"
 SESSION_FILE = MEMORY_DIR / "session_active.md"
 MAX_ENTRIES = 50
 
 
-def read_session_mistakes() -> list[dict]:
+def read_session_mistakes():
     """Extract mistake/correction pairs from session_active.md."""
     if not SESSION_FILE.exists():
         return []
@@ -46,7 +45,7 @@ def read_session_mistakes() -> list[dict]:
     return entries
 
 
-def append_to_lessons(entries: list[dict], task_type: str = "General"):
+def append_to_lessons(entries, task_type="General"):
     """Append new entries to lessons_learned.md."""
     if not entries:
         return
