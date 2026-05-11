@@ -43,6 +43,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 |------|----------|
 | Core rules & constraints | [.claude/RULES.md](.claude/RULES.md) |
 | Task-specific SOPs | [.claude/sops/](.claude/sops/) (organized by category 00-05) |
+| **Automated task wiring** | **[.claude/sops/TASK_WIRING_MAP.md](.claude/sops/TASK_WIRING_MAP.md)** (skill+SOP+rules integration) |
 | Project memory | [memory/MEMORY.md](memory/MEMORY.md) |
 | Lessons learned | [memory/lessons_learned.md](memory/lessons_learned.md) |
 | Session focus | [SESSIONS.md](SESSIONS.md) |
