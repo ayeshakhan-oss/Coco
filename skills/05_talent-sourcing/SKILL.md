@@ -10,6 +10,21 @@ Find passive candidates through systematic 3-layer research, verify LinkedIn lin
 
 ---
 
+## Architecture
+
+**This skill is an orchestration layer** that references the detailed SOPs in `SOPs/05_Talent_Sourcing/`.
+
+- **SKILL.md (this file):** Master orchestration, universal rules, execution discipline
+- **SOPs folder (source of truth):** Detailed procedures for passive candidate sourcing
+
+When you use this skill, you get:
+1. Universal rules and checklist (from this SKILL.md)
+2. Detailed procedures (from linked SOPs — the source of truth)
+
+**Important:** SOPs are maintained as the single source of truth. If procedures change, they update in SOPs/ and are automatically reflected here.
+
+---
+
 ## When to Use This Skill
 
 Trigger this skill when:
