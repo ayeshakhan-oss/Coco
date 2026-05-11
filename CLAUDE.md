@@ -52,6 +52,22 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ---
 
+## 🧠 Memory System (Three Tiers + Automated Hooks)
+
+| Tier | File | Purpose | Updated by |
+|------|------|---------|------------|
+| **Active** | [memory/session_active.md](memory/session_active.md) | Current session notes: task, decisions, mistakes, files touched | Coco during work |
+| **Curated** | [memory/MEMORY.md](memory/MEMORY.md) + *.md | Project knowledge: skills, locked templates, decisions, learnings | Coco after sessions |
+| **History** | [memory/lessons_learned.md](memory/lessons_learned.md) | Structured mistake→rule log: what went wrong, how it was fixed, the rule | Stop hook (automatic) |
+
+**How it works:**
+1. **UserPromptSubmit hook** (automatic at session start) — Detects keywords in your prompt (e.g., "warm bench", "cv screening") and injects the 3-5 most relevant memory files into context. No manual lookup needed.
+2. **Stop hook** (automatic at session end) — Reads session_active.md, extracts Mistakes/Corrections section, appends structured entries to lessons_learned.md, resets session_active.md for next session.
+
+**Result:** Every session starts rich with relevant context. Every mistake gets logged as a rule for the future.
+
+---
+
 ## 🚫 Never Do These
 
 - Fabricate or assume data
