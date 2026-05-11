@@ -1,12 +1,11 @@
-# scripts/memory/memory_sync.py
 """One-time sync: copies files from historical memory location to curated location.
 Skips files that already exist. Prints a report of what was copied vs skipped."""
 
 from pathlib import Path
 import shutil
 
-HISTORICAL = Path.home() / ".claude" / "projects" / "C--Agent-Coco" / "memory"
-CURATED = Path("C:/Agent Coco/memory")
+HISTORICAL = Path.home() / ".claude" / "projects" / "c--Agent-Coco" / "memory"
+CURATED = Path("c:/Agent Coco/memory")
 
 def sync():
     if not HISTORICAL.exists():
