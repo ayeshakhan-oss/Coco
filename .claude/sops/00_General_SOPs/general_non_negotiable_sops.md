@@ -195,6 +195,47 @@ If the answer to any is "no," pause and fix it before proceeding.
 
 ---
 
+## 1.12 Markaz Access via Database/MCP
+
+- Always access Markaz candidate and application data through the Neon Postgres database via `mcp__neon-postgres__query()`.
+- Never ask "where is the candidate data?" — query the database directly using the candidates, applications, or other relevant tables.
+- This is the authoritative source of truth for all candidate information, application status, scores, and interview notes.
+
+**Why:** Markaz is stored in Postgres. Direct database access is faster, more reliable, and eliminates ambiguity. It prevents the pattern of asking the user for data that's already in the system.
+
+**How to apply:**
+- For candidate details: Query `candidates` table (first_name, last_name, email, etc.)
+- For application status/scores: Query `applications` table (values_interview_score, gwc_interview_score, case_study_status, values_scorecard JSONB, etc.)
+- For interview notes: Query `applications.values_scorecard` (JSONB field containing interview evidence, values ratings, and feedback)
+- Always verify the candidate record matches the task before proceeding
+- If data is missing or unclear, query related tables (jobs, candidates) to find the right record
+- Document the query approach in your work (e.g., "Verified Markaz: Syeda Siddiqa Fatima, CPD Coach, values_interview_result = fail")
+
+---
+
+## 1.13 Email Sending via safe_sendmail()
+
+- Never call smtplib.SMTP directly or use raw email functions.
+- Always send emails through `safe_sendmail()` from `scripts/utils/safe_send.py`.
+- This bouncer applies security checks (recipient allowlisting) and logs all send attempts to `logs/email_audit.log`.
+
+**Why:** Raw smtplib bypasses security checks, allows emails to go to unauthorized recipients, and creates no audit trail. The safe_sendmail bouncer prevents sending to wrong addresses, logs all activity, and enforces approved domain/recipient lists.
+
+**How to apply:**
+- Import: `from scripts.utils.safe_send import safe_sendmail`
+- Load credentials: `from dotenv import load_dotenv` then `load_dotenv()`
+- Set sender: `SENDER = "ayesha.khan@taleemabad.com"`
+- Get password: `PASSWORD = os.getenv("EMAIL_PASSWORD")`
+- Create SMTP connection: `server = smtplib.SMTP("smtp.gmail.com", 587); server.starttls(); server.login(SENDER, PASSWORD)`
+- Create message: `msg = MIMEMultipart("alternative"); msg.attach(MIMEText(html_body, "html"))`
+- Call safe_sendmail: `safe_sendmail(server, SENDER, recipients_list, msg.as_string(), context="task description")`
+- For candidate emails, first call: `allow_candidate_addresses([candidate_emails])` to add to allowlist
+- For pilot mode, use PILOT_MODE = True and send only to ayesha.khan@taleemabad.com + jawwad.ali@taleemabad.com
+- After sending, call: `server.quit()`
+- All sends are logged automatically to email_audit.log
+
+---
+
 ## Violations and Consequences
 
 - Violating 1.3 (Pilot Sharing): sending pilot to candidate or wrong recipient (CRITICAL — candidate gets premature notification)
@@ -206,6 +247,8 @@ If the answer to any is "no," pause and fix it before proceeding.
 - Violating 1.9 (Read Provided Material): ignoring user data and generating own (overriding user judgment)
 - Violating 1.10 (Core Principle): abandoning SOPs (inconsistent, unpredictable work)
 - Violating 1.11 (Markaz Check): drafting scorecard/feedback without checking Markaz first (duplicate entries, wrong candidate, missing context)
+- Violating 1.12 (Markaz Access): asking "where is the candidate data?" instead of querying database directly (creates friction, blocks workflow)
+- Violating 1.13 (Email via safe_sendmail): using smtplib directly or raw email functions (bypasses security, no audit trail, possible unauthorized sends)
 
 **Consequence:** Loss of trust, partnership difficulty, potential work suspension.
 
