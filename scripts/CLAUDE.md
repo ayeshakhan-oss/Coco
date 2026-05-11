@@ -16,18 +16,27 @@ Scripts in this folder handle:
 
 ## Critical Technical Rules
 
-### Database Access
-- **Always use MCP** — `mcp__neon-postgres__query()` for reads
-- **Read-only discipline** — Never write or modify; log all queries via audit_log.py
-- **Schema context:**
-  - **Talent Acquisition:** candidates, job_positions, evaluations, scorecards, sourcing_records
-  - **HR/Markaz:** leave_requests, employees, payroll, attendance, org_structure
+### Database Access (Rule 1.12 — Markaz via Neon Postgres MANDATORY)
+- **Always use MCP** — `mcp__neon-postgres__query()` tool for all Markaz reads
+  - Never ask "where is the candidate data?" — query the database directly
+  - Pattern: Call the MCP tool with SQL query and get results directly
+  - Tool: `mcp__neon-postgres__query(sql="SELECT ... FROM ...")` 
+- **Read-only discipline** — Never write or modify; query only for verification
+- **Key tables for candidate work:**
+  - `candidates` — first_name, last_name, email, phone
+  - `applications` — candidate_id, job_id, status, stage, values_interview_result, values_scorecard (JSONB), gwc_scorecard (JSONB), case_study_status, etc.
+  - `jobs` — job_id, title, description, status
+  - Schema context: **Talent Acquisition:** candidates, jobs, applications; **HR/Markaz:** leave_requests, employees, payroll, org_structure
 - **Connection:** Neon PostgreSQL via .env `DATABASE_URL` (never commit)
-- **Audit logging:** MANDATORY — Every query logged with user, timestamp, query text, rows returned
+- **Audit logging:** Optional but recommended — Document query purpose in code comments
 
-### Email Operations
-- **Safe bouncer:** Use `safe_sendmail()` from audit_log.py (never call smtplib directly)
-- **Read audit:** Use `log_gmail_read()` before accessing Gmail API
+### Email Operations (Rule 1.13 — safe_sendmail MANDATORY)
+- **Safe bouncer:** Use `safe_sendmail()` from `scripts/utils/safe_send.py` (never call smtplib directly)
+  - Import: `from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses`
+  - Credentials: `from dotenv import load_dotenv`; `PASSWORD = os.getenv("EMAIL_PASSWORD")`
+  - Sender: Always `SENDER = "ayesha.khan@taleemabad.com"`
+  - Call pattern: `safe_sendmail(server, SENDER, recipients_list, msg.as_string(), context="task description")`
+  - All sends logged to `logs/email_audit.log` automatically
 - **Approval gate:** Always pilot to Ayesha before sending to candidates
 - **Credentials:** Gmail API token in `token_gmail.json` (stored securely, never commit)
 - **Threading:** In-Reply-To + References headers required for proper Gmail threading (see [memory/feedback_gmail_thread_reply.md](../memory/feedback_gmail_thread_reply.md))
@@ -79,25 +88,41 @@ scripts/
 
 ## Common Script Patterns
 
-### Database Query Pattern
+### Database Query Pattern (Rule 1.12)
 ```python
-from mcp__neon_postgres import query
-
-result = query(
-    "SELECT * FROM candidates WHERE job_id = ? AND status = ?",
-    (job_id, 'screening')
-)
-log_db_query('SELECT candidates', len(result))
+# Use the mcp__neon-postgres__query MCP tool (available as a function)
+# Call it with SQL query string
+result = mcp__neon-postgres__query(sql="""
+    SELECT * FROM candidates 
+    WHERE id = 266
+""")
+# Returns list of dicts with results
+for row in result:
+    print(row['first_name'], row['email'])
 ```
 
-### Email Send Pattern
+### Email Send Pattern (Rule 1.13)
 ```python
-from audit_log import safe_sendmail
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+from scripts.utils.safe_send import safe_sendmail
 
-success = safe_sendmail(
-    to='ayesha.khan@taleemabad.com',
-    subject='Screening Report',
-    body=html_body,
+load_dotenv()
+SENDER = "ayesha.khan@taleemabad.com"
+PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+msg = MIMEMultipart("alternative")
+msg["Subject"] = subject
+msg["From"] = SENDER
+msg["To"] = ", ".join(recipients)
+msg.attach(MIMEText(html_body, "html"))
+
+server = smtplib.SMTP("smtp.gmail.com", 587)
+server.starttls()
+server.login(SENDER, PASSWORD)
+safe_sendmail(server, SENDER, recipients, msg.as_string(), context="task description")
     pilot=True  # Always pilot first
 )
 log_email_send(to_addr, len(recipients))
