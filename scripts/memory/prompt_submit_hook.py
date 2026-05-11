@@ -1,4 +1,3 @@
-# scripts/memory/prompt_submit_hook.py
 """
 Claude Code UserPromptSubmit hook.
 Reads the user's prompt from stdin (JSON), detects keywords,
@@ -11,21 +10,24 @@ Keyword → memory file mapping is defined in KEYWORD_MAP below.
 import sys
 import json
 from pathlib import Path
+import io
 
-MEMORY_DIR = Path("C:/Agent Coco/memory")
+# Force UTF-8 output encoding
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+MEMORY_DIR = Path("c:/Agent Coco/memory")
 
 # Keyword patterns → memory files to inject (in priority order)
-# NOTE: Check warm bench FIRST to prevent overlap with values feedback
 KEYWORD_MAP = [
     (["warm bench", "warmbenck", "jra", "haroon"], [
         "warm_bench_final_locked_approach.md",
         "warm_bench_session_may5_2026_complete_learnings.md",
     ]),
-    (["rejection", "reject"], [
-        "skill_values_feedback_emails_sop.md",
-    ]),
     (["cv", "screen", "screening", "candidate", "resume"], [
         "skill_cv_screening_sop.md",
+    ]),
+    (["rejection", "reject", "feedback email"], [
+        "skill_values_feedback_emails_sop.md",
     ]),
     (["attendance", "onsite", "wfh", "leave"], [
         "attendance_report_complete_template.md",
@@ -53,7 +55,7 @@ ALWAYS_INJECT = [
 MAX_FILE_CHARS = 3000  # Truncate long files to stay within context budget
 
 
-def detect_relevant_files(prompt: str) -> list[str]:
+def detect_relevant_files(prompt):
     prompt_lower = prompt.lower()
     files = list(ALWAYS_INJECT)
 
@@ -66,7 +68,7 @@ def detect_relevant_files(prompt: str) -> list[str]:
     return files
 
 
-def inject_memory(files: list[str]) -> str:
+def inject_memory(files):
     """Read and concatenate memory files. Return formatted injection block."""
     blocks = []
     for filename in files:
@@ -100,8 +102,7 @@ def main():
 
     if injection:
         # Claude Code reads stdout of UserPromptSubmit hook as additional context
-        # Use UTF-8 encoding to handle special characters
-        sys.stdout.buffer.write(injection.encode("utf-8"))
+        print(injection)
 
 
 if __name__ == "__main__":
