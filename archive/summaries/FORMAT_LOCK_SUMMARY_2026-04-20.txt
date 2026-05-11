@@ -1,0 +1,119 @@
+================================================================================
+SCREENING REPORT FORMAT — OFFICIALLY LOCKED
+================================================================================
+
+DATE: 2026-04-20
+STATUS: ✅ LOCKED — ALL FUTURE REPORTS MUST USE THIS FORMAT
+USER APPROVAL: "this is perfect lock this format and every generation should use 
+               this html format when required calling this report generatioN"
+
+================================================================================
+REFERENCE FILES
+================================================================================
+
+Template HTML:
+  C:\Agent Coco\soul_architect_screening_pilot_2026-04-20_FINAL.html
+
+Documentation:
+  C:\Agent Coco\REPORT_FORMAT_LOCKED.md (comprehensive spec)
+  C:\Agent Coco\SCREENING_REPORT_FORMAT_LOCKED_2026-04-20.md (usage guide)
+
+Memory Index:
+  C:\Users\Dell\.claude\projects\C--Agent-Coco\memory\MEMORY.md
+  (Added: Screening Report HTML Format — LOCKED entry)
+
+Project Instructions:
+  C:\Agent Coco\CLAUDE.md
+  (Added: REPORT FORMAT — LOCKED note to Quick Reference)
+
+================================================================================
+WHAT WAS LOCKED
+================================================================================
+
+Gmail-safe HTML structure for ALL CV screening reports.
+
+Key features:
+  ✅ Table-based layout (no divs) — Gmail doesn't strip
+  ✅ 4 stat boxes (red/blue/yellow/gray)
+  ✅ 5 shortlisted candidate profiles
+  ✅ Maybe / Consider table (7 candidates)
+  ✅ Product Manager Experience table
+  ✅ Dark navy header with job details
+  ✅ Screening Methodology section
+  ✅ Professional footer
+  ✅ All special chars as HTML entities (&mdash;, &middot;, &amp;)
+  ✅ Georgia serif font throughout
+  ✅ Blue headings and accents
+  ✅ Justified text, proper spacing
+
+================================================================================
+TESTING & VERIFICATION
+================================================================================
+
+Soul Architect Screening PILOT (2026-04-20):
+  ✅ Report generated with exact template structure
+  ✅ Sent to ayesha.khan@taleemabad.com (TO)
+  ✅ Sent to jawwad.ali@taleemabad.com (CC)
+  ✅ All 5 candidates render perfectly in Gmail
+  ✅ Maybe table displays without corruption
+  ✅ Product Manager table displays correctly
+  ✅ No character encoding issues (em-dashes, dots render properly)
+  ✅ No content stripping by Gmail
+  ✅ Format validates against user's April 6 reference
+
+================================================================================
+RULES (NO EXCEPTIONS)
+================================================================================
+
+1. NO divs — tables only (Gmail safety)
+2. NO external CSS — inline styles only
+3. NO special Unicode — use HTML entities (&mdash;, &middot;, &amp;)
+4. NO font changes — Georgia serif throughout
+5. NO color changes — exact hex values preserved
+6. NO layout changes — same structure, spacing, sizing
+7. NO variable file names — always end with _FINAL.html
+8. REPORT ONLY content changes — header, stat boxes, candidates, tables, footer
+
+================================================================================
+HOW TO USE FOR NEW REPORTS
+================================================================================
+
+1. Copy template:
+   cp soul_architect_screening_pilot_2026-04-20_FINAL.html \
+      [position]_screening_pilot_[DATE]_FINAL.html
+
+2. Replace ONLY:
+   - Header job title, number, org
+   - Greeting recipient name
+   - Stat box numbers
+   - Key Observation paragraph
+   - All 5 candidate blocks
+   - Maybe table rows
+   - PM table rows (if applicable)
+   - Footer date and mode
+
+3. Verify:
+   - Special chars are HTML entities
+   - No divs added
+   - Inline styles preserved
+   - File name ends with _FINAL.html
+
+4. Send via safe_sendmail() bouncer
+
+================================================================================
+APPROVAL SIGNATURE
+================================================================================
+
+User:         Ayesha Khan (implicit approval via explicit instruction)
+Format Locked: 2026-04-20
+Locked By:     Coco (Talent Acquisition Agent)
+Status:        Production Ready
+Guarantee:     All future screening reports will use this format
+
+No exceptions.
+No variations.
+No regressions.
+
+Format is LOCKED FOREVER.
+
+================================================================================

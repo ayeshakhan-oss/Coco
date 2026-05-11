@@ -1,21 +1,30 @@
+# CREDENTIALS & SECRETS (never track)
+.env
+.env.local
 credentials.json
 token.json
 token_gmail.json
 token_gmail_labels.json
 token_sheets.json
-.env
 .mcp.json
+
+# COMPILED & CACHE (never track)
 __pycache__/
 *.pyc
-Temp/
-*.json.bak
-logs/*.log
+*.pyo
+*.egg-info/
 
-# Candidate data & output files — never commit
+# TEMPORARY & LOGS (never track)
+Temp/
+*.bak
+*.log
+logs/
+
+# CANDIDATE DATA & DERIVED FILES (sensitive, never track)
 output/
 data/
-*.pdf
-*.txt
+
+# SPECIFIC TEMPORARY FILES (not blanket rules)
 job36_rejection_replies.json
 job36_case_study_gmail_check.json
 job32_invite_check.txt

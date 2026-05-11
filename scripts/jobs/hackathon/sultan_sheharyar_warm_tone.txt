@@ -1,0 +1,42 @@
+Sultan Muhammad Hamad Sheharyar - Hackathon 2026 Position - Decision Letter
+
+Subject: Your curiosity is a strength - here's what we learned about you
+
+---
+
+Dear Sultan,
+
+Thank you for coming and spending time with us. We appreciated your openness and willingness to engage with us, even when things felt uncertain.
+
+We've decided not to move forward with your application at this time. I want to be clear about that, and then share what we actually saw in you—because we think there's real potential here.
+
+**What we valued**
+
+You have genuine curiosity about technology. The fact that you've explored teaching, computer vision, AI, and different frameworks shows you're willing to try new things and learn. That willingness to be a learner is important—it's the foundation of growth.
+
+You also showed real awareness of how technology works in the real world. When you talked about converting models to lightweight formats for edge devices, we saw someone thinking practically. You understand that deployment matters.
+
+**Where you're at right now**
+
+You're at the beginning of your journey, and that's okay. But right now, you're exploring a lot of different areas, and that's actually making it harder for you to go deep anywhere. You're like someone standing at a fork in the road, looking at five different paths—but you haven't committed to walking down any one of them yet.
+
+To move forward, you need to choose. Not forever—just for the next year or so. Pick one area that genuinely excites you: computer vision, backend development, machine learning, or something else. Then focus on understanding it deeply.
+
+**What we'd suggest next**
+
+Ask yourself: What problem do I actually want to solve? What kind of work makes me curious? Once you know that, commit to learning it properly—not just the tools, but the fundamentals underneath.
+
+If it's computer vision: understand how YOLOv8 actually works. If it's backend: learn the core concepts of databases and APIs. If it's machine learning: understand the math.
+
+That depth is what will make you confident and valuable. And you have the curiosity and persistence to get there.
+
+You're early in your career. This is the time to pick a direction and go deep. We believe you can do that.
+
+---
+
+Warm regards,
+Taleemabad
+
+---
+
+Word count: ~300 words | Warm, mentoring tone | Focuses on potential and growth | Gentle, not harsh

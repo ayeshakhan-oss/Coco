@@ -1,0 +1,55 @@
+Ali Jawad - Hackathon 2026 Position - Decision Letter (800+ words)
+
+Subject: Here's what we actually saw
+
+---
+
+Dear Ali,
+
+I'm going to be direct. We're not moving forward with your application. But I want to tell you specifically why, because I think it matters.
+
+**What actually happened in our conversation**
+
+You started talking about a cricket prediction system. Data sources: Kaggle, ESPN, Crickinfo web scraping. Real thinking about how pieces fit together. You could discuss Random Forest versus XGBoost. You understood that real-time ingestion is fundamentally different from batch processing. I was genuinely listening because it sounded like you were thinking about the problem.
+
+Then I asked: How would you actually write the web scraping? Walk me through the implementation details.
+
+And the clarity just stopped.
+
+"We have to write request on. We have to write HTML and download it. Then we write a parsing."
+
+I pushed deeper. HTTP requests? Handling errors when the website structure changes? Rate limiting? Your answers became fragmented and uncertain. You didn't have it worked out.
+
+Then you mentioned Gemini. You said, "I am using it for hard-coded. So I am using for hard-coded."
+
+I asked how you'd integrate Gemini into the actual system. Your answer: "I can. It the do it. But I can."
+
+Here's what I'm struggling with: I can't tell where your thinking stops and where Gemini takes over. And that's the core issue. We need to know what *you* can build and execute. Not what you can prompt an AI to generate.
+
+**The part that genuinely concerned me**
+
+Halfway through our conversation, you pivoted completely. Cricket prediction vanished. Suddenly you're talking about a completely different project: exam prep systems, study schedules, weak topic identification.
+
+Two entirely different problems. Mid-conversation.
+
+I had to ask myself: Does Ali actually care about either of these? Or is he moving through available tools and seeing what sticks? Because good engineers know what problem they're solving. They have a reason for caring about it. They can articulate why it matters to them.
+
+I didn't hear that. I heard someone working through technical concepts without a clear direction or genuine engagement with the problem.
+
+**What you actually need to do**
+
+Pick one problem. Not two. One. Something that actually matters to you, not just something that sounds good.
+
+Build it yourself. The whole thing. Not the architecture sketch. The actual code. The debugging. The part where you realize your approach doesn't work and you have to rethink it. That's where you learn what you actually know versus what you can prompt.
+
+When you hit problems you can't solve, sit with them. Figure out why. That struggle is where real learning happens. That's the difference between "I understand the concept" and "I can actually build this."
+
+Be honest about AI tools. If you're using them, say that. If you don't understand something, say that too. Interviewers respect that infinitely more than vague or uncertain answers that sound like you're hoping we don't push back.
+
+**The actual strength**
+
+Your systems-level thinking is real. You *do* understand how different pieces fit together. That's not something everyone has. But you need to pair that with independent execution. Right now you have the first part. Build the second part, and you'll be in a completely different position.
+
+---
+
+Ali

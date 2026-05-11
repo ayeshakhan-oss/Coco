@@ -1,0 +1,317 @@
+================================================================================
+VISUAL DIAGRAMS: Memory Leakage Infrastructure
+================================================================================
+
+DIAGRAM 1: Current Architecture (Broken)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CONVERSATION LAYER                                  │
+│                                                                             │
+│  Session Start:                                                            │
+│  ├─ Load MEMORY.md index                                ✓ Works           │
+│  ├─ Read memory files (25+ files)                       ✓ Works           │
+│  ├─ Claude context has memory                           ✓ Works           │
+│  └─ User asks for task                                  ✓ Works           │
+│                                                                             │
+│  Task Execution:                                                           │
+│  ├─ Claude generates email WITHOUT re-injecting memory  ✗ BROKEN          │
+│  ├─ Output violates locked format                       ✗ BROKEN          │
+│  └─ User corrects, memory updated                       ✓ Works (in memory)│
+│                                                                             │
+│  Next Task:                                                                │
+│  └─ SAME CYCLE REPEATS ✗                               ✗ BROKEN          │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ DISCONNECT
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          SCRIPT LAYER (Isolated)                            │
+│                                                                             │
+│  send_job26_screening_report_final.py:                                    │
+│  ├─ Hardcoded SHORTLIST data (lines 24-65)                                │
+│  ├─ Zero imports from memory or SOP                                        │
+│  ├─ No format validation                                                   │
+│  └─ Output ignores corrections                         ✗ BROKEN           │
+│                                                                             │
+│  send_gwc_warm_tone_v8.py:                                               │
+│  ├─ Hardcoded HTML formatting                                             │
+│  ├─ No memory loader call                                                 │
+│  ├─ No validation against email_template_format_FINAL.md                 │
+│  └─ Tone shifts ignored corrections                    ✗ BROKEN           │
+│                                                                             │
+│  All send_*.py scripts:                                                   │
+│  └─ Same isolation problem repeated across 50+ scripts ✗ BROKEN           │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ DISCONNECT
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        MEMORY LAYER (Isolated)                              │
+│                                                                             │
+│  /c/Users/Dell/.claude/projects/C--Agent-Coco/memory/                      │
+│  ├─ email_template_format_FINAL.md         (exists, not used) ✗           │
+│  ├─ feedback_email_rules.md                (exists, not used) ✗           │
+│  ├─ execution_discipline_protocol.md       (exists, not used) ✗           │
+│  ├─ project_job26_soul_architect_final.md  (exists, not used) ✗           │
+│  └─ 21 other files...                      (all exist, none used) ✗       │
+│                                                                             │
+│  Loaded at session start ONLY                          ✓ One time        │
+│  NOT loaded at task runtime                            ✗ Missing          │
+│  NOT injected into generation prompts                  ✗ Missing          │
+│  NOT enforced before sending                           ✗ Missing          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Result: Memory grows, execution drifts, corrections forgotten, cycle repeats
+
+
+DIAGRAM 2: Fixed Architecture (What Needs to Happen)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         CONVERSATION LAYER                                  │
+│                                                                             │
+│  Session Start:                                                            │
+│  ├─ Load MEMORY.md index                                ✓ Works           │
+│  ├─ Read memory files (25+ files)                       ✓ Works           │
+│  └─ Claude context has memory                           ✓ Works           │
+│                                                                             │
+│  User asks for task: "Generate rejection emails"                           │
+│  └─ Trigger Memory Injection Process                    ← NEW             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ NEW PIPE
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    MEMORY INJECTION LAYER (New)                             │
+│                                                                             │
+│  Step 1: Identify task type                                               │
+│  └─ Task = "gwc_rejection" → Map to memory files                          │
+│                                                                             │
+│  Step 2: Load Memory Files                                                │
+│  └─ memory_loader.load_memory_files('gwc_rejection')                      │
+│      ├─ email_template_format_FINAL.md                  ← Load           │
+│      ├─ feedback_email_rules.md                         ← Load           │
+│      ├─ hackathon_gwc_all_6_final.md                    ← Load           │
+│      └─ execution_discipline_protocol.md                ← Load           │
+│                                                                             │
+│  Step 3: Inject into System Prompt                                        │
+│  └─ inject_memory_prompt(base_prompt, memory_dict)      ← NEW            │
+│      └─ Returns system prompt WITH rules embedded                         │
+│                                                                             │
+│  Step 4: Pass to Generation                                               │
+│  └─ Claude receives system prompt WITH locked rules visible               │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ CONNECTED
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      GENERATION LAYER (Enhanced)                            │
+│                                                                             │
+│  Claude generates email WITH:                                              │
+│  ├─ Locked format visible in context          ✓ Will follow             │
+│  ├─ Tone rules injected in prompt              ✓ Will follow             │
+│  ├─ Reference format loaded                    ✓ Will replicate          │
+│  └─ 8-item QA checklist in instructions        ✓ Will apply              │
+│                                                                             │
+│  Output: Email that matches locked format     ✓ CORRECT                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ NEW VALIDATION
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      VALIDATION LAYER (New)                                 │
+│                                                                             │
+│  Before Sending:                                                           │
+│  ├─ format_validator.validate_email_format(output, spec)                  │
+│  │  └─ Check: logo, blue header, Georgia font, no em dashes, etc.       │
+│  │                                                                        │
+│  ├─ run_presend_qa_checklist(output, 'gwc_rejection')                   │
+│  │  └─ All 8 QA items pass                      ✓ ENFORCED             │
+│  │                                                                        │
+│  └─ If ANY violation:                                                     │
+│     └─ RAISE ERROR — Don't send — Regenerate                             │
+│                                                                             │
+│  Result: Only valid output sent                ✓ ENFORCED                │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    ↓ CONNECTED
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         SENDING LAYER                                       │
+│                                                                             │
+│  safe_sendmail_with_qa():                                                 │
+│  ├─ Passes validation checks                   ✓ Enforced               │
+│  ├─ All rules obeyed                           ✓ Enforced               │
+│  └─ Send via safe bouncer                      ✓ Secure                 │
+│                                                                             │
+│  Output reaches user CORRECT                  ✓ SUCCESS                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Result: Memory loaded per task, rules enforced, corrections applied
+
+
+DIAGRAM 3: Where Leakage Happens (Current System)
+================================================================================
+
+                            MEMORY FILES
+                          (25+ files exist)
+                                ↓
+                    ✓ At Session Start: Loaded
+                    ✗ At Task Time: Not Re-Injected
+                                ↓
+                        ┌─────────────────┐
+                        │  claude context │ ← Has memory as background knowledge
+                        │  (conversation) │ ← But NOT in generation instructions
+                        └─────────────────┘
+                                ↓
+                    Email generation happens WITHOUT
+                    memory-based constraints
+                                ↓
+                        ┌──────────────────────────┐
+                        │  Output drifts from      │
+                        │  locked format           │
+                        │  ✗ Wrong structure      │
+                        │  ✗ Wrong tone            │
+                        │  ✗ Missing elements      │
+                        └──────────────────────────┘
+                                ↓
+                        User corrects, adds to memory
+                                ↓
+                    Next task: SAME CYCLE REPEATS
+                    (no mechanism to inject memory at task time)
+
+
+DIAGRAM 4: Disconnection Points
+================================================================================
+
+POINT 1: Conversation vs Code
+┌──────────────────────┐                    ┌──────────────────────────┐
+│  Conversation Layer  │                    │    Python Script Layer   │
+│  (Claude)            │                    │    (send_*.py)          │
+│                      │                    │                          │
+│  ✓ Can read memory   │                    │ ✗ No memory imported    │
+│  ✓ Knows locked      │  DISCONNECTED      │ ✗ Hardcoded data        │
+│    rules             │  ──────────────    │ ✗ No validation         │
+│  ✓ Can apply         │                    │ ✗ Ignores corrections   │
+│    corrections       │                    │                          │
+└──────────────────────┘                    └──────────────────────────┘
+
+
+POINT 2: Session Start vs Task Time
+┌────────────────────────────┐              ┌─────────────────────────────┐
+│  SESSION START             │              │  TASK EXECUTION             │
+│  (conversation context)    │              │  (generation time)          │
+│                            │              │                             │
+│  Memory loads    ✓         │              │  Memory NOT re-injected ✗   │
+│  Index read      ✓         │              │  Generation happens without │
+│  Files available ✓         │              │  locked rules in prompt  ✗  │
+│  Claude has context ✓      │ TIME GAP     │  Output drifts           ✗  │
+│                            │              │                             │
+│                            │ ───────────→ │                             │
+│  Once              Only at  │              │  Per task          Needed   │
+│  start             one time │              │  re-injection      but not  │
+└────────────────────────────┘              └─────────────────────────────┘
+
+
+POINT 3: Documentation vs Enforcement
+┌──────────────────────────────┐    ┌──────────────────────────────┐
+│  Rules DOCUMENTED            │    │  Rules NOT ENFORCED          │
+│  (Memory files exist)        │    │  (No validation system)      │
+│                              │    │                              │
+│  ✓ email_template_format..   │    │  ✗ No pre-send validator    │
+│  ✓ feedback_email_rules.md   │    │  ✗ No format checker        │
+│  ✓ execution_discipline..    │    │  ✗ No QA enforcement        │
+│  ✓ skill_cv_screening.md     │    │  ✗ No hook system           │
+│                              │    │  ✗ Nothing stops violations  │
+│  Rules written ✓             │    │                              │
+│  Rules stored ✓              │    │  Output can violate rules ✗  │
+│                              │    │  No consequence              │
+└──────────────────────────────┘    └──────────────────────────────┘
+
+
+DIAGRAM 5: The Fix (High Level)
+================================================================================
+
+BEFORE (Current):
+═══════════════════════════════════════════════════════════════════════════════
+  Memory System       Execution System        Result
+  ──────────────      ─────────────────       ──────
+  (sophisticated)  ← → (disconnected)     →  Format drifts
+  (well-organized)   (ignores memory)        Tone shifts
+  (comprehensive)    (hardcoded data)        Templates forgotten
+  (locked in)        (no validation)         Corrections lost
+
+
+AFTER (Fixed):
+═══════════════════════════════════════════════════════════════════════════════
+  Memory System       Memory Injection        Validation         Result
+  ──────────────      ────────────────        ──────────         ──────
+  (25+ files)    →    (loaded per task)  →    (pre-send)    →   Locked format
+  (SOP docs)          (injected in prompt)    (enforced)        Consistent tone
+  (rules locked)      (context visible)       (QA check)        Templates preserved
+  (corrections)       (execution-aware)       (no bypass)        Corrections applied
+
+
+DIAGRAM 6: Files That Should Connect But Don't
+================================================================================
+
+MEMORY FILES:                       USAGE IN GENERATION:
+═════════════════════════════════════════════════════════════════════════════
+
+email_template_format_FINAL.md   ─┐
+                                  │    NOT LOADED
+feedback_email_rules.md          ─┼─→  NOT INJECTED  ─→ Email violates format ✗
+                                  │    NOT ENFORCED
+hackathon_gwc_all_6_final.md    ─┘
+
+skill_cv_screening.md            ─┐
+                                  │    NOT EMBEDDED
+general_non_negotiable_sops.md  ─┼─→  NOT INJECTED  ─→ Screening skips steps ✗
+                                  │    NOT VALIDATED
+execution_discipline_protocol.md ─┘
+
+project_job26_soul_architect..  ─┐
+                                  │    NOT LOADED
+project_job32_decision_brief..  ─┼─→  NOT REFERENCED ─→ Report format drifts ✗
+                                  │    NOT COMPARED
+feedback_decision_brief_*         ─┘
+
+
+What SHOULD happen:
+═════════════════════════════════════════════════════════════════════════════
+
+Task Type Identified
+           ↓
+Memory Files Located
+           ↓
+Memory Loaded (load_memory_files)
+           ↓
+Injected in Prompt (inject_memory_prompt)
+           ↓
+Generation with Rules Visible
+           ↓
+Validation Run (format_validator)
+           ↓
+QA Checklist Run (presend_qa_checklist)
+           ↓
+Send Only if All Pass (safe_sendmail_with_qa)
+
+
+DIAGRAM 7: Implementation Pipeline
+================================================================================
+
+NOW                              WEEK 1                WEEK 2-4
+────────────────────────────────────────────────────────────────────────────
+
+Memory exists                    Create                Test on
+but unused ✗                     memory_loader.py ✓    one task ✓
+                                      ↓
+Scripts are                      Create                Refactor
+isolated ✗                       format_validator.py ✓ all scripts ✓
+                                      ↓
+No validation ✗                  Update CLAUDE.md ✓    Configure
+                                      ↓                 hooks ✓
+No hooks ✗                       Create SOP ✓          Make
+                                                       mandatory ✓
+
+
+Result:
+──────────────────────────────────────────────────────────────────────────
+
+BEFORE FIX:          AFTER FIX:
+
+Memory grows ✗  →   Memory injected ✓
+Rules drift ✗   →   Rules enforced ✓
+Corrections lost ✗ → Corrections applied ✓
+Same mistakes ✗  →   Format locked ✓
+
+================================================================================

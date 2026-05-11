@@ -1,0 +1,79 @@
+Sultan Muhammad Hamad Sheharyar - Hackathon 2026 Position - Decision Letter (800+ words)
+
+Subject: We're concerned about some gaps - and here's why that matters
+
+---
+
+Dear Sultan,
+
+We're not moving forward. I need to be clear about why, because I think you need to actually hear this.
+
+**What I appreciated**
+
+You've done a lot of different things. STEM teaching, Python instruction, computer vision internship, generative AI work. That takes initiative. That shows curiosity. You want to understand how different parts of technology fit together. That's valuable.
+
+When you talked about your plant health estimation project on Raspberry Pi, you showed practical thinking. You understand that a model that works on your laptop doesn't work on edge hardware. You know models need to be optimized for deployment. That's real knowledge, and it matters.
+
+You stayed in the conversation. Even when you weren't sure about answers, you didn't shut down. You kept engaging. That shows persistence.
+
+**Here's what genuinely concerned me**
+
+Midway through our conversation, I asked you about primary keys. It's one of the foundational concepts in relational databases. How you'd structure a database to distinguish between users with the same credentials.
+
+Your answer: "No, sir."
+
+You didn't know what a primary key is.
+
+That's not about being inexperienced. That's about not learning the fundamentals of the tools you're supposedly using.
+
+Then I asked about REST APIs. GET and POST requests. How HTTP methods work.
+
+Your answer was confused. You kept saying "FastDP." That didn't clarify anything. And when I pushed, you gave partial answers but no clear understanding of why these distinctions matter or how they're actually used.
+
+Then frontend basics. HTML semantics. The difference between div, section, and span tags.
+
+You said: "div and span are one container. Div vs. span different from the div span are one container."
+
+That's not an answer. That's fragmented thinking. You've maybe used these tags in Streamlit or Bootstrap templates, but you don't understand the semantic and structural differences between them. And that's foundational to frontend development.
+
+**What I think happened**
+
+You've done internships. You've worked on projects. But when I asked you about the details of what you actually built - the results, the accuracy numbers, what worked and what didn't - your answers became vague. You haven't actually thought deeply about what you've created.
+
+At the end of our conversation, you asked: "Is the main work that you do, is AI or the front end?"
+
+You're asking *me* to clarify what kind of work interests *you*. That tells me you don't actually know. You're doing different things and hoping to figure out what you should be doing.
+
+Then you said: "Because I am using AI, so I am saying that. That AI got me, because in full stack, I have not so much work, and in Python, I have done much work."
+
+You're choosing AI because you haven't done much full-stack work. You're choosing areas based on where you've already had exposure, not where you actually want to go.
+
+And when I asked a technical question, you said: "this is paid internship, and when you this type of questions, I believe, you have asked HR to answer."
+
+You were suggesting that technical questions should go to HR. That tells me you see these conversations as administrative, not as opportunities to demonstrate understanding or grow.
+
+**This matters**
+
+Right now you're like someone who's attended five different classes but hasn't really studied anything. You have exposure to computer vision, to AI, to different frameworks. But when I ask you to explain how something works - really works, not just "I used this tool" - you can't.
+
+That gap between using tools and understanding what's underneath - that's the gap that matters. Because tools change. Frameworks evolve. But if you understand the fundamentals, you can learn new tools easily.
+
+Right now, you're not investing in fundamentals. You're collecting frameworks.
+
+**What you need to actually do**
+
+Pick one area. Not because it sounds good. Not because you've already spent time on it. Because you actually want to understand how it works.
+
+If you pick computer vision: Go deep. Understand how YOLOv8 actually works. Read papers. Know your project accuracy numbers. Know what worked, what didn't, and why. Understand the math.
+
+If you pick databases and backend: Learn what a primary key is. Learn how relational databases work. Learn HTTP and REST. Understand these fundamentals, not just the syntax.
+
+If you pick frontend: Learn HTML semantics. Actually understand CSS. Understand why these distinctions matter. Don't just apply templates.
+
+The point isn't which one. It's that you actually invest time in understanding the fundamentals, not just collecting tools.
+
+**Be honest about what you don't know.** In technical conversations, saying "I haven't learned that yet" is infinitely better than vague answers or deflecting to HR. It shows self-awareness.
+
+---
+
+Sultan

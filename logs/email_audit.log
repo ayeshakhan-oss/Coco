@@ -374,3 +374,4 @@
 2026-05-05 16:28:05 | INFO | SENT | context=screening_report_fundraising_partnerships | sender=ayesha.khan@taleemabad.com | recipients=['zeshan.dhillon@taleemabad.com']
 2026-05-05 16:30:07 | INFO | SENT | context=screening_report_fundraising_partnerships | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
 2026-05-08 15:00:09 | INFO | SENT | context=pipeline_monitor_error | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']
+2026-05-08 18:10:21 | INFO | SENT | context=test_dummy_email | sender=ayesha.khan@taleemabad.com | recipients=['ayesha.khan@taleemabad.com']

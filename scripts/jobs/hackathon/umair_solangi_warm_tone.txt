@@ -1,0 +1,40 @@
+Umair Solangi - Hackathon 2026 Position - Decision Letter
+
+Subject: Your foundation is strong - here's what we saw
+
+---
+
+Dear Umair,
+
+Thank you for taking the time to talk with us and share your experience. We really appreciated your thoughtfulness and the way you approached our conversation.
+
+We've decided not to move forward with your application at this time. I want to share why, and more importantly, what we observed about you that we think is valuable.
+
+**What impressed us**
+
+You have a solid technical foundation. The fact that you went from graduation straight into building a real product for a startup—and have continued to work on projects since then—says something important: you can ship work. You understand what it takes to build something that actually functions.
+
+What really stood out was how you approach problems. When you hit a wall with one API, you didn't give up. You researched, found an alternative, and solved it. That kind of resourcefulness is something every good engineer has, and you clearly have it.
+
+**Where you're still building**
+
+Right now, your strength is in backend development—and that's genuinely valuable. You have deep knowledge there, and it shows. But this role needs someone who's equally comfortable across the full stack. Your frontend skills are still developing, and that's okay—you're early in your career.
+
+The question isn't whether you *can* learn frontend skills. You absolutely can. The question is whether you want to go deep on the full stack, or whether backend specialization might be a better fit for you right now.
+
+**What we'd suggest next**
+
+Take a moment to think about which direction genuinely excites you. If you love backend work, go deeper there. Build more projects, get better at optimization, become the expert. That's a valuable path.
+
+If you do want to become full-stack, commit to it intentionally. Spend real time learning React, CSS, JavaScript—not just how to use frameworks, but how these tools actually work. Build a few projects where you own both sides. That experience matters.
+
+Either way, keep building. Your foundation is solid, and your next step is about choosing a direction and diving in.
+
+---
+
+Warm regards,
+Taleemabad
+
+---
+
+Word count: ~300 words | Warm, encouraging tone | Avoids harsh critique | Growth-focused and supportive

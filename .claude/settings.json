@@ -1,9 +1,4 @@
 {
-  "enabledPlugins": {
-    "superpowers": true,
-    "context7": true,
-    "skill-creator": true
-  },
   "hooks": {
     "Stop": [
       {
@@ -27,5 +22,13 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "superpowers": true,
+    "context7": true,
+    "skill-creator": true,
+    "slack@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true
   }
 }
