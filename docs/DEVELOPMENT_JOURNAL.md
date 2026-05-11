@@ -1,7 +1,7 @@
 ---
 name: Development Journal
 description: Daily/bi-daily log of what we've built, changed, and evolved. Before/after format for each update.
-last_updated: 2026-05-12
+last_updated: 2026-05-12 (Rules 1.12 + 1.13 added)
 ---
 
 # Development Journal — Agent Coco
@@ -45,6 +45,33 @@ last_updated: 2026-05-12
 ### Rule 1.11 Locked In (2026-05-12)
 - **Benefit:** Eliminates back-and-forth: "which value did they fail?" → I check Markaz proactively
 - **Commit:** 1888060
+
+### Rule 1.12 — Markaz Access via Neon Postgres (2026-05-12)
+- **Before:** Would ask user "where is the candidate data?" or struggle with access method
+- **After:** **Rule 1.12 (Non-Negotiable)** — ALWAYS access Markaz data via `mcp__neon-postgres__query()`. Never ask for data that's in the system.
+  - Query candidates, applications, values_scorecard JSONB, gwc_scorecard, case_study_status directly
+  - Eliminates friction and workflow delays
+- **Location:** `.claude/sops/00_General_SOPs/general_non_negotiable_sops.md`
+- **Applied:** Syeda Siddiqa Fatima values feedback email (queried application record + values_scorecard data directly)
+- **Commit:** 1fac077
+
+### Rule 1.13 — Email Sending via safe_sendmail() (2026-05-12)
+- **Before:** Would attempt raw smtplib or couldn't send emails; no audit trail
+- **After:** **Rule 1.13 (Non-Negotiable)** — ALWAYS send emails via `safe_sendmail()` from `scripts/utils/safe_send.py`. Never call smtplib directly.
+  - Pattern: load_dotenv → SENDER = ayesha.khan@taleemabad.com → PASSWORD = os.getenv("EMAIL_PASSWORD") → safe_sendmail(server, sender, recipients, message, context)
+  - All sends logged to email_audit.log automatically
+  - Prevents unauthorized sends, maintains audit trail
+- **Location:** `.claude/sops/00_General_SOPs/general_non_negotiable_sops.md`
+- **Applied:** Syeda Siddiqa Fatima pilot email sent successfully via safe_sendmail
+- **Commit:** 1fac077
+
+### Updated scripts/CLAUDE.md with Rules 1.12 + 1.13 (2026-05-12)
+- **Before:** scripts/CLAUDE.md had outdated database and email patterns
+- **After:** Updated with correct MCP tool usage and safe_sendmail implementation
+  - Database section: References Rule 1.12, shows `mcp__neon-postgres__query()` usage
+  - Email section: References Rule 1.13, shows safe_sendmail pattern with credentials
+  - Common patterns: Updated to match current implementation
+- **Commit:** e5cb701
 
 ---
 
@@ -141,6 +168,8 @@ last_updated: 2026-05-12
 |--------|--------|
 | Architecture Cleanup | ✅ Root clean, infrastructure in .claude/ |
 | Rule 1.11 (Markaz Check) | ✅ Locked in, prevents back-and-forth |
+| Rule 1.12 (Markaz via Neon Postgres) | ✅ NEW — Query database directly, never ask |
+| Rule 1.13 (Email via safe_sendmail) | ✅ NEW — Send via bouncer, audit all sends |
 | Memory Unification | ✅ 54 files synced, single source of truth |
 | Lessons-Learned Log | ✅ Auto-capture mistakes via Stop hook |
 | Three-Tier Memory | ✅ Documented: Active/Curated/History |
@@ -148,12 +177,13 @@ last_updated: 2026-05-12
 | Stop Hook | ✅ Auto-summarize sessions, test passed |
 | UserPromptSubmit Hook | ✅ Auto-inject relevant files, test passed |
 | Settings.json | ✅ Both hooks registered and active |
-| Documentation | ✅ Plan in docs/, Journal created |
+| Documentation | ✅ Plan in docs/, Journal updated |
+| scripts/CLAUDE.md | ✅ Updated with Rule 1.12 + 1.13 patterns |
 
-**Total Commits:** 11 (06dfa22 → c17a4e4)  
-**Total Files Changed:** 150+  
-**Total Lines Added:** 1000+  
-**System Status:** 🟢 FULLY OPERATIONAL
+**Total Commits (Today):** 3 (1fac077 → e5cb701)  
+**Total Files Changed:** 5+ (SOPs, scripts/CLAUDE.md, MEMORY.md, DEVELOPMENT_JOURNAL.md)  
+**Total Lines Added:** 200+  
+**System Status:** 🟢 FULLY OPERATIONAL + 2 NEW OPERATIONAL RULES LOCKED IN
 
 ---
 
@@ -163,15 +193,17 @@ When you ask: **"Draft warm bench email for Mahnoor"**
 
 Coco automatically:
 1. ✅ UserPromptSubmit hook fires → injects warm_bench_*.md files
-2. ✅ Rule 1.11 triggers → checks Markaz for Mahnoor
-3. ✅ Loads .claude/skills/01_candidate-communication/warm-bench-feedback-email.md
-4. ✅ Loads memory/warm_bench_final_locked_approach.md (locked template)
-5. ✅ Loads memory/warm_bench_session_may5_2026_complete_learnings.md (rules)
-6. ✅ Drafts email following 800-1100 word rule, poetic subject, specific timestamps
-7. ✅ Runs self-QA checklist (8 items)
-8. ✅ Shows you the draft ready for pilot
+2. ✅ Rule 1.12 triggers → queries Markaz via `mcp__neon-postgres__query()` to get Mahnoor's application data
+3. ✅ Rule 1.11 verification → confirms candidate name, job, current status
+4. ✅ Loads .claude/skills/01_candidate-communication/warm-bench-feedback-email.md
+5. ✅ Loads memory/warm_bench_final_locked_approach.md (locked template)
+6. ✅ Loads memory/warm_bench_session_may5_2026_complete_learnings.md (rules)
+7. ✅ Drafts email following 800-1100 word rule, poetic subject, specific timestamps
+8. ✅ Runs self-QA checklist (8 items)
+9. ✅ Rule 1.13 triggers → sends pilot via safe_sendmail() to ayesha+jawwad (all logged to email_audit.log)
+10. ✅ Shows you the pilot status and waits for approval
 
-**No asking, no guessing, no back-and-forth.**
+**No asking, no guessing, no back-and-forth. All operations logged and verified.**
 
 ---
 
