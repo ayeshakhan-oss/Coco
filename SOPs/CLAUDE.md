@@ -6,19 +6,19 @@
 
 ## Quick Task Router
 
-| Task | SOP File | Template |
+| Task | Skill File | Template |
 |------|----------|----------|
-| Screen CVs against JD | 02_Candidate_Evaluation/cv_screening.md | [REPORT_FORMAT_LOCKED.md](../REPORT_FORMAT_LOCKED.md) |
-| Evaluate case study | 02_Candidate_Evaluation/case_study_evaluation.md | N/A |
-| Score values interview | 02_Candidate_Evaluation/values_scorecard_scoring.md | N/A (Markaz form) |
-| Reject candidate (CV issues) | 01_Candidate_Communication/cv_rejection_emails.md | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
-| Reject candidate (GWC) | 01_Candidate_Communication/gwc_rejection_emails.md | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
-| Reject candidate (values) | 01_Candidate_Communication/values_feedback_emails.md | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
-| Warm bench feedback | 01_Candidate_Communication/warm_bench_feedback_email.md | [warm_bench_final_locked_approach.md](../memory/warm_bench_final_locked_approach.md) |
+| Screen CVs against JD | [.claude/skills/02_candidate-evaluation/cv-screening.md](../../.claude/skills/02_candidate-evaluation/cv-screening.md) | [REPORT_FORMAT_LOCKED.md](../REPORT_FORMAT_LOCKED.md) |
+| Evaluate case study | [.claude/skills/02_candidate-evaluation/case-study-evaluation.md](../../.claude/skills/02_candidate-evaluation/case-study-evaluation.md) | N/A |
+| Score values interview | [.claude/skills/02_candidate-evaluation/values-scorecard-scoring.md](../../.claude/skills/02_candidate-evaluation/values-scorecard-scoring.md) | N/A (Markaz form) |
+| Reject candidate (CV issues) | [.claude/skills/01_candidate-communication/candidate-rejections.md](../../.claude/skills/01_candidate-communication/candidate-rejections.md) | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
+| Reject candidate (GWC) | [.claude/skills/01_candidate-communication/gwc-rejection-emails.md](../../.claude/skills/01_candidate-communication/gwc-rejection-emails.md) | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
+| Reject candidate (values) | [.claude/skills/01_candidate-communication/values-feedback-emails.md](../../.claude/skills/01_candidate-communication/values-feedback-emails.md) | [email_template_format_FINAL.md](../memory/email_template_format_FINAL.md) |
+| Warm bench feedback | [.claude/skills/01_candidate-communication/warm-bench-feedback-email.md](../../.claude/skills/01_candidate-communication/warm-bench-feedback-email.md) | [warm_bench_final_locked_approach.md](../memory/warm_bench_final_locked_approach.md) |
 | Interview invite | N/A (universal) | [locked_email_template_interview_invites.md](../memory/locked_email_template_interview_invites.md) |
-| Decision brief | 03_Hiring_Operations/hiring_decision_brief.md | N/A (custom per round) |
-| Attendance report | 03_Hiring_Operations/attendance_reports.md | [attendance_report_complete_template.md](../memory/attendance_report_complete_template.md) |
-| Talent sourcing | 05_Talent_Sourcing/talent_sourcing.md | N/A (process-based) |
+| Decision brief | [.claude/skills/03_hiring-operations/decision-briefs.md](../../.claude/skills/03_hiring-operations/decision-briefs.md) | N/A (custom per round) |
+| Attendance report | [.claude/skills/03_hiring-operations/attendance-reports.md](../../.claude/skills/03_hiring-operations/attendance-reports.md) | [attendance_report_complete_template.md](../memory/attendance_report_complete_template.md) |
+| Talent sourcing | [.claude/skills/05_talent-sourcing/talent-sourcing.md](../../.claude/skills/05_talent-sourcing/talent-sourcing.md) | N/A (process-based) |
 
 ---
 
