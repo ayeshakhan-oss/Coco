@@ -177,6 +177,24 @@ If the answer to any is "no," pause and fix it before proceeding.
 
 ---
 
+## 1.11 Markaz Check Before Candidate Feedback
+
+- Whenever asked to submit a scorecard or draft any email regarding candidate feedback, you MUST first go to Markaz and check the candidate's record for the specific job.
+- Verify candidate name, job title, current status, and any prior feedback.
+- This applies to: values scorecards, case study evaluations, rejection emails, warm bench feedback, and any feedback communication.
+
+**Why:** Markaz is the source of truth for candidate status and history. Submitting feedback without checking can result in: duplicate scorecards, feedback on wrong candidates, missing context about prior interactions, and incorrect job references. This breaks the candidate experience and wastes Ayesha's time fixing errors.
+
+**How to apply:**
+- Before drafting: "Open Markaz → search candidate name → select the correct job → review current status and prior entries"
+- Verify the job exists and matches what Ayesha mentioned
+- Check if candidate already has prior feedback in this job
+- Use the Markaz data to inform tone and context of your email/scorecard
+- If candidate record shows something that contradicts Ayesha's request, flag it immediately (don't assume or ignore it)
+- Do not draft anything until you've confirmed the Markaz record matches the task
+
+---
+
 ## Violations and Consequences
 
 - Violating 1.3 (Pilot Sharing): sending pilot to candidate or wrong recipient (CRITICAL — candidate gets premature notification)
@@ -187,6 +205,7 @@ If the answer to any is "no," pause and fix it before proceeding.
 - Violating 1.8 (Verification): submitting work without QA (errors compound downstream)
 - Violating 1.9 (Read Provided Material): ignoring user data and generating own (overriding user judgment)
 - Violating 1.10 (Core Principle): abandoning SOPs (inconsistent, unpredictable work)
+- Violating 1.11 (Markaz Check): drafting scorecard/feedback without checking Markaz first (duplicate entries, wrong candidate, missing context)
 
 **Consequence:** Loss of trust, partnership difficulty, potential work suspension.
 
