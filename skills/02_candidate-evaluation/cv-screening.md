@@ -79,6 +79,49 @@ This skill orchestrates the detailed procedure for CV screening. The SOP contain
 
 ---
 
+## Detailed Procedure
+
+**Preparation:**
+1. Read JD thoroughly (understand role deeply, core requirements, must-haves vs nice-to-haves)
+2. Confirm evaluation criteria with hiring manager (3-5 specific criteria, or use skills/experience/fit)
+3. Find reference report format (locked in for consistency)
+
+**CV Screening Workflow:**
+1. Query Markaz: pull all candidate profiles for role
+2. For each candidate: download and read CV in FULL (minimum 14k-15k characters)
+   - Identify 2-3 genuine strengths
+   - Identify 1-2 honest gaps
+   - State BOTH total experience AND relevant experience separately
+3. Evaluate against criteria: skills (priority 1) → experience (priority 1) → fit (priority 2)
+4. Capture profile data: Expected Salary, City, Relocate status, App ID
+5. Create ranking: shortlist (top matches), maybe (borderline), no-hire (screened out)
+
+**Google Drive CV Upload & Hyperlinks:**
+- Fetch base64-encoded PDFs from Markaz (candidates.resume_data)
+- Decode and save as PDF files locally
+- OAuth authenticate with Google Drive (browser-based flow)
+- Upload each PDF with descriptive filename
+- Set permissions to shareable (anyone with link can view)
+- Extract shareable links: `https://drive.google.com/file/d/[ID]/view`
+- Save to JSON mapping: candidate_name → URL
+
+**Report Structure:**
+- Header: Dark navy (#1a2a3a), "People & Culture", job title, subtitle
+- 4 Stat Boxes: Total applications, Shortlisted, Maybe, No Hire (must equal 4 sections)
+- Key Observation: 2-3 sentence observation about candidate pool
+- Shortlisted Candidates: Name (hyperlinked) | Ranking | Match % | Strengths | Gap | Profile data
+- Maybe Section: Table with Name (hyperlinked) | Match % | Note
+- All names hyperlinked to Google Drive CVs
+
+**Verification Before Sending:**
+- Stat boxes math verified (sum = total)
+- Every shortlisted name hyperlinked to Drive CV
+- Every maybe name hyperlinked to Drive CV
+- Test 2-3 links (verify they load)
+- Format matches reference exactly (fonts, colors, spacing)
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

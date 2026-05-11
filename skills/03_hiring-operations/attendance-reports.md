@@ -83,6 +83,59 @@ This skill orchestrates the procedure for attendance tracking. The SOP contains:
 
 ---
 
+## Detailed Procedure
+
+**Data Collection (6 Steps):**
+
+1. **Get Payroll List:** Query Neon DB for previous month's active OPL+OWT employees (baseline: 84 as of 2026-04-09)
+
+2. **Get Markaz Active List:** Query Markaz for active employees + leave records as of reporting date
+
+3. **Check Teams Presence:** Read Teams presence channel for WFH/leave/arrival announcements
+   - Look for: "WFH today", "Out sick", "Annual leave", "Arriving at [time]"
+   - Extract names EXACTLY as written
+   - Use scripts/utils/teams_reader.py
+
+4. **Cross-Check Markaz Leaves:** Query Markaz leave records for reporting date; compare against Teams
+
+5. **Get Ayesha's On-Site List:** Accept her list as ground truth for physical presence
+   - Read names VERY carefully (exact spelling)
+   - Don't correct or assume — copy exactly
+   - Example: "Muhammad Zeeshan Usaid" vs "Zeeshan Usaid" — match exactly as provided
+
+6. **Flag Silent Cases:** For each of 84 employees:
+   - On Ayesha's list? → Onsite section
+   - Leave marked (Teams/Markaz)? → Leave section
+   - WFH marked (Teams/Markaz)? → WFH section
+   - No record anywhere? → Flagged section (mark "No record found")
+
+**Report Structure (7 Sections):**
+1. Onsite (physically in I-10)
+2. Leave (formal leave)
+3. WFH (working from home)
+4. Away (out of office, traveling)
+5. Arriving (arriving later that day)
+6. Flagged (silent cases, no record)
+7. WFH — Confirmed Permanent (8 permanent WFH employees)
+
+**Stat Boxes (7 colored, LOCKED):**
+- Header: #34495e (dark gray)
+- Onsite: #e8f5e9 (light green)
+- Leave: #ffe0b2 (orange)
+- WFH: #c8e6c9 (light green)
+- Away: #ffccbc (salmon)
+- Flagged: #ffcdd2 (red)
+- Additional: #f5f5f5 (gray)
+
+**Format (LOCKED):**
+- No grid borders (ROWBACKGROUNDS only)
+- Georgia serif, justified
+- ReportLab PDF with TA_JUSTIFY
+- 7 stat boxes = 7 sections (must match)
+- Verify math: sum = 84 employees
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

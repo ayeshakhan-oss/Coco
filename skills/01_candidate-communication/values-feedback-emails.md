@@ -69,6 +69,45 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 
 ---
 
+## Detailed Procedure
+
+**Word Count & Structure:**
+- Minimum 800 words (mandatory), target 800-1100
+- 3 required sections: What We Liked / Questions / Next Steps
+- P.S. box included (encouraging)
+
+**Pre-Drafting:**
+- Read full values interview notes (document specific moments/quotes)
+- Identify 2-3 genuine strengths and 2-3 honest gaps
+- Quote actual interview moments (never assume)
+
+**Drafting (Single-Pass):**
+1. Opening: Thank candidate by name, warm rejection + context
+2. Section 1 "What We Liked Most About You" (2-3 strengths with specific interview evidence, 100-150 words)
+3. Section 2 "Where We Found Ourselves Sitting With Questions" (2-3 gaps with interview evidence, 100-150 words)
+4. Section 3 "What We Think You Should Do Next" (actionable advice, not prescriptive, 100-150 words)
+5. P.S. box: encouraging sign-off (specific to candidate)
+6. No em dashes (replace all " — " with period, comma, or colon)
+7. "We" voice throughout (never "I"), they/them pronouns (never gendered)
+
+**HTML Design (v8):**
+- Blue #1565c0 headings, green #1b5e20 subheadings
+- Georgia serif, justified text
+- Use H()/SUB()/P()/PS() helpers
+- No asterisks in section headings
+
+**Feedback Widget:**
+- Add at end of body: `feedback_widget(candidate_name, role, app_id, "Application Feedback")`
+
+**Pilot & Approval:**
+- Set PILOT_MODE = True
+- Send to ayesha.khan@taleemabad.com + jawwad.ali@taleemabad.com ONLY
+- Wait for explicit approval
+- User says "go live" → set PILOT_MODE = False
+- Send to candidate (TO) + hiring@taleemabad.com + ayesha.khan@taleemabad.com (CC)
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

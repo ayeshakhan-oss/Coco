@@ -74,6 +74,44 @@ This skill orchestrates the detailed procedure for tracking and evaluating case 
 
 ---
 
+## Detailed Procedure
+
+**Step 1: Check Both Sources (CRITICAL):**
+- Markaz: Open each candidate profile → Candidate Communication section → check submission
+- Gmail: Search hiring@ inbox for "New Case Study Submission" + candidate name + role
+- Note submission timestamps
+- Candidates may submit via Markaz, email, or both
+
+**Step 2: Download & Organize:**
+- Retrieve submission (PDF, doc, xlsx, or Markaz form text)
+- Save locally for review
+- Name files clearly by candidate name
+
+**Step 3: Assess Completeness:**
+- Read original assignment prompt FIRST (understand what was asked, expected deliverables, sections required)
+- Then read candidate submission in FULL (no skimming)
+- Check: all sections addressed? all exercises submitted? any blanks?
+
+**Step 4: Auto-Flag Incomplete Submissions:**
+- If any required section missing or blank: send email to Ayesha immediately
+- Subject: "[Candidate Name] Case Study Submitted — Missing Parts"
+- Body: List missing/incomplete sections specifically
+- Don't wait for weekly report (flag immediately)
+
+**Step 5: Assess Quality:**
+- Evaluate: depth of thinking, clarity, completeness
+- Flag AI-use indicators (generic tone, boilerplate structure, lack of specificity)
+- Flag weak effort (surface answers, minimal engagement)
+- Document findings
+
+**Step 6: Weekly Proactive Report (Every Week, No Ask):**
+- **Submitted This Week:** names, app IDs, roles, quality flags
+- **Overdue:** names, days overdue, recommendation for follow-up
+- **Needs Follow-up:** reason (incomplete, AI flagged, quality concerns)
+- Send to Ayesha every week without being asked
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

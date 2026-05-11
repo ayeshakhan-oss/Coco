@@ -66,6 +66,47 @@ This skill orchestrates the detailed procedure for GWC rejection emails. The SOP
 
 ---
 
+## Detailed Procedure
+
+**Data Extraction (Markaz):**
+- Query GWC scorecard: Get It score, Want It score, Capacity score
+- Extract additionalComments field (interviewer notes)
+- Extract hiring manager feedback
+- Verify all fields have data (don't fabricate if missing)
+
+**Email Structure (5 Sections):**
+1. **Opening** (80-120 words): Thank for time, acknowledge engagement, state decision clearly ("We've decided not to move forward"), affirm directness
+2. **What We Saw** (150-200 words): 1-2 key strengths from scorecard with quotes from additionalComments, warm language, use "we" voice
+3. **The Gap** (100-150 words): Identify 1-2 areas with lower scores, frame as "where we're at", keep honest but warm
+4. **What Matters Next** (150-200 words): 1-2 actionable next steps, frame based on scorecard scores, growth mindset tone
+5. **Closing** (50-100 words): Affirm potential, warm sign-off, keep brief
+
+**Total Word Count:** 530-770 words (400-450 acceptable if scorecard data limited)
+
+**Tone Rules:**
+- Warm, mentoring (never harsh)
+- "We" voice (never "I")
+- Evidence-based (every claim tied to scorecard)
+- NO jargon (NO "GWC", NO "Zero In Call", NO interviewer names)
+- No em dashes (replace with periods, commas, colons)
+- Honest but encouraging
+
+**Taleemabad Email Format (LOCKED):**
+- Logo at top
+- Blue header: "PEOPLE & CULTURE • REJECTION DECISION"
+- Large blue title: "We're reflecting on your [Position] application"
+- Blue subtitle: [Position / Hackathon]
+- Blue horizontal line separator (#1565c0)
+- Body: justified Georgia serif
+- Section headings: blue bold (NO asterisks)
+
+**Reference & Approval:**
+- Find prior GWC rejection from same position (if available) for tone consistency
+- Side-by-side comparison before sending
+- No fabrication (use ONLY scorecard data)
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

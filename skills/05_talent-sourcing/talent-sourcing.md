@@ -68,6 +68,63 @@ This skill orchestrates the 7-step passive candidate sourcing process. The SOP c
 
 ---
 
+## Detailed Procedure
+
+**STEP 0: INTAKE**
+- Define role title, target persona, 3-5 keywords, preferred location, experience level (junior/mid/senior)
+
+**STEP 1: SEARCH STRATEGY**
+- Read: memory/talent_sourcing_7steps_complete.md
+- Identify: 3-5 target companies/sectors
+- List: 3-5 LinkedIn search terms specific to role
+
+**STEP 2: SEARCH ORG PAGES (Layer 1)**
+- Google: "[Company Name] LinkedIn people" or company.com/employees
+- Extract: names, titles, companies, LinkedIn URLs
+- Find profiles of similar roles at target companies
+
+**STEP 3: GOOGLE SITE:LINKEDIN.COM (Layer 2)**
+- Query: site:linkedin.com "[keyword1]" "[keyword2]"
+- Vary: title, experience level, location
+- Extract: names and LinkedIn URLs
+
+**STEP 4: VERIFY LINKS (Layer 3)**
+- Open each LinkedIn URL (verify link active)
+- Confirm: title matches role, profile current
+- Mark "link dead" if broken
+- Keep only: verified, active links
+
+**STEP 5: EXTRACT VERIFIED CANDIDATES**
+- Create row per candidate:
+  - Name
+  - LinkedIn URL
+  - Current title
+  - Current company
+  - Years of experience
+  - Tier (1=perfect match, 2=good fit, 3=possible fit)
+- Target: 40-60 candidates minimum
+
+**STEP 6: DRAFT PERSONALIZED DMS**
+- Read: candidate's full LinkedIn profile
+- Find: specific project, skill, or experience connecting to role
+- Write: short DM explaining why role fits THEM (not about company)
+- Example: "Hi [Name], I noticed your [specific project] at [Company] — we're building something similar at Taleemabad and think you'd be great fit..."
+- Keep: short (3-4 sentences), personalized, authentic
+
+**STEP 7: ADD TO MARKAZ (AFTER CONFIRMATION)**
+- Wait for Ayesha response: "Yes, they replied positively"
+- Only then: add to Markaz
+- Source: 'LinkedIn - Sourced'
+- Tags: {sourced_by: 'Coco', sourcing_run: '[date]', profile_url: '[URL]'}
+
+**STEP 8: GENERATE EXCEL OUTPUT**
+- Columns: Name, LinkedIn URL, Role, Company, Experience, Tier
+- Sheet 2: "Sourcing Methodology" (search terms, layers used, date)
+- Count summary (total, by tier)
+- Send to Ayesha for review
+
+---
+
 ## Execution Discipline
 
 **STEP 0: INTAKE**

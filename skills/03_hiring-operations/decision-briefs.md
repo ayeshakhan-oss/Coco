@@ -75,6 +75,55 @@ This skill orchestrates the procedure for decision briefs. The SOP contains:
 
 ---
 
+## Detailed Procedure
+
+**Data Preparation:**
+1. Query Markaz for all candidates (pull CV links, case study scores, values verdicts, debrief status)
+2. Upload CVs to Google Drive (if not done) and extract shareable links
+3. Organize candidates by status (leading, values pass pending, values out, case study out, overdue, not interviewed)
+
+**Build 4-Part Report:**
+
+**Part A: Header & Stat Boxes**
+- Dark navy (#1a2a3a) header
+- 4 stat boxes: Total screened | Values calls | Shortlisted | Decision status
+
+**Part B: Leading Candidates (Top Recommendations)**
+- Per candidate:
+  - Name (hyperlinked to Google Drive CV)
+  - Current role & company
+  - 2-3 key strengths (tied to JD)
+  - Case study performance (Tier + score)
+  - Values assessment (PASS or CONDITIONAL)
+  - Debrief verdict (use exact label: PANEL DECISION / DEBRIEF CONFIRMED / DEBRIEF SCHEDULED / OVERDUE)
+  - Recommendation (clear next action)
+
+**Part C: Pipeline Summary (5 Groups)**
+1. VALUES PASS but debrief pending — names (hyperlinked), case study score, debrief date
+2. VALUES OUT — names (hyperlinked), specific gap, case study tier
+3. CASE STUDY OUT / Did Not Advance — names (hyperlinked), tier, reason
+4. OVERDUE / Pending Submission — names, timeline, follow-up status
+5. NOT INTERVIEWED — names (hyperlinked), screening verdict, reason not advanced
+
+**Part D: Debrief Schedule & Next Steps**
+- Candidates with debrief dates scheduled
+- Format: "Name — [Date] [Time] via Teams"
+- Include Teams link if available
+
+**HTML Format:**
+- Inline HTML (no PDF)
+- Blue section headings
+- Georgia serif, justified
+- No asterisks in headings
+
+**Hyperlink Audit (CRITICAL):**
+- Every candidate name in Leading: hyperlinked
+- Every candidate name in Pipeline (all 5 groups): hyperlinked
+- Every candidate name in Debrief Schedule: hyperlinked
+- Test 2-3 links (verify they load)
+
+---
+
 ## Execution Discipline
 
 **STEP 1: IDENTIFY THIS SKILL**

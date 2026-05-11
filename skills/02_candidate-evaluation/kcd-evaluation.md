@@ -97,6 +97,59 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 
 ---
 
+## Detailed Procedure
+
+**Prerequisites (Read in Order):**
+1. Read Assignment: what candidates were asked, what datasets, what deliverable
+2. Read Datasets Yourself: open every CSV, understand shape/patterns/anomalies
+3. Read Evaluation Framework: use role-specific CLAUDE.md (or default 6 criteria)
+4. Read Ideal Answer: gold standard for this assignment
+
+**Collect Submissions:**
+1. Source A — Gmail: Search `subject:New Case Study Submission [Role]`
+   - Download attached files (PDF/Word/Excel)
+   - Extract using gmail.users.messages.attachments().get()
+2. Source B — Markaz DB: Query case_study_submission field (written text)
+3. Google Sheets: Some submissions are Sheet URLs (read via Sheets API)
+4. Cross-reference both; note "awaiting submission" if missing
+
+**Evaluate (Per Candidate):**
+1. Extract text from submission (preserve structure)
+2. Read FULL submission (no skimming)
+3. Score 1-5 per criterion (use fractional scores: 4.5, 3.5, etc.)
+   - 5: exceptional insight grounded in data
+   - 4: strong, correct, thoughtful
+   - 3: adequate, surface-level
+   - 2: weak, missed patterns, AI content-gen
+   - 1: absent/wrong
+   - 0: not submitted (incomplete only)
+4. Apply weights from framework; calculate final %
+
+**Integrity Checks (Mandatory):**
+- Content dump: emoji, markdown, generic language, off-topic research
+- Mirror problem: identical stats/phrases across candidates (likely same AI prompt)
+- Foundational misread: key anchor figure/variable wrong early on
+
+**Incomplete Submission Handling:**
+- Exclude from main ranking
+- Separate section: "Incomplete Submission — [Name]"
+- Score marked with asterisk: "52%* — incomplete, not a capability read"
+- Note: "score is floor, not ceiling"
+
+**Report Generation:**
+- HTML email (inline, not PDF)
+- Per-candidate block: verdict + score + confidence + tagline + narrative + gap + conditional clause + GWC probes + integrity flag
+- Narrative: tie observations to exercises (E1/E2/E3...) with specific evidence/quotes
+- Cross-candidate comparative analysis (2-3 sentences on cohort patterns)
+
+**Cross-Check with Noah (If Applicable):**
+- If Noah's pilot available: read before finalizing
+- Document score deltas
+- Aligned (≤5%): proceed
+- Diverging (>10%): flag to Ayesha before live send
+
+---
+
 ## Execution Discipline
 
 **STEP 1: PULL CANDIDATE LIST**
