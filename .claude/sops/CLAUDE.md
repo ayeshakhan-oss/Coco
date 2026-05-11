@@ -90,6 +90,14 @@
 
 ---
 
+---
+
+## Automated Task Wiring
+
+**Important:** See [TASK_WIRING_MAP.md](TASK_WIRING_MAP.md) for the complete wiring. When you ask for a task, I automatically load the right skill, SOP, rules, and templates in order. No back-and-forth.
+
+---
+
 **Scope:** Progressive disclosure L2 — Load this file when working in .claude/sops/ folder (candidate tasks)  
 **Updated:** 2026-05-12  
 **Owner:** Coco
