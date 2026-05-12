@@ -46,6 +46,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 | **Automated task wiring** | **[.claude/sops/TASK_WIRING_MAP.md](.claude/sops/TASK_WIRING_MAP.md)** (skill+SOP+rules integration) |
 | Project memory | [memory/MEMORY.md](memory/MEMORY.md) |
 | Lessons learned | [memory/lessons_learned.md](memory/lessons_learned.md) |
+| **Values Scorecard SOP** | **[memory/_feedback/values_scorecard_duplicate_applications.md](memory/_feedback/values_scorecard_duplicate_applications.md)** (duplicate record detection + submission) |
+| **Values Feedback Email Tone** | **[memory/values_feedback_email_tone_locked_2026_05_12.md](memory/values_feedback_email_tone_locked_2026_05_12.md)** (warm, observational, no life-coach language) |
 | Session focus | [SESSIONS.md](SESSIONS.md) |
 | Database schema | [docs/schema.md](docs/schema.md) |
 | Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |

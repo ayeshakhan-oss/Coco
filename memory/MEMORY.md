@@ -41,6 +41,7 @@
 - [Warm Bench Final Locked Approach](_locked/warm_bench_final_locked_approach.md) — Haroon Yasin framework, 800-1100 words, poetic subjects, locked approach.
 - [Attendance Report Complete Template](_locked/attendance_report_complete_template.md) — Stat boxes, colors, table structure, PDF/HTML format locked.
 - [Locked Email Template Interview Invites](_locked/locked_email_template_interview_invites.md) — Universal interview invite design (all stages), colors #f3f4f6, #2f4fa2, Georgia serif.
+- [Values Feedback Email Tone — LOCKED (2026-05-12)](values_feedback_email_tone_locked_2026_05_12.md) — Complete tone guide. Warm, observational, deeply human. NO life-coach language. No internal jargon. 800+ words mandatory. Self-QA checklist included.
 - [Locked Templates Index](_locked/locked_templates_index.md) — Quick reference to all locked formats.
 
 ---
@@ -72,6 +73,7 @@
 - [Bulk Rejection CV Truncation](_feedback/feedback_bulk_rejection_cv_truncation.md) — Minimum 10k chars, never cv_text[:4500], flag long CVs.
 - [DB Status vs Pipeline Reality](_feedback/feedback_db_status_vs_pipeline.md) — status='offer' is a stage, NOT a sent offer. Never assert without verification.
 - [Values Scorecard Schema](_feedback/feedback_values_scorecard_schema.md) — Markaz JSON schema exact format required.
+- [Values Scorecard Duplicate Applications (2026-05-12)](_feedback/values_scorecard_duplicate_applications.md) — **MANDATORY Step 0:** Query all app records before submitting. Markaz UI shows most recent. Submit to correct record or form stays blank. SOP + SQL pattern included.
 
 ---
 

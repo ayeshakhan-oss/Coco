@@ -30,6 +30,11 @@ max_entries: 50
 - **Correction:** Re-ran against `warm_bench_final_locked_approach.md` side-by-side
 - **Rule:** Print the locked template next to the draft before sending; never send from memory alone
 
+## 2026-05-12 — Values Scorecard Submission (Laiba Ahmad, Job 20)
+- **Mistake:** Submitted scorecard to Application 1389, but Markaz UI displayed Application 2708 (more recently updated). Form showed empty despite successful database submission.
+- **Correction:** Queried for all application records for candidate+job, identified most recent (2708), created new submission script targeting correct record.
+- **Rule:** ALWAYS query for duplicate application records before submitting values scorecard. Markaz UI displays most recently updated record. Submit to that one, not an older record.
+
 ---
 
 ## Archived Rules
