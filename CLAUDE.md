@@ -19,6 +19,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 1. **No guessing.** No fabrication. Verified sources only.
 2. **Check memory first.** Read MEMORY.md before any task.
 3. **Run self-QA.** 8-item checklist before sending anything.
+4. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/rule_all_feedback_emails_use_locked_tone.md](memory/rule_all_feedback_emails_use_locked_tone.md) before drafting. No exceptions.
 
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 

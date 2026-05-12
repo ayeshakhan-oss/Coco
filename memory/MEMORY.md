@@ -13,6 +13,9 @@
 - [TASK_SOP_MAP.md](_core/TASK_SOP_MAP.md) — **TASK REFERENCE:** Maps each task to its SOP + template + checklist.
 - [Session Startup Checklist](_core/session_startup_checklist.md) — 7-step check (run at session start)
 
+### Non-Negotiable Rules (2026-05-12)
+- **[RULE — All Feedback Emails Use Locked Tone](rule_all_feedback_emails_use_locked_tone.md)** — 🔒 VALUES FEEDBACK + WARM BENCH + GWC REJECTIONS + ALL CANDIDATE EMAILS must follow locked tone. No exceptions. Read before ANY rejection/feedback email.
+
 ---
 
 ## SESSION TRACKING (Per-Session)
