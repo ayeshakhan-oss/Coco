@@ -15,7 +15,7 @@
 | Reject candidate (GWC) | [.claude/skills/01_candidate-communication/gwc-rejection-emails.md](../../.claude/skills/01_candidate-communication/gwc-rejection-emails.md) | [email_template_format_FINAL.md](../../memory/email_template_format_FINAL.md) |
 | Reject candidate (values) | [.claude/skills/01_candidate-communication/values-feedback-emails.md](../../.claude/skills/01_candidate-communication/values-feedback-emails.md) | [email_template_format_FINAL.md](../../memory/email_template_format_FINAL.md) |
 | Warm bench feedback | [.claude/skills/01_candidate-communication/warm-bench-feedback-email.md](../../.claude/skills/01_candidate-communication/warm-bench-feedback-email.md) | [warm_bench_final_locked_approach.md](../../memory/warm_bench_final_locked_approach.md) |
-| Interview invite | N/A (universal) | [locked_email_template_interview_invites.md](../../memory/locked_email_template_interview_invites.md) |
+| Interview invite (values/case study/exploratory/warm bench) | [.claude/skills/06_candidate-invites/SKILL.md](../../.claude/skills/06_candidate-invites/SKILL.md) | [locked_email_template_interview_invites_FINAL_2026_05_13.md](../../memory/locked_email_template_interview_invites_FINAL_2026_05_13.md) |
 | Decision brief | [.claude/skills/03_hiring-operations/decision-briefs.md](../../.claude/skills/03_hiring-operations/decision-briefs.md) | N/A (custom per round) |
 | Attendance report | [.claude/skills/03_hiring-operations/attendance-reports.md](../../.claude/skills/03_hiring-operations/attendance-reports.md) | [attendance_report_complete_template.md](../../memory/attendance_report_complete_template.md) |
 | Talent sourcing | [.claude/skills/05_talent-sourcing/talent-sourcing.md](../../.claude/skills/05_talent-sourcing/talent-sourcing.md) | N/A (process-based) |
@@ -24,12 +24,17 @@
 
 ## Format Rules (LOCKED)
 
-- **All emails:** Use [email_template_format_FINAL.md](../../memory/email_template_format_FINAL.md) — Logo, blue header, blue horizontal line, justified Georgia text. NO asterisks in headings.
+### All Email Templates — Comprehensive Index
+**READ THIS FIRST:** [memory/locked_templates_index.md](../../memory/locked_templates_index.md) — Single source of truth for ALL locked email + report formats
+
+- **All interview invites** (values, exploratory, case study, warm bench): Use [locked_email_template_interview_invites_FINAL_2026_05_13.md](../../memory/locked_email_template_interview_invites_FINAL_2026_05_13.md) — Design locked: #f5f5f5 bg, #e5e7e2 wrapper, #ffffff card (775px), #3157b7 headers, #5b3fc4 CTA button, Georgia serif, 1.85 line-height. NO design deviations.
+- **All rejection/feedback emails** (values, warm bench, GWC, screening): Use locked tone from [rule_all_feedback_emails_use_locked_tone.md](../../memory/rule_all_feedback_emails_use_locked_tone.md) + [values_feedback_email_tone_locked_2026_05_12.md](../../memory/values_feedback_email_tone_locked_2026_05_12.md) — Warm, observational, 800+ words, specific interview evidence. MANDATORY.
+- **Exploratory call invites:** See [locked_exploratory_call_invite_approach.md](../../memory/locked_exploratory_call_invite_approach.md) — Body text locked word-for-word, links locked (booking calendar + Fundraising doc).
+- **Warm bench emails:** 800-1100 words MANDATORY. Read [warm_bench_final_locked_approach.md](../../memory/warm_bench_final_locked_approach.md) side-by-side. Haroon Yasin framework with poetic subjects.
+- **Other rejection emails:** Use [email_template_format_FINAL.md](../../memory/email_template_format_FINAL.md) — Logo, blue header, blue horizontal line, justified Georgia text. NO asterisks in headings.
 - **All PDFs:** Use ReportLab with TA_JUSTIFY on body text.
-- **All interview invites:** Use [locked_email_template_interview_invites.md](../../memory/locked_email_template_interview_invites.md) — #f3f4f6 bg, 620px card, 1.75 line-height.
 - **CV screening reports:** Use [REPORT_FORMAT_LOCKED.md](../../REPORT_FORMAT_LOCKED.md) — 4 stat boxes, Gmail-safe HTML table layout.
 - **Decision briefs:** Hyperlink every candidate name to Google Drive CV.
-- **Warm bench emails:** 800-1100 words MANDATORY. Haroon Yasin framework. Read [warm_bench_final_locked_approach.md](../../memory/warm_bench_final_locked_approach.md) side-by-side before sending.
 
 ---
 
