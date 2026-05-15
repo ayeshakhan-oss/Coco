@@ -23,6 +23,7 @@
 ### Active Session & Lessons (_session/)
 - [Lessons Learned Log](_session/lessons_learned.md) — Structured append-only log: date, task, mistake, correction, rule. Updated by Stop hook. Max 50 entries.
 - [Active Session Scratchpad](_session/session_active.md) — Live notes for current session: task, decisions, mistakes, files modified. Wiped at session start.
+- **[Session — Warm Bench Email for Hajra Sajjad, CPD Coach (2026-05-15)](_session/session_warm_bench_hajra_cpd_coach_2026_05_15.md)** — Complete session record. Integrated values + GWC feedback. Applied locked template, poetic subject, justified text, no em dashes. Fixed Gmail rendering issue. Key learning: warm bench emails should incorporate both values + GWC feedback when available. Pilot sent to Ayesha + Jawwad. Status: ✅ PRODUCTION READY.
 
 ---
 
@@ -48,6 +49,7 @@
 
 ### Locked Approaches & Templates (_locked/)
 - [Warm Bench Final Locked Approach](_locked/warm_bench_final_locked_approach.md) — Haroon Yasin framework, 800-1100 words, poetic subjects, locked approach.
+- **[🔒 Warm Bench Subject Lines - Locked Pattern (2026-05-15)](_locked/warm_bench_subject_lines_locked.md)** — CRITICAL. Subject lines must be poetic, story-based, tied to specific interview moment. Examples: "The Principal's Expressions Changed When Data Spoke" (✅) vs "Hajra Sajjad - CPD Coach Position Update" (❌). Pattern: [MOMENT] + [ACTION/REALIZATION] + [CONSEQUENCE]. Status: 🔒 LOCKED IN.
 - [Attendance Report Complete Template](_locked/attendance_report_complete_template.md) — Stat boxes, colors, table structure, PDF/HTML format locked.
 - **[🔒 Locked Exploratory Call Invite (2026-05-15)](locked_exploratory_call_invite_approach.md)** — 30-minute calls for candidates without immediate role fit. Body text locked word-for-word. Links (booking + Fundraising Overview doc) locked. Design locked to universal template. Scripts: send_exploratory_call_batch_pilot.py + send_exploratory_call_batch_live.py. Tested with 4 candidates 2026-05-15. Status: ✅ PRODUCTION READY.
 - **[🔒 LOCKED Email Template — ALL Candidate Communication (2026-05-13)](locked_email_template_interview_invites_FINAL_2026_05_13.md)** — PRODUCTION READY. Universal for ALL candidate emails: invites (values, warm bench, case study, GWC, zero-in, final, offer), rejections, exploratory calls, follow-ups. Design locked: 775px white card in #e5e7e2 wrapper on #f5f5f5 bg. Georgia serif, 34px logo, 17px body, 1.85 line-height. NO DESIGN DEVIATIONS. Content-only adaptability.
