@@ -24,6 +24,7 @@
 - [Lessons Learned Log](_session/lessons_learned.md) — Structured append-only log: date, task, mistake, correction, rule. Updated by Stop hook. Max 50 entries.
 - [Active Session Scratchpad](_session/session_active.md) — Live notes for current session: task, decisions, mistakes, files modified. Wiped at session start.
 - **[Session — Warm Bench Email for Hajra Sajjad, CPD Coach (2026-05-15)](_session/session_warm_bench_hajra_cpd_coach_2026_05_15.md)** — Complete session record. Integrated values + GWC feedback. Applied locked template, poetic subject, justified text, no em dashes. Fixed Gmail rendering issue. Key learning: warm bench emails should incorporate both values + GWC feedback when available. Pilot sent to Ayesha + Jawwad. Status: ✅ PRODUCTION READY.
+- **[Session — CPD Coach Warm Bench: 3 Pilots (Hajra, Unzeela, Fatima) — 2026-05-15](_session/session_cpd_coach_warmBench_3pilots_2026_05_15.md)** — All 3 pilots sent. Hajra (values+GWC) + Unzeela (values+GWC) + Fatima (GWC-only). Subject lines locked: poetic, story-based, tied to specific interview moment. GWC-only emails validated as viable. All locked formatting rules enforced. Status: ✅ PRODUCTION READY (pending approval).
 
 ---
 
