@@ -26,6 +26,12 @@
 
 ---
 
+## 🎯 SKILLS (Production Ready)
+
+- **[06_candidate-invites (2026-05-14)](../skills/06_candidate-invites/SKILL.md)** — Universal skill for ALL interview invites + opportunity emails. 4 types: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite. Design 100% locked (see locked templates). Reference scripts: send_values_interview_pilot.py, send_case_study_debrief_pilot.py, send_exploratory_call_pilot.py, send_warm_bench_invite_pilot.py. Workflow: customize script → pilot to Ayesha → approval → live send.
+
+---
+
 ## 🎯 MASTER REFERENCE (NEW — 2026-05-08)
 
 ### Consolidated Rules & Skills
@@ -43,7 +49,8 @@
 ### Locked Approaches & Templates (_locked/)
 - [Warm Bench Final Locked Approach](_locked/warm_bench_final_locked_approach.md) — Haroon Yasin framework, 800-1100 words, poetic subjects, locked approach.
 - [Attendance Report Complete Template](_locked/attendance_report_complete_template.md) — Stat boxes, colors, table structure, PDF/HTML format locked.
-- [Locked Email Template Interview Invites](_locked/locked_email_template_interview_invites.md) — Universal interview invite design (all stages), colors #f3f4f6, #2f4fa2, Georgia serif.
+- **[🔒 Locked Exploratory Call Invite (2026-05-15)](locked_exploratory_call_invite_approach.md)** — 30-minute calls for candidates without immediate role fit. Body text locked word-for-word. Links (booking + Fundraising Overview doc) locked. Design locked to universal template. Scripts: send_exploratory_call_batch_pilot.py + send_exploratory_call_batch_live.py. Tested with 4 candidates 2026-05-15. Status: ✅ PRODUCTION READY.
+- **[🔒 LOCKED Email Template — ALL Candidate Communication (2026-05-13)](locked_email_template_interview_invites_FINAL_2026_05_13.md)** — PRODUCTION READY. Universal for ALL candidate emails: invites (values, warm bench, case study, GWC, zero-in, final, offer), rejections, exploratory calls, follow-ups. Design locked: 775px white card in #e5e7e2 wrapper on #f5f5f5 bg. Georgia serif, 34px logo, 17px body, 1.85 line-height. NO DESIGN DEVIATIONS. Content-only adaptability.
 - [Values Feedback Email Tone — LOCKED (2026-05-12)](values_feedback_email_tone_locked_2026_05_12.md) — Complete tone guide. Warm, observational, deeply human. NO life-coach language. No internal jargon. 800+ words mandatory. Self-QA checklist included.
 - [Locked Templates Index](_locked/locked_templates_index.md) — Quick reference to all locked formats.
 

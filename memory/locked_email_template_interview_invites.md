@@ -8,11 +8,13 @@ originSessionId: continuation-2026-04-27
 
 # LOCKED EMAIL TEMPLATE — ALL INTERVIEW INVITES
 
-**STATUS:** 🔒 LOCKED FOR ALL FUTURE USE
+**STATUS:** 🔒 LOCKED FOR ALL FUTURE USE — UPDATED 2026-05-13
 
-**APPLIES TO:** Values interview invites, warm bench invites, zero-in calls, second-round interviews, any interview stage or position.
+**APPLIES TO:** ALL interview stage invites (values, warm bench, case study, GWC, zero-in, final, offer, etc.) for ALL positions.
 
-**RULE:** Every interview invite email MUST follow this template exactly. No variations. No deviations. This is the single source of truth.
+**RULE:** Every interview invite email MUST follow this template exactly. Design is universal across all stages — only content changes per stage type.
+
+**KEY UPDATE (2026-05-13):** Color palette simplified to 2 core colors. Blue for all text/headers/dividers. Purple for CTA button.
 
 ---
 
@@ -70,7 +72,7 @@ Text: {POSITION} or
 Font: Georgia, serif
 Size: 28px
 Font weight: bold
-Color: #2f4fa2 (deep royal blue)
+Color: #4169E1 (deep royal blue)
 Line height: 1.3
 Alignment: Center
 Margin bottom: 10px
@@ -90,7 +92,7 @@ Margin bottom: 32px
 ### 5. DIVIDER
 ```
 Height: 1px
-Color: #2f4fa2 (deep blue)
+Color: #4169E1 (deep blue)
 Width: 100%
 Margin: 30px 0 50px 0 (before body, after subtitle)
 ```
@@ -101,7 +103,7 @@ Text: Hi {candidate_name},  OR  Dear {candidate_name},
 Font: Georgia, serif
 Size: 20px
 Font weight: bold
-Color: #2f4fa2
+Color: #4169E1
 Line height: 1.3
 Margin bottom: 18px
 ```
@@ -119,7 +121,7 @@ Max content width: 480px (keep readable, don't stretch)
 
 ### 8. LINKS (Inline)
 ```
-Color: #2f4fa2 (deep blue, matches title)
+Color: #4169E1 (deep blue, matches title)
 Text decoration: none
 Font weight: bold
 Hover: same (no change)
@@ -136,7 +138,7 @@ Padding per item: 8px 0
 
 ### 10. CTA BUTTON
 ```
-Background color: #2f4fa2 (deep blue)
+Background color: #663399 (Rebecca purple)
 Text color: #ffffff (white)
 Font: Georgia, serif
 Size: 15px
@@ -192,20 +194,20 @@ Closing:
 
 ---
 
-## Color Palette (LOCKED)
+## Color Palette (LOCKED — UPDATED 2026-05-13)
 
 | Element | Color | Hex |
 |---------|-------|-----|
 | Page background | Very light grey | `#f3f4f6` |
 | Card background | White | `#ffffff` |
-| Primary accent (title, divider, button) | Deep royal blue | `#2f4fa2` |
-| Header label | Muted blue | `#4b6cb7` |
-| Subtitle, footer | Lighter blue | `#5a6ea8` |
+| All text/headers/divider/links | Royal blue | `#4169E1` |
+| CTA button background | Rebecca purple | `#663399` |
+| Button text | White | `#ffffff` |
 | Body text | Pure black | `#000000` |
 | Footer divider | Light grey | `#e8e8e8` |
 | Shadow | Black @ 4% opacity | `rgba(0,0,0,0.04)` |
 
-**NO OTHER COLORS ALLOWED.**
+**SIMPLIFIED 2-COLOR PALETTE. NO OTHER COLORS ALLOWED.**
 
 ---
 
@@ -248,7 +250,7 @@ Closing:
 
 ## What to AVOID (LOCKED — VIOLATIONS TRIGGER RESEND)
 
-- ❌ Bright blue (use only `#2f4fa2` and `#4b6cb7`)
+- ❌ Bright blue (use only `#4169E1` and `#4b6cb7`)
 - ❌ Reduced spacing (all margins/padding FIXED)
 - ❌ Modern UI fonts (Inter, Poppins, system sans-serif for body)
 - ❌ Grey body text (pure `#000000` only)
@@ -300,13 +302,13 @@ Before any interview invite email goes out, verify:
 - [ ] Padding is 60px top/bottom, 70px left/right
 - [ ] Logo is 48x48px, centered
 - [ ] Header label is Arial 12px, `#4b6cb7`, letter-spacing 2px
-- [ ] Title is Georgia 28px bold, `#2f4fa2`
+- [ ] Title is Georgia 28px bold, `#4169E1`
 - [ ] Subtitle is Georgia 15px, `#5a6ea8`
-- [ ] Divider is 1px, `#2f4fa2`, margin 30px 0 50px 0
-- [ ] Greeting is Georgia 20px bold, `#2f4fa2`
+- [ ] Divider is 1px, `#4169E1`, margin 30px 0 50px 0
+- [ ] Greeting is Georgia 20px bold, `#4169E1`
 - [ ] Body is Georgia 16px, `#000000`, line-height 1.75
-- [ ] Links are `#2f4fa2`, bold
-- [ ] Button is `#2f4fa2`, Georgia 15px bold, padding 14px 32px
+- [ ] Links are `#4169E1`, bold
+- [ ] Button is `#4169E1`, Georgia 15px bold, padding 14px 32px
 - [ ] Button subtitle is Georgia 14px, `#5a6ea8`
 - [ ] Footer divider is `#e8e8e8`, 1px
 - [ ] Closing text is Georgia, correct sizes/colors
