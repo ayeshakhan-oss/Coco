@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 Warm Bench Email - CPD Coach - Fatima Saeed
-Pilot send using LOCKED TEMPLATE (2026-05-15)
-GWC feedback only (no values interview data)
-Recipients: Ayesha Khan + Jawwad Ali
+LIVE send using LOCKED TEMPLATE
+Recipients: Fatima + CC to Ayesha Khan + Hasnat Tariq
 """
 
 import os
@@ -14,9 +13,11 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 sys.path.insert(0, 'c:/Agent Coco/scripts')
-from utils.safe_send import safe_sendmail
+from utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 load_dotenv()
+
+allow_candidate_addresses(["hajra2357@gmail.com", "unzilak21@gmail.com", "fatimasaeed030499@gmail.com"])
 
 SENDER = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -99,7 +100,6 @@ Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 
-# Locked template (from c:\Agent Coco\templates\warm_bench_email.html)
 html_body = """<!DOCTYPE html>
 <html>
 <head>
@@ -154,13 +154,15 @@ html_body = """<!DOCTYPE html>
 </html>
 """
 
-recipients = ["zeshan.dhillon@taleemabad.com", "ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
+candidate_email = "fatimasaeed030499@gmail.com"
+recipients = [candidate_email, "ayesha.khan@taleemabad.com", "hasnat.tariq@niete.edu.pk"]
 
 try:
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "[PILOT] " + subject
+    msg["Subject"] = subject
     msg["From"] = SENDER
-    msg["To"] = ", ".join(recipients)
+    msg["To"] = candidate_email
+    msg["CC"] = "ayesha.khan@taleemabad.com, hasnat.tariq@niete.edu.pk"
     msg.attach(MIMEText(html_body, "html"))
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -172,22 +174,16 @@ try:
         sender=SENDER,
         recipients=recipients,
         message=msg.as_string(),
-        context="warm_bench_cpd_coach_fatima_pilot"
+        context="warm_bench_cpd_coach_fatima_live"
     )
 
     server.quit()
 
-    print("PILOT SENT - Fatima Saeed")
-    print("Recipients: " + ", ".join(recipients))
-    print("Subject: [PILOT] " + subject)
-    print("Content:")
-    print("  - GWC feedback only (no values interview)")
-    print("  - Roleplay standout moment (tired teacher, empathy first)")
-    print("  - Intellectual curiosity, Bloom's Taxonomy, direct integrity")
-    print("  - Personal TFP fellowship motivation")
-    print("  - Word count: ~950 words")
-    print("  - Justified text, no em dashes, poetic subject")
+    print("LIVE SENT - Fatima Saeed")
+    print("To: " + candidate_email)
+    print("CC: ayesha.khan@taleemabad.com, hasnat.tariq@niete.edu.pk")
+    print("Subject: " + subject)
 
 except Exception as e:
-    print("Error sending pilot: " + str(e))
+    print("Error sending live: " + str(e))
     sys.exit(1)

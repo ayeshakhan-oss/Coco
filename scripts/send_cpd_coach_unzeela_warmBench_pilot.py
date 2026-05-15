@@ -53,11 +53,11 @@ There was also your conversation with the CEO about menstrual leave policy. You 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:16px 0; line-height:1.75; text-align:justify;">
-In your GWC roleplay with the tired, defensive teacher, something became clear. You didn't jump to solutions. You acknowledged the workload burden first. You let her know you understood. Then you offered low-effort, practical strategies - not prescriptive instructions. When you discussed what you might teach her using Bloom's Taxonomy, it wasn't theoretical. It was grounded in your understanding of how government school students actually learn. You're someone who knows curriculum deeply and applies it with compassion for context.
+In the coaching scenario with the tired, defensive teacher, something became clear. You didn't jump to solutions. You acknowledged the workload burden first. You let her know you understood. Then you offered low-effort, practical strategies - not prescriptive instructions. When you discussed what you might teach her using Bloom's Taxonomy, it wasn't theoretical. It was grounded in your understanding of how government school students actually learn. You're someone who knows curriculum deeply and applies it with compassion for context.
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:16px 0; line-height:1.75; text-align:justify;">
-But what the hiring manager noted was your intentional career trajectory. TFP fellowship in underserved communities. Then Khudi Institute, where you wanted to see alternative learning at institutional level. Now seeking to scale through teacher-facing work. Each move reflects skill-building, self-awareness, genuine intellectual curiosity about how people develop. Your closing questions - about coach training, programme metrics, emerging challenges - revealed you're entering this role not with willingness, but with genuine hunger to understand what works.
+But what really stayed with the room was your intentional career trajectory. TFP fellowship in underserved communities. Then Khudi Institute, where you wanted to see alternative learning at institutional level. Now seeking to scale through teacher-facing work. Each move reflects skill-building, self-awareness, genuine intellectual curiosity about how people develop. Your closing questions - about coach training, programme metrics, emerging challenges - revealed you're entering this role not with willingness, but with genuine hunger to understand what works.
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:32px 0 16px 0; line-height:1.75; text-align:justify;">
@@ -65,7 +65,7 @@ Here's the Honest Part
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:16px 0; line-height:1.75; text-align:justify;">
-Your interview stayed with us after the conversation ended. There was real discussion afterward. The way you lead with empathy, the way you take interpersonal risks, the way you stay with difficult things - those are clear. They're real. They matter. All six values demonstrated. GWC scores of 8/8/8.5. You are exactly the kind of coaching presence this work needs. That doesn't change based on one hiring decision.
+Your interview stayed with us after the conversation ended. There was real discussion afterward. The way you lead with empathy, the way you take interpersonal risks, the way you stay with difficult things - those are clear. They're real. They matter. You are exactly the kind of coaching presence this work needs. That doesn't change based on one hiring decision.
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:16px 0; line-height:1.75; text-align:justify;">
@@ -157,7 +157,7 @@ html_body = """<!DOCTYPE html>
 </html>
 """
 
-recipients = ["ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
+recipients = ["zeshan.dhillon@taleemabad.com", "ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
 
 try:
     msg = MIMEMultipart("alternative")

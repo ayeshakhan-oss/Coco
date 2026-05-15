@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 Warm Bench Email - CPD Coach - Hajra Sajjad
-Pilot send using LOCKED TEMPLATE (2026-05-04)
-Incorporates both values + GWC scorecard feedback
-Recipients: Ayesha Khan + Jawwad Ali
+LIVE send using LOCKED TEMPLATE
+Recipients: Hajra + CC to Ayesha Khan + Hasnat Tariq
 """
 
 import os
@@ -14,16 +13,18 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 sys.path.insert(0, 'c:/Agent Coco/scripts')
-from utils.safe_send import safe_sendmail
+from utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 load_dotenv()
+
+allow_candidate_addresses(["hajra2357@gmail.com", "unzilak21@gmail.com", "fatimasaeed030499@gmail.com"])
 
 SENDER = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 subject = "The Principal's Expressions Changed When Data Spoke"
 
-# Body content to be inserted into locked template
+# Body content (same as pilot)
 body_content = """
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 16px 0; line-height:1.75; text-align:justify;">
 This isn't a yes for now.
@@ -112,7 +113,6 @@ Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 
-# Locked template (from c:\Agent Coco\templates\warm_bench_email.html)
 html_body = """<!DOCTYPE html>
 <html>
 <head>
@@ -126,7 +126,6 @@ html_body = """<!DOCTYPE html>
     <td align="center" style="padding:60px 0;">
       <table cellpadding="0" cellspacing="0" border="0" width="620" style="background-color:#ffffff; border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.04);">
 
-        <!-- Candidate Name -->
         <tr>
           <td align="center" style="padding:60px 70px 10px 70px;">
             <h1 style="font-family:Georgia,serif; font-size:32px; font-weight:bold; color:#1565C0; margin:0; line-height:1.2;">
@@ -135,7 +134,6 @@ html_body = """<!DOCTYPE html>
           </td>
         </tr>
 
-        <!-- Position -->
         <tr>
           <td align="center" style="padding:0 70px 32px 70px;">
             <p style="font-family:Georgia,serif; font-size:14px; color:#7986CB; margin:0; line-height:1.4;">
@@ -144,7 +142,6 @@ html_body = """<!DOCTYPE html>
           </td>
         </tr>
 
-        <!-- Divider -->
         <tr>
           <td style="padding:30px 70px 50px 70px;">
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -155,7 +152,6 @@ html_body = """<!DOCTYPE html>
           </td>
         </tr>
 
-        <!-- Body Content -->
         <tr>
           <td style="padding:0 70px 50px 70px;">
             """ + body_content + """
@@ -171,41 +167,36 @@ html_body = """<!DOCTYPE html>
 </html>
 """
 
-recipients = ["zeshan.dhillon@taleemabad.com", "ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
+candidate_email = "hajra2357@gmail.com"
+recipients = [candidate_email, "ayesha.khan@taleemabad.com", "hasnat.tariq@niete.edu.pk"]
 
 try:
-    # Build email message
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = "[PILOT] " + subject
+    msg["Subject"] = subject
     msg["From"] = SENDER
-    msg["To"] = ", ".join(recipients)
+    msg["To"] = candidate_email
+    msg["CC"] = "ayesha.khan@taleemabad.com, hasnat.tariq@niete.edu.pk"
     msg.attach(MIMEText(html_body, "html"))
 
-    # Connect and send
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
     server.login(SENDER, PASSWORD)
 
-    # Use safe_sendmail bouncer
     safe_sendmail(
         smtp_server=server,
         sender=SENDER,
         recipients=recipients,
         message=msg.as_string(),
-        context="warm_bench_cpd_coach_hajra_expanded_gwc"
+        context="warm_bench_cpd_coach_hajra_live"
     )
 
     server.quit()
 
-    print("PILOT SENT - Expanded with GWC feedback")
-    print("Recipients: " + ", ".join(recipients))
-    print("Subject: [PILOT] " + subject)
-    print("Content:")
-    print("  - Values interview moments (Bridging Gaps, lesson plans, curriculum mapping)")
-    print("  - GWC insights (coaching mindset, scenario handling, mission-driven approach)")
-    print("  - Word count: ~1150 words")
-    print("  - Justified text, no em dashes, poetic subject")
+    print("LIVE SENT - Hajra Sajjad")
+    print("To: " + candidate_email)
+    print("CC: ayesha.khan@taleemabad.com, hasnat.tariq@niete.edu.pk")
+    print("Subject: " + subject)
 
 except Exception as e:
-    print("Error sending pilot: " + str(e))
+    print("Error sending live: " + str(e))
     sys.exit(1)
