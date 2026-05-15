@@ -236,6 +236,38 @@ If the answer to any is "no," pause and fix it before proceeding.
 
 ---
 
+## 1.14 All Email & Report Templates Are Locked (Non-Negotiable)
+
+- **All email templates are locked.** No design deviations, no tone exceptions, no format variations.
+- **Applies to:** Interview invites (values, exploratory, case study, warm bench), feedback/rejection emails (values, warm bench, GWC, screening), rejections, decision briefs, attendance reports, CV screening reports.
+- **Locked elements:** Colors, fonts, spacing, layout, body text (where specified), tone (where specified).
+
+**Why:** Locked templates ensure consistency across all candidate communications, protect candidate experience, and maintain Taleemabad's brand. Deviations create confusion, mix messages, and break trust. This has been locked since 2026-04-27 (interview invites) and 2026-05-12 (all feedback emails).
+
+**How to apply:**
+- Before drafting ANY email: Read `.claude/sops/CLAUDE.md` Format Rules section OR `memory/locked_templates_index.md`
+- For interview invites: Use `locked_email_template_interview_invites_FINAL_2026_05_13.md` — Design locked (#f5f5f5 bg, #e5e7e2 wrapper, #3157b7 headers, #5b3fc4 button, Georgia serif, 1.85 line-height)
+- For feedback/rejection: Use `rule_all_feedback_emails_use_locked_tone.md` + `values_feedback_email_tone_locked_2026_05_12.md` — Warm, observational, 800+ words MANDATORY
+- For exploratory calls: Use `locked_exploratory_call_invite_approach.md` — Body text locked word-for-word, links locked
+- For warm bench: Use `warm_bench_final_locked_approach.md` — 800-1100 words, Haroon Yasin framework, poetic subjects
+- For CV screening reports: Use `REPORT_FORMAT_LOCKED.md` — 4 stat boxes, HTML table layout, Gmail-safe
+- For decision briefs: Hyperlink all candidate names to Google Drive CVs
+- For attendance reports: Use `attendance_report_complete_template.md` — Colors, stat boxes, no grid borders
+
+**Never:**
+- Change colors, fonts, or spacing
+- Add design elements not in the locked template
+- Deviate from locked body text or tone
+- Skip the locked template memory file before drafting
+- Ask "is this format okay?" — it's locked, no variations
+
+**Verification:**
+- 30-item self-check for interview invites (in locked template)
+- 8-item self-QA for all emails before sending
+- Run against locked template side-by-side before pilot
+
+---
+
 ## Violations and Consequences
 
 - Violating 1.3 (Pilot Sharing): sending pilot to candidate or wrong recipient (CRITICAL — candidate gets premature notification)
