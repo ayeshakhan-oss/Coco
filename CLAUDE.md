@@ -7,11 +7,12 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ## 🎯 Before You Work
 
-1. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — **READ THIS FIRST** before any candidate/hiring work. All 6 skills audited, consolidated, current versions locked in. Conflicts resolved. Full details: `SKILL_CONSOLIDATION_AUDIT_2026_05_30.md`.
-2. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
-3. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
-4. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
-5. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
+1. **[WARM BENCH LOCKED FINAL (2026-05-30)](memory/warm_bench_locked_final_2026_05_30.md)** — **SINGLE SOURCE OF TRUTH** for warm bench emails. 13 locked rules. NO EM DASHES. Logo embedded. Read FIRST before any warm bench draft.
+2. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — All 6 skills audited, consolidated, current versions locked in.
+3. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
+4. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
+5. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
+6. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
 
 ---
 
