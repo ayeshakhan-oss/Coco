@@ -96,25 +96,54 @@ something important about who you are."
 
 ---
 
-## Signature HTML (CRITICAL - Prevents "..." menu)
+## Signature HTML (EXACT FORMAT — LOCKED 2026-05-30)
 
 ```html
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:30px 0 0 0; line-height:1.6;">
-Warm regards,<br/>
-<span style="font-weight:bold;">People and Culture Team</span><br/>
-<span style="color:#1565C0; font-weight:bold;">Taleemabad</span>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
-<a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
-</p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
+<div class="signature">
+Warm regards,<br />
+<div class="signature-name">People and Culture Team</div>
+<div class="signature-company">Taleemabad</div>
+<br />
+<a href="mailto:hiring@taleemabad.com" style="color:#2f4fa2; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#2f4fa2; text-decoration:none;">www.taleemabad.com</a>
+<br /><br />
+<div class="signature-coco">Sent on behalf of Talent Acquisition Team by Coco</div>
+</div>
 ```
 
-**Why this works**: Simple <p> tags with basic styling. NO border-top divs (they cause Gmail to render "..." menu). NO complex nesting.
+**CSS Classes (REQUIRED):**
+```css
+.signature {
+  margin-top: 40px;
+  padding-top: 15px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+  color: #666;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+}
+.signature-name {
+  font-weight: bold;
+  color: #333;
+  margin: 5px 0 0 0;
+  font-size: 14px;
+}
+.signature-company {
+  font-weight: bold;
+  color: #2f4fa2;
+  margin: 0;
+  font-size: 14px;
+}
+.signature-coco {
+  font-size: 13px;
+  color: #888;
+  margin: 10px 0 0 0;
+}
+```
+
+**Why this works**: 
+- Simple <div> structure with class-based styling
+- NO border-top divs inside signature (they cause Gmail "..." menu)
+- Email links clickable and branded (#2f4fa2 Taleemabad blue)
+- Exact format for all warm bench emails (never deviate)
 
 ---
 
