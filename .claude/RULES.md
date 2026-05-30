@@ -482,6 +482,31 @@ Warm regards,<br/>
 - Wait for approval before live
 - No direct candidate emails without approval
 
+**Rule 2.5: NEVER Include [PILOT – ] Prefix in Live Emails (CRITICAL)**
+- **FORBIDDEN:** Sending live email with `[PILOT – Candidate Name]` in subject
+- **Pilot emails only:** `[PILOT – Name]` prefix ONLY for emails to Ayesha/internal team
+- **Live emails to candidates:** Must have CLEAN subject line, no `[PILOT]` mention
+- **Validation:** Before switching PILOT_MODE=False, assert `"[PILOT" not in subject`
+
+**Pattern (CORRECT):**
+```python
+SUBJECT_BASE = "When You Stop a Meeting to Protect Your Team"
+SUBJECT = f"[PILOT – Name] {SUBJECT_BASE}" if PILOT_MODE else SUBJECT_BASE
+```
+
+**Pattern (WRONG):**
+```python
+SUBJECT = "[PILOT – Name] When You Stop a Meeting to Protect Your Team"
+# Then just changing PILOT_MODE=False without updating SUBJECT
+```
+
+**Why:** Candidate receives email marked "[PILOT]" — unprofessional, appears like test email, breaks confidentiality of communication.
+
+**Self-QA Before Live Send:**
+- [ ] PILOT_MODE = False is set
+- [ ] Verify subject line does NOT contain `[PILOT`
+- [ ] Add assertion to catch this: `assert "[PILOT" not in msg["Subject"], "ERROR: Live email has [PILOT] in subject!"`
+
 **Rule 3: Gmail Threading Headers**
 - **For replies:** Add In-Reply-To + References headers
 - **Format:** In-Reply-To: <original_message_id>

@@ -16,6 +16,36 @@ type: reference
 
 ## CRITICAL RULES (Non-Negotiable)
 
+### ZERO. SUBJECT LINE — NO [PILOT – ] IN LIVE EMAILS (CRITICAL — 2026-05-30)
+
+**RULE:** When sending LIVE email to candidate, subject MUST be clean.
+
+❌ **FORBIDDEN:**
+```
+[PILOT – Huma Mumtaz] When You Stop a Meeting to Protect Your Team
+```
+
+✅ **CORRECT:**
+```
+When You Stop a Meeting to Protect Your Team
+```
+
+**Why:** 
+- `[PILOT – ]` prefix is ONLY for emails to Ayesha/internal team
+- Candidate should never see "[PILOT]" in their warm bench email
+- Appears unprofessional, looks like a test, breaks confidentiality
+
+**Implementation:**
+```python
+SUBJECT_BASE = "When You Stop a Meeting to Protect Your Team"
+SUBJECT = f"[PILOT – Name] {SUBJECT_BASE}" if PILOT_MODE else SUBJECT_BASE
+
+# Before live send, add assertion:
+assert "[PILOT" not in SUBJECT, "ERROR: Subject still has [PILOT] prefix!"
+```
+
+---
+
 ### 1. OPENING LINE (MANDATORY — EXACT)
 ```
 This is not a yes for now.

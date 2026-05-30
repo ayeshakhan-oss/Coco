@@ -93,7 +93,9 @@ All these SOPs fall under this skill:
 - For values feedback: pilot to Ayesha + Jawad ONLY
 - Never include candidate in pilot
 - Wait for approval before going live
-- Subject line: "[PILOT – Candidate Name] [Original Subject]"
+- Subject line (PILOT ONLY): "[PILOT – Candidate Name] [Original Subject]"
+- **CRITICAL:** Remove "[PILOT – ]" prefix BEFORE sending live email to candidate
+- **NEVER send live email with [PILOT – ] in subject line to candidate**
 
 **Self-QA Before Sending:**
 - [ ] Memory checked (MEMORY.md)
