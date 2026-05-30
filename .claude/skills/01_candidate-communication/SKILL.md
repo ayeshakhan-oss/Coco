@@ -54,10 +54,12 @@ All these SOPs fall under this skill:
    - 3 sections: What We Liked / Questions / Next Steps
    - Interview evidence required, no em dashes
 
-3. **Warm Bench Feedback** — `SOPs/01_Candidate_Communication/warm_bench_feedback_email.md`
-   - 800-1100 words (Haroon Yasin framework)
-   - 4 sections + P.S., poetic subject line
-   - Specific timestamps, no prescriptive advice
+3. **Warm Bench Feedback** — `SOPs/01_Candidate_Communication/warm_bench_feedback_email.md` / `memory/warm_bench_locked_rules_2026_05_30.md`
+   - 800-1100 words MANDATORY (Haroon Yasin framework)
+   - 4 sections + P.S.: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This"
+   - Poetic subject line tied to specific interview moment
+   - NO interviewer names, NO internal jargon (GWC/values/scorecard), NO comparative language
+   - Avoid recruiting abstractions (see memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md)
 
 4. **GWC Rejection Emails** — `SOPs/01_Candidate_Communication/gwc_rejection_emails.md`
    - Warm-tone rejections for GWC-cleared candidates
@@ -101,6 +103,138 @@ All these SOPs fall under this skill:
 - [ ] Pilot sent to Ayesha (never direct)
 - [ ] All special characters as HTML entities
 - [ ] No discrepancies vs RULES.md
+
+---
+
+## WARM BENCH EMAILS — LOCKED RULES (2026-05-30)
+
+**Reference:** Fatima Saeed warm bench email (May 15, 2026) — This is the gold standard for tone and structure
+
+**Critical Requirements:**
+
+### 1. OPENING LINE (MANDATORY)
+```
+This is not a yes for now.
+
+But we need to tell you something about what we saw in your interview 
+that the panel kept discussing afterward...
+```
+Never deviate from this opening.
+
+### 2. NEVER MENTION INTERVIEWER NAMES
+- ❌ "During your values conversation with Jawwad Ali on April 6..."
+- ✅ "You described a moment in your interview where..."
+- ✅ "When we asked about X, you said..."
+
+**Why:** Keeps focus on candidate, not on who interviewed them. More universal.
+
+### 3. HEADING STRUCTURE (EXACT — UPDATED May 15, 2026)
+```
+What Stayed With Us
+Here's the Honest Part
+Where We Want to Leave This
+```
+Use these three headings exactly. No variations.
+
+### 4. NEVER USE INTERNAL JARGON
+❌ FORBIDDEN: "values interview", "GWC interview", "values scorecard", "case study", "KCD", "warm bench"
+✅ ALLOWED: "your interview", "when we asked you about...", "the moment you described...", "during our conversation"
+
+**Why:** Jargon feels internal. Candidates don't know these terms. Use human language.
+
+### 5. AVOID RECRUITING ABSTRACTIONS (CRITICAL)
+See `memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md` for complete guidance.
+
+❌ Never use: "good candidate", "strong candidate", "impressive profile", "strong background", "capable person", "excellent fit"
+
+✅ Instead describe: Observed behaviors, character traits, demonstrated strengths
+- Instead of: "Your profile and background are genuinely strong"
+- Say: "The way you identify gaps, take initiative without being asked, and follow through even when it's hard—that showed up consistently"
+
+### 6. DON'T QUOTE FEEDBACK DIRECTLY
+❌ "The hiring manager feedback states: 'Communication could be more energetic and proactive.'"
+✅ "What showed up was someone who sees problems clearly, cares about people inside the resistance, and doesn't let discomfort be an excuse to stop."
+
+**Pattern:** Take the feedback intent, reframe it as observation of WHO THEY ARE, use positive language that affirms character.
+
+### 7. NEVER MENTION "ANOTHER CANDIDATE"
+- ❌ "Another candidate's background was a tighter fit"
+- ❌ "Someone else's experience profile matched better"
+- ✅ "We're moving into a specific phase where we need X capability"
+- ✅ "It's about fit between your strengths and our immediate strategic need"
+
+**Why:** Demotivates candidates. Makes them feel they "lost" to someone.
+
+### 8. DECISION RATIONALE MUST BE CONCRETE
+- ❌ Vague: "situational, narrow, timing, specific moment needed"
+- ✅ Concrete: "These decisions are sometimes incredibly narrow and situational. We have one role. We made a choice that reflected something very specific about what we thought this moment needed. It wasn't about you not being right for the position. It was about us making a decision that, in the end, pointed somewhere else."
+
+### 9. TONE CHECKLIST
+- [ ] "We" voice (never "I")
+- [ ] Warm + observational (not clinical)
+- [ ] Specific interview moments (never generic)
+- [ ] No prescriptive advice ("You should...")
+- [ ] No life-coach language
+- [ ] Vulnerable (show company's perspective, not just candidate's gap)
+- [ ] Poetic (P.S. ties back to powerful moment)
+
+### 10. SECTION STRUCTURE
+**Section 1: What Stayed With Us**
+- 2-3 specific interview moments
+- Show what impressed the panel
+- Use "the panel kept discussing this afterward"
+- Affirm character, not just competence
+
+**Section 2: Here's the Honest Part**
+- Acknowledge the interview was strong
+- Include positive observations from scorecard (warmly integrated, not quoted)
+- Explain the decision was narrow/situational
+- Don't apologize; be matter-of-fact
+- Frame as "timing didn't align" not "you weren't good enough"
+
+**Section 3: Where We Want to Leave This**
+- Warm bench positioning (genuine, not obligatory)
+- Express interest in future connection
+- Affirm the kind of person they are
+- End with warmth, not finality
+
+**P.S.: The Powerful Echo**
+- Reference ONE powerful moment from interview
+- Tie it back to who they are
+- Emotional, brief, memorable
+- Candidate should screenshot this part
+
+### 11. HAROON YASIN BALANCE RULE (CRITICAL)
+See `memory/candidate_communication_quality_review_protocol_2026_05_30.md` for complete guidance.
+
+**Count specific praise examples vs. specific decision rationale examples.**
+- These counts should be equal or nearly equal
+- If praise examples = 3 stories, decision explanation should have ~3 equally concrete details
+- **Prevents the paradox:** "If you valued all this, why wasn't I selected?"
+
+**Test:** Could the candidate reasonably conclude "If they believed all this, why wasn't I selected?"
+- If yes: Your praise-to-decision ratio is imbalanced. Rebalance by increasing decision specificity.
+
+---
+
+## CANDIDATE COMMUNICATION QUALITY REVIEW (10-Point Checklist)
+
+Before sending ANY rejection, warm bench, GWC, or feedback email, run this checklist:
+
+**See `memory/candidate_communication_quality_review_protocol_2026_05_30.md` for detailed guidance.**
+
+- [ ] **Balance of Evidence:** Is praise specificity equal to decision specificity?
+- [ ] **Avoid Generic Labels:** Replace "good candidate", "strong profile" with observed character
+- [ ] **Concrete Feedback:** Is any feedback vague? Make concrete or remove.
+- [ ] **Endorsement Level Test:** Would candidate think "if you valued all this, why wasn't I selected?"
+- [ ] **Evidence Support:** Is every compliment earned through specific observations, not generic praise?
+- [ ] **Emotional Arc:** Does email flow through all 4 elements? (understand decision / why / what was valued / dignity)
+- [ ] **Character Over Assessment:** Replace evaluative labels with character observations
+- [ ] **Haroon Yasin Balance:** Praise examples ≈ Decision examples (count them)
+- [ ] **Concrete Decision Rationale:** Is the "why not" as specific as the "what we saw"?
+- [ ] **Final Test:** "Would I feel SEEN (not SCORED) if I received this?"
+
+**If any item fails:** Do not send. Fix and re-check before piloting to Ayesha.
 
 ---
 
@@ -155,6 +289,13 @@ All these SOPs fall under this skill:
 | Wrong HTML format | Misaligned with locked design | Print template, match exactly |
 | Prescriptive advice | "You should take a course..." | Frame as observation, not prescription |
 | No feedback widget | Missing engagement mechanism | Add widget code before final send |
+| Mentioning interviewer names (warm bench) | Makes email about interviewer, not candidate | Remove names; use "during your interview" |
+| Using internal jargon (GWC, values, scorecard) | Candidate doesn't know these terms | Replace with "your interview" or "our conversation" |
+| Quoting scorecard feedback directly | Feels clinical, not warm | Integrate warmly as observations |
+| Comparing to other candidates | Demotivates, makes candidate feel like they "lost" | Focus on YOUR needs, not their vs. another |
+| Recruiting abstractions ("strong candidate") | Sounds generic, not personal | Describe observed behaviors and character traits |
+| Imbalanced praise-to-decision ratio | Candidate feels "if you valued all this, why not me?" | Make decision rationale as specific as praise |
+| Vague decision explanation | Candidate doesn't understand why | Use Fatima-style concrete: "We have one role. We made a choice that reflected something very specific..." |
 
 ---
 
@@ -176,17 +317,24 @@ All these SOPs fall under this skill:
 
 **Locked Templates:**
 - v8 Email Design: `memory/_locked/locked_templates_index.md`
-- Warm Bench Framework: `memory/_locked/warm_bench_final_locked_approach.md`
+- Warm Bench Framework: `memory/_locked/warm_bench_final_locked_approach.md` (May 5, 2026 — SUPERSEDED by May 15 rules below)
 - Interview Invite Design: `memory/_locked/locked_email_template_interview_invites.md`
+
+**CRITICAL WARM BENCH RULES (2026-05-30 — LATEST):**
+- `memory/warm_bench_locked_rules_2026_05_30.md` — 10 locked rules + Fatima Saeed reference (May 15, 2026)
+- `memory/candidate_communication_quality_review_protocol_2026_05_30.md` — 10-point checklist + Haroon Yasin balance rule
+- `memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md` — Critical guidance on character-focused language
 
 **Reference Scripts:**
 - Job 36 values feedback: `scripts/jobs/job36/send_job36_values_feedback_junaid_jawad_formatted.py`
 - Warm bench: `scripts/warm_bench_locked.py`
+- Huma Mumtaz warm bench (reference): `scripts/warm_bench_huma_mumtaz_pilot.py`
 
 **Rules:**
 - Core Discipline: `RULES.md` (Rules 1-7)
 - Skill 2 (Rejection Emails): `RULES.md` (lines 170-201)
 - Skill 3 (Warm Bench): `RULES.md` (lines 204-251)
+- Candidate Communication Quality Review: `memory/candidate_communication_quality_review_protocol_2026_05_30.md`
 
 ---
 
@@ -198,8 +346,10 @@ I will send candidate communication emails with:
 - ✅ "We" voice, they/them pronouns
 - ✅ v8 HTML design (locked format)
 - ✅ Pilot to Ayesha first (never direct)
-- ✅ All 8-item checklist items passing
-- ✅ Feedback widget included
+- ✅ All 10-item checklist items passing (quality review protocol)
+- ✅ Haroon Yasin balance rule applied (praise ≈ decision specificity)
+- ✅ No recruiting abstractions (character-focused language only)
+- ✅ Warm bench: No interviewer names, no jargon, no comparative language, correct headings
 - ✅ No em dashes, no fabrication, no prescriptive advice
 
-**Status:** ✅ PRODUCTION READY
+**Status:** ✅ PRODUCTION READY — Updated 2026-05-30 with Fatima Saeed (May 15) locked rules, quality review protocol, and recruiting abstraction guidance
