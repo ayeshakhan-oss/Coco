@@ -143,7 +143,7 @@ BODY = f"""<html>
   <div class="wrapper">
     <div class="card">
       <div class="header">
-        <img src="https://taleemabad.org/img/logo.png" width="34" height="34" alt="Taleemabad" style="display:block;" />
+        <img src="cid:logo_taleemabad" width="34" height="34" alt="Taleemabad" style="display:block; border-radius:17px;" />
         <div class="header-title">Huma, We're Thinking of You</div>
         <div class="header-subtitle">A warm bench opportunity from Taleemabad</div>
       </div>
@@ -225,6 +225,15 @@ if __name__ == "__main__":
         msg["Cc"] = "hiring@taleemabad.com"
 
     msg.attach(MIMEText(BODY, "html"))
+
+    # Attach logo image
+    logo_path = os.path.join(root_dir, "assets", "logo_taleemabad.png")
+    if os.path.exists(logo_path):
+        with open(logo_path, "rb") as attachment:
+            img_part = MIMEImage(attachment.read(), name=os.path.basename(logo_path))
+            img_part.add_header("Content-ID", "<logo_taleemabad>")
+            img_part.add_header("Content-Disposition", "inline", filename=os.path.basename(logo_path))
+            msg.attach(img_part)
 
     # Send via safe_sendmail
     server = smtplib.SMTP("smtp.gmail.com", 587)
