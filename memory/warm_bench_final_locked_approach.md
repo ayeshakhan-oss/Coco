@@ -35,10 +35,16 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 
 **File:** `assets/logo_taleemabad.png`
 
-**HTML Reference:**
+**HTML Reference (EXACT):**
 ```html
-<img src="cid:logo_taleemabad" width="34" height="34" alt="Taleemabad" style="display:block; border-radius:17px;" />
+<img src="cid:logo_taleemabad" width="40" height="40" alt="Taleemabad" style="display:block; margin:0 auto 15px auto; border-radius:20px;" />
 ```
+
+**Why these styles:**
+- `display:block; margin:0 auto` — Centers logo horizontally in the middle
+- `width:40; height:40` — 40x40px size for visibility
+- `border-radius:20px` — Rounded corners (half of width/height)
+- `margin-bottom:15px` — Space between logo and title
 
 **Python Code (REQUIRED):**
 ```python

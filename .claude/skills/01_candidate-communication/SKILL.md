@@ -179,13 +179,22 @@ See `memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md`
 - [ ] Poetic (P.S. ties back to powerful moment)
 
 ### 10. LOGO EMBEDDING (REQUIRED — LOCKED 2026-05-30)
-**Never use external URL for logo.** Always embed directly using cid: content ID.
+**Never use external URL for logo.** Always embed directly using cid: content ID, **centered in the middle of the header**.
 
-**HTML:** `<img src="cid:logo_taleemabad" width="34" height="34" alt="Taleemabad" style="display:block; border-radius:17px;" />`
+**HTML (EXACT):**
+```html
+<img src="cid:logo_taleemabad" width="40" height="40" alt="Taleemabad" style="display:block; margin:0 auto 15px auto; border-radius:20px;" />
+```
+
+**Styling Requirements:**
+- `display:block; margin:0 auto` — Centers logo horizontally
+- `width:40; height:40` — 40x40px size
+- `border-radius:20px` — Rounded corners
+- `margin-bottom:15px` — Space from title
 
 **Python:** Attach logo from `assets/logo_taleemabad.png` using MIMEImage with Content-ID header.
 
-**Why:** External URLs fail in Gmail, Outlook, corporate networks. Embedded images render reliably everywhere.
+**Why:** External URLs fail in Gmail, Outlook, corporate networks. Embedded images render reliably everywhere. Centering ensures proper header alignment.
 
 ### 11. SIGNATURE FORMAT (EXACT — LOCKED 2026-05-30)
 ```
