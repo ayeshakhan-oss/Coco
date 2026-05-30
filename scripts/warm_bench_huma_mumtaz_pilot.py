@@ -20,7 +20,7 @@ script_dir = os.path.dirname(__file__)
 root_dir = os.path.join(script_dir, "..")
 sys.path.insert(0, root_dir)
 
-from scripts.utils.safe_send import safe_sendmail
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 load_dotenv(dotenv_path=os.path.join(root_dir, ".env"))
 
@@ -32,8 +32,7 @@ VALUES_INTERVIEWER = "Jawwad Ali"
 VALUES_DATE = "April 6, 2026"
 GWC_DATE = "April 13, 2026"
 
-PILOT_MODE = True
-PILOT_TO = "ayesha.khan@taleemabad.com"
+PILOT_MODE = False
 
 SENDER = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -220,9 +219,9 @@ if __name__ == "__main__":
         recipients = [PILOT_TO]
         msg["To"] = PILOT_TO
     else:
-        recipients = [CANDIDATE_EMAIL]
+        recipients = [CANDIDATE_EMAIL, "hiring@taleemabad.com", "ayesha.khan@taleemabad.com", "sabeena.abbasi@taleemabad.com"]
         msg["To"] = CANDIDATE_EMAIL
-        msg["Cc"] = "hiring@taleemabad.com"
+        msg["Cc"] = "hiring@taleemabad.com, ayesha.khan@taleemabad.com, sabeena.abbasi@taleemabad.com"
 
     msg.attach(MIMEText(BODY, "html"))
 
@@ -239,6 +238,9 @@ if __name__ == "__main__":
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
     server.login(SENDER, PASSWORD)
+
+    # Approve candidate address for sending
+    allow_candidate_addresses([CANDIDATE_EMAIL])
 
     safe_sendmail(
         smtp_server=server,
