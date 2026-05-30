@@ -20,11 +20,45 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 - Verified by adding multiple interview moments + deep analysis, NOT filler
 
 ### Structure (5 Parts)
-1. **Opening** - Lead with specific interview moment, show company vulnerability
-2. **"What Stayed With Us"** (Blue #1565C0 heading) — Updated May 15, 2026
-3. **"Here's the Honest Part"** (Blue heading) — Updated May 15, 2026
-4. **"Where We Want to Leave This"** (Blue heading) — Updated May 15, 2026
-5. **P.S.** (before signature) - Memorable moment, reinforcement
+1. **Logo + Header** - Taleemabad logo embedded (cid:logo_taleemabad), title, subtitle
+2. **Opening** - Lead with specific interview moment, show company vulnerability
+3. **"What Stayed With Us"** (Blue #1565C0 heading) — Updated May 15, 2026
+4. **"Here's the Honest Part"** (Blue heading) — Updated May 15, 2026
+5. **"Where We Want to Leave This"** (Blue heading) — Updated May 15, 2026
+6. **P.S.** (before signature) - Memorable moment, reinforcement
+
+---
+
+## Logo Implementation (LOCKED 2026-05-30)
+
+**Status:** Must embed logo directly in email (not URL-based)
+
+**File:** `assets/logo_taleemabad.png`
+
+**HTML Reference:**
+```html
+<img src="cid:logo_taleemabad" width="34" height="34" alt="Taleemabad" style="display:block; border-radius:17px;" />
+```
+
+**Python Code (REQUIRED):**
+```python
+from email.mime.image import MIMEImage
+import os
+
+logo_path = os.path.join(root_dir, "assets", "logo_taleemabad.png")
+if os.path.exists(logo_path):
+    with open(logo_path, "rb") as attachment:
+        img_part = MIMEImage(attachment.read(), name=os.path.basename(logo_path))
+        img_part.add_header("Content-ID", "<logo_taleemabad>")
+        img_part.add_header("Content-Disposition", "inline", filename=os.path.basename(logo_path))
+        msg.attach(img_part)
+```
+
+**Why this works:**
+- External URLs fail in many email clients (Gmail, Outlook, corporate networks block remote images)
+- Embedded images (cid:) render reliably across all email clients
+- Content-ID approach is industry standard for email logos
+- Inline disposition ensures logo displays in body, not as attachment
 
 ### Tone
 - "We" voice always (never "I")

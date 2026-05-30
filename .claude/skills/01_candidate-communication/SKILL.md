@@ -178,7 +178,16 @@ See `memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md`
 - [ ] Vulnerable (show company's perspective, not just candidate's gap)
 - [ ] Poetic (P.S. ties back to powerful moment)
 
-### 10. SIGNATURE FORMAT (EXACT — LOCKED 2026-05-30)
+### 10. LOGO EMBEDDING (REQUIRED — LOCKED 2026-05-30)
+**Never use external URL for logo.** Always embed directly using cid: content ID.
+
+**HTML:** `<img src="cid:logo_taleemabad" width="34" height="34" alt="Taleemabad" style="display:block; border-radius:17px;" />`
+
+**Python:** Attach logo from `assets/logo_taleemabad.png` using MIMEImage with Content-ID header.
+
+**Why:** External URLs fail in Gmail, Outlook, corporate networks. Embedded images render reliably everywhere.
+
+### 11. SIGNATURE FORMAT (EXACT — LOCKED 2026-05-30)
 ```
 Warm regards,
 People and Culture Team
@@ -190,7 +199,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 ```
 **Never deviate.** Use exact HTML structure and CSS classes from memory/warm_bench_final_locked_approach.md. Blue links (#2f4fa2). Simple <div> structure with class-based styling.
 
-### 11. SECTION STRUCTURE
+### 12. SECTION STRUCTURE
 **Section 1: What Stayed With Us**
 - 2-3 specific interview moments
 - Show what impressed the panel
@@ -216,7 +225,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 - Emotional, brief, memorable
 - Candidate should screenshot this part
 
-### 12. HAROON YASIN BALANCE RULE (CRITICAL)
+### 13. HAROON YASIN BALANCE RULE (CRITICAL)
 See `memory/candidate_communication_quality_review_protocol_2026_05_30.md` for complete guidance.
 
 **Count specific praise examples vs. specific decision rationale examples.**
