@@ -7,10 +7,11 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ## 🎯 Before You Work
 
-1. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
-2. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
-3. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
-4. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
+1. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — **READ THIS FIRST** before any candidate/hiring work. All 6 skills audited, consolidated, current versions locked in. Conflicts resolved. Full details: `SKILL_CONSOLIDATION_AUDIT_2026_05_30.md`.
+2. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
+3. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
+4. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
+5. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
 
 ---
 

@@ -8,7 +8,7 @@ Sends to Ayesha for approval before going live
 import sys
 sys.path.insert(0, 'c:/Agent Coco')
 
-from scripts.utils.safe_send import safe_sendmail
+from scripts.utils.safe_send import safe_sendmail, allow_candidate_addresses
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -17,16 +17,16 @@ import os
 from dotenv import load_dotenv
 
 # Configuration
-CANDIDATE_NAME = "Maya Patel"
+CANDIDATE_NAME = "Falah Khan"
 BOOKING_LINK = "https://calendar.app.google/r1Rj1b1UMiAqonDs5"
 DOCUMENT_LINK = "https://drive.google.com/file/d/1VV_gcRRBpt8LtYeILsRzAF320D4jP-Kv/view?usp=sharing"
 
-PILOT_MODE = True
+PILOT_MODE = False
 PILOT_TO = "ayesha.khan@taleemabad.com"
 
 # Email addresses
-TO = [PILOT_TO] if PILOT_MODE else ["maya.patel@example.com"]
-CC = [] if PILOT_MODE else ["ayesha.khan@taleemabad.com", "hiring@taleemabad.com"]
+TO = [PILOT_TO] if PILOT_MODE else ["falah.khan1511@gmail.com"]
+CC = [] if PILOT_MODE else ["ayesha.khan@taleemabad.com", "hiring@taleemabad.com", "sabeena.abbasi@taleemabad.com"]
 
 SUBJECT = f"Let's Chat — {CANDIDATE_NAME}"
 
@@ -171,8 +171,12 @@ HTML_BODY = f"""
 """
 
 def send_pilot():
-    """Send exploratory call pilot to Ayesha"""
+    """Send exploratory call invite"""
     load_dotenv()
+
+    # Whitelist candidate address for bouncer (if live send)
+    if not PILOT_MODE:
+        allow_candidate_addresses(TO)
 
     try:
         msg = MIMEMultipart('related')

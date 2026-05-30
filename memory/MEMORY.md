@@ -29,6 +29,10 @@
 
 ## 🎯 SKILLS (Production Ready)
 
+### All 6 Skills Consolidated (2026-05-30)
+- **[SKILLS CONSOLIDATION AUDIT](skills_consolidation_audit_2026_05_30.md)** — Complete audit of all 6 core skills. Current versions locked in. All conflicts resolved (warm bench, grid borders, tone, sourcing). Updated specs for Skill 2 Step 0, Skill 3 colors, Skill 4 Rules 1.12/1.13, Skill 5 Markaz timing, Skill 6 design locked. **READ BEFORE ANY CANDIDATE/HIRING WORK.** Full detailed audit: `SKILL_CONSOLIDATION_AUDIT_2026_05_30.md` (root).
+
+### Individual Skills
 - **[06_candidate-invites (2026-05-14)](../skills/06_candidate-invites/SKILL.md)** — Universal skill for ALL interview invites + opportunity emails. 4 types: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite. Design 100% locked (see locked templates). Reference scripts: send_values_interview_pilot.py, send_case_study_debrief_pilot.py, send_exploratory_call_pilot.py, send_warm_bench_invite_pilot.py. Workflow: customize script → pilot to Ayesha → approval → live send.
 
 ---

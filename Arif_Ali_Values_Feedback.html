@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Georgia, serif;
+            background-color: #f5f5f5;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-color: 900px;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a1a1a;
+            border-bottom: 3px solid #3157b7;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        .scorecard-header {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .value-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 1fr 1fr 80px;
+            gap: 20px;
+            border-bottom: 1px solid #eee;
+            padding: 25px 0;
+            align-items: start;
+        }
+        .value-row:last-child {
+            border-bottom: none;
+        }
+        .value-name {
+            font-weight: bold;
+            color: #1a1a1a;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .evidence {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .evidence-header {
+            font-weight: bold;
+            color: #3157b7;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: none;
+        }
+        .rating {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3157b7;
+            text-align: center;
+        }
+        .summary {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3157b7;
+        }
+        .summary h3 {
+            margin: 0 0 10px 0;
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+        .summary p {
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>ARIF ALI — VALUES INTERVIEW FEEDBACK</h1>
+
+<div class="scorecard-header">
+<strong>Position:</strong> Senior Product Manager (Job ID 20) | <strong>Date:</strong> 2026-05-19 | <strong>App ID:</strong> 3046<br>
+<strong>Interviewer:</strong> Ayesha Khan | <strong>Duration:</strong> 32 minutes<br>
+<strong>Recording:</strong> https://fathom.video/share/vaxsNwjAh7ww1KDGE4xUPqHFxt71JAYK
+</div>
+
+<!-- VALUE 1 -->
+<div class="value-row">
+    <div class="value-name">Don't Walk Away from Hard Things</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        Released product with critical NDP/UI/UX issues affecting production. Engaged directly in infrastructure-level debugging rather than reverting. Also volunteered for RedConnect integration migration ($12K-30K/month cost reduction) when every other PM declined citing "difficult job" with "lot of issues." Their entire booking workflow relied on RedConnect API; failure would lose substantial revenue. Shows willingness to tackle high-stakes challenges others avoided.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Demonstrates operational persistence (staying with technical problems until resolved) but lacks emotional or interpersonal depth. Describes *what* happened and *that* he stayed, not *why* it mattered or what he learned. Language is transactional: "I had to drop it"—suggesting obligation rather than purposeful engagement. For a Group PM, persistence should manifest in team conflict navigation, standing firm on unpopular principles, strategic ambiguity wrestling. His examples are operational (bug fixes, migrations) rather than interpersonal or strategic.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        "I had to drop it...production level issues and UI/UX issues." RedConnect: "Everyone told that this a difficult job...So I have to it, and I have to it."
+    </div>
+    <div class="rating">+</div>
+</div>
+
+<!-- VALUE 2 -->
+<div class="value-row">
+    <div class="value-name">All for One and One for All</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        Covered for senior developer who made critical error (untested PR crashed production on NYC launch day). When asked about valued peer, deflected to "whole team" rather than naming individuals. Emphasizes one-on-ones as best way to surface quiet voices. Manages ~40 employees; frames tasks as "given as a team." Values giving credit to team.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Shows procedural teamwork (one-on-ones exist, tasks framed as team efforts) but not emotional teamwork (celebrating wins, lifting individuals, building trust through vulnerability). NYC intervention was necessary but narrative suggests individual rescue ("I covered it") rather than shared learning. Language is process-heavy but light on emotional resonance or specific examples of lifting teammates. Doesn't demonstrate warmth or genuine investment. For Group PM, ability to model and build culture is critical—if team doesn't feel celebrated or deeply connected, it affects morale, retention, and hard-problem capacity.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        <strong>NYC:</strong> "Without testing, was a PR merchant in production. Production crashed on the launch of the day. So at that time, I covered it."<br>
+        <strong>Team Credit:</strong> "If direct a team, that would direct a full credit to my [team]."
+    </div>
+    <div class="rating">+/-</div>
+</div>
+
+<!-- VALUE 3 -->
+<div class="value-row">
+    <div class="value-name">Continuously Improve Our Craft</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        Proactively identified cloud AI as critical technology. Pursuing formal certification; applying cloud AI tools to actual development processes. Learning bidirectionally from QA team: "I have learned that deep team. What the same thing I'm going to push." At Microsoft, learned superior testing methodology from junior female colleague (mutations, automation, data-based testing) rather than defending his own approach. Adopted her process and now recommends it. Shows intellectual humility and active upskilling tied to real work.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Learning is genuine but articulation of *why* and *what specifically discovered* is surface-level. Tells us *what* he's learning (cloud AI, testing practices) but not *why* it matters to business or what specific insights gained. No reflection like: "I realized cloud-native architecture would reduce our dependency on RedConnect," or "Deep testing helped me understand production bug costs." Learning appears competent but not reflective—collecting skills without weaving into coherent strategy. For Group PM, you need to translate craft improvements into product strategy: not just that cloud AI exists, but *when* and *how* to apply it.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        <strong>Cloud AI:</strong> "Now, the new thing is cloud AI...we use cloud AI tools...I have lot of stuff in cloud...certification...in cloud applications."<br>
+        <strong>QA:</strong> "I have learned that deep team. What the same thing I'm going to push."
+    </div>
+    <div class="rating">+</div>
+</div>
+
+<!-- VALUE 4 -->
+<div class="value-row">
+    <div class="value-name">Have Courageous Conversations</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        Participated in high-stakes conversations. During company layoffs (45 people, one week), had CEO meetings on firing decisions, then called affected employees to inform them. Explained business rationale (tourism company consolidation). Also received difficult feedback about YP/timing/process that initially seemed wrong; after reflection, realized it was valid and adjusted his approach. Shows receptiveness and not defensive.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Can participate in difficult *business* conversations and receive feedback, but no evidence of difficult *interpersonal* conversations common at Group PM level (performance feedback, peer strategy conflict, vulnerability about own mistakes, navigating unsupported situations). Examples are about business realities (layoffs, market changes), not people realities (trust, conflict, empathy, accountability). Responses remain transactional: "I had to call them and informed them." Missing: how he handled emotional dimension (shock, grief, pushback), how he managed own emotions, how he used empathy. For Group PM where peer conversations are frequent, examples lean to "business conversations" rather than "people conversations."
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        <strong>Layoffs:</strong> "I called them and started [informing them]...we able to get from the online industry that we need to have replace together."<br>
+        <strong>Feedback:</strong> "So then I realized that YP has able to do it. So I have changed own process."
+    </div>
+    <div class="rating">+/-</div>
+</div>
+
+<!-- VALUE 5 -->
+<div class="value-row">
+    <div class="value-name">Don't Hold On Too Tight</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        At Microsoft, junior female colleague had superior testing methodology. Rather than defend his approach, he learned from her and adopted her process. No defensive ego; genuine intellectual humility. Currently creates roadmaps but hands projects to junior PMs for execution and development. Doesn't maintain control; explicitly lets go so juniors can develop craft and gain experience. Shows comfort with distributed ownership—enabling others to grow rather than becoming a bottleneck.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Examples demonstrate *process flexibility* and delegation but lack *strategic flexibility*—ability to pivot cherished strategy when market conditions change. Examples are about adopting better techniques (colleague's testing method) and delegating execution (junior PM's roadmap), not about holding strategic direction strongly then admitting it was wrong. For Group PM, "Don't Hold On Too Tight" also means: admitting product hypothesis was wrong, pivoting entire roadmap based on market feedback, changing mind about hire or team structure. Delegation and technical flexibility are solid, but *strategic* letting-go isn't demonstrated.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        <strong>Microsoft:</strong> "A female staff, colleague...was very impressed with the process...I was able to script...I was able to mutations."<br>
+        <strong>Current:</strong> "We have three products...then I hand over to [junior PM]...That's right."
+    </div>
+    <div class="rating">+</div>
+</div>
+
+<!-- VALUE 6 -->
+<div class="value-row">
+    <div class="value-name">Practice Joy</div>
+    <div class="evidence">
+        <div class="evidence-header">Deep-Dive Evidence</div>
+        Self-describes as "smiling emoji": "Because I think that I'm going [to smile whether I] meet deadlines or miss...That's good." Shows positive attitude. Actively invests in team joy through structured, low-cost outings: F9 bowling, Megazone, lunch activities. "Having good time together is important—most important part of the team." Thoughtful about creating team connection moments. Emphasizes no financial cost to individuals. Earlier mentioned personal interests: hiking, adventures, cricket, football—"very passionate about the mountains and hiking."
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Curve-Ball Evidence</div>
+        Gap: hasn't articulated what personally brings him joy or sustains him emotionally. Earlier mentioned hobbies (hiking, mountains, cricket, football) but never connected them to work or how they fuel leadership. Smiling emoji answer is more stoic acceptance than genuine joy: "I maintain positive attitude regardless" vs. "this brings me joy." For leadership: Do you have outlets keeping you energized for team? Do you model healthy life balance? Are you drawing from genuine joy or burning out while maintaining smile? Team bonding is good but it's *group* joy, not *personal* joy. Stoic optimism could mask lack of genuine joy or connection to purpose. Risk: leaders without personal joy sources burn out and create depleted teams.
+    </div>
+    <div class="evidence">
+        <div class="evidence-header">Micro-Case Evidence</div>
+        <strong>Emoji:</strong> "Smile. Why? Because I think that I'm going [to be happy whether I] meet deadlines or miss...That's good."<br>
+        <strong>Team:</strong> "The best thing is go outing...F9 is the Megazone...that's the most important part the team."
+    </div>
+    <div class="rating">+/-</div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+    <h3>SCORING SUMMARY</h3>
+    <p><strong>Pluses (3):</strong> Don't Walk Away, Continuously Improve Our Craft, Don't Hold On Too Tight</p>
+    <p><strong>Plus-Minuses (3):</strong> All for One and One for All, Have Courageous Conversations, Practice Joy</p>
+    <p><strong>Minuses (0):</strong> None</p>
+    <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;"><strong>Result:</strong> OUT (≥3 plus-minuses triggers OUT per skill SOP logic)</p>
+    <p><strong>GWC Assessment:</strong> N/A (only for PASS candidates)</p>
+    <p><strong>Next Step:</strong> Feedback email to candidate on growth areas</p>
+</div>
+
+<div class="footer">
+    <p>Taleemabad Talent Acquisition | Arif Ali (App 3046) | Senior Product Manager | 2026-05-19</p>
+</div>
+
+</div>
+</body>
+</html>
