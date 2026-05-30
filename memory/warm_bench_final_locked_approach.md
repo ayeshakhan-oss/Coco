@@ -21,9 +21,9 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 
 ### Structure (5 Parts)
 1. **Opening** - Lead with specific interview moment, show company vulnerability
-2. **"What Genuinely Impressed Us"** (Blue #1565C0 heading)
-3. **"Here's the Part We Need to Be Honest About"** (Blue heading)
-4. **"Here's Where We Want to Leave Things"** (Blue heading)
+2. **"What Stayed With Us"** (Blue #1565C0 heading) — Updated May 15, 2026
+3. **"Here's the Honest Part"** (Blue heading) — Updated May 15, 2026
+4. **"Where We Want to Leave This"** (Blue heading) — Updated May 15, 2026
 5. **P.S.** (before signature) - Memorable moment, reinforcement
 
 ### Tone
@@ -61,26 +61,28 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 
 ### Section 1: Opening
 ```
-"This isn't a yes for now. But we need to tell you something about what we saw 
+"This is not a yes for now. But we need to tell you something about what we saw 
 in your interview that the panel kept discussing afterward, because it reveals 
 something important about who you are."
 
 [Specific interview story with timestamp + company vulnerability]
 ```
 
-### Section 2: "What Genuinely Impressed Us"
-- 1-2 additional moments from interview (different from opening)
-- Each with specific timestamp
+### Section 2: "What Stayed With Us"
+- 2-3 specific interview moments that impressed the panel
+- Each with specific timestamp or context
 - Deep analysis: "Why does this matter? What does it reveal about their character?"
 - Not just what they did, but why it's rare/valuable
+- Use: "the panel kept discussing this afterward"
 
-### Section 3: "Here's the Part We Need to Be Honest About"
-- Name the gap directly: "In our technical interview, we found..."
-- Frame as role-specific: "For this role, at this moment, that gap matters"
-- NOT a personal failing ("you lack X")
-- Show we understand the potential
+### Section 3: "Here's the Honest Part"
+- Acknowledge what the panel saw (warmly integrate scorecard observations)
+- Include positive observations from interview + scorecard (NOT quoted directly)
+- Explain the decision was narrow/situational
+- Don't apologize; be matter-of-fact
+- Frame as "timing didn't align" not "you weren't good enough"
 
-### Section 4: "Here's Where We Want to Leave Things"
+### Section 4: "Where We Want to Leave This"
 ⚠️ **CRITICAL**: Do NOT suggest what they should do
 - ❌ "You should go study X"
 - ❌ "We recommend taking courses in Y"
@@ -125,18 +127,22 @@ Sent on behalf of Talent Acquisition Team by Coco
 ---
 
 ## Self-QA Checklist (Before Sending)
-- [ ] Word count 800+
-- [ ] All 4 section headings present and blue
-- [ ] Opening has specific timestamp + company vulnerability
-- [ ] "What Genuinely Impressed Us" has 1-2 new moments
-- [ ] "Here's the Part We Need to Be Honest About" names the gap
-- [ ] "Here's Where We Want to Leave Things" does NOT prescribe
-- [ ] P.S. is memorable and tied to subject
-- [ ] Subject is poetic & story-based (NOT generic)
-- [ ] No "GWC", "KCD", "I" voice
+- [ ] Word count 800-1100
+- [ ] All 4 section headings present and blue (exact wording: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This")
+- [ ] Opening has "This is not a yes for now" (exact)
+- [ ] No interviewer names mentioned
+- [ ] No internal jargon (GWC, values, scorecard, case study, warm bench)
+- [ ] "What Stayed With Us" has 2-3 specific moments
+- [ ] "Here's the Honest Part" includes scorecard warmly integrated (not quoted)
+- [ ] "Where We Want to Leave This" does NOT prescribe ("you should...")
+- [ ] No comparative language ("another candidate", "tighter fit")
+- [ ] No recruiting abstractions ("good candidate", "strong profile", "excellent fit")
+- [ ] Praise examples ≈ Decision examples (Haroon Yasin balance)
+- [ ] P.S. is memorable and ties back to powerful moment from interview
+- [ ] Subject is poetic & story-based, tied to specific interview moment (NOT generic)
+- [ ] "We" voice throughout (never "I")
 - [ ] No em dashes (only hyphens in compounds)
 - [ ] Signature is simple HTML (no border-top divs)
-- [ ] All timestamps specific
 - [ ] P.S. before signature
 
 ---
@@ -178,6 +184,14 @@ Content: [Simple: stay connected if opportunity aligns - NO advice]
 
 ---
 
-**Last Updated**: May 5, 2026
-**Tested With**: Dur E Nayab, Daniyah Noor, Hassan Zafar, Mahnoor Hasan (JRA role)
+**Last Updated**: 2026-05-30 (Updated headings + rules from May 15 Fatima Saeed reference)
+**Original**: May 5, 2026
+**Tested With**: Dur E Nayab, Daniyah Noor, Hassan Zafar, Mahnoor Hasan (JRA role); Huma Mumtaz (Fundraising & Partnerships Manager, 2026-05-30)
 **Author**: Coco (Talent Acquisition Agent)
+
+**2026-05-30 Updates:**
+- Updated heading structure to match Fatima Saeed reference (May 15, 2026)
+- Added 10 locked rules from warm_bench_locked_rules_2026_05_30.md
+- Added quality review protocol (10-point checklist)
+- Added recruiting abstractions prevention guidance
+- Updated self-QA checklist with new rules (no names, no jargon, balance rule, etc.)
