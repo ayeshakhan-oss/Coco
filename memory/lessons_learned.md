@@ -35,6 +35,11 @@ max_entries: 50
 - **Correction:** Queried for all application records for candidate+job, identified most recent (2708), created new submission script targeting correct record.
 - **Rule:** ALWAYS query for duplicate application records before submitting values scorecard. Markaz UI displays most recently updated record. Submit to that one, not an older record.
 
+## 2026-05-30 — Warm Bench Live Email Subject Line (Huma Mumtaz)
+- **Mistake:** Sent LIVE email to huma.mumtaz3@gmail.com with subject "[PILOT – Huma Mumtaz] When You Stop a Meeting to Protect Your Team". The [PILOT – ] prefix should ONLY appear in pilot emails sent to Ayesha, NOT in live emails to candidates.
+- **Correction:** Cannot undo (email already sent). Must add validation logic to prevent in future.
+- **Rule:** Before switching PILOT_MODE = False, VERIFY subject line construction. Subject must be cleaned of "[PILOT – Candidate Name]" prefix for live sends. Add explicit subject line variable validation. [PILOT – ] prefix must ONLY exist when PILOT_MODE = True.
+
 ---
 
 ## Archived Rules
