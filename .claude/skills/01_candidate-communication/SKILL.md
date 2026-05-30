@@ -183,14 +183,14 @@ See `memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md`
 
 **HTML (EXACT):**
 ```html
-<img src="cid:logo_taleemabad" width="40" height="40" alt="Taleemabad" style="display:block; margin:0 auto 15px auto; border-radius:20px;" />
+<img src="cid:logo_taleemabad" width="48" height="48" alt="Taleemabad" style="display:block; margin:0 auto 20px auto; border-radius:0;" />
 ```
 
 **Styling Requirements:**
 - `display:block; margin:0 auto` — Centers logo horizontally
-- `width:40; height:40` — 40x40px size
-- `border-radius:20px` — Rounded corners
-- `margin-bottom:15px` — Space from title
+- `width:48; height:48` — 48x48px size (full visibility, no clipping)
+- `border-radius:0` — No rounding (preserves complete logo)
+- `margin-bottom:20px` — Space from title
 
 **Python:** Attach logo from `assets/logo_taleemabad.png` using MIMEImage with Content-ID header.
 

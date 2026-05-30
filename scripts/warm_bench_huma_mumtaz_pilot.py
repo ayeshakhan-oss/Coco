@@ -143,7 +143,7 @@ BODY = f"""<html>
   <div class="wrapper">
     <div class="card">
       <div class="header">
-        <img src="cid:logo_taleemabad" width="40" height="40" alt="Taleemabad" style="display:block; margin:0 auto 15px auto; border-radius:20px;" />
+        <img src="cid:logo_taleemabad" width="48" height="48" alt="Taleemabad" style="display:block; margin:0 auto 20px auto; border-radius:0;" />
         <div class="header-title">Huma, We're Thinking of You</div>
         <div class="header-subtitle">A warm bench opportunity from Taleemabad</div>
       </div>
