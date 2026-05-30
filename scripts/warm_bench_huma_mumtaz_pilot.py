@@ -165,7 +165,7 @@ You described a moment in a management meeting where you stopped the conversatio
 
 This wasn't theory for you. It was something you felt needed to be said, and you had the courage to interrupt a room of people to say it. That matters. We think a lot at Taleemabad about how we build organizations where people know they're treated fairly, where their voice matters, where they're not discussed in their absence. You clearly live that.
 
-There was also the Abu Dhabi government RFP story—discovering 2–3 days before deadline that everything they'd been building was in the wrong format. You didn't escalate it and step back. You pulled in colleagues, stayed at the office until 11pm, completely rebuilt the proposal to spec. You described feeling guilty that the design team's work couldn't be used. But you delivered on time anyway. That combination—moving fast under pressure AND genuinely caring about the human cost—is rare.
+There was also the Abu Dhabi government RFP story. You discovered 2-3 days before deadline that everything they'd been building was in the wrong format. You didn't escalate it and step back. You pulled in colleagues, stayed at the office until 11pm, completely rebuilt the proposal to spec. You described feeling guilty that the design team's work couldn't be used. But you delivered on time anyway. That combination of moving fast under pressure AND genuinely caring about the human cost is rare.
 
 And the financial modelling course. You identified a gap in your own skillset. No one required it. You took an Eastern European online program (Better Fund) with daily lectures and assignments. You're still working through it. You've told us you're not great at it yet. But you keep going. You don't look away from hard things.
 
@@ -175,9 +175,9 @@ The panel discussed all of this afterward. What showed up was someone who sees p
       <div class="section-heading">Here's the Honest Part</div>
 
       <p class="body-text">
-Your interview created genuine discussion. There was real appreciation for how you show up—for your integrity, for the way you care about the people you work with, for your willingness to learn things that scare you. The panel also saw your self-awareness, your clarity about what you know and what you're still learning, and the way you carry responsibility. None of that is ambiguous. The panel saw it.
+Your interview created genuine discussion. There was real appreciation for how you show up: for your integrity, for the way you care about the people you work with, for your willingness to learn things that scare you. The panel also saw your self-awareness, your clarity about what you know and what you're still learning, and the way you carry responsibility. None of that is ambiguous. The panel saw it.
 
-There was also an observation that your communication style—how energetic and proactive you come across in real time—resonated differently with different people in the room. Not a flaw. Just a note about how you present yourself in the moment.
+There was also an observation that your communication style, how energetic and proactive you come across in real time, resonated differently with different people in the room. Not a flaw. Just a note about how you present yourself in the moment.
 
 But here's where we need to be honest with you. These decisions are sometimes incredibly narrow and situational. We have one role. We made a choice that reflected something very specific about what we thought this moment needed. It wasn't about you not being right for the position. It was about us making a decision that, in the end, pointed somewhere else. That doesn't diminish what we saw. It just means the timing and the specific path didn't align this time.
       </p>
@@ -191,7 +191,7 @@ Your interview reminded the panel what it looks like when someone's personal int
       </p>
 
       <div class="ps">
-<strong>P.S.</strong> — That moment in the management meeting—when you stopped the room and said either include this person or do not have this conversation—that's leadership. Not the formal kind. The kind that changes how a team actually behaves. That's what your interview showed us. And that's exactly why this timing is difficult.
+<strong>P.S.</strong> That moment in the management meeting, when you stopped the room and said either include this person or do not have this conversation, that's leadership. Not the formal kind. The kind that changes how a team actually behaves. That's what your interview showed us. And that's exactly why this timing is difficult.
       </div>
 
       <div class="signature">

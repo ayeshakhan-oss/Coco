@@ -85,15 +85,17 @@ if os.path.exists(logo_path):
 - "This isn't a yes for now" (not "for this round")
 - "Technical interview" (not "GWC" - internal jargon)
 - Hyphens ONLY in compound words (co-founder, etc)
-- Specific timestamps throughout
+- Specific evidence and moments
 - Company context in opening ("we were worried...", "the room felt...")
+- Use periods, commas, colons, or hyphens for sentence separation
 
 ❌ **DON'T**:
-- Em dashes (— becomes -)
+- **EM DASHES (—) — ABSOLUTELY FORBIDDEN** (replace with period, comma, colon, or hyphen)
 - Prescriptive advice ("You should do X" in final section)
 - "I" voice
 - Generic timestamps
 - "GWC", "KCD", "TBC" terminology
+- External URLs for logos (use embedded cid:)
 
 ---
 

@@ -80,6 +80,7 @@ All these SOPs fall under this skill:
 - They/them pronouns (gender-neutral)
 - Emotionally careful, warm
 - Specific evidence from interview (never generic)
+- **NO EM DASHES (—)** — Replace with periods, commas, colons, or hyphens only
 
 **Format:**
 - v8 HTML design (blue headings, Georgia serif, justified)
@@ -326,6 +327,7 @@ Before sending ANY rejection, warm bench, GWC, or feedback email, run this check
 | Recruiting abstractions ("strong candidate") | Sounds generic, not personal | Describe observed behaviors and character traits |
 | Imbalanced praise-to-decision ratio | Candidate feels "if you valued all this, why not me?" | Make decision rationale as specific as praise |
 | Vague decision explanation | Candidate doesn't understand why | Use Fatima-style concrete: "We have one role. We made a choice that reflected something very specific..." |
+| Em dashes (—) in email | Violates SOP, looks AI-generated | Replace ALL em dashes with periods, commas, colons, or hyphens only |
 
 ---
 
