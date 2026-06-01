@@ -47,7 +47,8 @@ But we need to tell you something about what we saw in your interview
 that the panel kept discussing afterward...
 ```
 
-**Email Structure (4 Sections Required — WARM BENCH HEADINGS):**
+**Email Structure (5 Sections Required — WARM BENCH HEADINGS):**
+0. **Greeting** — "Hi [Candidate First Name]," (warm, personal)
 1. **What Stayed With Us** — 2-3 scorecard strengths with specific evidence (concrete, earned)
 2. **Here's the Honest Part** — 2-3 scorecard gaps, framed warmly (observable behaviors, not abstractions)
 3. **Where We Want to Leave This** — Actionable guidance, affirm potential, concrete fit patterns
@@ -89,6 +90,7 @@ that the panel kept discussing afterward...
 - Do NOT fabricate if data missing
 
 **Step 2: Draft with Evidence-Based Methodology**
+- **Greeting:** "Hi [First Name]," (warm, personal)
 - **What Stayed With Us:** 2-3 concrete strengths (earned from scorecard, not generic praise)
 - **Here's the Honest Part:** 2-3 concrete gaps (observable behaviors from scorecard, not abstract impressions)
   - Apply Haroon Yasin balance rule: praise examples ≈ decision examples in specificity
@@ -167,6 +169,7 @@ that the panel kept discussing afterward...
 
 ✅ Scorecard data extracted (Get It, Want It, Capacity, evidence)  
 ✅ No fabrication (scorecard data ONLY)  
+✅ Greeting included: "Hi [First Name],"  
 ✅ 4 sections + P.S. (Stayed, Honest, Leave, P.S.)  
 ✅ Opening: "This is not a yes for now."  
 ✅ Word count: 800+ MANDATORY  
@@ -189,6 +192,7 @@ that the panel kept discussing afterward...
 - [ ] Memory checked (warm bench + evidence-based rejection rationale reviewed)
 - [ ] GWC scorecard data extracted and verified
 - [ ] Reference email found & reviewed for tone/structure
+- [ ] Greeting: "Hi [First Name]," (warm, personal)
 - [ ] Opening: "This is not a yes for now." + specific moment
 - [ ] "What Stayed With Us": 2-3 strengths with scorecard evidence
 - [ ] "Here's the Honest Part": 2-3 gaps, warmly framed, includes positive observations
