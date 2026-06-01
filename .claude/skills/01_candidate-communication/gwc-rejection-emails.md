@@ -74,6 +74,18 @@ that the panel kept discussing afterward...
   - ✅ Observable: "Applied frameworks from elsewhere", "uncomfortable staying in dissonance", "resolved ambiguity into order"
 - **Reference:** See [Evidence-Based Rejection Rationale (2026-06-01)](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md) for 5-step concrete methodology
 
+**CRITICAL: Do NOT Infer Intent from Behavior (2026-06-01)** 🔴
+- NEVER tell candidates what they assumed, believed, thought, preferred, or were energized by
+- **Why:** Intent inferences are mind-reading. They make emails feel prosecutorial and candidates stop trusting the feedback.
+- **Forbidden words:** "you assumed", "you believed", "you thought", "you preferred", "you were energized by", "you weren't appreciating"
+- **How to replace:**
+  - ❌ "You appeared to assume preparation wasn't necessary"
+  - ✅ "What the panel left wanting was clearer evidence of how you think when given time to prepare"
+  - ❌ "You weren't yet appreciating the magnitude"
+  - ✅ "What left the panel uncertain was whether you had fully grasped the magnitude of that difference"
+- **Rule:** Stay with observations + unanswered questions. Never infer mental states.
+- **Reference:** See [No Intent Inference in Rejection Emails (2026-06-01)](../../memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)
+
 **Format:**
 - Taleemabad email template (locked): logo, blue header, blue title, blue line, justified Georgia
 - NO asterisks in section headings
@@ -162,6 +174,10 @@ that the panel kept discussing afterward...
 | ❌ "Lacked hunger/adaptability" | Impressionistic judgment, candidate can't respond | ✅ "Applied frameworks from elsewhere when role needed comfort with dissonance" |
 | ❌ "Not open to seeing things differently" | Abstract personality label | ✅ "When we described loose structure/shifting priorities, your instinct was to systematize rather than stay curious" |
 | ❌ "Confidence that you know" | Vague impression | ✅ "Your strength is clarity of vision. The role needs comfort staying in ambiguity without resolving it" |
+| **Intent inference (CRITICAL - 2026-06-01)** | **Tells candidate what they assumed/believed/thought → mind-reading, prosecutorial tone, kills trust** | **Replace with observations + unanswered questions. See: [No Intent Inference Rule](../../memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)** |
+| ❌ "You appeared to assume preparation wasn't necessary" | Mind-reading intent | ✅ "What the panel left wanting was clearer evidence of how you think when given time to prepare" |
+| ❌ "You weren't yet appreciating how different the challenge is" | Asserts mental state | ✅ "What left the panel uncertain was whether you had fully grasped how different this challenge is" |
+| ❌ "You were energized by stewardship, not creation" | Speculation about what drives her | ✅ "We wanted to see evidence of donor creation skills, not just stewardship" |
 
 ---
 
@@ -205,6 +221,11 @@ that the panel kept discussing afterward...
 - [ ] **"Can you show me?" test: Can candidate answer "What exactly did I do or say?"**
   - If rejection point is abstract (hunger, energy, openness), rewrite as observable behavior
   - Every rejection must point to specific interview moment or scorecard evidence
+- [ ] **NO INTENT INFERENCE: Scan for "you assumed/believed/thought/preferred/were energized by"**
+  - Replace all intent-words with observations + unanswered questions
+  - ❌ "You assumed X" → ✅ "What left us uncertain was X"
+  - ❌ "You weren't appreciating" → ✅ "The panel left wanting evidence that"
+  - Goal: Zero mind-reading, all observation
 - [ ] Word count 800+ words (only lower if insufficient content)
 - [ ] No recruiting abstractions (character-focused, not profile-focused)
 - [ ] No jargon (no GWC, Zero In Call, interviewer names)

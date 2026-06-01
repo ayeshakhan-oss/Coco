@@ -18,6 +18,7 @@
 - **[WARM BENCH EMAILS — LOCKED RULES (2026-05-30)](warm_bench_locked_rules_2026_05_30.md)** — 🔒 CRITICAL CORRECTIONS. Never mention interviewer names. Never use internal jargon (GWC, values, scorecard). Use exact heading format. Start with "This is not a yes for now." Reference: Fatima Saeed email (May 15). **READ BEFORE EVERY WARM BENCH EMAIL.**
 - **[CANDIDATE COMMUNICATION QUALITY REVIEW PROTOCOL (2026-05-30)](candidate_communication_quality_review_protocol_2026_05_30.md)** — 🔒 10-point checklist + Haroon Yasin balance rule. Balance praise specificity with decision specificity. Avoid generic labels. No "good candidate"—use character observations. **RUN BEFORE SENDING ANY CANDIDATE EMAIL.**
 - **[AVOID RECRUITING ABSTRACTIONS (2026-05-30)](candidate_communication_avoid_recruiting_abstractions_2026_05_30.md)** — 🔒 CRITICAL. Replace all generic recruiting phrases ("good candidate", "strong profile", "not a good fit") with observed behaviors and concrete realities. Candidate must feel "They SAW me" not "They SCORED me." **APPLIES TO ALL CANDIDATE EMAILS.**
+- **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL PRINCIPLE. Never tell candidates what they assumed, believed, thought, preferred, or were energized by. Use observations + unanswered questions instead. Replace "you assumed X" with "what left us uncertain was X". Eliminates mind-reading, keeps emails mentoring not prosecutorial. **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION EMAIL.**
 
 ---
 

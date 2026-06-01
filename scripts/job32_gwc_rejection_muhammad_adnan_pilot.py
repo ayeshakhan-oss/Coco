@@ -120,6 +120,9 @@ HTML_BODY = """
             <div class="subtitle">Taleemabad</div>
         </div>
 
+        <!-- Greeting -->
+        <p class="body-text">Hi Muhammad,</p>
+
         <!-- Opening -->
         <p class="body-text">This is not a yes for now.</p>
         <p class="body-text">But we need to tell you something about what we saw in your interview that the panel kept discussing afterward.</p>
@@ -129,7 +132,7 @@ HTML_BODY = """
 
         <p class="body-text">There's a particular kind of professional maturity that doesn't come from textbooks. It comes from having done hard things across multiple organizations and having the discipline to see them through. That's what showed up in your history.</p>
 
-        <p class="body-text">When you mapped the entire exam delivery process at British Council—the third-largest exam delivery operation globally—you didn't just document what existed. You observed existing practice, costed resources down to staff hours and venue logistics, built an envisioned process with input from both management and ground-level staff, and then had the judgment to pilot on a smaller October/November session before scaling to the May/June rollout. You developed a shift model that reduced invigilator headcount and costs without compromising quality. That's not someone executing a plan. That's someone thinking about systems.</p>
+        <p class="body-text">When you mapped the entire exam delivery process at British Council, the third-largest exam delivery operation globally, you didn't just document what existed. You observed existing practice, costed resources down to staff hours and venue logistics, built an envisioned process with input from both management and ground-level staff, and then had the judgment to pilot on a smaller October/November session before scaling to the May/June rollout. You developed a shift model that reduced invigilator headcount and costs without compromising quality. That's not someone executing a plan. That's someone thinking about systems.</p>
 
         <p class="body-text">What also stayed with the panel was how you handled the difficult moment at Naya Tel. You had a team member whose behavior was disrupting colleagues, creating constant workload comparisons. You didn't manage them out. Instead, you initiated a formal performance improvement plan, monitored progress across six months to a year, collected feedback, and when the improvement wasn't sufficient, you advocated for their transfer to a better-fit role rather than simply removing the problem. You championed that person's future. That speaks to something foundational: how you see people.</p>
 
@@ -142,27 +145,27 @@ HTML_BODY = """
 
         <p class="body-text">You came into the interview as someone who has genuinely done this work across three organizations. You understand the role. You grasped the scope, the challenges, the responsibilities. You understood what we were asking of you. That clarity came through.</p>
 
-        <p class="body-text">But here's what also came through, and this is where the conversation shifted for the panel. When we described how Fundraising actually operates here—the way priorities shift, the lack of set processes, the need to make decisions with incomplete information—we found ourselves noticing something. Your instinct was to apply frameworks you've built elsewhere. You asked good clarifying questions, but we found ourselves wondering: Have you worked in environments where the ground shifts frequently? Where yesterday's operating model doesn't apply today?</p>
+        <p class="body-text">But here's what also came through, and this is where the conversation shifted for the panel. the panel's final-round conversation with you surfaced something fundamental about operating contexts. The environment you've worked in has required careful adoption of AI, strong QA processes, and thoughtful validation before deployment. That's been appropriate for the contexts you've operated in. The challenge is that this role currently operates under very different constraints and assumptions.</p>
 
-        <p class="body-text">Your real strength—and we saw this consistently—is clarity of vision. You see what needs to be organized and you organize it. You excel at observing what exists, building frameworks for it, and executing consistently within those frameworks. But in Fundraising, that strength can become a limitation. Things here don't resolve into clear structures. A donor relationship might require four different approaches in four weeks. The job asks you to stay comfortable in that dissonance rather than resolve it into order.</p>
+        <p class="body-text">Taleemabad is an AI-native organization running at a sprint pace. The fundraising role you'd be stepping into isn't inheriting a built machine. It's building one from scratch under Sabeena, with a team of just three people. And the operating model requires something the panel named directly in your conversation: you would be "thrown into an AI flood" on day one. Not eventually. Not after onboarding. Day one. The systems, the processes, the speed of iteration: all of it runs on AI at a pace that assumes rapid experimentation and learning by doing. That would require operating differently than the sector-specific approach that has served you well elsewhere.</p>
 
-        <p class="body-text">In a role like this one, where structure is intentionally loose and decisions come quickly, we need someone whose instinct is to stay curious in the moment—to ask questions, observe patterns, and adapt their approach based on what they learn. That's a different muscle than the one you've spent your career building. And the honesty is: we weren't confident you'd find that generative rather than unsettling.</p>
+        <p class="body-text">Your strength, and we saw this throughout all conversations, is your ability to bring order to complexity. You excel at building frameworks, establishing discipline, creating systems that last. Those are superpowers in the right environment. But in a fundraising function being built from zero in an organization running at breakneck pace on AI tools you'd be learning as you go, the thing the role needs most isn't order; it's comfort with controlled chaos. It's the ability to move fast, test, fail, iterate with AI as your teammate, and trust that the structure will emerge later rather than trying to architect it before you start.</p>
 
-        <p class="body-text">This isn't about whether you'd succeed. You'd bring discipline and order to any role you touch, and that has tremendous value. But Fundraising doesn't need discipline and order right now—it needs someone who thrives in flux, who finds momentum in things that don't resolve cleanly. Those are different skill sets, and we need to honor what the role actually requires.</p>
+        <p class="body-text">This isn't about capability. You absolutely could learn the tools. But it's about what energizes you versus what drains you. Your career path shows you thrive when there's architecture to build, frameworks to optimize, rigor to install. You light up talking about process improvements and bringing order to chaos. The Fundraising role here right now needs someone who lights up doing the opposite: building in the chaos, treating uncertainty as the operating condition, letting the systems emerge from experimentation rather than preceding it.</p>
 
         <!-- Section 3 -->
         <div class="section-heading">Where We Want to Leave This</div>
 
-        <p class="body-text">You carry something genuine in how you lead and move through difficulty. The way you think about systems, the way you see people even when they're struggling, your commitment to follow through, the calm you bring under pressure—those aren't things people build accidentally. You've built them through real work, across real organizations, with real stakes.</p>
+        <p class="body-text">You carry something genuine in how you lead and move through difficulty. The way you think about systems, the way you see people even when they're struggling, your commitment to follow through, the calm you bring under pressure: those aren't things people build accidentally. You've built them through real work, across real organizations, with real stakes.</p>
 
-        <p class="body-text">Your real value is in transitions. Building systems. Bringing order to complexity. You'd be exceptional in a role where you're restructuring a function, or scaling Fundraising from chaos into process, or bringing discipline to a function that's lost its way. Those are the moments when what you've built your career doing becomes a superpower. This moment is different—we're trying to keep that productive chaos alive, not resolve it into infrastructure. But that doesn't diminish what you bring.</p>
+        <p class="body-text">Your real value is evident in how you approach building institutions. When a function exists but needs to be systematized. When a team is in place but lacks processes. When relationships exist but need infrastructure around them. You come in after the chaos and build the architecture that lasts. That's what you've done at the World Bank, at Naya Tel, at British Council. You see disorder and you create order that doesn't break. The strongest evidence from your career suggests you do exceptional work when a function reaches the stage where it needs to be institutionalized, scaled, and made durable. Taleemabad's Fundraising team may well need that capacity later, as it matures. Right now, at this stage, it needs someone whose energy and instinct move in a different direction.</p>
 
         <p class="body-text">We'd genuinely like to stay connected. If you're open to it, we'd rather not let this be the final word.</p>
 
         <!-- P.S. -->
         <div class="ps-section">
             <div class="ps-heading">P.S.</div>
-            <p class="body-text">The shift model you designed at British Council—the one that reduced costs without cutting corners—that's the kind of thinking that stays with people. Keep building those.</p>
+            <p class="body-text">the panel asked you a hard question: what's a real weakness, something you'd tell your wife and kids? And instead of the easy answer, you went deeper. You showed vulnerability. That honesty matters. That willingness to sit with discomfort and answer hard questions truthfully: that's a character strength that will serve you well in whatever you build next.</p>
         </div>
 
         <!-- Signature -->

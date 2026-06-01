@@ -7,12 +7,13 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ## 🎯 Before You Work
 
-1. **[WARM BENCH LOCKED FINAL (2026-05-30)](memory/warm_bench_locked_final_2026_05_30.md)** — **SINGLE SOURCE OF TRUTH** for warm bench emails. 13 locked rules. NO EM DASHES. Logo embedded. Read FIRST before any warm bench draft.
-2. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — All 6 skills audited, consolidated, current versions locked in.
-3. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
-4. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
-5. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
-6. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
+1. **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL. Never say "you assumed/believed/thought/preferred/were energized by". Use "what left us uncertain was..." instead. Scan for intent-words before EVERY rejection email.
+2. **[WARM BENCH LOCKED FINAL (2026-05-30)](memory/warm_bench_locked_final_2026_05_30.md)** — **SINGLE SOURCE OF TRUTH** for warm bench emails. 13 locked rules. NO EM DASHES. Logo embedded. Read FIRST before any warm bench draft.
+3. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — All 6 skills audited, consolidated, current versions locked in.
+4. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
+5. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
+6. **[TASK_SOP_MAP](memory/TASK_SOP_MAP.md)** — Task type → SOP file mapping
+7. **[memory/MEMORY.md](memory/MEMORY.md)** — Project knowledge index
 
 ---
 
@@ -22,7 +23,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 2. **Check memory first.** Read MEMORY.md before any task.
 3. **Run self-QA.** 8-item checklist before sending anything.
 4. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/rule_all_feedback_emails_use_locked_tone.md](memory/rule_all_feedback_emails_use_locked_tone.md) before drafting. No exceptions.
-5. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
+5. **🔒 NEVER INFER INTENT FROM BEHAVIOR** — No "you assumed", "you believed", "you thought", "you preferred", "you were energized by" in any rejection email. Replace with observations + questions: "what left us uncertain was..." instead of "you weren't appreciating..." See [memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md). **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION.**
+6. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
 
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 
