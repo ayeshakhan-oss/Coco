@@ -1,7 +1,7 @@
 ---
 name: gwc-rejection-emails
-description: Warm-tone rejection emails for GWC interview candidates. 400-770 words acceptable. Based on GWC scorecard data only. No internal jargon. No em dashes.
-compatibility: Requires SOPs/01_Candidate_Communication/gwc_rejection_emails.md, memory/email_template_format_FINAL.md, RULES.md
+description: Warm-tone rejection emails for GWC interview candidates. 800+ words MANDATORY (only lower if insufficient content). Uses warm bench headings and tone. Based on GWC scorecard data only. No internal jargon. No em dashes.
+compatibility: Requires memory/warm_bench_locked_final_2026_05_30.md, memory/email_template_format_FINAL.md, RULES.md
 ---
 
 # GWC Rejection Emails
@@ -21,43 +21,57 @@ Trigger this skill when:
 
 ---
 
-## Related SOP (Source of Truth)
+## Scope
 
-**Location:** `SOPs/01_Candidate_Communication/gwc_rejection_emails.md`
-
-This skill orchestrates the detailed procedure for GWC rejection emails. The SOP contains:
-- Complete email structure (5 sections: Opening, What We Saw, The Gap, What Matters Next, Closing)
-- Word count guidance (530-770 words; 400-450 acceptable if scorecard data limited)
-- 12-step process with data extraction and QA
-- Tone rules (warm, mentoring, no jargon, no GWC terminology)
-- Taleemabad email template (locked format)
-- Integrity checks and common mistakes
-- Quick checklist (12 items)
+This skill handles warm-tone GWC rejection emails using the updated evidence-based methodology (2026-06-01). Uses scorecard data with Haroon Yasin balance rule to ensure rejection rationale is as concrete as praise.
 
 ---
 
-## Universal Rules (All GWC Rejections)
+## Universal Rules (All GWC Rejections) — ALIGNED WITH WARM BENCH (2026-05-30)
 
 **Data Source (CRITICAL):**
 - Use GWC scorecard ONLY (Get It, Want It, Capacity scores + evidence)
 - NEVER fabricate details beyond scorecard
 - NEVER add context not in scorecard data
-- If data sparse, accept 400-450 words (don't force length)
 
-**Email Structure (5 Sections Required):**
-1. **Opening** (80-120 words) — Thank + decision + acknowledge directness
-2. **What We Saw** (150-200 words) — Strengths from scorecard with specific evidence
-3. **The Gap** (100-150 words) — Identify gap honestly but warmly, frame as growth opportunity
-4. **What Matters Next** (150-200 words) — Actionable guidance based on scorecard scores
-5. **Closing** (50-100 words) — Affirm potential, warm sign-off
+**Word Count (MANDATORY):**
+- **800+ words MANDATORY** (non-negotiable minimum)
+- Only exception: truly insufficient scorecard data (rare)
+- Expand with deeper analysis of WHY moments matter, not filler
 
-**Tone (Non-Negotiable):**
-- Warm, mentoring, never harsh
+**Opening Line (EXACT — from warm bench):**
+```
+This is not a yes for now.
+
+But we need to tell you something about what we saw in your interview 
+that the panel kept discussing afterward...
+```
+
+**Email Structure (4 Sections Required — WARM BENCH HEADINGS):**
+1. **What Stayed With Us** — 2-3 scorecard strengths with specific evidence (concrete, earned)
+2. **Here's the Honest Part** — 2-3 scorecard gaps, framed warmly (observable behaviors, not abstractions)
+3. **Where We Want to Leave This** — Actionable guidance, affirm potential, concrete fit patterns
+4. **P.S.** — Tie back to powerful moment from interview (emotional anchor)
+
+**Tone (Non-Negotiable — from warm bench):**
+- Warm, observational, never harsh or judgmental
 - "We" voice (never "I")
-- Evidence-based (every claim tied to scorecard)
+- Evidence-based (every claim tied to scorecard + specific interview moments)
+- NO recruiting abstractions ("good candidate", "strong profile" → observed behaviors instead)
 - NO jargon (NO "GWC", NO "Zero In Call", NO interviewer names)
 - NO internal language (write as if candidate doesn't know framework)
-- No em dashes (replace with periods, commas, colons)
+- NO em dashes (replace with periods, commas, colons)
+- Character-focused (integrity, courage, learning mindset) NOT profile-focused
+
+**CRITICAL: Haroon Yasin Balance Rule (2026-06-01)** 🔴
+- Praise examples in "What Stayed With Us" MUST equal decision examples in "Here's the Honest Part" in specificity + concreteness
+- If 3 concrete praise moments → Need 3 equally concrete decision moments
+- **Test:** Can candidate answer "What exactly did I do or say that led to this decision?" If no → rejection rationale is too abstract, rewrite
+- **Purpose:** Prevents paradox "If you valued all this, why wasn't I selected?"
+- **How to apply:** Ground rejection in OBSERVABLE BEHAVIORS, not impressions
+  - ❌ Abstract: "We needed hunger", "lacked adaptability", "not open to change"
+  - ✅ Observable: "Applied frameworks from elsewhere", "uncomfortable staying in dissonance", "resolved ambiguity into order"
+- **Reference:** See [Evidence-Based Rejection Rationale (2026-06-01)](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md) for 5-step concrete methodology
 
 **Format:**
 - Taleemabad email template (locked): logo, blue header, blue title, blue line, justified Georgia
@@ -66,105 +80,64 @@ This skill orchestrates the detailed procedure for GWC rejection emails. The SOP
 
 ---
 
-## Detailed Procedure
+## Procedure
 
-**Data Extraction (Markaz):**
-- Query GWC scorecard: Get It score, Want It score, Capacity score
-- Extract additionalComments field (interviewer notes)
-- Extract hiring manager feedback
-- Verify all fields have data (don't fabricate if missing)
+**Step 1: Extract Scorecard Data**
+- Get It, Want It, Capacity scores
+- Additional comments from interviewer
+- Evidence/moments from interview notes
+- Do NOT fabricate if data missing
 
-**Email Structure (5 Sections):**
-1. **Opening** (80-120 words): Thank for time, acknowledge engagement, state decision clearly ("We've decided not to move forward"), affirm directness
-2. **What We Saw** (150-200 words): 1-2 key strengths from scorecard with quotes from additionalComments, warm language, use "we" voice
-3. **The Gap** (100-150 words): Identify 1-2 areas with lower scores, frame as "where we're at", keep honest but warm
-4. **What Matters Next** (150-200 words): 1-2 actionable next steps, frame based on scorecard scores, growth mindset tone
-5. **Closing** (50-100 words): Affirm potential, warm sign-off, keep brief
+**Step 2: Draft with Evidence-Based Methodology**
+- **What Stayed With Us:** 2-3 concrete strengths (earned from scorecard, not generic praise)
+- **Here's the Honest Part:** 2-3 concrete gaps (observable behaviors from scorecard, not abstract impressions)
+  - Apply Haroon Yasin balance rule: praise examples ≈ decision examples in specificity
+  - Replace abstractions with observable behaviors
+  - Frame as skill-set mismatch, not capability judgment
+- **Where We Want to Leave This:** Concrete fit patterns (help candidate recognize future opportunities)
+- **P.S.:** Powerful interview moment that ties to who they are
 
-**Total Word Count:** 530-770 words (400-450 acceptable if scorecard data limited)
+**Step 3: Check Word Count**
+- 800+ words MANDATORY
+- Count before sending
 
-**Tone Rules:**
-- Warm, mentoring (never harsh)
-- "We" voice (never "I")
-- Evidence-based (every claim tied to scorecard)
-- NO jargon (NO "GWC", NO "Zero In Call", NO interviewer names)
-- No em dashes (replace with periods, commas, colons)
-- Honest but encouraging
+**Step 4: Run Self-QA Checklist**
+- All items must pass (including balance rule + "Can you show me?" test)
 
-**Taleemabad Email Format (LOCKED):**
-- Logo at top
-- Blue header: "PEOPLE & CULTURE • REJECTION DECISION"
-- Large blue title: "We're reflecting on your [Position] application"
-- Blue subtitle: [Position / Hackathon]
-- Blue horizontal line separator (#1565c0)
-- Body: justified Georgia serif
-- Section headings: blue bold (NO asterisks)
-
-**Reference & Approval:**
-- Find prior GWC rejection from same position (if available) for tone consistency
-- Side-by-side comparison before sending
-- No fabrication (use ONLY scorecard data)
+**Step 5: Pilot & Approve**
+- Send to Ayesha only (not candidate)
+- Wait for explicit approval
+- Go live after approval
 
 ---
 
-## Execution Discipline
+## Execution Discipline (5-Step Process)
 
-**STEP 1: IDENTIFY THIS SKILL**
-- User says "send GWC rejection" or "GWC candidate feedback"
-- Candidate has GWC scorecard data in Markaz
+**STEP 1: Load Memory & Resources**
+- Check memory: warm bench locked rules (memory/warm_bench_locked_final_2026_05_30.md)
+- Check memory: evidence-based rejection rationale (memory/lesson_evidence_based_rejection_rationale_2026_06_01.md)
+- Read this skill file (you're already here)
 
-**STEP 2: READ LOCKED RESOURCES**
-- RULES.md: Core Discipline (Rules 1-7)
-- memory/email_template_format_FINAL.md: Taleemabad template locked
-- SOPs/01_Candidate_Communication/gwc_rejection_emails.md: Full SOP
+**STEP 2: Extract & Verify Scorecard Data**
+- GWC scorecard: Get It, Want It, Capacity scores
+- Interview notes: specific moments, evidence
+- Do NOT fabricate missing data
 
-**STEP 3: EXTRACT SCORECARD DATA**
-- Query Markaz for: Get It score, Want It score, Capacity score
-- Extract: additionalComments field, hiring manager feedback
-- Verify: all fields have data (don't fabricate if missing)
+**STEP 3: Draft with Updated Methodology**
+- Apply Haroon Yasin balance rule from Step 1
+- Write "What Stayed With Us" (concrete strengths)
+- Write "Here's the Honest Part" (observable behaviors, not abstractions)
+- Write "Where We Want to Leave This" (concrete fit patterns)
+- Write P.S. (powerful moment)
+- Verify 800+ words
 
-**STEP 4: READ REFERENCE EMAIL**
-- Find prior GWC rejection from same position (if available)
-- Study: tone, section structure, evidence use
-- Use as baseline for consistency
+**STEP 4: Run Self-QA Checklist**
+- All items must pass (including balance rule + "Can you show me?" test)
+- If any fail, rewrite and recheck
 
-**STEP 5: DRAFT OPENING**
-- Thank for time and engagement
-- State decision clearly: "We've decided not to move forward"
-- Keep warm, direct (80-120 words)
-
-**STEP 6: DRAFT WHAT WE SAW**
-- Extract 1-2 key strengths from scores
-- Quote additionalComments field directly
-- Use warm, encouraging language (150-200 words)
-- Stay ONLY within scorecard data
-
-**STEP 7: DRAFT THE GAP**
-- Identify 1-2 areas where scores were lower
-- Frame as "where we're at" (not "where you failed")
-- Use scorecard evidence
-- Keep honest but warm (100-150 words)
-
-**STEP 8: DRAFT WHAT MATTERS NEXT**
-- Give 1-2 actionable next steps
-- Base on gap identified
-- Tie to scorecard scores if relevant
-- Encourage growth mindset (150-200 words)
-
-**STEP 9: DRAFT CLOSING**
-- Affirm potential
-- Warm sign-off
-- Keep brief (50-100 words)
-
-**STEP 10: RUN SELF-QA CHECKLIST**
-- All 10 items must pass before sending
-
-**STEP 11: COMPARE TO REFERENCE**
-- Side-by-side check: opening matches? sections match? tone consistent?
-
-**STEP 12: PILOT & APPROVE**
-- Send to Ayesha for approval
-- Wait for explicit approval
+**STEP 5: Pilot & Approve**
+- Send to Ayesha only
+- Wait for approval
 - Go live after approval
 
 ---
@@ -183,51 +156,67 @@ This skill orchestrates the detailed procedure for GWC rejection emails. The SOP
 | Interviewer names mentioned | Breaks confidentiality | Remove all internal names |
 | No actionable guidance | Feedback feels vague | Give 1-2 specific next steps |
 | Word count too low | Feels rushed | Expand to 400+ words minimum |
+| **Vague rejection rationale (NEW)** | **Praise is concrete, decision is abstract → "why wasn't I selected?" paradox** | **Ground decision in observable behaviors, not impressions. Use Haroon Yasin balance rule. See: [Evidence-Based Rejection Rationale](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md)** |
+| ❌ "Lacked hunger/adaptability" | Impressionistic judgment, candidate can't respond | ✅ "Applied frameworks from elsewhere when role needed comfort with dissonance" |
+| ❌ "Not open to seeing things differently" | Abstract personality label | ✅ "When we described loose structure/shifting priorities, your instinct was to systematize rather than stay curious" |
+| ❌ "Confidence that you know" | Vague impression | ✅ "Your strength is clarity of vision. The role needs comfort staying in ambiguity without resolving it" |
 
 ---
 
 ## Success Criteria
 
-✅ Data extracted from GWC scorecard (all fields filled)  
-✅ Email uses scorecard data ONLY (no fabrication)  
-✅ 5 sections present (Opening, Saw, Gap, Next, Closing)  
-✅ Word count 400+ (400-770 optimal)  
-✅ Tone warm, mentoring, never harsh  
-✅ No internal jargon (no GWC, Zero In Call, names)  
-✅ No em dashes (all replaced)  
-✅ "We" voice throughout  
-✅ Evidence-based (every claim tied to scorecard)  
-✅ All 10-item checklist items pass  
+✅ Scorecard data extracted (Get It, Want It, Capacity, evidence)  
+✅ No fabrication (scorecard data ONLY)  
+✅ 4 sections + P.S. (Stayed, Honest, Leave, P.S.)  
+✅ Opening: "This is not a yes for now."  
+✅ Word count: 800+ MANDATORY  
+✅ Haroon Yasin balance rule applied (praise ≈ decision specificity)  
+✅ Observable behaviors (not abstractions like "hunger", "energy")  
+✅ Role requirements as decision driver (not "you lack X")  
+✅ Concrete fit patterns (help candidate identify future opportunities)  
+✅ "Can you show me?" test passes (every rejection point is specific)  
+✅ No recruiting abstractions ("good candidate" → observed behaviors)  
+✅ No jargon (no GWC, Zero In Call, interviewer names)  
+✅ No em dashes (. , or : only)  
+✅ "We" voice, warm tone, mentoring (never harsh)  
+✅ All self-QA checklist items pass  
+✅ Aligned with warm bench + evidence-based methodology  
 
 ---
 
-## Self-QA Checklist (Before Sending)
+## Self-QA Checklist (Before Sending) — WARM BENCH ALIGNED + HAROON YASIN BALANCE
 
-- [ ] Memory checked (prior GWC rejections reviewed)
+- [ ] Memory checked (warm bench + evidence-based rejection rationale reviewed)
 - [ ] GWC scorecard data extracted and verified
 - [ ] Reference email found & reviewed for tone/structure
-- [ ] Opening thanks candidate, states decision clearly
-- [ ] What We Saw: 1-2 strengths from scorecard with quotes
-- [ ] The Gap: 1-2 areas with lower scores, framed warmly
-- [ ] What Matters Next: 1-2 actionable next steps
-- [ ] Closing affirms potential, warm sign-off
-- [ ] Word count 400+ words
+- [ ] Opening: "This is not a yes for now." + specific moment
+- [ ] "What Stayed With Us": 2-3 strengths with scorecard evidence
+- [ ] "Here's the Honest Part": 2-3 gaps, warmly framed, includes positive observations
+- [ ] Where We Want to Leave This": Actionable guidance, affirm potential
+- [ ] P.S.: Ties back to powerful moment from interview
+- [ ] **HAROON YASIN BALANCE: Praise examples = Decision examples (count them)**
+  - Count concrete praise moments (British Council scale, Naya Tel advocacy, etc.)
+  - Count concrete decision moments (applies frameworks, uncomfortable with dissonance, etc.)
+  - If unbalanced, rewrite decision section to match specificity
+- [ ] **"Can you show me?" test: Can candidate answer "What exactly did I do or say?"**
+  - If rejection point is abstract (hunger, energy, openness), rewrite as observable behavior
+  - Every rejection must point to specific interview moment or scorecard evidence
+- [ ] Word count 800+ words (only lower if insufficient content)
+- [ ] No recruiting abstractions (character-focused, not profile-focused)
 - [ ] No jargon (no GWC, Zero In Call, interviewer names)
-- [ ] No em dashes (all " — " replaced)
-- [ ] Tone checked: warm, mentoring, not harsh
+- [ ] No em dashes (all " — " replaced with . , or :)
+- [ ] Tone checked: warm, observational, mentoring (never harsh)
 - [ ] Format matches Taleemabad template
 - [ ] Ready for Ayesha approval
 
 ---
 
-## Resources & Templates
+## Reference Materials (Locked)
 
-**Locked Templates:**
-- Email Format: `memory/email_template_format_FINAL.md`
-- Reference SOP: `SOPs/01_Candidate_Communication/gwc_rejection_emails.md`
-
-**Rules:**
-- Core Discipline: `RULES.md` (Rules 1-7)
+**Memory Files:**
+- [Warm Bench Locked Final (2026-05-30)](../../memory/warm_bench_locked_final_2026_05_30.md) — Foundational locked rules, opening line, headings, no em dashes
+- [Evidence-Based Rejection Rationale (2026-06-01)](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md) — Haroon Yasin balance rule, observable behaviors methodology, 5-step concrete rejection checklist
+- [Email Template Format FINAL](../../memory/email_template_format_FINAL.md) — Taleemabad locked design (logo, blue header, Georgia serif, justified)
 
 ---
 
@@ -236,11 +225,16 @@ This skill orchestrates the detailed procedure for GWC rejection emails. The SOP
 I will send GWC rejection emails with:
 - ✅ Scorecard data ONLY (no fabrication)
 - ✅ 5 required sections (Opening, Saw, Gap, Next, Closing)
-- ✅ 400-770 words (minimum 400)
+- ✅ 800+ words MANDATORY (only lower if insufficient content)
 - ✅ Warm, mentoring tone (never harsh)
 - ✅ No internal jargon (no GWC, names, terminology)
-- ✅ Evidence-based feedback (scorecard tied)
+- ✅ Evidence-based feedback (scorecard + observable behaviors)
+- ✅ Haroon Yasin balance rule (praise examples ≈ decision examples in specificity)
+- ✅ Observable behaviors not abstractions (not "hunger", but "stays curious in the moment")
+- ✅ Role requirements as decision driver (not "you're not X", but "role needs Y, you excel at Z")
+- ✅ Concrete fit patterns (help candidate recognize future opportunities)
 - ✅ Taleemabad template (locked format)
-- ✅ All 10-item checklist passing
+- ✅ All checklist items passing (including "Can you show me?" test)
 
-**Status:** ✅ PRODUCTION READY
+**Status:** ✅ PRODUCTION READY (Updated 2026-06-01 with evidence-based methodology)
+**Reference:** [Evidence-Based Rejection Rationale (2026-06-01)](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md)
