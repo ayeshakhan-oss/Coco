@@ -14,14 +14,15 @@ from email.mime.multipart import MIMEMultipart
 
 # Add scripts to path
 sys.path.insert(0, str(Path(__file__).parent))
-from utils.safe_send import safe_sendmail
+from utils.safe_send import safe_sendmail, allow_candidate_addresses
 
 # Email metadata
-PILOT_MODE = True
-TO = ["ayesha.khan@taleemabad.com", "jawwad.ali@taleemabad.com"]
-SUBJECT = "[PILOT – Mizhgan Kirmani] When Confidence Becomes the Blindfold"
+PILOT_MODE = False
+TO = ["mizghan-kirmani@hotmail.com"]
+CC = ["hiring@taleemabad.com", "ayesha.khan@taleemabad.com", "sabeena.abbasi@taleemabad.com"]
+SUBJECT = "When Confidence Becomes the Blindfold"
 CANDIDATE_NAME = "Mizhgan Kirmani"
-CANDIDATE_EMAIL = "mizghan-kirmani@hotmail.com"  # Not used in pilot
+CANDIDATE_EMAIL = "mizghan-kirmani@hotmail.com"
 JOB_TITLE = "Fundraising & Partnerships Manager"
 
 # HTML Email Body with locked design
@@ -210,6 +211,7 @@ def send_pilot():
     msg['Subject'] = SUBJECT
     msg['From'] = sender
     msg['To'] = ", ".join(TO)
+    msg['Cc'] = ", ".join(CC)
 
     # Attach HTML body
     msg_alternative = MIMEMultipart('alternative')
@@ -233,21 +235,25 @@ def send_pilot():
         server.starttls()
         server.login(sender, password)
 
+        # Approve external candidate address
+        allow_candidate_addresses(TO)
+
+        all_recipients = TO + CC
         safe_sendmail(
             smtp_server=server,
             sender=sender,
-            recipients=TO,
+            recipients=all_recipients,
             message=msg.as_string(),
-            context=f"job32_gwc_rejection_mizhgan_kirmani_pilot"
+            context=f"job32_gwc_rejection_mizhgan_kirmani_live"
         )
 
         server.quit()
 
-        print("\n[PILOT EMAIL SENT]")
+        print("\n[LIVE EMAIL SENT]")
         print(f"   To: {', '.join(TO)}")
+        print(f"   CC: {', '.join(CC)}")
         print(f"   Subject: {SUBJECT}")
-        print(f"   Mode: PILOT (candidate NOT included)")
-        print(f"   Status: Awaiting approval from Ayesha")
+        print(f"   Mode: LIVE (candidate included)")
         return True
 
     except Exception as e:
