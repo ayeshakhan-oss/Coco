@@ -1,0 +1,23 @@
+{
+  "skill_name": "talent-sourcing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Source candidates for Fundraising & Partnerships Manager. Role requires someone with 8+ years in resource mobilization / partnerships in development sector. Must have experience leading a team and managing donor relationships. I'm looking for 10-15 candidates. We have a panel transcript from a previous hire in this role if that helps. The ideal candidate should be able to translate financial strategy into business decisions and has successfully advised senior leadership on partnership strategy.",
+      "expected_output": "Comprehensive sourcing report with: 1) Persona brief extracted from context, 2) Search strategy across 3 layers (org pages first, then Google, then LinkedIn), 3) Candidate slate with 10-15 verified candidates, 4) Panel Fit Signal column showing observable evidence from each candidate's profile, 5) Deduplication check results, 6) Output file saved with full methodology. No candidates added to Markaz yet (awaiting Ayesha's approval).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Run a talent search for Full Stack Lead. We need someone with 10+ years in React + Node.js, preferably from Pakistan's edtech/startup scene. Looking for 8-10 strong candidates. This person will lead our technical team so we need evidence of: 1) architectural thinking, 2) mentoring junior developers, 3) ability to ship products quickly. Should be comfortable with Odoo or similar enterprise systems. What searches should I run first?",
+      "expected_output": "Sourcing plan including: 1) Intake captured (role, seniority, skills, candidate count), 2) Persona brief built from requirements, 3) Platform selection (GitHub user search as Tier 1, org pages, then LinkedIn via Google), 4) 3-layer search strategy outlined with specific queries for each layer, 5) List of 8-10 candidates with observable evidence of architectural thinking and mentoring capability in Panel Fit Signal column.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I need to source for Instructional Systems Lead. This role requires: ACCA/ACA qualified, 12+ years in education, strong track record in curriculum design. The previous successful hire was someone who: moved from pure instructional design into strategic educational leadership, demonstrated forward-looking thinking about learning trends, had international experience in low-resource contexts. Can you find 10-12 mid-level candidates and draft personalized outreach? Use the Pakistan Learning Festival speaker list as Layer 1.",
+      "expected_output": "Complete sourcing workflow: 1) Persona brief with specific markers of strategic educational thinking + international low-resource experience, 2) Sourcing sheet created and URL provided, 3) Candidates searched across all 3 layers (starting with PLF speaker list), 4) Candidate slate presented with Panel Fit Signal column, 5) Deduplication check completed, 6) Candidates added to sheet (Status: Identified), 7) Personalized DM drafts for top 6-8 candidates (150-200 words, mission-first framing), 8) Output file saved.",
+      "files": []
+    }
+  ]
+}
