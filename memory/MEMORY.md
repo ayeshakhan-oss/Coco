@@ -34,8 +34,13 @@
 
 ## 🎯 SKILLS (Production Ready)
 
-### Warm Bench Email — FINAL LOCKED (2026-05-30)
-- **[WARM BENCH LOCKED FINAL (2026-05-30)](warm_bench_locked_final_2026_05_30.md)** — **SINGLE SOURCE OF TRUTH** for all warm bench emails. 13 locked rules, exact specifications, no confusion with old versions. Logo embedded + centered. NO EM DASHES. Read this FIRST before any warm bench draft. Supersedes all prior versions. Reference: Huma Mumtaz pilot (final version).
+### Candidate Communication — MASTER INDEX (2026-06-08) 🔒
+- **[CANDIDATE COMMUNICATION LOCKED INDEX (2026-06-08)](CANDIDATE_COMMUNICATION_LOCKED_INDEX_2026_06_08.md)** — 🔒 **START HERE FOR ALL CANDIDATE EMAILS.** Single source of truth for GWC rejections, warm bench, values feedback, all candidate communication. Points to correct locked versions ONLY. Supersedes all old/duplicate versions. Clarifies potential confusion points (where does P.S. go? which template? what colors?). Reference case: Hira Abbasi (2026-06-08). **No more confusion. No more back-and-forth.**
+
+### Sub-Resources (Use via Master Index Above)
+- **[GWC REJECTION LOCKED APPROACH (2026-06-08)](gwc_rejection_locked_approach_2026_06_08.md)** — Complete locked approach for GWC rejections using warm bench structure.
+- **[WARM BENCH LOCKED RULES (2026-05-30)](warm_bench_locked_rules_2026_05_30.md)** — 13 locked rules for warm bench emails.
+- **[P.S. SECTION STYLING LOCKED (2026-06-08)](ps_section_styling_locked_2026_06_08.md)** — Premium personal styling for postscript sections (ALL candidate emails).
 
 ### Individual Skills
 - **[06_candidate-invites (2026-05-14)](../skills/06_candidate-invites/SKILL.md)** — Universal skill for ALL interview invites + opportunity emails. 4 types: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite. Design 100% locked (see locked templates). Reference scripts: send_values_interview_pilot.py, send_case_study_debrief_pilot.py, send_exploratory_call_pilot.py, send_warm_bench_invite_pilot.py. Workflow: customize script → pilot to Ayesha → approval → live send.

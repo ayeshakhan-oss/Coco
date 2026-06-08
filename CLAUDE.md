@@ -7,8 +7,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ## 🎯 Before You Work
 
-1. **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL. Never say "you assumed/believed/thought/preferred/were energized by". Use "what left us uncertain was..." instead. Scan for intent-words before EVERY rejection email.
-2. **[WARM BENCH LOCKED FINAL (2026-05-30)](memory/warm_bench_locked_final_2026_05_30.md)** — **SINGLE SOURCE OF TRUTH** for warm bench emails. 13 locked rules. NO EM DASHES. Logo embedded. Read FIRST before any warm bench draft.
+1. **🔒 [CANDIDATE COMMUNICATION LOCKED INDEX (2026-06-08)](memory/CANDIDATE_COMMUNICATION_LOCKED_INDEX_2026_06_08.md)** — **READ THIS FIRST for ANY candidate feedback/rejection email.** Master index: GWC rejections, warm bench, values feedback, all candidate communication. Single source of truth. No confusion. Supersedes all old versions.
+2. **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL. Never say "you assumed/believed/thought/preferred/were energized by". Use "what left us uncertain was..." instead. Scan for intent-words before EVERY rejection email.
 3. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — All 6 skills audited, consolidated, current versions locked in.
 4. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
 5. **[CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)** — 10 rules + execution protocol
