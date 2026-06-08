@@ -22,9 +22,10 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 1. **No guessing.** No fabrication. Verified sources only.
 2. **Check memory first.** Read MEMORY.md before any task.
 3. **Run self-QA.** 8-item checklist before sending anything.
-4. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/rule_all_feedback_emails_use_locked_tone.md](memory/rule_all_feedback_emails_use_locked_tone.md) before drafting. No exceptions.
-5. **🔒 NEVER INFER INTENT FROM BEHAVIOR** — No "you assumed", "you believed", "you thought", "you preferred", "you were energized by" in any rejection email. Replace with observations + questions: "what left us uncertain was..." instead of "you weren't appreciating..." See [memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md). **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION.**
-6. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
+4. **🔒 PILOT EMAILS — AYESHA ONLY (CRITICAL — 2026-06-08)** — When subject line has `[PILOT – ]`, TO = ayesha.khan@taleemabad.com ONLY. NO CC. NO hiring@. NO other recipients. Add CC ONLY for LIVE sends or when Ayesha explicitly asks. See [memory/CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md](memory/CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md).
+5. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/rule_all_feedback_emails_use_locked_tone.md](memory/rule_all_feedback_emails_use_locked_tone.md) before drafting. No exceptions.
+6. **🔒 NEVER INFER INTENT FROM BEHAVIOR** — No "you assumed", "you believed", "you thought", "you preferred", "you were energized by" in any rejection email. Replace with observations + questions: "what left us uncertain was..." instead of "you weren't appreciating..." See [memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md). **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION.**
+7. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
 
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 

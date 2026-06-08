@@ -5,6 +5,11 @@
 
 ---
 
+## 🔴 CRITICAL LEARNING — PILOT RECIPIENTS (2026-06-08)
+- **[CRITICAL: PILOT RECIPIENTS ONLY AYESHA (2026-06-08)](CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md)** — 🔒 **ABSOLUTE RULE:** When sending [PILOT – ] emails, TO = ayesha.khan@taleemabad.com ONLY. No CC. No hiring@. No other recipients. This was a discipline failure on 2026-06-08. Add HARD BLOCK to harness. Never deviate.
+
+---
+
 ## 🔴 MUST READ THESE FIRST (Session Start + Every Task)
 
 ### Core Discipline (_core/)
