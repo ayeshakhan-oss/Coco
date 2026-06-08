@@ -2,11 +2,28 @@
 """
 Evaluation harness for candidate communication emails.
 
-Validates all 4 email types (CV rejections, values feedback, warm bench, GWC rejections)
-against 10 locked rules. Returns structured result: {passed, violations[], word_count}.
+MASTER REFERENCE: memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md
+This file implements Rule 1 (Non-Psychologist), Rule 2 (Evidence-Based),
+Rule 3 (Scorecard Translation), Rule 6 (Clarity), Rule 7 (Specificity),
+and structural checks from Haroon Yasin framework.
 
-HARD BLOCK violations prevent sending (exit 2).
-WARNING violations are logged but allow sending (exit 0).
+Validates all 4 email types (CV rejections, values feedback, warm bench, GWC rejections)
+against locked rules from the master philosophy file.
+
+HARD BLOCK violations prevent sending (exit 2):
+- Intent-word inference (Rule 1)
+- Evidence-based violations (Rule 2)
+- Format violations (em dashes, word count, PILOT prefix, section headings)
+- Internal jargon (Rule 3)
+- Interviewer names
+
+WARNING violations are logged but allow sending (exit 0):
+- Scorecard language transfer (Rule 3)
+- Generic subject lines (Rule 7)
+- Haroon Yasin balance issues
+- Recruiting abstractions
+
+Returns: {passed, violations[], word_count}
 """
 
 import re
@@ -18,6 +35,9 @@ from typing import Optional, Dict, List, Tuple
 # ============================================================================
 
 # Intent-inference forbidden phrases (case-insensitive)
+# SOURCE: memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md - Rule 1: Non-Psychologist Rule
+# These patterns assume motivation, confidence, character, intentions, or emotional state
+# without explicit candidate statement. HARD BLOCK violations.
 FORBIDDEN_INTENT_PHRASES = [
     r'you assumed',
     r'you believed',
@@ -25,6 +45,20 @@ FORBIDDEN_INTENT_PHRASES = [
     r'you preferred',
     r"you weren't appreciating",
     r'you were energized',
+    r'you seemed',
+    r'you lacked',
+    r'you were hesitant',
+    r'you would likely',
+    r'you were not fully invested',
+    r'you were not truly',
+    r'you appeared',
+    r"you seemed to lack",
+    r"you didn't seem",
+    r"you wouldn't",  # about capability, not action
+    r'you seemed uncertain',
+    r'you seemed uncommitted',
+    r'you lacked confidence',
+    r'you would struggle',
 ]
 
 # Internal jargon (case-insensitive, whole-word match)

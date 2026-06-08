@@ -10,6 +10,30 @@ Send warm-tone rejection emails to candidates who participated in GWC interviews
 
 ---
 
+## 📖 READ FIRST: Master Tone Philosophy
+
+**All candidate communication must follow the principles in:**
+[CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md](../../../memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
+
+This skill describes HOW to structure the email. The master file describes THE TONE PHILOSOPHY and rules that govern WHAT you write.
+
+**Key rules that the harness enforces (HARD BLOCKS):**
+- **Rule 1:** No psychologizing ("you seemed", "you lacked", "you would likely struggle", etc.)
+- **Rule 2:** Evidence-based only (every statement traceable to GWC scorecard data)
+- **Rule 3:** Scorecard translation (interpret, don't transfer frustration/harsh wording)
+- **Rule 4:** Role-fit explanation (not personal shortcomings)
+- **Rule 7:** Specificity (email could only be written about this candidate)
+- **Rule 9:** Explain the decision, not the person
+
+**Warnings (allowed to send, Ayesha notified):**
+- Generic subject lines
+- Recruiting jargon ("strong candidate", "excellent fit", etc.)
+- Haroon balance issues (praise ≠ decision depth)
+
+Before drafting, read the master file. The harness validates these at send time.
+
+---
+
 ## When to Use This Skill
 
 Trigger this skill when:

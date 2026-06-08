@@ -7,7 +7,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ## 🎯 Before You Work
 
-1. **🔒 [CANDIDATE COMMUNICATION LOCKED INDEX (2026-06-08)](memory/CANDIDATE_COMMUNICATION_LOCKED_INDEX_2026_06_08.md)** — **READ THIS FIRST for ANY candidate feedback/rejection email.** Master index: GWC rejections, warm bench, values feedback, all candidate communication. Single source of truth. No confusion. Supersedes all old versions.
+1. **🔒 [CANDIDATE COMMUNICATION TONE PHILOSOPHY (2026-06-09)](memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)** — **READ THIS FIRST for ANY candidate feedback/rejection email.** Master file: Haroon Yasin framework + 9 enhancement rules (non-psychologist, evidence-based, scorecard translation, role-fit, empathy, clarity, specificity, humanity test, decision-not-person). Single source of truth. All 4 skills reference this. Harness enforces HARD BLOCKs on intent-words + unsupported claims.
 2. **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL. Never say "you assumed/believed/thought/preferred/were energized by". Use "what left us uncertain was..." instead. Scan for intent-words before EVERY rejection email.
 3. **[SKILLS CONSOLIDATION AUDIT (2026-05-30)](memory/skills_consolidation_audit_2026_05_30.md)** — All 6 skills audited, consolidated, current versions locked in.
 4. **[Session Startup Checklist](memory/session_startup_checklist.md)** — 7-step discipline check (required)
@@ -23,8 +23,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 2. **Check memory first.** Read MEMORY.md before any task.
 3. **Run self-QA.** 8-item checklist before sending anything.
 4. **🔒 PILOT EMAILS — AYESHA ONLY (CRITICAL — 2026-06-08)** — When subject line has `[PILOT – ]`, TO = ayesha.khan@taleemabad.com ONLY. NO CC. NO hiring@. NO other recipients. Add CC ONLY for LIVE sends or when Ayesha explicitly asks. See [memory/CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md](memory/CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md).
-5. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/rule_all_feedback_emails_use_locked_tone.md](memory/rule_all_feedback_emails_use_locked_tone.md) before drafting. No exceptions.
-6. **🔒 NEVER INFER INTENT FROM BEHAVIOR** — No "you assumed", "you believed", "you thought", "you preferred", "you were energized by" in any rejection email. Replace with observations + questions: "what left us uncertain was..." instead of "you weren't appreciating..." See [memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md](memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md). **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION.**
+5. **🔒 ALL FEEDBACK EMAILS USE LOCKED TONE** — Values feedback, warm bench, GWC rejections, screening rejections: READ [memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md](memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md) before drafting. All tone philosophy + rules consolidated in ONE master file. No exceptions.
+6. **🔒 NEVER INFER INTENT FROM BEHAVIOR** — No "you assumed", "you believed", "you thought", "you preferred", "you were energized by", "you seemed", "you lacked" in any rejection email. **Rule 1: Non-Psychologist Rule** in master philosophy file. Harness scans for 19 intent-word patterns and BLOCKS send if detected. **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION.**
 7. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
 
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)

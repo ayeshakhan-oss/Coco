@@ -5,11 +5,33 @@ type: feedback
 status: LOCKED & PRODUCTION READY (2026-05-04) — HAROON-ALIGNED
 ---
 
-## 🔐 CRITICAL REFERENCE
+## 📖 READ FIRST: Master Tone Philosophy
 
-**READ FIRST:** [Warm Bench Feedback Emails - Final Locked Approach](../memory/warm_bench_final_locked_approach.md) (memory/warm_bench_final_locked_approach.md)
+**All candidate communication must follow the principles in:**
+[CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md](../../../memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
 
-This skill is based on Haroon Yasin's warm bench email training guide (Jan 29, 2026). The memory file above is the SINGLE SOURCE OF TRUTH for all specifications. All non-negotiable rules, language requirements, and self-QA checklist are there.
+This skill describes HOW to structure the email (Haroon Yasin framework). The master file describes THE TONE PHILOSOPHY and rules that govern WHAT you write.
+
+**Key rules that the harness enforces (HARD BLOCKS):**
+- **Rule 1:** No psychologizing ("you seemed", "you lacked", "you would likely struggle", etc.)
+- **Rule 2:** Evidence-based only (every statement traceable to interview/values scorecard/GWC scorecard)
+- **Rule 3:** Scorecard translation (interpret, don't transfer frustration/harsh wording)
+- **Rule 4:** Role-fit explanation (not personal shortcomings)
+- **Rule 7:** Specificity (email could only be written about this candidate)
+- **Rule 9:** Explain the decision, not the person
+
+**Warnings (allowed to send, Ayesha notified):**
+- Generic subject lines (must be poetic, story-based, tied to interview moment)
+- Recruiting jargon ("strong candidate", "excellent fit", etc.)
+- Haroon balance issues (praise ≠ decision depth)
+
+Before drafting, read the master file. The harness validates these at send time.
+
+## 🔐 HAROON YASIN FRAMEWORK
+
+**Structure Reference:** [Warm Bench Feedback Emails - Final Locked Approach](../memory/warm_bench_final_locked_approach.md)
+
+This skill is based on Haroon Yasin's warm bench email training guide (Jan 29, 2026). The memory file above contains the Haroon Yasin framework specifications. All non-negotiable rules, language requirements, and self-QA checklist are there.
 
 ## Objective
 
