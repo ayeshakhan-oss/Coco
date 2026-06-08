@@ -21,6 +21,17 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:/Agent Coco/scripts/hooks/pre_send_validation_hook.py\""
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {

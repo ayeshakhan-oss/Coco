@@ -1,0 +1,459 @@
+#!/usr/bin/env python3
+"""
+Evaluation harness for candidate communication emails.
+
+Validates all 4 email types (CV rejections, values feedback, warm bench, GWC rejections)
+against 10 locked rules. Returns structured result: {passed, violations[], word_count}.
+
+HARD BLOCK violations prevent sending (exit 2).
+WARNING violations are logged but allow sending (exit 0).
+"""
+
+import re
+import html
+from typing import Optional, Dict, List, Tuple
+
+# ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+# Intent-inference forbidden phrases (case-insensitive)
+FORBIDDEN_INTENT_PHRASES = [
+    r'you assumed',
+    r'you believed',
+    r'you thought',
+    r'you preferred',
+    r"you weren't appreciating",
+    r'you were energized',
+]
+
+# Internal jargon (case-insensitive, whole-word match)
+FORBIDDEN_JARGON = [
+    r'\bGWC\b',
+    r'\bKCD\b',
+    r'\bwarm bench\b',
+    r'\bvalues scorecard\b',
+    r'\bcase study\b',
+]
+
+# Recruiting abstractions (case-insensitive, whole-word match)
+RECRUITING_ABSTRACTIONS = [
+    r'\bstrong candidate\b',
+    r'\bexcellent fit\b',
+    r'\bimpressive profile\b',
+    r'\bgood candidate\b',
+    r'\bgreat candidate\b',
+]
+
+# Generic subject line words (to be avoided in warm bench subjects)
+GENERIC_SUBJECT_WORDS = [
+    'interview',
+    'feedback',
+    'update',
+    'position',
+    'application',
+    'rejection',
+    'status',
+]
+
+# Known interviewers (to detect and flag their names)
+KNOWN_INTERVIEWERS = [
+    'Ayesha', 'Jawad', 'Jawwad', 'Huma', 'Ali', 'Mahnoor', 'Noah',
+    'Khan', 'Yasin', 'Mujtaba', 'Hassan', 'Fatima', 'Bilal',
+]
+
+# Section headings by email type
+SECTION_HEADINGS = {
+    'warm_bench': {
+        'required': [
+            'What Stayed With Us',
+            "Here's the Honest Part",
+            'Where We Want to Leave This',
+        ]
+    },
+    'values_feedback': {
+        'required': [
+            'What We Liked Most About You',
+            "Where We Found Ourselves Sitting With Questions",
+            'What We Think You Should Do Next',
+        ]
+    },
+    'gwc_rejection': {
+        'required': [
+            'What Stayed With Us',
+            "Here's the Honest Part",
+            'Where We Want to Leave This',
+        ]
+    },
+    'cv_rejection': {
+        'required': [
+            'What we appreciated',
+            'Where we found questions',
+            'What we think you should do next',
+        ]
+    },
+}
+
+# ============================================================================
+# CORE EVAL LOGIC
+# ============================================================================
+
+def strip_html(text: str) -> str:
+    """Remove HTML tags and decode entities."""
+    # Remove HTML tags
+    text = re.sub(r'<[^>]+>', '', text)
+    # Decode HTML entities
+    text = html.unescape(text)
+    return text
+
+
+def count_words(text: str) -> int:
+    """Count words in text (case-insensitive, after stripping HTML)."""
+    clean = strip_html(text)
+    words = clean.split()
+    return len(words)
+
+
+def check_word_count(body: str, min_count: int = 800) -> Tuple[bool, int, Optional[str]]:
+    """
+    Check if email body meets minimum word count.
+    Returns: (passed, actual_count, detail_msg)
+    """
+    actual = count_words(body)
+    passed = actual >= min_count
+    detail = f"Word count: {actual} / {min_count} required"
+    return passed, actual, detail
+
+
+def check_intent_words(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for forbidden intent-inference phrases.
+    Returns: (passed, detail_msg_if_found)
+    """
+    clean = strip_html(text)
+    for pattern in FORBIDDEN_INTENT_PHRASES:
+        matches = re.finditer(pattern, clean, re.IGNORECASE)
+        for match in matches:
+            # Extract context (50 chars before and after)
+            start = max(0, match.start() - 50)
+            end = min(len(clean), match.end() + 50)
+            context = clean[start:end].replace('\n', ' ')
+            detail = f'Found: "{match.group()}" in context: ...{context}...'
+            return False, detail
+    return True, None
+
+
+def check_em_dashes(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for em dashes (—).
+    Returns: (passed, detail_msg_if_found)
+    """
+    if '—' in text:
+        # Find first occurrence
+        idx = text.find('—')
+        start = max(0, idx - 40)
+        end = min(len(text), idx + 40)
+        context = text[start:end].replace('\n', ' ')
+        detail = f'Found em dash in: ...{context}...'
+        return False, detail
+    return True, None
+
+
+def check_pilot_prefix(subject: str, pilot_mode: bool) -> Tuple[bool, Optional[str]]:
+    """
+    Check that [PILOT – ] prefix is NOT in subject when pilot_mode=False.
+    Returns: (passed, detail_msg_if_found)
+    """
+    if not pilot_mode and '[PILOT' in subject:
+        detail = f'CRITICAL: [PILOT] prefix found in subject but PILOT_MODE=False. Subject: "{subject}"'
+        return False, detail
+    return True, None
+
+
+def check_section_headings(body: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check that required section headings are present.
+    Returns: (passed, detail_msg_if_missing)
+    """
+    if email_type not in SECTION_HEADINGS:
+        return True, None  # No check for unknown type
+
+    required = SECTION_HEADINGS[email_type]['required']
+    clean = strip_html(body)
+
+    missing = []
+    for heading in required:
+        # Case-insensitive search
+        if not re.search(re.escape(heading), clean, re.IGNORECASE):
+            missing.append(heading)
+
+    if missing:
+        detail = f'Missing section headings: {", ".join(missing)}'
+        return False, detail
+    return True, None
+
+
+def check_jargon(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for internal jargon (GWC, KCD, warm bench, values scorecard, case study).
+    Returns: (passed, detail_msg_if_found)
+    """
+    clean = strip_html(text)
+    for pattern in FORBIDDEN_JARGON:
+        matches = re.finditer(pattern, clean, re.IGNORECASE)
+        for match in matches:
+            start = max(0, match.start() - 30)
+            end = min(len(clean), match.end() + 30)
+            context = clean[start:end].replace('\n', ' ')
+            detail = f'Found internal jargon: "{match.group()}" in context: ...{context}...'
+            return False, detail
+    return True, None
+
+
+def check_interviewer_names(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for interviewer names in the email body.
+    Returns: (passed, detail_msg_if_found)
+    """
+    clean = strip_html(text)
+    for name in KNOWN_INTERVIEWERS:
+        # Whole-word match (case-sensitive for common names)
+        pattern = r'\b' + re.escape(name) + r'\b'
+        matches = re.finditer(pattern, clean)
+        for match in matches:
+            start = max(0, match.start() - 40)
+            end = min(len(clean), match.end() + 40)
+            context = clean[start:end].replace('\n', ' ')
+            detail = f'Found interviewer name "{match.group()}" in context: ...{context}...'
+            return False, detail
+    return True, None
+
+
+def check_haroon_balance(body: str, email_type: str) -> Tuple[bool, Optional[str], int, int]:
+    """
+    Check Haroon Yasin balance rule: praise count should ≈ decision count.
+    Only applies to warm_bench and gwc_rejection.
+    Returns: (passed, detail_msg, praise_count, decision_count)
+    """
+    if email_type not in ['warm_bench', 'gwc_rejection']:
+        return True, None, 0, 0  # Not applicable
+
+    clean = strip_html(body)
+
+    # Heuristic: count blue heading blocks
+    # "What Stayed With Us" section vs "Here's the Honest Part" section
+    stayed_section = re.search(
+        r"What Stayed With Us.*?(?=Here's the Honest Part|$)",
+        clean,
+        re.IGNORECASE | re.DOTALL
+    )
+    honest_section = re.search(
+        r"Here's the Honest Part.*?(?=Where We Want to Leave|$)",
+        clean,
+        re.IGNORECASE | re.DOTALL
+    )
+
+    stayed_text = stayed_section.group() if stayed_section else ''
+    honest_text = honest_section.group() if honest_section else ''
+
+    # Count paragraphs (heuristic for depth/evidence)
+    stayed_count = len([p for p in stayed_text.split('\n') if p.strip() and len(p.strip()) > 50])
+    honest_count = len([p for p in honest_text.split('\n') if p.strip() and len(p.strip()) > 50])
+
+    # Allow ±1 variance
+    ratio_ok = abs(stayed_count - honest_count) <= 1
+
+    if not ratio_ok:
+        detail = f'Haroon balance issue: {stayed_count} praise paragraphs vs {honest_count} decision paragraphs (should be ±1). Consider equalizing depth.'
+        return False, detail, stayed_count, honest_count
+
+    return True, None, stayed_count, honest_count
+
+
+def check_generic_subject(subject: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check subject line for generic words (warm bench only).
+    Returns: (passed, detail_msg_if_generic)
+    """
+    if email_type != 'warm_bench':
+        return True, None  # Only check warm bench
+
+    clean = subject.lower()
+    found_generic = []
+
+    for word in GENERIC_SUBJECT_WORDS:
+        if word in clean:
+            found_generic.append(word)
+
+    if found_generic:
+        detail = f'Subject line too generic. Contains: {", ".join(found_generic)}. Should be poetic/story-based, tied to specific interview moment.'
+        return False, detail
+
+    return True, None
+
+
+def check_recruiting_abstractions(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for recruiting abstractions (strong candidate, excellent fit, etc).
+    Returns: (passed, detail_msg_if_found)
+    """
+    clean = strip_html(text)
+    for pattern in RECRUITING_ABSTRACTIONS:
+        matches = re.finditer(pattern, clean, re.IGNORECASE)
+        for match in matches:
+            start = max(0, match.start() - 30)
+            end = min(len(clean), match.end() + 30)
+            context = clean[start:end].replace('\n', ' ')
+            detail = f'Found recruiting abstraction: "{match.group()}". Use observed behaviors instead. Context: ...{context}...'
+            return False, detail
+    return True, None
+
+
+# ============================================================================
+# MAIN EVAL FUNCTION
+# ============================================================================
+
+def evaluate_email(
+    html_body: str,
+    subject: str,
+    email_type: str,
+    pilot_mode: bool = True,
+) -> Dict:
+    """
+    Run all checks on an email draft.
+
+    Args:
+        html_body: Email HTML body
+        subject: Email subject line
+        email_type: One of 'cv_rejection', 'values_feedback', 'warm_bench', 'gwc_rejection'
+        pilot_mode: True if PILOT_MODE, False if live
+
+    Returns:
+        {
+            'passed': bool,
+            'word_count': int,
+            'violations': [
+                {'rule': str, 'severity': 'HARD_BLOCK' | 'WARNING', 'detail': str}
+            ]
+        }
+    """
+    violations = []
+    word_count = count_words(html_body)
+
+    # HARD BLOCK checks
+
+    # 1. Word count
+    passed, actual, detail = check_word_count(html_body, min_count=800)
+    if not passed:
+        violations.append({
+            'rule': 'Word count minimum (800)',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 2. Intent-words
+    passed, detail = check_intent_words(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No intent-word inference',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 3. Em dashes
+    passed, detail = check_em_dashes(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No em dashes (—)',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 4. PILOT prefix
+    passed, detail = check_pilot_prefix(subject, pilot_mode)
+    if not passed:
+        violations.append({
+            'rule': 'PILOT prefix control',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 5. Section headings
+    passed, detail = check_section_headings(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Required section headings',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 6. Jargon
+    passed, detail = check_jargon(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No internal jargon (GWC/KCD/etc)',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 7. Interviewer names
+    passed, detail = check_interviewer_names(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No interviewer names',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # WARNING checks
+
+    # 8. Haroon Yasin balance
+    passed, detail, praise_count, decision_count = check_haroon_balance(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Haroon Yasin balance (praise ≈ decision)',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # 9. Generic subject line
+    passed, detail = check_generic_subject(subject, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Subject line not generic (warm bench)',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # 10. Recruiting abstractions
+    passed, detail = check_recruiting_abstractions(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No recruiting abstractions',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # Determine overall pass
+    has_hard_blocks = any(v['severity'] == 'HARD_BLOCK' for v in violations)
+
+    return {
+        'passed': not has_hard_blocks,
+        'word_count': word_count,
+        'violations': violations,
+    }
+
+
+if __name__ == '__main__':
+    # Test: standalone usage (for debugging)
+    test_html = """
+    <h2>What Stayed With Us</h2>
+    <p>This is a test paragraph with good observation.</p>
+    <h2>Here's the Honest Part</h2>
+    <p>This is where we discuss the gap.</p>
+    <h2>Where We Want to Leave This</h2>
+    <p>Final thoughts.</p>
+    """
+
+    result = evaluate_email(test_html, "Test Subject", "warm_bench", pilot_mode=True)
+    print("Test result:", result)

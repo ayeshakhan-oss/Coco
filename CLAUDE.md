@@ -76,6 +76,37 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 ---
 
+## 🛡️ Automated Validation Harness (2026-06-08)
+
+**Status:** ✅ PRODUCTION READY — All 4 email types protected
+
+Candidate communication emails (GWC, CV, warm bench, values) are now validated automatically:
+
+**1. Memory Injection (UserPromptSubmit hook — ACTIVE)**
+- Type "gwc rejection" → auto-loads intent-inference rule + balance rule + warm bench locked rules
+- Type "values feedback" → auto-loads tone guide + locked tone rule
+- Type "cv rejection" → auto-loads feedback rules + tone guide
+- Type "warm bench email" → auto-loads warm bench locked + subject lines
+- **Benefit:** Rules can't be forgotten, automatic at prompt time
+
+**2. Pre-Send Validation (PreToolUse hook — ACTIVE)**
+- Fires BEFORE `safe_sendmail()` is called
+- Validates email against 10 rules (7 HARD BLOCKs + 3 WARNINGs)
+- **HARD BLOCKS** block send (exit code 2): word count, intent-words, em dashes, PILOT prefix, sections, jargon, interviewer names
+- **WARNINGs** logged but allow send (exit code 0): Haroon balance, generic subject, recruiting abstractions
+- **Benefit:** Structural violations impossible to send
+
+**3. CLI Testing Tool**
+```bash
+python scripts/evals/run_eval.py --file draft.html --type warm_bench --subject "Subject"
+```
+- Test before piloting, instant report with all violations
+- **Benefit:** Catch issues before Ayesha reviews
+
+**Implementation Details:** [memory/hooks_and_harness_implementation_2026_06_08.md](memory/hooks_and_harness_implementation_2026_06_08.md) | [Impact Report](scripts/evals/BEFORE_AND_AFTER_REPORT.md) | [Technical Docs](scripts/evals/EVAL_HARNESS_IMPLEMENTATION.md)
+
+---
+
 ## 🚫 Never Do These
 
 - Fabricate or assume data

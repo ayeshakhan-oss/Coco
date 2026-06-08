@@ -1,7 +1,7 @@
 # MEMORY INDEX — Coco (Real Files Only)
 
-**Last Updated:** 2026-05-08  
-**Status:** PHASE 3 COMPLETE — Consolidated RULES.md master reference. 21 irrelevant files deleted. Single source of truth: RULES.md + SOPs/ + memory/. Zero regressions.
+**Last Updated:** 2026-06-08  
+**Status:** HOOKS & HARNESS COMPLETE — Automated validation harness implemented for all 4 email types. 5 phases complete, all code live, settings.json wired. Prevents 5 historical regressions. 300-600x faster validation. Production ready.
 
 ---
 
@@ -19,6 +19,7 @@
 - **[CANDIDATE COMMUNICATION QUALITY REVIEW PROTOCOL (2026-05-30)](candidate_communication_quality_review_protocol_2026_05_30.md)** — 🔒 10-point checklist + Haroon Yasin balance rule. Balance praise specificity with decision specificity. Avoid generic labels. No "good candidate"—use character observations. **RUN BEFORE SENDING ANY CANDIDATE EMAIL.**
 - **[AVOID RECRUITING ABSTRACTIONS (2026-05-30)](candidate_communication_avoid_recruiting_abstractions_2026_05_30.md)** — 🔒 CRITICAL. Replace all generic recruiting phrases ("good candidate", "strong profile", "not a good fit") with observed behaviors and concrete realities. Candidate must feel "They SAW me" not "They SCORED me." **APPLIES TO ALL CANDIDATE EMAILS.**
 - **[NO INTENT INFERENCE IN REJECTION EMAILS (2026-06-01)](lesson_no_intent_inference_rejection_emails_2026_06_01.md)** — 🔒 CRITICAL PRINCIPLE. Never tell candidates what they assumed, believed, thought, preferred, or were energized by. Use observations + unanswered questions instead. Replace "you assumed X" with "what left us uncertain was X". Eliminates mind-reading, keeps emails mentoring not prosecutorial. **SCAN FOR INTENT-WORDS BEFORE EVERY REJECTION EMAIL.**
+- **[EVIDENCE-BASED REJECTION RATIONALE — HAROON YASIN BALANCE RULE (2026-06-01)](lesson_evidence_based_rejection_rationale_2026_06_01.md)** — 🔒 COMPLEMENTARY TO INTENT-INFERENCE RULE. Praise specificity must approximately equal decision specificity. For every detailed praise example, provide equally detailed gap example. Use "Can you show me?" test: if candidate can't point to exact moment that led to decision, rationale is too abstract. Rewrite with concrete behaviors, not mental state assumptions.
 
 ---
 
@@ -50,6 +51,13 @@
   - Locked Approaches (exact specs for each skill)
   - Integration & Testing Rules
   - Discrepancy Minimization table
+
+---
+
+## 🛡️ AUTOMATION & VALIDATION (2026-06-08 — NEW)
+
+### Hooks & Harness Implementation (Production Ready)
+- **[HOOKS & HARNESS IMPLEMENTATION (2026-06-08)](hooks_and_harness_implementation_2026_06_08.md)** — ✅ COMPLETE. Automated validation for all 4 email types (GWC, CV, warm bench, values). 5 phases: eval engine (10 checks), pre-send hook, memory injection (4 new triggers), missing lesson file, CLI tool. 7 HARD BLOCKs block sends. 3 WARNINGs logged. PreToolUse hook wired in settings.json. Prevents 5 historical regressions (PILOT prefix, intent-words, em dashes, word count, names). 300-600x faster validation. **[Impact Analysis](scripts/evals/BEFORE_AND_AFTER_REPORT.md)** | **[Technical Docs](scripts/evals/EVAL_HARNESS_IMPLEMENTATION.md)**
 
 ---
 

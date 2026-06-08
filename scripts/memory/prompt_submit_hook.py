@@ -22,6 +22,20 @@ KEYWORD_MAP = [
     (["warm bench", "warmbenck", "jra", "haroon"], [
         "warm_bench_final_locked_approach.md",
         "warm_bench_session_may5_2026_complete_learnings.md",
+        "warm_bench_subject_lines_locked.md",
+    ]),
+    (["gwc rejection", "gwc email", "gw-c"], [
+        "lesson_no_intent_inference_rejection_emails_2026_06_01.md",
+        "warm_bench_locked_final_2026_05_30.md",
+        "lesson_evidence_based_rejection_rationale_2026_06_01.md",
+    ]),
+    (["values feedback", "values email", "values interview feedback"], [
+        "values_feedback_email_tone_locked_2026_05_12.md",
+        "rule_all_feedback_emails_use_locked_tone.md",
+    ]),
+    (["cv rejection", "screening rejection", "cv screening rejection"], [
+        "feedback_email_rules.md",
+        "rule_all_feedback_emails_use_locked_tone.md",
     ]),
     (["cv", "screen", "screening", "candidate", "resume"], [
         "skill_cv_screening_sop.md",
