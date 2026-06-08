@@ -59,10 +59,13 @@
 
 ---
 
-## 🛡️ AUTOMATION & VALIDATION (2026-06-08 — NEW)
+## 🛡️ AUTOMATION & VALIDATION (2026-06-08 — THREE-LAYER SYSTEM)
 
-### Hooks & Harness Implementation (Production Ready)
-- **[HOOKS & HARNESS IMPLEMENTATION (2026-06-08)](hooks_and_harness_implementation_2026_06_08.md)** — ✅ COMPLETE. Automated validation for all 4 email types (GWC, CV, warm bench, values). 5 phases: eval engine (10 checks), pre-send hook, memory injection (4 new triggers), missing lesson file, CLI tool. 7 HARD BLOCKs block sends. 3 WARNINGs logged. PreToolUse hook wired in settings.json. Prevents 5 historical regressions (PILOT prefix, intent-words, em dashes, word count, names). 300-600x faster validation. **[Impact Analysis](scripts/evals/BEFORE_AND_AFTER_REPORT.md)** | **[Technical Docs](scripts/evals/EVAL_HARNESS_IMPLEMENTATION.md)**
+### Three-Layer Pre-Draft Enforcement (Solves Ayesha's Feedback)
+- **[THREE-LAYER PRE-DRAFT ENFORCEMENT (2026-06-08)](three_layer_pre_draft_enforcement_2026_06_08.md)** — ✅ COMPLETE. Prevents bad drafts at SOURCE, not at send time. **LAYER 1 (Draft Time):** UserPromptSubmit hook auto-injects locked template HTML + pre-flight checklist when "draft gwc rejection" detected. Can't create custom HTML (template is right there). **LAYER 2 (Pre-Draft Gate):** Mandatory checklist blocks drafting until all items acknowledged (master index read, template read, locked approach understood, 7 BLOCKs acknowledged). **LAYER 3 (Send Time):** PreToolUse hook catches violations. 4 locked templates created (GWC, warm bench, values, CV). Prevents deviation by design. **[Enhanced Hook](scripts/memory/prompt_submit_hook.py)** | **[Pre-Flight Checklist](pre_draft_checklist_2026_06_08.md)**
+
+### Send-Time Validation (Layer 3)
+- **[HOOKS & HARNESS IMPLEMENTATION (2026-06-08)](hooks_and_harness_implementation_2026_06_08.md)** — ✅ PHASE 1. Automated validation for all 4 email types (GWC, CV, warm bench, values). 5 phases: eval engine (10 checks), pre-send hook, memory injection (4 new triggers), missing lesson file, CLI tool. 7 HARD BLOCKs block sends. 3 WARNINGs logged. PreToolUse hook wired in settings.json. Prevents 5 historical regressions (PILOT prefix, intent-words, em dashes, word count, names). 300-600x faster validation. **[Impact Analysis](scripts/evals/BEFORE_AND_AFTER_REPORT.md)** | **[Technical Docs](scripts/evals/EVAL_HARNESS_IMPLEMENTATION.md)**
 
 ---
 

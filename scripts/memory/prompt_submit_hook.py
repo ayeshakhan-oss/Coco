@@ -4,6 +4,12 @@ Reads the user's prompt from stdin (JSON), detects keywords,
 and injects relevant memory file contents into the context
 by printing to stdout (Claude Code reads this as additional context).
 
+LAYER 1 ENHANCEMENT (2026-06-08):
+When "draft" + candidate communication keyword detected, also injects:
+- Locked template HTML (so user edits, doesn't create from scratch)
+- Pre-flight checklist (gates drafting until acknowledged)
+- Master index (tells user where everything is)
+
 Keyword → memory file mapping is defined in KEYWORD_MAP below.
 """
 
@@ -16,6 +22,16 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 MEMORY_DIR = Path("c:/Agent Coco/memory")
+TEMPLATES_DIR = Path("c:/Agent Coco/templates")
+
+# LAYER 1 ENHANCEMENT (2026-06-08): Draft detection + template injection
+# When "draft" + candidate communication keyword detected, inject template + checklist
+DRAFT_TEMPLATE_MAP = {
+    "gwc rejection": ("gwc_rejection_template_locked.html", "GWC Rejection"),
+    "warm bench": ("warm_bench_template_locked.html", "Warm Bench"),
+    "values feedback": ("values_feedback_template_locked.html", "Values Feedback"),
+    "cv rejection": ("cv_rejection_template_locked.html", "CV Rejection"),
+}
 
 # Keyword patterns → memory files to inject (in priority order)
 KEYWORD_MAP = [
@@ -69,6 +85,58 @@ ALWAYS_INJECT = [
 MAX_FILE_CHARS = 3000  # Truncate long files to stay within context budget
 
 
+def detect_draft_request(prompt):
+    """
+    LAYER 1 ENHANCEMENT: Detect if user is asking to draft a candidate email.
+    Returns (is_draft, template_file, email_type) or (False, None, None)
+    """
+    prompt_lower = prompt.lower()
+
+    # Check if "draft" keyword present
+    if "draft" not in prompt_lower:
+        return False, None, None
+
+    # Check which email type they're drafting
+    for draft_keyword, (template_file, email_type) in DRAFT_TEMPLATE_MAP.items():
+        if draft_keyword in prompt_lower:
+            return True, template_file, email_type
+
+    return False, None, None
+
+
+def inject_template_and_checklist(template_file):
+    """
+    LAYER 1 ENHANCEMENT: Inject locked template HTML + pre-flight checklist.
+    Returns formatted injection block.
+    """
+    blocks = []
+
+    # Inject pre-flight checklist (MUST READ FIRST)
+    checklist_path = MEMORY_DIR / "pre_draft_checklist_2026_06_08.md"
+    if checklist_path.exists():
+        checklist_content = checklist_path.read_text(encoding="utf-8")
+        blocks.append("<!-- LAYER 1: PRE-FLIGHT CHECKLIST (MANDATORY - READ BEFORE DRAFTING) -->\n")
+        blocks.append(f"<!-- MEMORY: pre_draft_checklist_2026_06_08.md -->\n{checklist_content}\n<!-- END MEMORY: pre_draft_checklist_2026_06_08.md -->")
+
+    # Inject locked template HTML
+    template_path = TEMPLATES_DIR / template_file
+    if template_path.exists():
+        template_content = template_path.read_text(encoding="utf-8")
+        blocks.append("\n\n<!-- LAYER 1: LOCKED TEMPLATE HTML (DO NOT MODIFY STRUCTURE/COLORS/FONTS) -->\n")
+        blocks.append(f"<!-- TEMPLATE: {template_file} -->\n{template_content}\n<!-- END TEMPLATE: {template_file} -->")
+
+    # Inject three-layer enforcement guide
+    enforcement_path = MEMORY_DIR / "three_layer_pre_draft_enforcement_2026_06_08.md"
+    if enforcement_path.exists():
+        enforcement_content = enforcement_path.read_text(encoding="utf-8")
+        if len(enforcement_content) > MAX_FILE_CHARS:
+            enforcement_content = enforcement_content[:MAX_FILE_CHARS] + "\n\n[...truncated for context budget...]"
+        blocks.append("\n\n<!-- LAYER 1: THREE-LAYER ENFORCEMENT ARCHITECTURE -->\n")
+        blocks.append(f"<!-- MEMORY: three_layer_pre_draft_enforcement_2026_06_08.md -->\n{enforcement_content}\n<!-- END MEMORY: three_layer_pre_draft_enforcement_2026_06_08.md -->")
+
+    return "\n\n".join(blocks)
+
+
 def detect_relevant_files(prompt):
     prompt_lower = prompt.lower()
     files = list(ALWAYS_INJECT)
@@ -111,12 +179,26 @@ def main():
     if not prompt:
         return  # No prompt, nothing to inject
 
-    relevant_files = detect_relevant_files(prompt)
-    injection = inject_memory(relevant_files)
+    # LAYER 1 ENHANCEMENT (2026-06-08): Check for draft requests first
+    is_draft, template_file, email_type = detect_draft_request(prompt)
+    injection_blocks = []
 
-    if injection:
+    if is_draft and template_file:
+        # Inject template + checklist for draft requests
+        template_injection = inject_template_and_checklist(template_file)
+        if template_injection:
+            injection_blocks.append(template_injection)
+
+    # Always inject relevant rule files (from KEYWORD_MAP)
+    relevant_files = detect_relevant_files(prompt)
+    memory_injection = inject_memory(relevant_files)
+    if memory_injection:
+        injection_blocks.append(memory_injection)
+
+    # Combine all injections
+    if injection_blocks:
         # Claude Code reads stdout of UserPromptSubmit hook as additional context
-        print(injection)
+        print("\n\n".join(injection_blocks))
 
 
 if __name__ == "__main__":
