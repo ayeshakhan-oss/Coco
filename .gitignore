@@ -1,4 +1,5 @@
 # CREDENTIALS & SECRETS (never track)
+# NOTE: .gitignore does NOT support inline comments — keep comments on their own lines.
 .env
 .env.local
 credentials.json
@@ -6,8 +7,16 @@ token.json
 token_gmail.json
 token_gmail_labels.json
 token_sheets.json
+token_sheets_broad.json
 .mcp.json
-*-*.json  # Service account JSON files (Google Cloud, etc.)
+# Service account JSON files (Google Cloud, etc.) — hyphenated key files
+*-*.json
+# OAuth tokens / service-account keys anywhere under tools/ and .claude/config/
+tools/*.json
+.claude/config/*.json
+.claude/config/*token*
+*service-account*.json
+*serviceaccount*.json
 
 # COMPILED & CACHE (never track)
 __pycache__/
