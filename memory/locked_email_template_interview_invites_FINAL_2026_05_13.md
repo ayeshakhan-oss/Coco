@@ -1,17 +1,26 @@
 ---
-name: 🔒 LOCKED Email Template — ALL Candidate Communication (FINAL 2026-05-13)
-description: Universal specification for ALL candidate emails (values invites, rejections, warm bench, GWC, case study, exploratory calls). Design locked. ONLY content changes per purpose.
+name: 🔒 LOCKED Email Template — INTERVIEW INVITES (Skill 06) (FINAL 2026-05-13)
+description: Locked design for INTERVIEW INVITES & opportunity emails (Skill 06) — values invites, case study/GWC/exploratory call invites, round/final/offer meetings, warm bench OPPORTUNITY invites. Design locked. SCOPE NARROWED 2026-06-10 — feedback/rejection emails now use the v8 layout (see note below).
 type: project
-status: 🔒 LOCKED FOR PRODUCTION — NO DESIGN DEVIATIONS ALLOWED
+status: 🔒 LOCKED FOR PRODUCTION (INVITES ONLY) — NO DESIGN DEVIATIONS ALLOWED
 originSessionId: session-2026-05-13
 verifiedAgainst: Values Interview email + complete editorial refinement session
 ---
 
-# 🔒 LOCKED EMAIL TEMPLATE — ALL CANDIDATE COMMUNICATION
+# 🔒 LOCKED EMAIL TEMPLATE — INTERVIEW INVITES (Skill 06)
 
-**STATUS:** PRODUCTION READY — FINAL SPECIFICATION LOCKED 2026-05-13
+**STATUS:** PRODUCTION READY — FINAL SPECIFICATION LOCKED 2026-05-13. **Scope narrowed 2026-06-10.**
 
-**APPLIES TO:** 
+> **⚠️ SCOPE CHANGE (2026-06-10):** This template is for **interview invites & opportunity
+> emails only (Skill 06)**. It previously claimed to be universal for "ALL candidate
+> communication," including rejections — that is **no longer true**. All **candidate
+> communication feedback/rejection emails** (CV rejection, values feedback, warm bench
+> FEEDBACK, GWC rejection — Skill 01) now use the **v8 layout**:
+> [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md) via
+> `scripts/utils/v8_template.py`. Ayesha's decision, 2026-06-10. This resolves the
+> long-standing design conflict between the two templates.
+
+**APPLIES TO (invites / opportunity emails — Skill 06):**
 - ✅ Values interview invites
 - ✅ Case study submission invites
 - ✅ Exploratory call invites
@@ -19,11 +28,15 @@ verifiedAgainst: Values Interview email + complete editorial refinement session
 - ✅ Zero-in / Round interviews
 - ✅ Final round interviews
 - ✅ Offer acceptance meetings
-- ✅ Warm bench opportunity emails (interview invites only — feedback emails use separate template)
-- ✅ Rejection emails (any stage)
-- ✅ ANY candidate-facing email communication
+- ✅ Warm bench OPPORTUNITY invites (interview invites only)
 
-**RULE:** Design is 100% locked. Only content changes per purpose. Layout, fonts, colors, spacing — NEVER deviate.
+**DOES NOT APPLY TO (use v8 layout instead):**
+- ❌ Rejection emails (any stage) → v8
+- ❌ Values feedback emails → v8
+- ❌ Warm bench FEEDBACK emails → v8
+- ❌ CV-stage rejection feedback → v8
+
+**RULE:** For invites, design is 100% locked. Only content changes per purpose. Layout, fonts, colors, spacing — NEVER deviate.
 
 ---
 

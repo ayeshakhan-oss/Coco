@@ -10,6 +10,8 @@ status: LOCKED & PRODUCTION READY (2026-05-04) — HAROON-ALIGNED
 **All candidate communication must follow the principles in:**
 [CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md](../../../memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
 
+**🔒 LOCKED LAYOUT (2026-06-10):** Import the visual layout from `scripts/utils/v8_template.py` (`H/SUB/P/PS/FOOTER/wrap/attach_logo/EYEBROW`). NEVER redefine the card/header/footer/helpers inline. Same layout for ALL candidate comms (the Haroon section headings still differ per type). Full spec: [v8_candidate_comms_layout_LOCKED.md](../../../memory/v8_candidate_comms_layout_LOCKED.md).
+
 This skill describes HOW to structure the email (Haroon Yasin framework). The master file describes THE TONE PHILOSOPHY and rules that govern WHAT you write.
 
 **Key rules that the harness enforces (HARD BLOCKS):**

@@ -22,6 +22,7 @@ WARNING violations are logged but allow sending (exit 0):
 - Generic subject lines (Rule 7)
 - Haroon Yasin balance issues
 - Recruiting abstractions
+- v8 layout drift (memory/v8_candidate_comms_layout_LOCKED.md, locked 2026-06-10)
 
 Returns: {passed, violations[], word_count}
 """
@@ -326,6 +327,32 @@ def check_generic_subject(subject: str, email_type: str) -> Tuple[bool, Optional
     return True, None
 
 
+# v8 layout signatures (from scripts/utils/v8_template.py). Candidate comms must use these.
+V8_LAYOUT_MARKERS = [
+    'max-width:620px',
+    '#f0f4f0',
+    'cid:taleemabad_logo',
+    'font-size:15px;line-height:1.8',
+    'border-left:4px solid #1b5e20',
+]
+
+
+def check_v8_layout(html_body: str) -> Tuple[bool, Optional[str]]:
+    """
+    Verify the email uses the locked v8 layout (scripts/utils/v8_template.py).
+    SOURCE: memory/v8_candidate_comms_layout_LOCKED.md (locked 2026-06-10).
+    Returns: (passed, detail_msg_if_drifted). WARNING-level (flags drift, does not block).
+    """
+    missing = [m for m in V8_LAYOUT_MARKERS if m not in html_body]
+    # Allow 1 missing (minor variation); flag if 2+ markers absent.
+    if len(missing) >= 2:
+        detail = (f'Layout does not match locked v8 ({len(missing)}/{len(V8_LAYOUT_MARKERS)} '
+                  f'markers missing: {", ".join(missing)}). Import layout from '
+                  f'scripts/utils/v8_template.py. See memory/v8_candidate_comms_layout_LOCKED.md.')
+        return False, detail
+    return True, None
+
+
 def check_recruiting_abstractions(text: str) -> Tuple[bool, Optional[str]]:
     """
     Check for recruiting abstractions (strong candidate, excellent fit, etc).
@@ -464,6 +491,15 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'No recruiting abstractions',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # 11. v8 layout (locked 2026-06-10)
+    passed, detail = check_v8_layout(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'v8 locked layout',
             'severity': 'WARNING',
             'detail': detail,
         })

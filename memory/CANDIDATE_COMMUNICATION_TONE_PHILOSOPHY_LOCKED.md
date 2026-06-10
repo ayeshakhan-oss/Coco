@@ -37,9 +37,10 @@ metadata:
 - **Word count:** 800-1100 words minimum (mandatory)
 
 **Format (locked):**
-- Logo: Taleemabad embedded (cid:logo_taleemabad)
+- **LAYOUT:** Use the single locked v8 layout for ALL candidate communication emails. Import from `scripts/utils/v8_template.py` (H/SUB/P/PS/FOOTER/wrap/attach_logo/EYEBROW). Never redefine the layout inline. Full spec: [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md). Applies to all 4 types + any future candidate-communication type.
+- Logo: Taleemabad embedded (cid:taleemabad_logo)
 - Font: Georgia serif, justified text
-- Colors: Blue headings (#1565C0), simple HTML signature
+- Colors: Blue headings (#1565C0), green subheads (#1b5e20), simple HTML signature
 - No em dashes (replace with period/comma/colon)
 - No asterisks in headings
 - No interviewer names in text

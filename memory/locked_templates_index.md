@@ -51,10 +51,10 @@ originSessionId: d4a807e5-380e-4bc6-ac7a-c252d64a81bd
 
 ---
 
-## 💝 WARM BENCH FEEDBACK INVITES & REJECTIONS
+## 💝 WARM BENCH FEEDBACK & REJECTIONS
 **File:** [warm_bench_final_locked_approach.md](warm_bench_final_locked_approach.md)  
 **When to use:** Candidates who cleared values but weren't selected (rejection-keep-warm)  
-**Design:** Universal template above (no deviations)  
+**Design:** 🔒 v8 layout — `scripts/utils/v8_template.py`, spec [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md). (NOT the 775px invite template.)  
 **Length:** 800–1100 words MANDATORY  
 **Structure:** Opening + "What Genuinely Impressed Us" + "Here's the Part We Need to Be Honest About" + "Here's Where We Want to Leave Things" + P.S.  
 **Tone:** Warm, observational, specific timestamps, poetic subjects, no prescriptive advice  
@@ -65,10 +65,11 @@ originSessionId: d4a807e5-380e-4bc6-ac7a-c252d64a81bd
 
 ---
 
-## 📧 REJECTION EMAILS (Bulk)
-**File:** [email_template_format_FINAL.md](email_template_format_FINAL.md)  
+## 📧 REJECTION EMAILS (Bulk / CV-stage)
+**File:** [email_template_format_FINAL.md](email_template_format_FINAL.md) (content/tone)  
 **When to use:** Rejection emails for screened-out candidates  
-**Format:** Logo, small blue header, LARGE blue position title, smaller subtitle, BLUE horizontal line, justified Georgia text  
+**Design:** 🔒 v8 layout — `scripts/utils/v8_template.py`, spec [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md).  
+**Format:** Logo, blue header, blue position title, blue divider, justified Georgia text (all delivered by the v8 module)  
 **Key rules:**  
 - NO ASTERISKS in headings
 - NO EM DASHES (use dashes only)
@@ -103,7 +104,7 @@ originSessionId: d4a807e5-380e-4bc6-ac7a-c252d64a81bd
 **File:** [skill_values_feedback_emails_sop.md](skill_values_feedback_emails_sop.md)  
 **When to use:** Values interview feedback (passed screening, at values stage)  
 **Length:** 800–1100 words MINIMUM (800 floor, strict)  
-**Design:** v8 (interview evidence + specific quotes required)  
+**Design:** 🔒 v8 layout — `scripts/utils/v8_template.py`, spec [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md).  
 **Tone:** See locked tone guide above (MANDATORY)  
 **Key rules:**  
 - Always pilot to Ayesha + Jawwad ONLY (never directly to candidate)
