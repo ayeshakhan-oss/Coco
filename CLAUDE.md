@@ -28,6 +28,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 7. **🔒 NEVER [PILOT – ] IN LIVE EMAILS** — Subject line prefix `[PILOT – ]` is ONLY for pilot emails to Ayesha. FORBIDDEN in live emails to candidates. Always clean subject before sending live. See [.claude/RULES.md](.claude/RULES.md) Rule 2.5.
 8. **🔒 ALL CANDIDATE COMMS USE THE v8 LAYOUT (CRITICAL — 2026-06-10)** — Every candidate communication email (CV rejection, values feedback, warm bench, GWC rejection, + any future type) imports its layout from `scripts/utils/v8_template.py` (`H/SUB/P/PS/FOOTER/wrap/attach_logo/EYEBROW`). NEVER redefine the card/header/footer/helpers inline. The 4 harness draft-time templates are generated from it (`python scripts/utils/gen_locked_templates.py`). Interview invites (Skill 06) keep their own design. See [memory/v8_candidate_comms_layout_LOCKED.md](memory/v8_candidate_comms_layout_LOCKED.md).
 
+9. **🔒 v8 + INVITE DESIGNS OVERRIDE `ui-ux-pro-max`** — The `ui-ux-pro-max` design-intelligence skill (vendored, local-only at `.claude/skills/ui-ux-pro-max/`) is for general UI/UX/web work. It MUST NOT alter the locked v8 candidate-comms layout (Rule 8) or the Skill 06 interview-invite design. For any candidate email, the locked layouts win — never apply `ui-ux-pro-max` suggestions to them.
+
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 
 ---

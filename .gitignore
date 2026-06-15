@@ -40,3 +40,6 @@ job36_case_study_gmail_check.json
 job32_invite_check.txt
 job36_invite_check.txt
 nain_tara_cv.pdf
+
+# VENDORED THIRD-PARTY UI/UX SKILL (local-only, reinstall via: npx uipro-cli init --ai claude)
+.claude/skills/ui-ux-pro-max/

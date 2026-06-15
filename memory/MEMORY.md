@@ -53,6 +53,9 @@
 ### Individual Skills
 - **[06_candidate-invites (2026-05-14)](../skills/06_candidate-invites/SKILL.md)** — Universal skill for ALL interview invites + opportunity emails. 4 types: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite. Design 100% locked (see locked templates). Reference scripts: send_values_interview_pilot.py, send_case_study_debrief_pilot.py, send_exploratory_call_pilot.py, send_warm_bench_invite_pilot.py. Workflow: customize script → pilot to Ayesha → approval → live send.
 
+### Third-Party Skills
+- **[UI/UX Pro Max — Install Notes (2026-06-15)](ui_ux_pro_max_skill_install.md)** — General UI/UX design-intelligence skill (NextLevelBuilder, MIT). Installed at `.claude/skills/ui-ux-pro-max/`, **vendored local-only (gitignored)** — reinstall via `npx uipro-cli init --ai claude`. 🔴 CRITICAL: every reinstall wipes the Windows `python3`→`python` + path patch in `SKILL.md` — re-apply it. Locked v8/invite designs OVERRIDE it (CLAUDE.md Rule 9). Local CSV engine, no network calls.
+
 ---
 
 ## 🎯 MASTER REFERENCE (NEW — 2026-05-08)
