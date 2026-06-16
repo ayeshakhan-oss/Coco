@@ -1,0 +1,16 @@
+# Backend (FastAPI) service dependencies — installed in the backend Railway
+# service / local venv. The reused scripts/utils + scripts/evals modules are
+# stdlib-only, so they add no dependencies here.
+
+fastapi>=0.115
+uvicorn[standard]>=0.32
+sqlalchemy>=2.0
+psycopg[binary]>=3.2          # psycopg v3 — has Python 3.14 wheels (psycopg2 does not)
+alembic>=1.13
+pydantic-settings>=2.5
+google-auth>=2.35             # server-side ID-token verification
+requests>=2.32                # transport used by google-auth's token verifier
+pyjwt>=2.9                    # signed session cookie
+anthropic>=0.40               # Claude API (AI drafting)
+httpx>=0.27
+python-dotenv>=1.0

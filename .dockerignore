@@ -1,0 +1,25 @@
+# Keep the build context small and free of secrets/local cruft.
+.git/
+.venv/
+venv/
+env/
+**/__pycache__/
+*.pyc
+*.pyo
+node_modules/
+frontend/node_modules/
+frontend/dist/
+data/
+output/
+logs/
+*.log
+.env
+.env.*
+.mcp.json
+.claude/
+archive/
+*.bak
+C:/tmp
+design-system/
+docs/
+SESSIONS.md

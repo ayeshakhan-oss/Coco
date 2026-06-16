@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+/* Design tokens — Coco dashboard. Brand blue #1565c0; semantic status colors
+   echo the locked v8 email palette (sent green #1b5e20). Inter for all chrome.
+   The email PREVIEW (Phase 5) keeps Georgia inside its sandboxed iframe. */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-brand-50: #e8f0fe;
+  --color-brand-100: #d3e3fd;
+  --color-brand-200: #a9c7f8;
+  --color-brand-500: #1565c0;
+  --color-brand-600: #0d4a9e;
+  --color-brand-700: #0a3d85;
+
+  --color-sent: #1b5e20;
+  --color-sent-bg: #e8f5e9;
+  --color-review: #b45309;
+  --color-review-bg: #fef3c7;
+  --color-block: #c62828;
+  --color-block-bg: #fde8e8;
+  --color-muted-bg: #f1f5f9;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}

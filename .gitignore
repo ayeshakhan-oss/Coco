@@ -11,6 +11,8 @@ token_sheets_broad.json
 .mcp.json
 # Service account JSON files (Google Cloud, etc.) — hyphenated key files
 *-*.json
+# ...but DO track the frontend lockfile (npm ci needs it; matched by *-*.json above)
+!frontend/package-lock.json
 # OAuth tokens / service-account keys anywhere under tools/ and .claude/config/
 tools/*.json
 .claude/config/*.json
@@ -23,6 +25,17 @@ __pycache__/
 *.pyc
 *.pyo
 *.egg-info/
+
+# PYTHON VIRTUAL ENVS (never track)
+.venv/
+venv/
+env/
+
+# WEBAPP — NODE / FRONTEND BUILD (never track)
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
 
 # TEMPORARY & LOGS (never track)
 Temp/
