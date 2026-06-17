@@ -45,7 +45,9 @@ COPY --from=frontend /app/frontend/dist frontend/dist
 RUN mkdir -p logs
 
 EXPOSE 8000
-# Run the migration in the start command (where Railway injects runtime env vars,
-# unlike the pre-deploy hook) then start the server. Single worker: the send
-# pipeline serializes on an in-process lock (safe_send.ALLOWED_EXTERNAL global).
-CMD ["sh", "-c", "alembic upgrade head && uvicorn webapp.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
+# Just run the server. DB migrations are a SEPARATE, deliberate step (run
+# `alembic upgrade head` manually / via a one-off command), not on every boot —
+# running them on startup couples boot to DB locks and caused healthcheck hangs.
+# Single worker: the send pipeline serializes on an in-process lock
+# (safe_send.ALLOWED_EXTERNAL is a process-global set).
+CMD ["sh", "-c", "uvicorn webapp.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
