@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from sqlalchemy.orm import Session
 
 from ..db import get_db
-from ..deps import get_current_user, require_approver
+from ..deps import ROLE_LEVEL, get_current_user, require_approver, require_editor
 from ..reuse import EMAIL_TYPES, LOGO_PATH, evaluate_email
 from ..schemas import (
     CommunicationOut,
@@ -42,7 +42,7 @@ def _scorecard_for(raw: dict, email_type: str) -> Optional[dict]:
 def generate(
     body: GenerateRequest,
     db: Session = Depends(get_db),
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(require_editor),
 ):
     if body.email_type not in EMAIL_TYPES:
         raise HTTPException(400, f"email_type must be one of {EMAIL_TYPES}")
@@ -119,7 +119,7 @@ def update_comm(
     comm_id: str,
     body: DraftUpdate,
     db: Session = Depends(get_db),
-    _user: dict = Depends(get_current_user),
+    _user: dict = Depends(require_editor),
 ):
     comm = comm_svc.get(db, comm_id)
     if not comm:
@@ -162,7 +162,7 @@ def reeval(
     comm_id: str,
     mode: str = Query("pilot"),
     db: Session = Depends(get_db),
-    _user: dict = Depends(get_current_user),
+    _user: dict = Depends(require_editor),
 ):
     comm = comm_svc.get(db, comm_id)
     if not comm:
@@ -200,7 +200,7 @@ def _gate_or_422(comm) -> dict:
 
 
 @router.post("/{comm_id}/submit", response_model=CommunicationOut)
-def submit_for_review(comm_id: str, db: Session = Depends(get_db), _user: dict = Depends(get_current_user)):
+def submit_for_review(comm_id: str, db: Session = Depends(get_db), _user: dict = Depends(require_editor)):
     comm = comm_svc.get(db, comm_id)
     if not comm:
         raise HTTPException(404, "Communication not found")
@@ -236,7 +236,7 @@ def send(
     comm_id: str,
     body: SendRequest,
     db: Session = Depends(get_db),
-    user: dict = Depends(get_current_user),
+    user: dict = Depends(require_editor),
 ):
     comm = comm_svc.get(db, comm_id)
     if not comm:
@@ -251,7 +251,7 @@ def send(
     candidate_email = app_row.get("email") if app_row else None
 
     if mode == "live":
-        if user.get("app_role") != "approver":
+        if ROLE_LEVEL.get(user.get("app_role", "viewer"), 0) < ROLE_LEVEL["approver"]:
             raise HTTPException(403, "Only an approver can send live")
         if comm.status != "approved":
             raise HTTPException(409, "A communication must be approved before a live send")

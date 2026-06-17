@@ -1,25 +1,38 @@
 import { Mail } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+
+const ERRORS: Record<string, string> = {
+  not_authorized: "That account isn't on the access list. Ask your admin to add you.",
+  denied: 'Only @taleemabad.com Google accounts are allowed.',
+  bad_state: 'Login session expired. Please try again.',
+  sso_not_configured: 'Sign-in is not configured yet.',
+  error: 'Something went wrong signing in. Please try again.',
+}
 
 export function LoginPage() {
+  const [params] = useSearchParams()
+  const err = params.get('error')
+
   return (
-    <div className="flex h-full items-center justify-center bg-slate-50">
-      <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500 text-white">
+    <div className="flex h-full items-center justify-center bg-canvas">
+      <div className="card w-full max-w-sm p-8 text-center">
+        <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blurple text-white">
           <Mail className="h-6 w-6" />
         </span>
-        <h1 className="text-lg font-semibold text-slate-900">Sign in to Coco</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Candidate communication for the Taleemabad hiring team.
-        </p>
+        <h1 className="font-display text-xl font-bold text-ink">Sign in to Coco</h1>
+        <p className="mt-1 text-sm text-ink-muted">Candidate communication for the Taleemabad hiring team.</p>
 
-        {/* Real Google SSO is wired in Phase 3. */}
+        {err && (
+          <div className="mt-4 rounded-xl bg-danger/15 px-3 py-2 text-sm text-danger">{ERRORS[err] ?? 'Sign-in failed.'}</div>
+        )}
+
         <a
           href="/auth/google/login"
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0a0d12] transition-colors hover:brightness-95"
         >
           <GoogleIcon /> Continue with Google
         </a>
-        <p className="mt-4 text-xs text-slate-400">Restricted to @taleemabad.com accounts.</p>
+        <p className="mt-4 text-xs text-ink-dim">Access is limited to invited @taleemabad.com accounts.</p>
       </div>
     </div>
   )

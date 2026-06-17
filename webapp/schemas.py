@@ -20,6 +20,29 @@ class CurrentUserOut(_Base):
     app_role: str
 
 
+class UserOut(_Base):
+    id: str
+    email: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    app_role: str
+    active: bool
+    last_login_at: Optional[dt.datetime] = None
+    created_at: Optional[dt.datetime] = None
+
+
+class UserCreate(_Base):
+    email: str
+    app_role: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+
+
+class UserUpdate(_Base):
+    app_role: Optional[str] = None
+    active: Optional[bool] = None
+
+
 class JobItem(_Base):
     job_pk: int
     job_code: Optional[str] = None

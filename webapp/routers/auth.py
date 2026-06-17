@@ -75,13 +75,17 @@ def google_callback(
         log.error("SSO callback error: %s", e)
         return RedirectResponse(_login_url("error"))
 
-    user = users_svc.upsert_from_google(
+    # ALLOWLIST: only a pre-added, active user may log in.
+    user = users_svc.resolve_login(
         db,
         google_sub=info.get("sub", ""),
         email=info["email"],
         first_name=info.get("given_name"),
         last_name=info.get("family_name"),
     )
+    if user is None:
+        log.warning("SSO login denied (not on allowlist): %s", info.get("email"))
+        return RedirectResponse(_login_url("not_authorized"))
     session = create_session_token(
         user_id=user.id, email=user.email, app_role=user.app_role,
         first_name=user.first_name, last_name=user.last_name,

@@ -1,4 +1,4 @@
-export type AppRole = 'drafter' | 'approver'
+export type AppRole = 'viewer' | 'editor' | 'approver' | 'super_admin'
 export type Bucket = 'awaiting_scorecard' | 'needs_comms' | 'in_progress' | 'sent'
 
 export interface CurrentUser {
@@ -7,6 +7,17 @@ export interface CurrentUser {
   first_name?: string | null
   last_name?: string | null
   app_role: AppRole
+}
+
+export interface ManagedUser {
+  id: string
+  email: string
+  first_name?: string | null
+  last_name?: string | null
+  app_role: AppRole
+  active: boolean
+  last_login_at?: string | null
+  created_at?: string | null
 }
 
 export interface QueueRow {

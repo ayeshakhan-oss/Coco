@@ -9,11 +9,11 @@ interface StatCardProps {
   onClick?: () => void
 }
 
-const TONES: Record<StatCardProps['tone'], { ring: string; icon: string; bar: string }> = {
-  amber: { ring: 'ring-review/30', icon: 'bg-review-bg text-review', bar: 'bg-review' },
-  brand: { ring: 'ring-brand-500/30', icon: 'bg-brand-50 text-brand-600', bar: 'bg-brand-500' },
-  green: { ring: 'ring-sent/30', icon: 'bg-sent-bg text-sent', bar: 'bg-sent' },
-  slate: { ring: 'ring-slate-300', icon: 'bg-slate-100 text-slate-500', bar: 'bg-slate-400' },
+const TONES: Record<StatCardProps['tone'], { icon: string; bar: string; ring: string }> = {
+  amber: { icon: 'bg-magenta/15 text-magenta', bar: 'bg-magenta', ring: 'ring-magenta/50' },
+  brand: { icon: 'bg-blurple/20 text-[#aab2ff]', bar: 'bg-blurple', ring: 'ring-blurple/60' },
+  green: { icon: 'bg-green/15 text-green', bar: 'bg-green', ring: 'ring-green/50' },
+  slate: { icon: 'bg-elevated text-ink-dim', bar: 'bg-ink-dim', ring: 'ring-ink-dim/50' },
 }
 
 export function StatCard({ label, value, icon: Icon, tone, active, onClick }: StatCardProps) {
@@ -22,19 +22,17 @@ export function StatCard({ label, value, icon: Icon, tone, active, onClick }: St
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex cursor-pointer items-center gap-4 overflow-hidden rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition-all duration-200 hover:shadow-md ${
+      className={`group relative flex cursor-pointer items-center gap-4 overflow-hidden rounded-2xl border border-hairline bg-surface p-4 text-left transition-all duration-200 hover:bg-elevated ${
         active ? `ring-2 ${t.ring}` : ''
       }`}
     >
       <span className={`absolute left-0 top-0 h-full w-1 ${t.bar}`} />
-      <span className={`flex h-11 w-11 items-center justify-center rounded-lg ${t.icon}`}>
+      <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${t.icon}`}>
         <Icon className="h-5 w-5" />
       </span>
       <span>
-        <span className="block text-2xl font-semibold tabular-nums text-slate-900">{value}</span>
-        <span className="block text-xs font-medium uppercase tracking-wide text-slate-500">
-          {label}
-        </span>
+        <span className="block font-display text-2xl font-bold tabular-nums text-ink">{value}</span>
+        <span className="block text-xs font-medium uppercase tracking-wide text-ink-dim">{label}</span>
       </span>
     </button>
   )

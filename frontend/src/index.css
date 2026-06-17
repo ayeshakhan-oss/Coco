@@ -1,25 +1,27 @@
 @import 'tailwindcss';
 
-/* Design tokens — Coco dashboard. Brand blue #1565c0; semantic status colors
-   echo the locked v8 email palette (sent green #1b5e20). Inter for all chrome.
-   The email PREVIEW (Phase 5) keeps Georgia inside its sandboxed iframe. */
+/* ── Discord-inspired design language (dashboard chrome only) ──────────────
+   Deep-indigo canvas, Blurple primary, electric green for high-intent sends,
+   magenta accents, generous rounding. The candidate EMAIL preview keeps the
+   locked v8 (light, Georgia) inside its sandboxed iframe — untouched. */
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
 
-  --color-brand-50: #e8f0fe;
-  --color-brand-100: #d3e3fd;
-  --color-brand-200: #a9c7f8;
-  --color-brand-500: #1565c0;
-  --color-brand-600: #0d4a9e;
-  --color-brand-700: #0a3d85;
-
-  --color-sent: #1b5e20;
-  --color-sent-bg: #e8f5e9;
-  --color-review: #b45309;
-  --color-review-bg: #fef3c7;
-  --color-block: #c62828;
-  --color-block-bg: #fde8e8;
-  --color-muted-bg: #f1f5f9;
+  --color-canvas: #0a0d3a;        /* app background */
+  --color-surface: #1a1f4d;       /* cards, sidebar */
+  --color-surface-2: #12173d;     /* inputs, nested */
+  --color-elevated: #262d6b;      /* hover / raised */
+  --color-blurple: #5865f2;
+  --color-blurple-600: #4752c4;
+  --color-green: #35ed7e;
+  --color-magenta: #ec48bd;
+  --color-cyan: #00b0f4;
+  --color-danger: #f23f42;
+  --color-hairline: #2b3270;      /* borders on indigo */
+  --color-ink: #ffffff;
+  --color-ink-muted: #b7bdea;     /* secondary text */
+  --color-ink-dim: #7e87c4;       /* tertiary text / placeholders */
 }
 
 html,
@@ -30,8 +32,8 @@ body,
 
 body {
   margin: 0;
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--color-canvas);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,4 +41,41 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-hairline bg-surface;
+  }
+  .input {
+    @apply w-full rounded-xl border border-hairline bg-surface-2 px-3 py-2 text-sm text-ink outline-none placeholder:text-ink-dim focus:border-blurple focus:ring-2 focus:ring-blurple/30;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-blurple text-white hover:bg-blurple-600;
+  }
+  .btn-green {
+    @apply bg-green text-[#06210f] hover:brightness-95;
+  }
+  .btn-ghost {
+    @apply bg-elevated text-ink-muted hover:text-ink;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+}
+
+/* Discord uses a dense scrollbar on its dark surfaces. */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2b3270;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
 }

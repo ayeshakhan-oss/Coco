@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import type { DraftContent } from '../lib/types'
 
 /** Edits the structured draft content. Headings are fixed labels (the backend
- *  applies the canonical heading), so a typo can't break the required-heading
- *  rule. Paragraphs are edited as text blocks separated by a blank line. */
+ *  applies the canonical heading). Paragraphs are edited as text blocks
+ *  separated by a blank line. */
 export function SectionEditor({
   title,
   content,
@@ -30,28 +30,14 @@ export function SectionEditor({
     onContentChange({ ...content, sections: next })
   }
 
-  const ta =
-    'w-full resize-y rounded-lg border border-slate-200 bg-white p-3 text-sm leading-relaxed text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 disabled:bg-slate-50'
-
   return (
     <div className="space-y-5">
-      <div>
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Subject line</label>
-        <input
-          value={title}
-          disabled={disabled}
-          onChange={(e) => onTitleChange(e.target.value)}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 disabled:bg-slate-50"
-        />
-      </div>
+      <Field label="Subject line">
+        <input value={title} disabled={disabled} onChange={(e) => onTitleChange(e.target.value)} className="input font-medium" />
+      </Field>
 
       <Field label="Greeting">
-        <input
-          value={content.greeting ?? ''}
-          disabled={disabled}
-          onChange={(e) => onContentChange({ ...content, greeting: e.target.value })}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 disabled:bg-slate-50"
-        />
+        <input value={content.greeting ?? ''} disabled={disabled} onChange={(e) => onContentChange({ ...content, greeting: e.target.value })} className="input" />
       </Field>
 
       <Field label="Opening" hint="One or two paragraphs. Separate paragraphs with a blank line.">
@@ -60,38 +46,26 @@ export function SectionEditor({
           disabled={disabled}
           value={(content.opening ?? []).join('\n\n')}
           onChange={(e) => onContentChange({ ...content, opening: e.target.value.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean) })}
-          className={ta}
+          className="input resize-y leading-relaxed"
         />
       </Field>
 
       {sections.map((s, i) => (
-        <div key={i} className="rounded-lg border border-slate-100 bg-slate-50/60 p-3">
-          <div className="mb-2 text-sm font-semibold text-brand-700">{s.heading ?? `Section ${i + 1}`}</div>
-          <input
-            placeholder="Optional sub-heading"
-            value={s.subhead ?? ''}
-            disabled={disabled}
-            onChange={(e) => setSubhead(i, e.target.value)}
-            className="mb-2 w-full rounded-md border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 outline-none focus:border-brand-500 disabled:bg-slate-50"
-          />
+        <div key={i} className="rounded-xl border border-hairline bg-surface-2/60 p-3">
+          <div className="mb-2 text-sm font-semibold text-[#aab2ff]">{s.heading ?? `Section ${i + 1}`}</div>
+          <input placeholder="Optional sub-heading" value={s.subhead ?? ''} disabled={disabled} onChange={(e) => setSubhead(i, e.target.value)} className="input mb-2 text-xs" />
           <textarea
             rows={5}
             disabled={disabled}
             value={(s.paragraphs ?? []).join('\n\n')}
             onChange={(e) => setSectionParas(i, e.target.value)}
-            className={ta}
+            className="input resize-y leading-relaxed"
           />
         </div>
       ))}
 
       <Field label="P.S.">
-        <textarea
-          rows={2}
-          disabled={disabled}
-          value={content.ps ?? ''}
-          onChange={(e) => onContentChange({ ...content, ps: e.target.value })}
-          className={ta}
-        />
+        <textarea rows={2} disabled={disabled} value={content.ps ?? ''} onChange={(e) => onContentChange({ ...content, ps: e.target.value })} className="input resize-y leading-relaxed" />
       </Field>
     </div>
   )
@@ -100,9 +74,9 @@ export function SectionEditor({
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return (
     <div>
-      <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</label>
+      <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-ink-dim">{label}</label>
       {children}
-      {hint && <p className="mt-1 text-[11px] text-slate-400">{hint}</p>}
+      {hint && <p className="mt-1 text-[11px] text-ink-dim">{hint}</p>}
     </div>
   )
 }

@@ -5,10 +5,10 @@ import { Loader2, RefreshCw } from 'lucide-react'
 export function EmailPreview({ src, reloadKey, busy }: { src: string; reloadKey: number; busy?: boolean }) {
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 border-b border-slate-200 px-3 py-2 text-xs text-slate-500">
-        <span className="font-semibold uppercase tracking-wide">Live preview</span>
+      <div className="flex items-center gap-2 border-b border-hairline bg-surface px-3 py-2 text-xs text-ink-dim">
+        <span className="font-semibold uppercase tracking-wide text-ink-muted">Live preview</span>
         {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-        <span className="ml-auto flex items-center gap-1 text-slate-400"><RefreshCw className="h-3 w-3" /> updates on save</span>
+        <span className="ml-auto flex items-center gap-1"><RefreshCw className="h-3 w-3" /> updates on save</span>
       </div>
       <iframe
         key={reloadKey}

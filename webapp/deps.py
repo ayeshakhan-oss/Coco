@@ -1,11 +1,14 @@
-"""Auth dependencies.
+"""Auth + role dependencies.
 
-Authorization order:
-1. A valid `coco_session` cookie -> load the live app_users row (role + active
-   are honored on every request).
-2. No/invalid cookie + NON-production -> dev stub user (lets staging + local dev
-   work before/without a login).
-3. No/invalid cookie + production -> 401.
+Roles (ascending power): viewer < editor < approver < super_admin.
+- viewer:      read-only
+- editor:      + generate/edit/submit drafts
+- approver:    + approve & send
+- super_admin: + manage users (all powers)
+
+Login is allowlist-only: a valid session cookie maps to an app_users row; if the
+user isn't found or is inactive, access is refused. (The SSO callback only issues
+a session for emails already present + active — see routers/auth.py.)
 """
 
 from __future__ import annotations
@@ -18,13 +21,16 @@ from .db import get_db
 from .security import SESSION_COOKIE, verify_session_token
 from .services import users as users_svc
 
-# Dev identity used in non-production when there is no session cookie.
+ROLE_LEVEL = {"viewer": 0, "editor": 1, "approver": 2, "super_admin": 3}
+
+# Dev identity used in non-production when AUTH_DEV_BYPASS is on and there's no
+# session cookie. Super admin so local dev can exercise everything.
 _DEV_USER = {
     "id": "appuser-seed-jawwad",
     "email": "jawwad.ali@taleemabad.com",
     "first_name": "Jawwad",
     "last_name": "Ali",
-    "app_role": "approver",
+    "app_role": "super_admin",
 }
 
 
@@ -52,7 +58,15 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> dict:
     raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Not authenticated")
 
 
-def require_approver(user: dict = Depends(get_current_user)) -> dict:
-    if user.get("app_role") != "approver":
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Approver role required")
-    return user
+def _require_role(minimum: str):
+    def dep(user: dict = Depends(get_current_user)) -> dict:
+        if ROLE_LEVEL.get(user.get("app_role", "viewer"), 0) < ROLE_LEVEL[minimum]:
+            raise HTTPException(status.HTTP_403_FORBIDDEN, f"Requires {minimum} role or higher")
+        return user
+
+    return dep
+
+
+require_editor = _require_role("editor")
+require_approver = _require_role("approver")
+require_super_admin = _require_role("super_admin")

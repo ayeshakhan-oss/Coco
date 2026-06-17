@@ -56,7 +56,7 @@ class AppUser(Base):
     first_name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     last_name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     app_role: Mapped[str] = mapped_column(
-        String, nullable=False, default="drafter", server_default="drafter"
+        String, nullable=False, default="viewer", server_default="viewer"
     )
     active: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=True, server_default=text("true")
@@ -73,7 +73,8 @@ class AppUser(Base):
             "email LIKE '%@taleemabad.com'", name="ck_app_users_email_domain"
         ),
         CheckConstraint(
-            "app_role IN ('drafter','approver')", name="ck_app_users_role"
+            "app_role IN ('viewer','editor','approver','super_admin')",
+            name="ck_app_users_role",
         ),
     )
 

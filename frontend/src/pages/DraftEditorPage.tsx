@@ -9,6 +9,7 @@ import { ScorecardView } from '../components/ScorecardView'
 import { SectionEditor } from '../components/SectionEditor'
 import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
+import { canApprove, canEdit } from '../lib/roles'
 import type { DraftContent, EvalResult } from '../lib/types'
 
 export function DraftEditorPage() {
@@ -30,8 +31,9 @@ export function DraftEditorPage() {
   const [msg, setMsg] = useState<{ text: string; kind: 'ok' | 'err' } | null>(null)
   const dirty = useRef(false)
 
-  const editable = comm ? comm.status === 'draft' || comm.status === 'in_review' : false
-  const isApprover = meQ.data?.app_role === 'approver'
+  const role = meQ.data?.app_role
+  const editable = comm ? (comm.status === 'draft' || comm.status === 'in_review') && canEdit(role) : false
+  const isApprover = canApprove(role)
   const passed = evalResult ? evalResult.passed : false
 
   useEffect(() => {
@@ -60,7 +62,6 @@ export function DraftEditorPage() {
     }
   }
 
-  // Debounced autosave on edits (skips initial load via the dirty flag).
   useEffect(() => {
     if (!editable || !dirty.current) return
     const t = setTimeout(save, 800)
@@ -83,39 +84,36 @@ export function DraftEditorPage() {
       }
       await commQ.refetch()
     } catch (e) {
-      const err = e as ApiError
-      setMsg({ text: `Could not ${a.replace('_', ' ')}: ${err.message}`, kind: 'err' })
+      setMsg({ text: `Could not ${a.replace('_', ' ')}: ${(e as ApiError).message}`, kind: 'err' })
     } finally {
       setActing(false)
     }
   }
 
   if (commQ.isLoading) return <Spinner label="Loading draft…" />
-  if (commQ.isError || !comm) return <div className="p-8 text-sm text-block">Could not load this draft.</div>
+  if (commQ.isError || !comm) return <div className="p-8 text-sm text-danger">Could not load this draft.</div>
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-6 py-3">
-        <Link to={appId ? `/applications/${appId}` : '/'} className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800">
+      <div className="flex items-center gap-3 border-b border-hairline bg-surface px-6 py-3">
+        <Link to={appId ? `/applications/${appId}` : '/'} className="inline-flex items-center gap-1.5 text-sm text-ink-dim hover:text-ink">
           <ArrowLeft className="h-4 w-4" /> Back
         </Link>
-        <div className="text-sm font-medium text-slate-800">{comm.role_title} · {comm.email_type.replace('_', ' ')}</div>
-        {!editable && <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500">read-only ({comm.status.replace('_', ' ')})</span>}
+        <div className="text-sm font-medium text-ink">{comm.role_title} · {comm.email_type.replace('_', ' ')}</div>
+        {!editable && <span className="rounded-md bg-elevated px-2 py-0.5 text-xs text-ink-dim">read-only ({comm.status.replace('_', ' ')})</span>}
       </div>
 
       {msg && (
-        <div className={`px-6 py-2 text-sm ${msg.kind === 'ok' ? 'bg-sent-bg text-sent' : 'bg-block-bg text-block'}`}>{msg.text}</div>
+        <div className={`px-6 py-2 text-sm ${msg.kind === 'ok' ? 'bg-green/15 text-green' : 'bg-danger/15 text-danger'}`}>{msg.text}</div>
       )}
 
       <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)_minmax(0,1fr)]">
-        {/* Scorecard */}
-        <aside className="min-h-0 overflow-auto border-r border-slate-200 bg-white p-4">
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Scorecard reference</h3>
+        <aside className="min-h-0 overflow-auto border-r border-hairline bg-surface p-4">
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-dim">Scorecard reference</h3>
           {scoreQ.isLoading ? <Spinner /> : <ScorecardView values={scoreQ.data?.values ?? null} gwc={scoreQ.data?.gwc ?? null} />}
         </aside>
 
-        {/* Editor */}
-        <section className="min-h-0 overflow-auto border-r border-slate-200 bg-slate-50/40 p-5">
+        <section className="min-h-0 overflow-auto border-r border-hairline bg-canvas p-5">
           <SectionEditor
             title={title}
             content={content}
@@ -125,8 +123,7 @@ export function DraftEditorPage() {
           />
         </section>
 
-        {/* Preview */}
-        <section className="min-h-0 overflow-hidden bg-white">
+        <section className="min-h-0 overflow-hidden bg-surface">
           <EmailPreview src={api.previewUrl(comm.id)} reloadKey={reloadKey} busy={saving} />
         </section>
       </div>

@@ -6,6 +6,7 @@ import type {
   EvalResult,
   GenerateResponse,
   JobItem,
+  ManagedUser,
   QueueRow,
   QueueStats,
   ScorecardResponse,
@@ -93,4 +94,11 @@ export const api = {
     return get<Communication[]>(`/api/communications?${qs.toString()}`)
   },
   previewUrl: (id: string) => `/api/communications/${id}/preview`,
+
+  // User management (super admin)
+  listUsers: () => get<ManagedUser[]>('/api/users'),
+  createUser: (payload: { email: string; app_role: string; first_name?: string; last_name?: string }) =>
+    post<ManagedUser>('/api/users', payload),
+  updateUser: (id: string, payload: { app_role?: string; active?: boolean }) =>
+    request<ManagedUser>('PATCH', `/api/users/${id}`, payload),
 }
