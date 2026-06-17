@@ -76,6 +76,18 @@ def render_body(
     return "\n".join(parts)
 
 
+def attach_headings(content: dict, email_type: str) -> dict:
+    """Stamp each section with its canonical heading (from the eval's
+    SECTION_HEADINGS) so the editor can show heading labels. Rendering still
+    applies headings positionally, so this is purely for display."""
+    required = SECTION_HEADINGS.get(email_type, {}).get("required", [])
+    sections = content.get("sections") or []
+    for i, sec in enumerate(sections):
+        if isinstance(sec, dict) and i < len(required):
+            sec["heading"] = required[i]
+    return content
+
+
 def title_for(content: dict, email_type: str) -> str:
     return (content.get("title_line") or _DEFAULT_TITLE.get(email_type, "A note from us")).strip()
 

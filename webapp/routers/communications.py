@@ -75,6 +75,7 @@ def generate(
         title_line=drafted["title_line"],
         role_title=role,
         body_html=drafted["body_html"],
+        draft_content=rendering.attach_headings(drafted["content"], body.email_type),
         word_count=drafted["eval"]["word_count"],
         eval_result=drafted["eval"],
         eval_passed=drafted["eval"]["passed"],
@@ -126,16 +127,29 @@ def update_comm(
     if comm.status in ("sent",):
         raise HTTPException(409, "A sent communication cannot be edited")
 
+    app_row = reads.get_application(db, comm.application_id) if comm.application_id else None
+    first_name = (app_row.get("first_name") if app_row else None) or "there"
+    role = (
+        body.role_title
+        or comm.role_title
+        or (app_row.get("job_title") if app_row else None)
+        or "the role"
+    )
+    content = rendering.attach_headings(body.content, comm.email_type)
+    body_html = rendering.render_body(
+        content, email_type=comm.email_type, candidate_name=first_name, role=role,
+        app_id=comm.application_id,
+    )
     full_html = rendering.wrap_full(
-        body.body_html, title_line=body.title_line, role=body.role_title or comm.role_title or "the role",
-        email_type=comm.email_type,
+        body_html, title_line=body.title_line, role=role, email_type=comm.email_type
     )
     result = evaluate_email(full_html, body.title_line, comm.email_type, pilot_mode=True)
     comm = comm_svc.update_content(
         db, comm,
-        body_html=body.body_html,
+        body_html=body_html,
+        draft_content=content,
         title_line=body.title_line,
-        role_title=body.role_title,
+        role_title=role,
         word_count=result["word_count"],
         eval_result=result,
         eval_passed=result["passed"],

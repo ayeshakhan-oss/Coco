@@ -104,9 +104,11 @@ class GenerateRequest(_Base):
 
 
 class DraftUpdate(_Base):
-    body_html: str
+    # Structured content edited in the section editor; the body HTML is rendered
+    # from this server-side (so the locked v8 layout can't drift).
     title_line: str
     role_title: Optional[str] = None
+    content: dict[str, Any]
 
 
 class CommunicationOut(_Base):
@@ -119,6 +121,7 @@ class CommunicationOut(_Base):
     title_line: Optional[str] = None
     role_title: Optional[str] = None
     body_html: Optional[str] = None
+    draft_content: Optional[dict[str, Any]] = None
     status: str
     mode: Optional[str] = None
     word_count: Optional[int] = None

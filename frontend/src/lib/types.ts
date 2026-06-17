@@ -104,6 +104,81 @@ export interface CommHistoryItem {
   source: string
 }
 
+export interface DraftSection {
+  heading?: string
+  subhead?: string | null
+  paragraphs: string[]
+}
+
+export interface DraftContent {
+  title_line?: string
+  greeting?: string
+  opening?: string[]
+  sections?: DraftSection[]
+  ps?: string
+}
+
+export interface EvalViolation {
+  rule: string
+  severity: 'HARD_BLOCK' | 'WARNING'
+  detail: string
+}
+
+export interface EvalResult {
+  passed: boolean
+  word_count: number
+  violations: EvalViolation[]
+}
+
+export type CommStatus = 'draft' | 'in_review' | 'approved' | 'sent' | 'failed'
+
+export interface Communication {
+  id: string
+  application_id?: number | null
+  candidate_id: number
+  job_id?: number | null
+  email_type: string
+  subject?: string | null
+  title_line?: string | null
+  role_title?: string | null
+  body_html?: string | null
+  draft_content?: DraftContent | null
+  status: CommStatus
+  mode?: string | null
+  word_count?: number | null
+  eval_result?: EvalResult | null
+  eval_passed?: boolean | null
+  sent_to?: string[] | null
+  message_id?: string | null
+  created_by?: string | null
+  approved_by?: string | null
+  created_at?: string | null
+  updated_at?: string | null
+  sent_at?: string | null
+}
+
+export interface GenerateResponse {
+  communication: Communication
+  eval: EvalResult
+  attempts: number
+  drafter_used: string
+}
+
+export interface SendResponse {
+  communication: Communication
+  mode: string
+  subject: string
+  recipients: string[]
+  message_id?: string | null
+}
+
+export const EMAIL_TYPES: { value: string; label: string }[] = [
+  { value: 'values_feedback', label: 'Values feedback' },
+  { value: 'gwc_rejection', label: 'GWC rejection' },
+  { value: 'warm_bench', label: 'Warm bench' },
+  { value: 'cv_rejection', label: 'CV rejection' },
+]
+
 export interface ApplicationDetail {
   application_id: number
   candidate_id: number

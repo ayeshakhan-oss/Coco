@@ -99,6 +99,9 @@ class Communication(Base):
     role_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     body_html: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     rendered_html: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # Structured content (title_line/greeting/opening/sections/ps) so the editor
+    # can edit section-by-section; body_html is rendered from this.
+    draft_content: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
     status: Mapped[str] = mapped_column(
         String, nullable=False, default="draft", server_default="draft"

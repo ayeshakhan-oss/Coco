@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import { ArrowLeft, Mail, PenLine } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { ArrowLeft, Loader2, Mail, PenLine } from 'lucide-react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Pill } from '../components/StatusBadge'
 import { Spinner } from '../components/Spinner'
-import { api } from '../lib/api'
+import { ApiError, api } from '../lib/api'
 import { formatDate, fullName } from '../lib/format'
+import { EMAIL_TYPES } from '../lib/types'
 import type { GwcScorecard, ValuesScorecard } from '../lib/types'
 
 const RATING_TONE: Record<string, string> = {
@@ -28,6 +30,23 @@ export function ApplicationDetailPage() {
     queryFn: () => api.scorecard(appId),
     enabled: !Number.isNaN(appId),
   })
+
+  const navigate = useNavigate()
+  const [emailType, setEmailType] = useState('values_feedback')
+  const [generating, setGenerating] = useState(false)
+  const [genErr, setGenErr] = useState<string | null>(null)
+
+  async function generateDraft() {
+    setGenerating(true)
+    setGenErr(null)
+    try {
+      const r = await api.generate(appId, emailType)
+      navigate(`/drafts/${r.communication.id}`)
+    } catch (e) {
+      setGenErr((e as ApiError).message)
+      setGenerating(false)
+    }
+  }
 
   if (detailQuery.isLoading) return <Spinner label="Loading candidate…" />
   if (detailQuery.isError || !detailQuery.data)
@@ -52,14 +71,30 @@ export function ApplicationDetailPage() {
             {d.status && <Pill tone="brand">{d.status}</Pill>}
           </div>
         </div>
-        <button
-          type="button"
-          disabled
-          title="AI drafting arrives in the next phase"
-          className="inline-flex cursor-not-allowed items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white opacity-50"
-        >
-          <PenLine className="h-4 w-4" /> Draft communication
-        </button>
+        <div className="flex flex-col items-end gap-1">
+          <div className="flex items-center gap-2">
+            <select
+              value={emailType}
+              onChange={(e) => setEmailType(e.target.value)}
+              disabled={generating}
+              className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-sm text-slate-700 outline-none focus:border-brand-500"
+            >
+              {EMAIL_TYPES.map((t) => (
+                <option key={t.value} value={t.value}>{t.label}</option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={generateDraft}
+              disabled={generating}
+              className="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
+            >
+              {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <PenLine className="h-4 w-4" />}
+              {generating ? 'Generating…' : 'Draft communication'}
+            </button>
+          </div>
+          {genErr && <span className="text-xs text-block">{genErr}</span>}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

@@ -1,35 +1,56 @@
 import type {
   ApplicationDetail,
+  Communication,
   CurrentUser,
+  DraftContent,
+  EvalResult,
+  GenerateResponse,
   JobItem,
   QueueRow,
   QueueStats,
   ScorecardResponse,
+  SendResponse,
 } from './types'
 
 export class ApiError extends Error {
   status: number
-  constructor(status: number, message: string) {
+  detail: unknown
+  constructor(status: number, message: string, detail?: unknown) {
     super(message)
     this.status = status
+    this.detail = detail
   }
 }
 
-async function get<T>(path: string): Promise<T> {
+async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const res = await fetch(path, {
+    method,
     credentials: 'include',
-    headers: { Accept: 'application/json' },
+    headers: body !== undefined ? { 'Content-Type': 'application/json', Accept: 'application/json' } : { Accept: 'application/json' },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
   })
   if (res.status === 401) {
-    // Not authenticated — bounce to login (real SSO lands in Phase 3).
     if (!location.pathname.startsWith('/login')) location.assign('/login')
     throw new ApiError(401, 'Not authenticated')
   }
   if (!res.ok) {
-    throw new ApiError(res.status, `${res.status}: ${await res.text()}`)
+    let detail: unknown
+    let text = ''
+    try {
+      detail = await res.json()
+      text = typeof detail === 'object' && detail && 'detail' in detail ? JSON.stringify((detail as { detail: unknown }).detail) : JSON.stringify(detail)
+    } catch {
+      text = await res.text().catch(() => '')
+    }
+    throw new ApiError(res.status, `${res.status}: ${text}`, detail)
   }
+  if (res.status === 204) return undefined as T
   return res.json() as Promise<T>
 }
+
+const get = <T>(p: string) => request<T>('GET', p)
+const post = <T>(p: string, b?: unknown) => request<T>('POST', p, b ?? {})
+const put = <T>(p: string, b: unknown) => request<T>('PUT', p, b)
 
 export interface CandidateQuery {
   status?: string
@@ -52,4 +73,24 @@ export const api = {
   },
   candidate: (id: number) => get<ApplicationDetail>(`/api/candidates/${id}`),
   scorecard: (id: number) => get<ScorecardResponse>(`/api/candidates/${id}/scorecard`),
+
+  // Communications
+  generate: (application_id: number, email_type: string, role_title?: string) =>
+    post<GenerateResponse>('/api/communications/generate', { application_id, email_type, role_title }),
+  communication: (id: string) => get<Communication>(`/api/communications/${id}`),
+  updateDraft: (id: string, payload: { title_line: string; role_title?: string | null; content: DraftContent }) =>
+    put<GenerateResponse>(`/api/communications/${id}`, payload),
+  evalDraft: (id: string, mode: 'pilot' | 'live' = 'pilot') => post<EvalResult>(`/api/communications/${id}/eval?mode=${mode}`),
+  submit: (id: string) => post<Communication>(`/api/communications/${id}/submit`),
+  approve: (id: string) => post<Communication>(`/api/communications/${id}/approve`),
+  requestChanges: (id: string) => post<Communication>(`/api/communications/${id}/request-changes`),
+  send: (id: string, mode: 'pilot' | 'live') => post<SendResponse>(`/api/communications/${id}/send`, { mode }),
+  listCommunications: (params: { status?: string; candidate_id?: number; mine?: boolean } = {}) => {
+    const qs = new URLSearchParams()
+    if (params.status) qs.set('status', params.status)
+    if (params.candidate_id != null) qs.set('candidate_id', String(params.candidate_id))
+    if (params.mine) qs.set('mine', 'true')
+    return get<Communication[]>(`/api/communications?${qs.toString()}`)
+  },
+  previewUrl: (id: string) => `/api/communications/${id}/preview`,
 }

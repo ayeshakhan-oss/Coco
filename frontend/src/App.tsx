@@ -1,9 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/AppLayout'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
+import { DraftEditorPage } from './pages/DraftEditorPage'
+import { HistoryPage } from './pages/HistoryPage'
 import { LoginPage } from './pages/LoginPage'
-import { Placeholder } from './pages/Placeholder'
 import { QueuePage } from './pages/QueuePage'
+import { ReviewInboxPage } from './pages/ReviewInboxPage'
 
 export default function App() {
   return (
@@ -13,14 +15,9 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index element={<QueuePage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
-          <Route
-            path="/review"
-            element={<Placeholder title="Review" note="Approval inbox arrives with the drafting + approval phase." />}
-          />
-          <Route
-            path="/history"
-            element={<Placeholder title="History" note="Sent-communication audit log arrives with the send phase." />}
-          />
+          <Route path="/drafts/:commId" element={<DraftEditorPage />} />
+          <Route path="/review" element={<ReviewInboxPage />} />
+          <Route path="/history" element={<HistoryPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

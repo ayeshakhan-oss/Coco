@@ -25,6 +25,7 @@ def create_draft(
     title_line: str,
     role_title: str,
     body_html: str,
+    draft_content: Optional[dict],
     word_count: int,
     eval_result: dict,
     eval_passed: bool,
@@ -39,6 +40,7 @@ def create_draft(
         title_line=title_line,
         role_title=role_title,
         body_html=body_html,
+        draft_content=draft_content,
         status="draft",
         word_count=word_count,
         eval_result=eval_result,
@@ -60,6 +62,7 @@ def update_content(
     comm: Communication,
     *,
     body_html: str,
+    draft_content: Optional[dict],
     title_line: str,
     role_title: Optional[str],
     word_count: int,
@@ -67,6 +70,8 @@ def update_content(
     eval_passed: bool,
 ) -> Communication:
     comm.body_html = body_html
+    if draft_content is not None:
+        comm.draft_content = draft_content
     comm.title_line = title_line
     comm.subject = title_line
     if role_title is not None:
