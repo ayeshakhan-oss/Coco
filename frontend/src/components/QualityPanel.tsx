@@ -18,9 +18,9 @@ export function QualityPanel({ result, busy }: { result: EvalResult | null; busy
           <span className="flex items-center gap-1.5 font-medium text-green"><CheckCircle2 className="h-4 w-4" /> Passes checks</span>
         )}
         {warn.length > 0 && (
-          <span className="flex items-center gap-1.5 text-[#f0b232]"><AlertTriangle className="h-4 w-4" /> {warn.length} warning{warn.length > 1 ? 's' : ''}</span>
+          <span className="flex items-center gap-1.5 text-[#b7791f]"><AlertTriangle className="h-4 w-4" /> {warn.length} warning{warn.length > 1 ? 's' : ''}</span>
         )}
-        <span className={`ml-auto rounded-md px-2 py-0.5 text-xs font-semibold tabular-nums ${wordsOk ? 'bg-green/15 text-green' : 'bg-[#f0b232]/15 text-[#f0b232]'}`}>
+        <span className={`ml-auto rounded-md px-2 py-0.5 text-xs font-semibold tabular-nums ${wordsOk ? 'bg-green/15 text-green' : 'bg-[#b7791f]/15 text-[#b7791f]'}`}>
           {words} / 800 words
         </span>
       </div>
@@ -32,7 +32,7 @@ export function QualityPanel({ result, busy }: { result: EvalResult | null; busy
             </li>
           ))}
           {warn.map((v, i) => (
-            <li key={`w${i}`} className="rounded-lg bg-[#f0b232]/12 px-2.5 py-1.5 text-[#f0b232]">
+            <li key={`w${i}`} className="rounded-lg bg-[#b7791f]/12 px-2.5 py-1.5 text-[#b7791f]">
               <span className="font-semibold">{v.rule}</span> — {v.detail}
             </li>
           ))}

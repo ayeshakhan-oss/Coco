@@ -3,7 +3,7 @@ import type { Bucket } from '../lib/types'
 
 const BUCKET_STYLES: Record<Bucket, { label: string; cls: string }> = {
   needs_comms: { label: 'Needs comms', cls: 'bg-magenta/15 text-magenta' },
-  in_progress: { label: 'In progress', cls: 'bg-blurple/20 text-[#aab2ff]' },
+  in_progress: { label: 'In progress', cls: 'bg-blurple/20 text-[#4752c4]' },
   sent: { label: 'Sent', cls: 'bg-green/15 text-green' },
   awaiting_scorecard: { label: 'No scorecard', cls: 'bg-elevated text-ink-dim' },
 }
@@ -29,7 +29,7 @@ export function Pill({
     slate: 'bg-elevated text-ink-muted',
     green: 'bg-green/15 text-green',
     red: 'bg-danger/15 text-danger',
-    brand: 'bg-blurple/20 text-[#aab2ff]',
+    brand: 'bg-blurple/20 text-[#4752c4]',
   }
   return <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ${tones[tone]}`}>{children}</span>
 }

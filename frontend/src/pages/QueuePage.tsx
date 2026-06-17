@@ -98,7 +98,7 @@ export function QueuePage() {
           ))}
         </select>
         {bucket !== 'scored' && (
-          <button type="button" onClick={() => setBucket('scored')} className="h-9 rounded-xl px-3 text-sm font-medium text-[#aab2ff] hover:bg-elevated">
+          <button type="button" onClick={() => setBucket('scored')} className="h-9 rounded-xl px-3 text-sm font-medium text-[#4752c4] hover:bg-elevated">
             Clear filter
           </button>
         )}
@@ -171,7 +171,7 @@ function Row({ row, onOpen }: { row: QueueRow; onOpen: () => void }) {
         {row.prior_platform_comms > 0 ? <Pill tone="slate">{row.prior_platform_comms} on record</Pill> : <span className="text-ink-dim">—</span>}
       </td>
       <td className="px-5 py-3 text-right">
-        <span className="text-sm font-medium text-[#aab2ff]">
+        <span className="text-sm font-medium text-[#4752c4]">
           {row.bucket === 'sent' ? 'View' : row.bucket === 'in_progress' ? 'Continue' : 'Draft'} →
         </span>
       </td>

@@ -2,7 +2,7 @@ import type { GwcScorecard, ValuesScorecard } from '../lib/types'
 
 const RATING_TONE: Record<string, string> = {
   '+': 'bg-green/15 text-green',
-  '+/-': 'bg-[#f0b232]/15 text-[#f0b232]',
+  '+/-': 'bg-[#b7791f]/15 text-[#b7791f]',
   '-': 'bg-danger/15 text-danger',
 }
 
@@ -41,7 +41,7 @@ export function ScorecardView({ values, gwc }: { values: ValuesScorecard | null;
           </ul>
           {values.final_comments && (
             <div className="mt-2 rounded-lg bg-blurple/10 p-2 text-[12px] text-ink-muted">
-              <span className="font-medium text-[#aab2ff]">Final comments: </span>{values.final_comments}
+              <span className="font-medium text-[#4752c4]">Final comments: </span>{values.final_comments}
             </div>
           )}
         </div>
@@ -59,7 +59,7 @@ export function ScorecardView({ values, gwc }: { values: ValuesScorecard | null;
           </div>
           {gwc.additional_comments && (
             <div className="mt-2 rounded-lg bg-blurple/10 p-2 text-[12px] text-ink-muted">
-              <span className="font-medium text-[#aab2ff]">Comments: </span>{gwc.additional_comments}
+              <span className="font-medium text-[#4752c4]">Comments: </span>{gwc.additional_comments}
             </div>
           )}
         </div>

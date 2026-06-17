@@ -42,7 +42,7 @@ export function HistoryPage() {
                   <td className="px-5 py-3 text-ink-dim">{c.email_type.replace('_', ' ')}</td>
                   <td className="px-5 py-3 text-ink-dim">{formatDate(c.sent_at)}</td>
                   <td className="px-5 py-3"><span className="chip bg-green/15 text-green">{c.mode || 'live'}</span></td>
-                  <td className="px-5 py-3 text-right text-sm font-medium text-[#aab2ff]">View →</td>
+                  <td className="px-5 py-3 text-right text-sm font-medium text-[#4752c4]">View →</td>
                 </tr>
               ))}
             </tbody>

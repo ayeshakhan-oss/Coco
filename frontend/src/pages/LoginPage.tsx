@@ -28,7 +28,7 @@ export function LoginPage() {
 
         <a
           href="/auth/google/login"
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#0a0d12] transition-colors hover:brightness-95"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-hairline bg-surface px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-surface-2"
         >
           <GoogleIcon /> Continue with Google
         </a>

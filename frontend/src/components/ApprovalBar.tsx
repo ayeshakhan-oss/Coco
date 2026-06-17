@@ -80,8 +80,8 @@ export function ApprovalBar({
 function StatusChip({ status }: { status: string }) {
   const map: Record<string, string> = {
     draft: 'bg-elevated text-ink-muted',
-    in_review: 'bg-[#f0b232]/15 text-[#f0b232]',
-    approved: 'bg-blurple/20 text-[#aab2ff]',
+    in_review: 'bg-[#b7791f]/15 text-[#b7791f]',
+    approved: 'bg-blurple/20 text-[#4752c4]',
     sent: 'bg-green/15 text-green',
     failed: 'bg-danger/15 text-danger',
   }
