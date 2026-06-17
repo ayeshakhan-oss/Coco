@@ -107,6 +107,24 @@ LIMIT :limit OFFSET :offset
     return [dict(r) for r in rows]
 
 
+def positions_summary(db: Session) -> list[dict]:
+    """Per-position rollup for the queue's top level: only positions that have at
+    least one scorecard-filled candidate, with bucket counts."""
+    sql = _CLASSIFIED_CTE + """
+SELECT job_pk, job_code, job_title,
+  count(*) FILTER (WHERE bucket = 'needs_comms') AS needs_comms,
+  count(*) FILTER (WHERE bucket = 'in_progress') AS in_progress,
+  count(*) FILTER (WHERE bucket = 'sent') AS sent,
+  count(*) FILTER (WHERE bucket IN ('needs_comms','in_progress','sent')) AS scored
+FROM classified
+GROUP BY job_pk, job_code, job_title
+HAVING count(*) FILTER (WHERE bucket IN ('needs_comms','in_progress','sent')) > 0
+ORDER BY needs_comms DESC, scored DESC
+"""
+    rows = db.execute(text(sql)).mappings().all()
+    return [dict(r) for r in rows]
+
+
 def queue_stats(db: Session) -> dict:
     sql = _CLASSIFIED_CTE + "SELECT bucket, count(*) AS n FROM classified GROUP BY bucket"
     rows = db.execute(text(sql)).mappings().all()

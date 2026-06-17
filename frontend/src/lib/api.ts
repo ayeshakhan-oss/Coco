@@ -7,6 +7,7 @@ import type {
   GenerateResponse,
   JobItem,
   ManagedUser,
+  PositionSummary,
   QueueRow,
   QueueStats,
   ScorecardResponse,
@@ -63,6 +64,7 @@ export interface CandidateQuery {
 export const api = {
   me: () => get<CurrentUser>('/api/me'),
   stats: () => get<QueueStats>('/api/candidates/stats'),
+  positions: () => get<PositionSummary[]>('/api/positions'),
   jobs: () => get<JobItem[]>('/api/jobs'),
   candidates: (p: CandidateQuery = {}) => {
     const qs = new URLSearchParams()

@@ -18,14 +18,11 @@ const TONES: Record<StatCardProps['tone'], { icon: string; bar: string; ring: st
 
 export function StatCard({ label, value, icon: Icon, tone, active, onClick }: StatCardProps) {
   const t = TONES[tone]
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`group relative flex cursor-pointer items-center gap-4 overflow-hidden rounded-2xl border border-hairline bg-surface p-4 text-left transition-all duration-200 hover:bg-elevated ${
-        active ? `ring-2 ${t.ring}` : ''
-      }`}
-    >
+  const cls = `relative flex items-center gap-4 overflow-hidden rounded-2xl border border-hairline bg-surface p-4 text-left shadow-sm ${
+    onClick ? 'cursor-pointer transition-all duration-200 hover:bg-elevated' : ''
+  } ${active ? `ring-2 ${t.ring}` : ''}`
+  const inner = (
+    <>
       <span className={`absolute left-0 top-0 h-full w-1 ${t.bar}`} />
       <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${t.icon}`}>
         <Icon className="h-5 w-5" />
@@ -34,6 +31,11 @@ export function StatCard({ label, value, icon: Icon, tone, active, onClick }: St
         <span className="block font-display text-2xl font-bold tabular-nums text-ink">{value}</span>
         <span className="block text-xs font-medium uppercase tracking-wide text-ink-dim">{label}</span>
       </span>
-    </button>
+    </>
+  )
+  return onClick ? (
+    <button type="button" onClick={onClick} className={cls}>{inner}</button>
+  ) : (
+    <div className={cls}>{inner}</div>
   )
 }

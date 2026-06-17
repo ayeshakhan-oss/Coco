@@ -83,6 +83,16 @@ class QueueStats(_Base):
     total: int
 
 
+class PositionSummary(_Base):
+    job_pk: int
+    job_code: Optional[str] = None
+    job_title: Optional[str] = None
+    needs_comms: int
+    in_progress: int
+    sent: int
+    scored: int
+
+
 class ScorecardValueItem(_Base):
     name: str
     rating: str = ""

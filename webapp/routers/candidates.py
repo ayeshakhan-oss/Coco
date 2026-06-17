@@ -13,6 +13,7 @@ from ..deps import get_current_user
 from ..schemas import (
     ApplicationDetail,
     JobItem,
+    PositionSummary,
     QueueRow,
     QueueStats,
     ScorecardResponse,
@@ -52,6 +53,14 @@ def candidate_stats(
     _user: dict = Depends(get_current_user),
 ):
     return reads.queue_stats(db)
+
+
+@router.get("/positions", response_model=list[PositionSummary])
+def positions(
+    db: Session = Depends(get_db),
+    _user: dict = Depends(get_current_user),
+):
+    return reads.positions_summary(db)
 
 
 @router.get("/candidates/{application_id}", response_model=ApplicationDetail)

@@ -60,6 +60,16 @@ export interface JobItem {
   department?: string | null
 }
 
+export interface PositionSummary {
+  job_pk: number
+  job_code?: string | null
+  job_title?: string | null
+  needs_comms: number
+  in_progress: number
+  sent: number
+  scored: number
+}
+
 export interface ScorecardValueItem {
   name: string
   rating: string
