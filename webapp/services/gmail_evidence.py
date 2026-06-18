@@ -150,9 +150,15 @@ def _load_credentials():
 
 
 def _build_service():
+    import google_auth_httplib2
+    import httplib2
     from googleapiclient.discovery import build
 
-    return build("gmail", "v1", credentials=_load_credentials(), cache_discovery=False)
+    # Wrap with a socket timeout so a stalled connection can never hang the sync.
+    authed = google_auth_httplib2.AuthorizedHttp(
+        _load_credentials(), http=httplib2.Http(timeout=30)
+    )
+    return build("gmail", "v1", http=authed, cache_discovery=False)
 
 
 def gmail_token_ok() -> tuple[bool, Optional[str]]:
@@ -171,13 +177,7 @@ def _headers_dict(msg: dict) -> dict[str, str]:
     return {h["name"]: h["value"] for h in msg.get("payload", {}).get("headers", [])}
 
 
-def _fetch_message_meta(svc, msg_id: str) -> Optional[dict]:
-    msg = (
-        svc.users()
-        .messages()
-        .get(userId="me", id=msg_id, format="metadata", metadataHeaders=_METADATA_HEADERS)
-        .execute()
-    )
+def _meta_from_message(msg: dict) -> dict:
     headers = _headers_dict(msg)
     rec = message_recipients(headers)
     try:
@@ -195,6 +195,51 @@ def _fetch_message_meta(svc, msg_id: str) -> Optional[dict]:
         "cc": rec["cc"],
         "bcc": rec["bcc"],
     }
+
+
+def _fetch_message_meta(svc, msg_id: str) -> Optional[dict]:
+    msg = (
+        svc.users()
+        .messages()
+        .get(userId="me", id=msg_id, format="metadata", metadataHeaders=_METADATA_HEADERS)
+        .execute()
+    )
+    return _meta_from_message(msg)
+
+
+def _fetch_metas(svc, ids: list[str], chunk: int = 40, max_passes: int = 4) -> list[dict]:
+    """Fetch message metadata in batches (one HTTP round-trip per `chunk`),
+    instead of one request per message — the difference between minutes and
+    seconds on a high-latency link.
+
+    A batch of N get(metadata) calls costs N*5 Gmail quota units; sent too fast
+    this trips the 250-units/user/sec limit and some sub-requests are dropped
+    with a 429. We keep chunks small, space batches slightly, and re-request any
+    ids that didn't come back (up to `max_passes`) so no evidence is missed."""
+    import time
+
+    metas_by_id: dict[str, dict] = {}
+
+    def _cb(request_id, response, exception):  # noqa: ANN001
+        if exception is None and response and response.get("id"):
+            metas_by_id[response["id"]] = _meta_from_message(response)
+
+    remaining = list(dict.fromkeys(ids))  # de-dupe, preserve order
+    for _pass in range(max_passes):
+        if not remaining:
+            break
+        for i in range(0, len(remaining), chunk):
+            batch = svc.new_batch_http_request(callback=_cb)
+            for mid in remaining[i : i + chunk]:
+                batch.add(
+                    svc.users().messages().get(
+                        userId="me", id=mid, format="metadata", metadataHeaders=_METADATA_HEADERS
+                    )
+                )
+            batch.execute()
+            time.sleep(0.3)  # stay under the per-second quota
+        remaining = [m for m in remaining if m not in metas_by_id]
+    return list(metas_by_id.values())
 
 
 def _search_message_ids(svc, query: str, cap: int) -> list[str]:
@@ -365,12 +410,10 @@ def run_sync(
         msg_ids = _search_message_ids(svc, query, cap=MAX_MESSAGES_PER_RUN)
         capped = len(msg_ids) >= MAX_MESSAGES_PER_RUN
 
+        metas = _fetch_metas(svc, msg_ids)
+        scanned += len(metas)
         index: dict[str, list[dict]] = {}
-        for mid in msg_ids:
-            meta = _fetch_message_meta(svc, mid)
-            scanned += 1
-            if not meta:
-                continue
+        for meta in metas:
             if meta["internal_ms"]:
                 ts = dt.datetime.fromtimestamp(meta["internal_ms"] / 1000, tz=dt.timezone.utc)
                 if watermark_after is None or ts > watermark_after:
@@ -378,25 +421,31 @@ def run_sync(
             for addr in set(meta["to"]) | set(meta["cc"]) | set(meta["bcc"]):
                 index.setdefault(addr, []).append(meta)
 
-        # Match the working set against the index.
+        # Match the working set against the index. We only WRITE evidence rows
+        # for actual matches (found / uncertain): "no match" is equivalent to
+        # "not_checked" for display + it keeps the sync fast (no row-per-candidate
+        # write). Iterate only the intersection of message-recipients ∩ candidates.
         candidates = _candidates_to_check(db)
+        evaluated = len(candidates)
+        by_email: dict[str, list[dict]] = {}
         for c in candidates:
-            email = c["email"]
-            msgs = index.get(email, [])
-            # On an incremental run only NEW messages are in the index, so a
-            # candidate with no new message keeps its prior status — skip writing
-            # a 'none' that would overwrite an earlier evaluation needlessly.
-            if incremental and not msgs:
+            by_email.setdefault(c["email"], []).append(c)
+
+        for email in set(index.keys()) & set(by_email.keys()):
+            cands = by_email[email]
+            # Shared address (in the candidates table or within this working set)
+            # can't be disambiguated by recipient -> uncertain.
+            ambiguous = (email in dup) or (len(cands) > 1)
+            ev = classify_candidate(email, index[email], duplicate_email=ambiguous)
+            if ev["gmail_status"] not in ("found", "uncertain"):
                 continue
-            ev = classify_candidate(email, msgs, duplicate_email=email in dup)
-            _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
-            evaluated += 1
-            if ev["gmail_status"] == "found":
-                found += 1
-            elif ev["gmail_status"] == "uncertain":
-                uncertain += 1
-            else:
-                none += 1
+            for c in cands:
+                _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
+                if ev["gmail_status"] == "found":
+                    found += 1
+                else:
+                    uncertain += 1
+        none = max(0, evaluated - found - uncertain)
         db.commit()
 
         if capped:
