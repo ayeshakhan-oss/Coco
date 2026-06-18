@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/AppLayout'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
+import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { LoginPage } from './pages/LoginPage'
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/review" element={<ReviewInboxPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/modules/:slug" element={<ComingSoonPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
