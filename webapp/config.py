@@ -57,6 +57,19 @@ class Settings(BaseSettings):
     smtp_host: str = "smtp.gmail.com"
     smtp_port: int = 587
 
+    # --- Gmail evidence sync (read-only) ---
+    # The mailbox whose Sent folder is searched for comms evidence (all candidate
+    # comms are sent FROM this address, so its Sent is a superset incl. hiring@).
+    gmail_sync_user: str = "ayesha.khan@taleemabad.com"
+    # Full authorized-user JSON (client_id/secret/refresh_token/token_uri/scopes)
+    # for a one-time gmail.readonly offline-consent grant. Set as a Railway secret.
+    gmail_oauth_token_json: Optional[str] = None
+    # Local-dev fallback: an authorized-user token file (gitignored).
+    gmail_token_file: str = ".claude/config/token_gmail.json"
+    # Shared secret so the scheduler (Railway cron) can trigger a sync without a
+    # session cookie, via the X-Sync-Token header.
+    sync_trigger_secret: Optional[str] = None
+
     @property
     def is_production(self) -> bool:
         return self.app_env.lower() in {"production", "prod"}

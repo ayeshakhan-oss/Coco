@@ -1,26 +1,89 @@
-import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, Briefcase, CheckCircle2, ClipboardList, Clock, FileQuestion, Search } from 'lucide-react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Briefcase,
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  HelpCircle,
+  Mail,
+  RefreshCw,
+  Search,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { GmailMatchModal } from '../components/GmailMatchModal'
 import { StatCard } from '../components/StatCard'
-import { Pill, StatusBadge } from '../components/StatusBadge'
+import { StatusBadge } from '../components/StatusBadge'
 import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
-import { formatDate, fullName, scorecardLabel } from '../lib/format'
-import type { Bucket, PositionSummary, QueueRow } from '../lib/types'
+import { fullName, relativeTime, suggestedAction } from '../lib/format'
+import { canEdit } from '../lib/roles'
+import type { GmailStatus, PositionSummary, QueueRow } from '../lib/types'
 
-type Filter = Bucket | 'scored'
-const BUCKET_CHIPS: { key: Filter; label: string }[] = [
-  { key: 'scored', label: 'All' },
+type Filter = 'relevant' | 'needs_comms' | 'high_priority' | 'already_sent' | 'awaiting_scorecard' | 'needs_review'
+const FILTER_CHIPS: { key: Filter; label: string }[] = [
+  { key: 'relevant', label: 'All' },
   { key: 'needs_comms', label: 'Needs comms' },
-  { key: 'in_progress', label: 'In progress' },
-  { key: 'sent', label: 'Sent' },
+  { key: 'high_priority', label: 'High priority' },
+  { key: 'already_sent', label: 'Sent' },
+  { key: 'awaiting_scorecard', label: 'Awaiting' },
+  { key: 'needs_review', label: 'Needs review' },
 ]
 
 export function QueuePage() {
   const [params] = useSearchParams()
   const job = params.get('job') ? Number(params.get('job')) : null
   return job == null ? <PositionsView /> : <CandidatesView job={job} />
+}
+
+/* ── Gmail sync bar (global) ─────────────────────────────────────────────── */
+function SyncBar() {
+  const qc = useQueryClient()
+  const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
+  const statusQ = useQuery({ queryKey: ['gmail-sync-status'], queryFn: api.gmailSyncStatus })
+  const refresh = useMutation({
+    mutationFn: () => api.refreshGmailSync(false),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['gmail-sync-status'] })
+      qc.invalidateQueries({ queryKey: ['stats'] })
+      qc.invalidateQueries({ queryKey: ['positions'] })
+      qc.invalidateQueries({ queryKey: ['candidates'] })
+    },
+  })
+  const s = statusQ.data
+  const mayRefresh = canEdit(meQ.data?.app_role)
+
+  return (
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-hairline bg-surface px-4 py-2.5">
+      <div className="flex items-center gap-2 text-sm text-ink-muted">
+        <Mail className="h-4 w-4 text-blurple" />
+        <span>
+          Gmail sync: <span className="font-medium text-ink">synced {relativeTime(s?.last_sync_at)}</span>
+        </span>
+        {s?.status === 'failed' && (
+          <span className="inline-flex items-center gap-1 text-xs text-danger">
+            <AlertTriangle className="h-3.5 w-3.5" /> last run failed
+          </span>
+        )}
+        {s?.status === 'running' && <span className="text-xs text-ink-dim">running…</span>}
+      </div>
+      {mayRefresh && (
+        <button
+          type="button"
+          onClick={() => refresh.mutate()}
+          disabled={refresh.isPending}
+          className="btn btn-ghost h-8 text-sm"
+          title="Re-check Gmail Sent mail for new evidence"
+        >
+          <RefreshCw className={`h-4 w-4 ${refresh.isPending ? 'animate-spin' : ''}`} />
+          {refresh.isPending ? 'Syncing…' : 'Refresh Gmail sync'}
+        </button>
+      )}
+      {refresh.isError && <span className="text-xs text-danger">Sync failed or already running.</span>}
+    </div>
+  )
 }
 
 /* ── Level 1: positions ─────────────────────────────────────────────────── */
@@ -33,17 +96,19 @@ function PositionsView() {
 
   const cards = [
     { label: 'Needs comms', value: s?.needs_comms ?? 0, icon: ClipboardList, tone: 'amber' },
-    { label: 'In progress', value: s?.in_progress ?? 0, icon: Clock, tone: 'brand' },
+    { label: 'High priority', value: s?.high_priority ?? 0, icon: AlertTriangle, tone: 'danger' },
     { label: 'Sent', value: s?.sent ?? 0, icon: CheckCircle2, tone: 'green' },
-    { label: 'Awaiting scorecard', value: s?.awaiting_scorecard ?? 0, icon: FileQuestion, tone: 'slate' },
+    { label: 'Needs review', value: s?.needs_review ?? 0, icon: HelpCircle, tone: 'cyan' },
   ] as const
 
   return (
     <div className="mx-auto max-w-7xl px-8 py-7">
-      <header className="mb-6">
+      <header className="mb-5">
         <h1 className="font-display text-2xl font-bold text-ink">Candidate Queue</h1>
         <p className="mt-1 text-sm text-ink-muted">Pick a position to see its candidates. Totals across all positions:</p>
       </header>
+
+      <SyncBar />
 
       <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
@@ -55,7 +120,7 @@ function PositionsView() {
       {positionsQuery.isLoading ? (
         <Spinner label="Loading positions…" />
       ) : !positionsQuery.data?.length ? (
-        <div className="card p-12 text-center text-sm text-ink-dim">No positions with completed scorecards yet.</div>
+        <div className="card p-12 text-center text-sm text-ink-dim">No positions with comms-relevant candidates yet.</div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {positionsQuery.data.map((p) => (
@@ -78,13 +143,15 @@ function PositionCard({ p, onClick }: { p: PositionSummary; onClick: () => void 
           </div>
           <div className="mt-1 pl-10 text-xs text-ink-dim">{p.job_code}</div>
         </div>
-        {p.needs_comms > 0 && <span className="chip shrink-0 bg-magenta/15 text-magenta">{p.needs_comms} need comms</span>}
+        {p.high_priority > 0 && <span className="chip shrink-0 bg-danger/15 text-danger">{p.high_priority} high</span>}
       </div>
       <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 pl-10 text-sm text-ink-muted">
-        <span>{p.scored} scored</span>
-        {p.in_progress > 0 && <span className="text-[#4752c4]">{p.in_progress} in progress</span>}
+        {p.needs_comms > 0 && <span className="text-magenta">{p.needs_comms} need comms</span>}
         {p.sent > 0 && <span className="text-green">{p.sent} sent</span>}
+        {p.needs_review > 0 && <span className="text-cyan">{p.needs_review} review</span>}
+        {p.awaiting_scorecard > 0 && <span className="text-ink-dim">{p.awaiting_scorecard} awaiting</span>}
       </div>
+      <div className="mt-3 pl-10 text-[11px] text-ink-dim">Gmail synced {relativeTime(p.last_gmail_sync_at)}</div>
     </button>
   )
 }
@@ -93,7 +160,9 @@ function PositionCard({ p, onClick }: { p: PositionSummary; onClick: () => void 
 function CandidatesView({ job }: { job: number }) {
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
-  const bucket = (params.get('status') as Filter) || 'scored'
+  const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
+  const bucket = (params.get('status') as Filter) || 'relevant'
+  const [match, setMatch] = useState<{ appId: number; name: string } | null>(null)
 
   const [search, setSearch] = useState(params.get('q') || '')
   const [debouncedQ, setDebouncedQ] = useState(search)
@@ -112,7 +181,7 @@ function CandidatesView({ job }: { job: number }) {
 
   function setBucket(next: Filter) {
     const p = new URLSearchParams(params)
-    if (next === 'scored') p.delete('status')
+    if (next === 'relevant') p.delete('status')
     else p.set('status', next)
     setParams(p, { replace: true })
   }
@@ -127,12 +196,12 @@ function CandidatesView({ job }: { job: number }) {
       </button>
       <header className="mb-5">
         <h1 className="font-display text-2xl font-bold text-ink">{title}</h1>
-        <p className="mt-1 text-sm text-ink-muted">Candidates for this position with a completed scorecard.</p>
+        <p className="mt-1 text-sm text-ink-muted">Communication status from Markaz decisions cross-checked with Gmail.</p>
       </header>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="flex flex-wrap gap-1.5">
-          {BUCKET_CHIPS.map((c) => (
+          {FILTER_CHIPS.map((c) => (
             <button
               key={c.key}
               type="button"
@@ -163,58 +232,91 @@ function CandidatesView({ job }: { job: number }) {
             <thead className="border-b border-hairline bg-surface-2 text-xs uppercase tracking-wide text-ink-dim">
               <tr>
                 <th className="px-5 py-3 font-medium">Candidate</th>
-                <th className="px-5 py-3 font-medium">Scorecard</th>
                 <th className="px-5 py-3 font-medium">Status</th>
-                <th className="px-5 py-3 font-medium">Interview date</th>
-                <th className="px-5 py-3 font-medium">Prior emails</th>
+                <th className="px-5 py-3 font-medium">Waiting</th>
+                <th className="px-5 py-3 font-medium">Gmail</th>
+                <th className="px-5 py-3 font-medium">Next action</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
             <tbody className="divide-y divide-hairline">
               {candidatesQuery.data.map((row) => (
-                <Row key={row.application_id} row={row} onOpen={() => navigate(`/applications/${row.application_id}`)} />
+                <Row
+                  key={row.application_id}
+                  row={row}
+                  onOpen={() => navigate(`/applications/${row.application_id}`)}
+                  onMatch={() => setMatch({ appId: row.application_id, name: fullName(row) })}
+                />
               ))}
             </tbody>
           </table>
         )}
       </div>
+
+      {match && (
+        <GmailMatchModal
+          applicationId={match.appId}
+          candidateName={match.name}
+          role={meQ.data?.app_role}
+          onClose={() => setMatch(null)}
+        />
+      )}
     </div>
   )
 }
 
-function Row({ row, onOpen }: { row: QueueRow; onOpen: () => void }) {
-  const borderTone =
-    row.bucket === 'sent'
-      ? 'border-l-green'
-      : row.bucket === 'needs_comms'
-        ? 'border-l-magenta'
-        : row.bucket === 'in_progress'
-          ? 'border-l-blurple'
-          : 'border-l-ink-dim'
+const GMAIL_DOT: Record<GmailStatus, { cls: string; label: string }> = {
+  found: { cls: 'text-green', label: 'found' },
+  uncertain: { cls: 'text-cyan', label: 'review' },
+  none: { cls: 'text-ink-dim', label: 'none' },
+  not_checked: { cls: 'text-ink-dim', label: '—' },
+}
+
+const BORDER_TONE: Record<string, string> = {
+  sent: 'border-l-green',
+  high_priority: 'border-l-danger',
+  needs_comms: 'border-l-magenta',
+  needs_review: 'border-l-cyan',
+  in_progress: 'border-l-blurple',
+  awaiting_scorecard: 'border-l-ink-dim',
+}
+
+function Row({ row, onOpen, onMatch }: { row: QueueRow; onOpen: () => void; onMatch: () => void }) {
+  const tone = BORDER_TONE[row.display_status] ?? 'border-l-ink-dim'
+  const dot = GMAIL_DOT[row.gmail_status] ?? GMAIL_DOT.not_checked
+  const overdue = row.display_status === 'high_priority'
 
   return (
-    <tr onClick={onOpen} className={`cursor-pointer border-l-4 ${borderTone} transition-colors hover:bg-elevated`}>
+    <tr onClick={onOpen} className={`cursor-pointer border-l-4 ${tone} transition-colors hover:bg-elevated`}>
       <td className="px-5 py-3">
-        <div className="font-medium text-ink">{fullName(row)}</div>
+        <div className="font-medium text-ink">{fullName(row)}{row.ignored && <span className="ml-2 text-[11px] text-ink-dim">(ignored)</span>}</div>
         <div className="text-xs text-ink-dim">{row.email}</div>
       </td>
+      <td className="px-5 py-3"><StatusBadge status={row.display_status} /></td>
       <td className="px-5 py-3">
-        <div className="flex items-center gap-1.5">
-          <span className="text-ink-muted">{scorecardLabel(row)}</span>
-          {row.values_interview_result && (
-            <Pill tone={row.values_interview_result === 'pass' ? 'green' : 'red'}>{row.values_interview_result}</Pill>
-          )}
-        </div>
+        {row.days_waiting != null ? (
+          <span className={`inline-flex items-center gap-1 ${overdue ? 'font-semibold text-danger' : 'text-ink-muted'}`}>
+            <Clock className="h-3.5 w-3.5" /> {row.days_waiting}d
+          </span>
+        ) : (
+          <span className="text-ink-dim">—</span>
+        )}
       </td>
-      <td className="px-5 py-3"><StatusBadge bucket={row.bucket} /></td>
-      <td className="px-5 py-3 text-ink-muted">{formatDate(row.scorecard_date)}</td>
       <td className="px-5 py-3">
-        {row.prior_platform_comms > 0 ? <Pill tone="slate">{row.prior_platform_comms} on record</Pill> : <span className="text-ink-dim">—</span>}
-      </td>
-      <td className="px-5 py-3 text-right">
-        <span className="text-sm font-medium text-[#4752c4]">
-          {row.bucket === 'sent' ? 'View' : row.bucket === 'in_progress' ? 'Continue' : 'Draft'} →
+        <span className={`inline-flex items-center gap-1.5 text-xs ${dot.cls}`}>
+          <span className="h-1.5 w-1.5 rounded-full bg-current" /> {dot.label}
         </span>
+      </td>
+      <td className="px-5 py-3 text-ink-muted">{suggestedAction(row)}</td>
+      <td className="px-5 py-3 text-right">
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onMatch() }}
+          className="rounded-lg p-1.5 text-ink-dim transition-colors hover:bg-surface-2 hover:text-[#4752c4]"
+          title="View Gmail match / mark sent / ignore"
+        >
+          <Mail className="h-4 w-4" />
+        </button>
       </td>
     </tr>
   )

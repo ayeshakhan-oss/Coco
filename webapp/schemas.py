@@ -72,12 +72,25 @@ class QueueRow(_Base):
     last_sent_at: Optional[dt.datetime] = None
     prior_platform_comms: int = 0
     bucket: str
+    # Markaz <-> Gmail communication-sync dimensions (Phase 1+).
+    applied_at: Optional[dt.datetime] = None
+    days_waiting: Optional[int] = None
+    gmail_status: str = "not_checked"
+    comm_required: bool = False
+    required_email_type: Optional[str] = None
+    is_high_priority: bool = False
+    has_evidence: bool = False
+    manual_marked: bool = False
+    ignored: bool = False
+    display_status: Optional[str] = None
 
 
 class QueueStats(_Base):
     needs_comms: int
+    high_priority: int = 0
     in_progress: int
     sent: int
+    needs_review: int = 0
     awaiting_scorecard: int
     scored: int
     total: int
@@ -88,9 +101,14 @@ class PositionSummary(_Base):
     job_code: Optional[str] = None
     job_title: Optional[str] = None
     needs_comms: int
+    high_priority: int = 0
     in_progress: int
     sent: int
+    needs_review: int = 0
+    awaiting_scorecard: int = 0
     scored: int
+    total: int = 0
+    last_gmail_sync_at: Optional[dt.datetime] = None
 
 
 class ScorecardValueItem(_Base):
@@ -213,3 +231,60 @@ class ApplicationDetail(_Base):
     gwc_interview_date: Optional[dt.datetime] = None
     gwc_interviewer_name: Optional[str] = None
     comm_history: list[CommHistoryItem] = []
+    # Markaz <-> Gmail communication-sync dimensions + evidence (Phase 1+).
+    applied_at: Optional[dt.datetime] = None
+    days_waiting: Optional[int] = None
+    comm_required: bool = False
+    required_email_type: Optional[str] = None
+    is_high_priority: bool = False
+    has_evidence: bool = False
+    manual_marked: bool = False
+    ignored: bool = False
+    display_status: Optional[str] = None
+    gmail_status: str = "not_checked"
+    gmail_match: Optional["GmailMatch"] = None
+
+
+class GmailMatch(_Base):
+    """The Gmail Sent evidence for one application (drives 'View Gmail match')."""
+    gmail_status: str = "not_checked"
+    match_method: Optional[str] = None
+    matched_message_id: Optional[str] = None
+    gmail_thread_id: Optional[str] = None
+    internal_date: Optional[dt.datetime] = None
+    matched_subject: Optional[str] = None
+    matched_to: Optional[str] = None
+    matched_snippet: Optional[str] = None
+    uncertain_reason: Optional[str] = None
+    marked_sent_at: Optional[dt.datetime] = None
+    marked_sent_by: Optional[str] = None
+    marked_sent_reason: Optional[str] = None
+    ignored: bool = False
+    ignored_at: Optional[dt.datetime] = None
+    checked_at: Optional[dt.datetime] = None
+
+
+class GmailSyncStatusOut(_Base):
+    last_sync_at: Optional[dt.datetime] = None
+    status: Optional[str] = None
+    trigger: Optional[str] = None
+    messages_scanned: Optional[int] = None
+    candidates_evaluated: Optional[int] = None
+    found_count: Optional[int] = None
+    uncertain_count: Optional[int] = None
+    none_count: Optional[int] = None
+    started_at: Optional[dt.datetime] = None
+    finished_at: Optional[dt.datetime] = None
+    error_detail: Optional[str] = None
+
+
+class MarkSentRequest(_Base):
+    reason: Optional[str] = None
+
+
+class IgnoreRequest(_Base):
+    ignored: bool = True
+
+
+# Resolve the forward reference (GmailMatch is defined after ApplicationDetail).
+ApplicationDetail.model_rebuild()

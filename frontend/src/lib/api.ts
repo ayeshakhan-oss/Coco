@@ -5,6 +5,8 @@ import type {
   DraftContent,
   EvalResult,
   GenerateResponse,
+  GmailMatch,
+  GmailSyncStatus,
   JobItem,
   ManagedUser,
   PositionSummary,
@@ -96,6 +98,16 @@ export const api = {
     return get<Communication[]>(`/api/communications?${qs.toString()}`)
   },
   previewUrl: (id: string) => `/api/communications/${id}/preview`,
+
+  // Gmail evidence sync + manual overrides
+  gmailSyncStatus: () => get<GmailSyncStatus>('/api/gmail-sync/status'),
+  refreshGmailSync: (full = false) => post<GmailSyncStatus>(`/api/gmail-sync/refresh?full=${full}`),
+  gmailMatch: (applicationId: number) => get<GmailMatch>(`/api/candidates/${applicationId}/gmail-match`),
+  markSent: (applicationId: number, reason?: string) =>
+    post<GmailMatch>(`/api/candidates/${applicationId}/mark-sent`, { reason }),
+  clearMark: (applicationId: number) => request<GmailMatch>('DELETE', `/api/candidates/${applicationId}/mark-sent`),
+  setIgnore: (applicationId: number, ignored: boolean) =>
+    post<GmailMatch>(`/api/candidates/${applicationId}/ignore`, { ignored }),
 
   // User management (super admin)
   listUsers: () => get<ManagedUser[]>('/api/users'),

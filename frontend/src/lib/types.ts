@@ -1,5 +1,7 @@
 export type AppRole = 'viewer' | 'editor' | 'approver' | 'super_admin'
 export type Bucket = 'awaiting_scorecard' | 'needs_comms' | 'in_progress' | 'sent'
+export type DisplayStatus = Bucket | 'high_priority' | 'needs_review'
+export type GmailStatus = 'not_checked' | 'none' | 'found' | 'uncertain'
 
 export interface CurrentUser {
   id: string
@@ -41,15 +43,60 @@ export interface QueueRow {
   last_sent_at?: string | null
   prior_platform_comms: number
   bucket: Bucket
+  // Markaz <-> Gmail communication-sync dimensions
+  applied_at?: string | null
+  days_waiting?: number | null
+  gmail_status: GmailStatus
+  comm_required: boolean
+  required_email_type?: string | null
+  is_high_priority: boolean
+  has_evidence: boolean
+  manual_marked: boolean
+  ignored: boolean
+  display_status: DisplayStatus
 }
 
 export interface QueueStats {
   needs_comms: number
+  high_priority: number
   in_progress: number
   sent: number
+  needs_review: number
   awaiting_scorecard: number
   scored: number
   total: number
+}
+
+export interface GmailMatch {
+  gmail_status: GmailStatus
+  match_method?: string | null
+  matched_message_id?: string | null
+  gmail_thread_id?: string | null
+  internal_date?: string | null
+  matched_subject?: string | null
+  matched_to?: string | null
+  matched_snippet?: string | null
+  uncertain_reason?: string | null
+  marked_sent_at?: string | null
+  marked_sent_by?: string | null
+  marked_sent_reason?: string | null
+  ignored?: boolean
+  ignored_at?: string | null
+  checked_at?: string | null
+}
+
+export interface GmailSyncStatus {
+  last_sync_at?: string | null
+  status?: string | null
+  trigger?: string | null
+  messages_scanned?: number | null
+  candidates_evaluated?: number | null
+  found_count?: number | null
+  uncertain_count?: number | null
+  none_count?: number | null
+  started_at?: string | null
+  finished_at?: string | null
+  error_detail?: string | null
 }
 
 export interface JobItem {
@@ -65,9 +112,14 @@ export interface PositionSummary {
   job_code?: string | null
   job_title?: string | null
   needs_comms: number
+  high_priority: number
   in_progress: number
   sent: number
+  needs_review: number
+  awaiting_scorecard: number
   scored: number
+  total: number
+  last_gmail_sync_at?: string | null
 }
 
 export interface ScorecardValueItem {
@@ -222,4 +274,15 @@ export interface ApplicationDetail {
   gwc_interview_date?: string | null
   gwc_interviewer_name?: string | null
   comm_history: CommHistoryItem[]
+  // Markaz <-> Gmail communication-sync dimensions
+  applied_at?: string | null
+  days_waiting?: number | null
+  comm_required?: boolean
+  required_email_type?: string | null
+  is_high_priority?: boolean
+  has_evidence?: boolean
+  manual_marked?: boolean
+  ignored?: boolean
+  display_status?: DisplayStatus
+  gmail_status?: GmailStatus
 }

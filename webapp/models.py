@@ -38,6 +38,12 @@ COMM_STATUSES = ("draft", "in_review", "approved", "sent", "failed")
 COMM_MODES = ("pilot", "live")
 APP_ROLES = ("drafter", "approver")
 
+# Gmail-evidence enums (used by the Markaz <-> Gmail sync feature).
+GMAIL_STATUSES = ("not_checked", "none", "found", "uncertain")
+MATCH_METHODS = ("message_id", "recipient_window", "none")
+SYNC_TRIGGERS = ("scheduled", "manual")
+SYNC_STATUSES = ("running", "ok", "partial", "failed")
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -45,6 +51,14 @@ def _appuser_id() -> str:
 
 def _comm_id() -> str:
     return "comm-" + uuid4().hex
+
+
+def _evidence_id() -> str:
+    return "ev-" + uuid4().hex
+
+
+def _syncrun_id() -> str:
+    return "sync-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -168,4 +182,153 @@ class Communication(Base):
             "email_type",
             postgresql_where=text("status = 'sent'"),
         ),
+    )
+
+
+class CommEvidence(Base):
+    """Per-application communication evidence + manual overrides.
+
+    One row per application. Holds the result of cross-referencing Gmail's Sent
+    mailbox (read-only), plus human overrides (manual "mark sent", "ignore").
+    The send pipeline NEVER writes here and this module never imports it — the
+    Gmail feature is strictly read-only and isolated from `safe_send`.
+
+    Completion (display "Sent") is only ever reached via an app-sent
+    `communications` row, a Gmail `found` match, or a manual override here —
+    never from a Markaz status alone.
+    """
+
+    __tablename__ = "comm_evidence"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_evidence_id)
+
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False, unique=True)
+    candidate_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    job_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+
+    # Gmail evidence (read-only). Snippet/metadata only — never the full body.
+    gmail_status: Mapped[str] = mapped_column(
+        String, nullable=False, default="not_checked", server_default="not_checked"
+    )
+    match_method: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    matched_message_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    gmail_thread_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    internal_date: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    matched_subject: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    matched_to: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    matched_snippet: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    uncertain_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # Manual override: a human attests this candidate was communicated with
+    # outside Coco. This is NOT a send and never touches the eval gate.
+    marked_sent_by: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("app_users.id"), nullable=True
+    )
+    marked_sent_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    marked_sent_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # Reversible "ignore" for shortlisted-but-never-scheduled candidates.
+    ignored: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=text("false")
+    )
+    ignored_by: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("app_users.id"), nullable=True
+    )
+    ignored_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    checked_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "gmail_status IN ('not_checked','none','found','uncertain')",
+            name="ck_evidence_gmail_status",
+        ),
+        CheckConstraint(
+            "match_method IS NULL OR match_method IN ('message_id','recipient_window','none')",
+            name="ck_evidence_match_method",
+        ),
+        Index("ix_evidence_application_id", "application_id", unique=True),
+        Index("ix_evidence_candidate_id", "candidate_id"),
+        Index("ix_evidence_gmail_status", "gmail_status"),
+        Index("ix_evidence_ignored", "ignored", postgresql_where=text("ignored")),
+    )
+
+
+class GmailSyncRun(Base):
+    """One row per Gmail sync run — the durable audit + 'last synced' source.
+
+    `logs/read_audit.log` is ephemeral on Railway; this table is the source of
+    truth for sync history and the dashboard's "last synced" indicator.
+    """
+
+    __tablename__ = "gmail_sync_runs"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_syncrun_id)
+
+    trigger: Mapped[str] = mapped_column(String, nullable=False)
+    triggered_by: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("app_users.id"), nullable=True
+    )
+    full_resync: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=text("false")
+    )
+    status: Mapped[str] = mapped_column(
+        String, nullable=False, default="running", server_default="running"
+    )
+    query: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    messages_scanned: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    candidates_evaluated: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    found_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    uncertain_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    none_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default=text("0")
+    )
+    watermark_before: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    watermark_after: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    error_detail: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    started_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    finished_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "trigger IN ('scheduled','manual')", name="ck_syncrun_trigger"
+        ),
+        CheckConstraint(
+            "status IN ('running','ok','partial','failed')", name="ck_syncrun_status"
+        ),
+        Index("ix_syncrun_status", "status"),
+        Index("ix_syncrun_started_at", "started_at"),
     )

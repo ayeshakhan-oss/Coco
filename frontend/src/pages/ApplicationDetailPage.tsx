@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { ArrowLeft, Loader2, Mail, PenLine } from 'lucide-react'
+import { ArrowLeft, Clock, Loader2, Mail, PenLine } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Pill } from '../components/StatusBadge'
+import { GmailMatchModal } from '../components/GmailMatchModal'
+import { Pill, StatusBadge } from '../components/StatusBadge'
 import { ScorecardView } from '../components/ScorecardView'
 import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
-import { formatDate, fullName } from '../lib/format'
+import { emailTypeLabel, formatDate, fullName } from '../lib/format'
 import { canEdit } from '../lib/roles'
 import { EMAIL_TYPES } from '../lib/types'
 
@@ -23,6 +24,7 @@ export function ApplicationDetailPage() {
   const [emailType, setEmailType] = useState('values_feedback')
   const [generating, setGenerating] = useState(false)
   const [genErr, setGenErr] = useState<string | null>(null)
+  const [matchOpen, setMatchOpen] = useState(false)
   const mayDraft = canEdit(meQ.data?.app_role)
 
   async function generateDraft() {
@@ -57,6 +59,7 @@ export function ApplicationDetailPage() {
             <span>{d.job_title}</span>
             {d.job_code && <Pill tone="slate">{d.job_code}</Pill>}
             {d.status && <Pill tone="brand">{d.status}</Pill>}
+            {d.display_status && <StatusBadge status={d.display_status} />}
           </div>
         </div>
         {mayDraft && (
@@ -83,7 +86,29 @@ export function ApplicationDetailPage() {
             {scorecardQuery.isLoading ? <Spinner /> : <ScorecardView values={scorecardQuery.data?.values ?? null} gwc={scorecardQuery.data?.gwc ?? null} />}
           </Card>
         </div>
-        <div>
+        <div className="space-y-6">
+          <Card title="Communication status">
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-2">
+                <StatusBadge status={d.display_status} />
+                {d.days_waiting != null && (
+                  <span className="inline-flex items-center gap-1 text-xs text-ink-dim">
+                    <Clock className="h-3.5 w-3.5" /> {d.days_waiting} days since applied
+                  </span>
+                )}
+              </div>
+              <div className="text-ink-muted">
+                Gmail evidence: <span className="font-medium text-ink">{GMAIL_LABEL[d.gmail_status ?? 'not_checked']}</span>
+              </div>
+              {d.comm_required && d.required_email_type && (
+                <div className="text-ink-muted">Suggested: <span className="font-medium text-ink">{emailTypeLabel(d.required_email_type)}</span></div>
+              )}
+              <button type="button" onClick={() => setMatchOpen(true)} className="btn btn-ghost h-8 text-sm">
+                <Mail className="h-4 w-4" /> View Gmail match · mark sent · ignore
+              </button>
+            </div>
+          </Card>
+
           <Card title="Email history (on record)">
             {d.comm_history.length === 0 ? (
               <p className="text-sm text-ink-dim">No prior emails recorded for this application.</p>
@@ -104,8 +129,24 @@ export function ApplicationDetailPage() {
           </Card>
         </div>
       </div>
+
+      {matchOpen && (
+        <GmailMatchModal
+          applicationId={appId}
+          candidateName={fullName(d)}
+          role={meQ.data?.app_role}
+          onClose={() => setMatchOpen(false)}
+        />
+      )}
     </div>
   )
+}
+
+const GMAIL_LABEL: Record<string, string> = {
+  found: 'Found in Gmail Sent',
+  uncertain: 'Needs review (ambiguous)',
+  none: 'No matching email found',
+  not_checked: 'Not checked yet',
 }
 
 function Card({ title, children }: { title: string; children: ReactNode }) {

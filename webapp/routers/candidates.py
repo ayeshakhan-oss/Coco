@@ -27,12 +27,23 @@ from ..services.scorecard import (
 
 router = APIRouter(prefix="/api", tags=["candidates"])
 
-_BUCKETS = {"all", "scored", "needs_comms", "in_progress", "sent", "awaiting_scorecard"}
+_BUCKETS = {
+    "all",
+    "relevant",
+    "scored",
+    "needs_comms",
+    "high_priority",
+    "already_sent",
+    "needs_review",
+    "in_progress",
+    "sent",
+    "awaiting_scorecard",
+}
 
 
 @router.get("/candidates", response_model=list[QueueRow])
 def list_candidates(
-    status_filter: str = Query("scored", alias="status"),
+    status_filter: str = Query("relevant", alias="status"),
     job_pk: Optional[int] = Query(None, alias="job"),
     q: Optional[str] = Query(None),
     limit: int = Query(100, le=500),
