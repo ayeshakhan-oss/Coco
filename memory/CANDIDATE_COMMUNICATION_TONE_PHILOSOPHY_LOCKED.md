@@ -250,6 +250,43 @@ Those are not the same thing.
 
 ---
 
+## STRUCTURAL RULES (2026-06-18)
+
+### RULE 10: MANDATORY OPENING LINE
+
+**Every candidate communication email — CV rejection, values feedback, warm bench, GWC rejection, and any future type — MUST open with this exact line, as the first line right after the salutation (`Dear [Name],`):**
+
+> **This is not a yes for now.**
+
+Then the type-specific opening paragraph follows.
+
+**Why:** It states the decision plainly and humanely up front. It is honest because of the word "now": it communicates "today, this is a no," not "you can never." That is true for everyone. A CV-stage candidate can strengthen their CV and reapply. A values candidate can grow over six months to a year. The line never over-promises on its own.
+
+**HARNESS ENFORCEMENT:** 🔴 **HARD BLOCK** — Email blocked if the line is missing, or if it appears buried after a section heading instead of right after the salutation.
+
+---
+
+### RULE 11: NO FUTURE-PROMISE RULE
+
+**Candidate emails express genuine welcome, but must NEVER commit us to a future action the candidate could later hold us to.**
+
+Internally, we do revisit and look back at warm-bench candidates. That truth stays internal. The email's job is to make the candidate feel **specifically seen and genuinely welcome** without writing down a commitment they could question later ("you said you'd keep my name / reach out, why didn't you?").
+
+**The mechanics:**
+- **Disposition, not commitment.** Describe how *we feel* ("we would welcome the conversation again", "we'd be glad to hear from you"), not what *we will do*.
+- **Candidate-initiated, not company-initiated.** Put the next move in their hands ("if a closer-fit role opens, we would welcome a fresh application from you", "we hope you'll think of us") — never "we will contact you."
+- **Warmth lives in the specific praise and the P.S.**, not in any future-action language.
+
+**✅ Safe:** "we'd welcome talking again", "we'd be glad if you came back to us", "we hope you'll come back", "you're the kind of person we hope stays in our orbit", "stay connected".
+
+**❌ Forbidden:** "we will reach out", "we'll be in touch", "we will contact you", "we will keep your name with us / on file", "expect to hear from us", "you'll hear from us", "we'll let you know when".
+
+**The opening line "This is not a yes for now." is safe** because it is a statement about today's state, not a future-action promise.
+
+**HARNESS ENFORCEMENT:** 🟡 **WARNING** — Future-outreach promise phrasing flagged; allowed to send so legitimate warm closings are not blocked, but should be rewritten as disposition + candidate-initiated.
+
+---
+
 ## HARNESS VALIDATION RULES (2026-06-09)
 
 ### HARD BLOCKS (Email cannot send)
@@ -266,6 +303,7 @@ Those are not the same thing.
 | PILOT prefix in live | Subject line contains "[PILOT – ]" | Rule: Pilot-only prefix |
 | Interviewer names | "Sarah said", "When Jawad asked" | Anonymity Rule: Haroon Yasin |
 | Missing sections | Missing required section (e.g., "What Stayed With Us") | Structure Rule: Haroon Yasin |
+| Missing opening line | "This is not a yes for now." absent, or buried after a heading | Rule 10: Mandatory Opening Line (2026-06-18) |
 
 ### WARNINGS (Email allowed to send, Ayesha notified)
 
@@ -276,6 +314,7 @@ Those are not the same thing.
 | Personal-shortcoming framing | "You lacked X", "You were missing X" (instead of role-fit) | Rule 4: Role-Fit |
 | Soft rejection | Rejection unclear / candidate may not understand decision | Rule 6: Clarity |
 | Recruitment jargon | "culture fit", "alignment", "not quite right fit", "growth opportunity" | Rule: Haroon Yasin |
+| Future-outreach promise | "we will reach out", "we'll be in touch", "we will keep your name on file", "expect to hear from us" | Rule 11: No Future-Promise (2026-06-18) |
 
 ---
 

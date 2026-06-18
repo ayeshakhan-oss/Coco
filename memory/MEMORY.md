@@ -8,6 +8,9 @@
 ## 🔴 CRITICAL LEARNING — PILOT RECIPIENTS (2026-06-08)
 - **[CRITICAL: PILOT RECIPIENTS ONLY AYESHA (2026-06-08)](CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md)** — 🔒 **ABSOLUTE RULE:** When sending [PILOT – ] emails, TO = ayesha.khan@taleemabad.com ONLY. No CC. No hiring@. No other recipients. This was a discipline failure on 2026-06-08. Add HARD BLOCK to harness. Never deviate.
 
+## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
+- **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
+
 ---
 
 ## 🔴 MUST READ THESE FIRST (Session Start + Every Task)

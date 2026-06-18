@@ -58,6 +58,12 @@ You are drafting ONE candidate-communication email. Return ONLY valid JSON
 
 HARD RULES (the email is automatically REJECTED if any is violated):
 - At least 800 words total across greeting + opening + all paragraphs + ps.
+- The FIRST item in "opening" MUST be exactly: "This is not a yes for now."
+  (verbatim, its own paragraph, right after the greeting, for EVERY email type).
+- NO future-outreach promise. Do NOT write "we will reach out", "we'll be in
+  touch", "we will contact you", "we will keep your name on file", or "expect to
+  hear from us". Express welcome as disposition + candidate-initiated instead:
+  "if a closer-fit role opens, we would welcome a fresh application from you".
 - NO em dashes. Use periods, commas, or colons.
 - NEVER infer intent or internal state. Forbidden phrasings include
   "you seemed", "you lacked", "you assumed", "you believed", "you preferred",

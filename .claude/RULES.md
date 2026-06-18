@@ -179,7 +179,7 @@
 1. Quote specific CV sections, don't paraphrase
 2. Show you read the full CV (detail matters)
 3. Frame gap as role-specific, not personal failing
-4. Use "this isn't a yes for now" opening
+4. **Open with exactly `This is not a yes for now.` as the first line after the salutation** (ALL 4 candidate-comms types — harness HARD BLOCK). Pair with candidate-initiated reapplication, NEVER a future-outreach promise (harness WARNING). See master philosophy Rules 10-11 (2026-06-18).
 5. Never prescribe what they should do
 6. Use "we" voice, not "I"
 
@@ -221,6 +221,7 @@
 4. Simple HTML signature (no border-top divs)
 5. Blue headings (#1565C0)
 6. "We" voice always
+7. Open with exactly `This is not a yes for now.` (first line after salutation). No future-outreach promise: express welcome as disposition + candidate-initiated only. See master philosophy Rules 10-11 (2026-06-18).
 
 #### Locked Signature HTML
 ```html

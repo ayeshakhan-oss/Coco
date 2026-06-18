@@ -82,6 +82,10 @@ All these SOPs fall under this skill:
 - Specific evidence from interview (never generic)
 - **NO EM DASHES (—)** — Replace with periods, commas, colons, or hyphens only
 
+**Opening Line & Future-Promise (LOCKED 2026-06-18 — ALL 4 types):**
+- **MANDATORY first line** after `Dear [Name],`: `This is not a yes for now.` Harness HARD BLOCK if missing or buried after a heading. Honest because of "now" (today's no, not never). Master philosophy Rule 10.
+- **NO future-outreach promise.** Express welcome as disposition + candidate-initiated ("if a closer-fit role opens, we would welcome a fresh application from you"). NEVER "we will reach out / be in touch / contact you / keep your name on file / expect to hear from us." Harness WARNING. Master philosophy Rule 11.
+
 **Format:**
 - v8 HTML design (blue headings, Georgia serif, justified)
 - No em dashes (replace with period/comma/colon)

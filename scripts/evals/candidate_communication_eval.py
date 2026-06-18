@@ -80,6 +80,37 @@ RECRUITING_ABSTRACTIONS = [
     r'\bgreat candidate\b',
 ]
 
+# Future-outreach promise phrases — WARNING (locked 2026-06-18).
+# Candidate emails should express genuine welcome, but must NOT commit us to a
+# future action the candidate could later hold us to. Internally we do revisit
+# warm-bench people; the email just must not say so as a promise. Use
+# conditional, candidate-initiated, disposition language instead:
+#   "If a closer-fit role opens, we'd welcome a fresh application from you."
+#   "We would be glad if you came back to us."
+# Safe (NOT flagged): "we'd welcome", "we'd be glad to hear from you",
+#   "we hope you'll come back", "stay connected".
+FUTURE_PROMISE_PHRASES = [
+    r'we will reach out',
+    r"we'll reach out",
+    r'we will be in touch',
+    r"we'll be in touch",
+    r'we will contact you',
+    r"we'll contact you",
+    r'we will call you',
+    r"we'll call you",
+    r'we will let you know',
+    r"we'll let you know",
+    r'we will keep your name',
+    r"we'll keep your name",
+    r'keep your (cv|resume|résumé|details|profile) on file',
+    r'keep you on file',
+    r'keep (you|your name) in view',
+    r'expect to hear from us',
+    r'you will hear from us',
+    r"you'll hear from us",
+    r'we will reach back',
+]
+
 # Generic subject line words (to be avoided in warm bench subjects)
 GENERIC_SUBJECT_WORDS = [
     'interview',
@@ -128,6 +159,17 @@ SECTION_HEADINGS = {
         ]
     },
 }
+
+# Mandatory opening line — locked 2026-06-18.
+# Must be the FIRST line after the salutation ("Dear <Name>,") for ALL 4
+# candidate-communication types (CV rejection, values feedback, warm bench,
+# GWC rejection). It says "today this is a no", not "never" — honest because
+# of the word "now". It MUST be paired with candidate-initiated reapplication
+# language ("if a closer-fit role opens, we'd welcome a fresh application"),
+# NEVER a promise of proactive outreach we will not keep.
+REQUIRED_OPENING_LINE = "This is not a yes for now."
+# normalized (lowercase, no trailing punctuation) for matching
+_REQUIRED_OPENING_NORM = "this is not a yes for now"
 
 # ============================================================================
 # CORE EVAL LOGIC
@@ -225,6 +267,40 @@ def check_section_headings(body: str, email_type: str) -> Tuple[bool, Optional[s
     if missing:
         detail = f'Missing section headings: {", ".join(missing)}'
         return False, detail
+    return True, None
+
+
+def check_opening_line(body: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check that the mandatory opening line ("This is not a yes for now.") is
+    present AND appears before the first required section heading (i.e. it sits
+    right after the salutation, not buried in the body). Applies to all 4 types.
+    Returns: (passed, detail_msg_if_missing_or_misplaced)
+    """
+    clean = strip_html(body)
+    clean_lower = clean.lower()
+
+    phrase_idx = clean_lower.find(_REQUIRED_OPENING_NORM)
+    if phrase_idx == -1:
+        detail = (f'Missing mandatory opening line "{REQUIRED_OPENING_LINE}". '
+                  f'It must be the first line after the salutation, for every '
+                  f'candidate-communication type.')
+        return False, detail
+
+    # Must appear before the first section heading.
+    required = SECTION_HEADINGS.get(email_type, {}).get('required', [])
+    first_heading_idx = None
+    for heading in required:
+        m = re.search(re.escape(heading), clean, re.IGNORECASE)
+        if m and (first_heading_idx is None or m.start() < first_heading_idx):
+            first_heading_idx = m.start()
+
+    if first_heading_idx is not None and phrase_idx > first_heading_idx:
+        detail = (f'Opening line "{REQUIRED_OPENING_LINE}" must appear before the '
+                  f'first section heading (right after the salutation), not buried '
+                  f'in a later section.')
+        return False, detail
+
     return True, None
 
 
@@ -370,6 +446,30 @@ def check_recruiting_abstractions(text: str) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
+def check_future_promise(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Check for future-outreach promises (we will reach out / contact you / keep
+    your name on file, etc). Candidate emails express welcome via conditional,
+    candidate-initiated language, never a commitment to a future action.
+    SOURCE: no-future-promise rule (locked 2026-06-18).
+    Returns: (passed, detail_msg_if_found). WARNING-level (flags, does not block).
+    """
+    clean = strip_html(text)
+    for pattern in FUTURE_PROMISE_PHRASES:
+        match = re.search(pattern, clean, re.IGNORECASE)
+        if match:
+            start = max(0, match.start() - 40)
+            end = min(len(clean), match.end() + 40)
+            context = clean[start:end].replace('\n', ' ')
+            detail = (f'Future-outreach promise "{match.group()}" detected. Express '
+                      f'genuine welcome WITHOUT committing to a future action: use '
+                      f'conditional, candidate-initiated wording ("if a closer-fit '
+                      f'role opens, we would welcome a fresh application from you"). '
+                      f'Context: ...{context}...')
+            return False, detail
+    return True, None
+
+
 # ============================================================================
 # MAIN EVAL FUNCTION
 # ============================================================================
@@ -448,6 +548,15 @@ def evaluate_email(
             'detail': detail,
         })
 
+    # 5b. Mandatory opening line (locked 2026-06-18)
+    passed, detail = check_opening_line(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Mandatory opening line ("This is not a yes for now.")',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
     # 6. Jargon
     passed, detail = check_jargon(html_body)
     if not passed:
@@ -491,6 +600,15 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'No recruiting abstractions',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # 10b. Future-outreach promise (no-future-promise rule, locked 2026-06-18)
+    passed, detail = check_future_promise(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No future-outreach promise',
             'severity': 'WARNING',
             'detail': detail,
         })

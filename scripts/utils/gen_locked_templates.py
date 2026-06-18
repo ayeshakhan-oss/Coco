@@ -112,7 +112,8 @@ def build(cfg):
         sec2 += SUB(cfg["sub"])
     body = (
         P("Dear [CANDIDATE_FIRST_NAME],")
-        + P("[OPENING_PARAGRAPH: state the decision clearly + promise an honest, specific account. 'We have completed our evaluation of your ... We will not be moving you forward at this time...']")
+        + P("This is not a yes for now.")
+        + P("[OPENING_PARAGRAPH: state the decision clearly + promise an honest, specific account. 'We have completed our evaluation of your ... We will not be moving you forward at this time...' Pair this with candidate-initiated reapplication language later, never a promise of proactive outreach.]")
         + H(h[0]) + P("[SECTION_1_CONTENT: 2-3 specific strengths, each tied to evidence from the source. Observable behaviors, not generic labels.]")
         + sec2 + P("[SECTION_2_CONTENT: 2-3 honest gaps, evidence-based. Frame as 'what we found ourselves wanting...' / 'the role required...' — never intent inference or personal shortcoming.]")
         + H(h[2]) + P("[SECTION_3_CONTENT: gentle, specific guidance. Door-open close where appropriate. Careers page link.]")

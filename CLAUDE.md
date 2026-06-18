@@ -30,6 +30,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 9. **🔒 v8 + INVITE DESIGNS OVERRIDE `ui-ux-pro-max`** — The `ui-ux-pro-max` design-intelligence skill (vendored, local-only at `.claude/skills/ui-ux-pro-max/`) is for general UI/UX/web work. It MUST NOT alter the locked v8 candidate-comms layout (Rule 8) or the Skill 06 interview-invite design. For any candidate email, the locked layouts win — never apply `ui-ux-pro-max` suggestions to them.
 
+10. **🔒 MANDATORY OPENING LINE + NO FUTURE-PROMISE (CRITICAL — 2026-06-18)** — Every candidate communication email (CV rejection, values feedback, warm bench, GWC rejection, + any future type) MUST open with `This is not a yes for now.` as the first line right after `Dear [Name],`. Harness HARD BLOCK if missing or buried after a section heading. The line is honest because of "now" (today's no, not never) and MUST be paired with **candidate-initiated** reapplication language — NEVER a promise of proactive outreach. FORBIDDEN: "we will reach out / be in touch / contact you / keep your name on file / expect to hear from us" (harness WARNING). Use disposition + conditional instead: "if a closer-fit role opens, we would welcome a fresh application from you." See [memory/mandatory_opening_line_no_future_promise_2026_06_18.md](memory/mandatory_opening_line_no_future_promise_2026_06_18.md).
+
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 
 ---
