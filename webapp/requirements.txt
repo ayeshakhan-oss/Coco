@@ -15,5 +15,6 @@ httplib2>=0.22                # socket timeout for the Gmail client
 requests>=2.32                # transport used by google-auth's token verifier
 pyjwt>=2.9                    # signed session cookie
 anthropic>=0.40               # Claude API (AI drafting)
+apscheduler>=3.10             # in-app hourly Gmail evidence sync
 httpx>=0.27
 python-dotenv>=1.0

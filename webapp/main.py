@@ -6,7 +6,9 @@ Run locally:
 
 from __future__ import annotations
 
+import logging
 import os
+from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,12 +26,68 @@ from .routers import users as users_router
 from .schemas import CurrentUserOut
 
 settings = get_settings()
+_log = logging.getLogger("coco.scheduler")
+_scheduler = None
+
+
+def _run_scheduled_sync() -> None:
+    """Hourly incremental Gmail evidence sync (runs in the scheduler's thread)."""
+    from sqlalchemy import text
+
+    from .db import get_sessionmaker
+    from .services import gmail_evidence
+
+    db = get_sessionmaker()()
+    try:
+        busy = db.execute(
+            text(
+                "SELECT 1 FROM gmail_sync_runs WHERE status='running' "
+                "AND started_at > now() - interval '15 minutes' LIMIT 1"
+            )
+        ).first()
+        if busy:
+            return
+        gmail_evidence.run_sync(db, full=False, trigger="scheduled", triggered_by=None)
+    except Exception:  # noqa: BLE001
+        _log.exception("scheduled gmail sync failed")
+    finally:
+        db.close()
+
+
+@asynccontextmanager
+async def lifespan(_app: "FastAPI"):
+    # Only run the in-app scheduler where a Gmail token is configured (Railway),
+    # so local dev / tests never fire a real sync. Single uvicorn worker => one
+    # scheduler. If a redeploy interrupts it, it resumes on the next tick.
+    global _scheduler
+    if settings.gmail_oauth_token_json:
+        try:
+            from apscheduler.schedulers.background import BackgroundScheduler
+
+            _scheduler = BackgroundScheduler(daemon=True)
+            _scheduler.add_job(
+                _run_scheduled_sync,
+                "interval",
+                hours=1,
+                id="gmail-evidence-sync",
+                max_instances=1,
+                coalesce=True,
+            )
+            _scheduler.start()
+            _log.info("Gmail evidence scheduler started (hourly).")
+        except Exception:  # noqa: BLE001
+            _log.exception("failed to start Gmail evidence scheduler")
+    yield
+    if _scheduler:
+        _scheduler.shutdown(wait=False)
+
 
 app = FastAPI(
     title="Coco — Candidate Communication",
     version="0.1.0",
     description="Team tool for drafting, reviewing, approving and sending "
     "evidence-based candidate-communication emails.",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
