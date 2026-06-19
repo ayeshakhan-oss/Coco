@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — KEEP-IN-TOUCH NOTE (invite type #5, 2026-06-19)
+- **[Keep-in-Touch Note — invite type #5 (2026-06-19)](keep_in_touch_note_type_2026_06_19.md)** — Post-conversation warm hold: we already spoke, the role is being revisited, the candidate is still in our thinking. Lives under **Skill 06 (candidate invites)**, NOT rejection/feedback — so the "This is not a yes for now." opener does NOT apply. **TWO HARD RULES:** (1) NO booking button / no links — we are not asking them to schedule anything yet; (2) NO promise or commitment — no "we will reach out", no hard date, no outcome mention; honest + conditional only (a soft "hopefully in July" hope is OK if the user asks). Script: `scripts/send_keep_in_touch_pilot.py` (parameterized `CANDIDATES` list, pilots to Ayesha, sends individual live emails). First use: 5 Job 32 fundraising exploratory-call candidates (Falah, Kanooz, Nirmal, Mushahid, Saadia), sent live 2026-06-19.
+
 ---
 
 ## 🔴 MUST READ THESE FIRST (Session Start + Every Task)

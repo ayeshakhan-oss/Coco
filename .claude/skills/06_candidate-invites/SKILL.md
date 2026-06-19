@@ -1,6 +1,6 @@
 ---
 name: 06_candidate-invites
-description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, or communicate next steps. The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
+description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite, Keep-in-Touch Note. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, communicate next steps, or send a post-conversation warm-hold/keep-in-touch note while a decision is pending. The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
 compatibility:
   tools:
     - safe_sendmail (scripts/utils/safe_send.py)
@@ -16,6 +16,7 @@ compatibility:
 - ✅ Case Study Debrief Invite
 - ✅ Exploratory Call Invite
 - ✅ Warm Bench Opportunity Invite
+- ✅ Keep-in-Touch Note (post-conversation warm hold — NO booking button)
 
 ---
 
@@ -27,7 +28,7 @@ compatibility:
 
 ---
 
-## The Four Invite Types
+## The Five Invite Types
 
 ### 1. Values Interview Invite
 
@@ -123,6 +124,31 @@ Booking: [Google Calendar URL]
 - Purpose: "Discuss this new role and how it might be a fit"
 - CTA: Calendar booking
 - Button text: "📅 Let's Discuss"
+
+---
+
+### 5. Keep-in-Touch Note
+
+**When:** We have already had a conversation with the candidate (e.g. an exploratory call), the role/decision is being revisited, and we need time. This note tells them honestly that they are still in our thinking — so silence is not mistaken for a "no" — WITHOUT promising a timeline or an outcome. The recurring "we talked, now we need time, we'll circle back" situation.
+
+**Required Info:**
+- Recipient list (first name + email) — send only to people we actually spoke with
+- Role/area the conversation was about
+
+**Script:** `scripts/send_keep_in_touch_pilot.py` (holds a `CANDIDATES` list; pilots one sample to Ayesha, then sends each person an individual live email)
+
+**Key Content:**
+- Greeting: "Hi [First Name],"
+- Hook: Thank them for the conversation we already had + name the role
+- Purpose: Honest update — we are revisiting the role, you are still in our thinking
+- CTA: **NONE** — no calendar booking button, no booking/document link
+- Subject (default): "Still very much in our thinking — [Name]"
+
+**🔒 TWO HARD RULES for this type:**
+1. **NO booking button / no links.** We are explicitly NOT asking them to schedule anything yet. Body flows straight from the closing paragraph to the signature.
+2. **NO promise or commitment.** Forbidden: "we will reach out / be in touch / contact you", hard dates ("by early July"), or any outcome guarantee. Use honest, conditional language only ("when we have more clarity, we would genuinely welcome the chance to be back in touch"). The candidate must have nothing to "count on."
+
+Full spec + tone rationale: [memory/keep_in_touch_note_type_2026_06_19.md](../../memory/keep_in_touch_note_type_2026_06_19.md)
 
 ---
 

@@ -4,41 +4,31 @@ description: Live notes for the current session. Wiped at session start by UserP
 type: project
 ---
 
-# Active Session — 2026-06-10
+# Active Session — 2026-06-19
 
 ## Task
-1. Drafted + piloted values feedback email for Syeda Siddiqa Fatima (CPD Coach, Job 17, app 308, cand 266). Pilot sent to Ayesha only. Awaiting go-live.
-2. Ayesha: make this email's layout the standard for ALL candidate communication (+ future types).
-3. "Update the layout in the harness" + save to memory/MEMORY.md/CLAUDE.md + update skills + push to GitHub.
+Created a NEW reusable candidate-communication type: the **Keep-in-Touch Note** (invite type #5 under Skill 06). Purpose: after an initial conversation (e.g. exploratory call), when the role/decision is being revisited and we need time, tell the candidate honestly that they are still in our thinking — without promising a timeline or outcome. First use: 5 Job 32 (Fundraising & Partnerships Manager) exploratory-call candidates.
 
 ## Decisions Made
-- Created scripts/utils/v8_template.py = single shared layout module (H/SUB/P/PS/FOOTER/wrap/attach_logo/EYEBROW). Byte-identical to approved Syeda email.
-- Layout vs content separation: module owns layout; section headings/content stay per-type and harness-enforced.
-- Resolved template conflict: the 2026-05-13 "ALL candidate comms" template was actually the Skill 06 INVITE template over-claiming scope. Narrowed it to invites only (preserved Skill 06); feedback/rejection -> v8.
-- Updated the harness both ways: (a) regenerated the 4 Layer-1 draft-time templates from v8 via new generator scripts/utils/gen_locked_templates.py (they were an older non-v8 layout); (b) added check_v8_layout() WARNING to send-time eval. Verified v8 email passes 0 violations; non-v8 triggers warning.
+- Belongs to Skill 06 (candidate invites), NOT Skill 01 — so the "This is not a yes for now." opener does not apply.
+- Name chosen by user: **Keep-in-Touch Note**.
+- TWO hard rules for the type: (1) NO booking button / no links; (2) NO promise/commitment (no "we will reach out", no outcome mention).
+- For THIS batch only, user asked to add a soft "hopefully in July" hope, and to remove the "we don't know the outcome" line. Applied.
+- Subject (user pick): "A Note to Stay Connected — [Name]".
+- Recipients (user-named): Falah, Kanooz, Nirmal, Mushahid, Saadia (5 of the 8 invited).
 
 ## Mistakes / Corrections
-(none)
+- Initially added the index line only to the auto-memory MEMORY.md; corrected by also adding it to the project repo's memory/MEMORY.md.
 
 ## Files Modified
-- scripts/utils/v8_template.py (new — shared layout module)
-- scripts/utils/gen_locked_templates.py (new — regenerates harness templates from v8)
-- templates/{cv_rejection,values_feedback,warm_bench,gwc_rejection}_template_locked.html (regenerated to v8)
-- scripts/evals/candidate_communication_eval.py (added v8 layout WARNING check)
-- scripts/send_cpd_coach_values_feedback_syeda_2026_06_10_pilot.py (imports module)
-- memory/v8_candidate_comms_layout_LOCKED.md (new + harness section)
-- memory/MEMORY.md (pointer + narrowed old-template entry)
-- memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md (Format block layout line)
-- memory/locked_email_template_interview_invites_FINAL_2026_05_13.md (scope narrowed to invites)
-- memory/locked_templates_index.md (feedback/rejection design pointers -> v8)
-- CLAUDE.md (Core Rule 8 — v8 layout)
-- .claude/skills/01_candidate-communication/{candidate-rejections,values-feedback-emails,warm-bench-feedback-email,gwc-rejection-emails}.md (LOCKED LAYOUT line)
+- scripts/send_keep_in_touch_pilot.py (NEW — parameterized CANDIDATES list; pilot loops renders to Ayesha; live sends individual emails)
+- .claude/skills/06_candidate-invites/SKILL.md (added type #5 + description)
+- memory/keep_in_touch_note_type_2026_06_19.md (NEW — locked spec)
+- memory/MEMORY.md (index entry)
+- logs/email_audit.log (5 live sends recorded)
 
 ## Pre-Send Checks
-- [x] Self-QA checklist run (eval: PASS, 1000 words, 0 violations)
-- [x] Template read side-by-side (job36 v8 reference)
-- [x] Word count verified (1000)
-- [x] Pilot sent to Ayesha only
-
-## Push
-- Pending: git commit + push to GitHub (this turn).
+- [x] Self-QA checklist run
+- [x] Template read side-by-side (cloned from send_exploratory_call_pilot.py)
+- [x] Pilot sent to Ayesha first (all 5 renders), approved, then live
+- [x] Live: 5 individual emails, CC = ayesha + hiring@ + sabeena; verified in audit log
