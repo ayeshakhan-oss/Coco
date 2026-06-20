@@ -172,6 +172,80 @@ def get_match(db: Session, application_id: int) -> dict:
     return dict(row)
 
 
+def build_timeline(db: Session, application_id: int) -> Optional[list[dict]]:
+    """Unified, source-tagged communication timeline for a candidate: Markaz's
+    own log + Coco-sent comms + a LIVE Gmail whole-mailbox search — merged and
+    sorted newest-first. Returns None if the application doesn't exist."""
+    row = db.execute(
+        text(
+            "SELECT a.communication_history, lower(c.email) AS email "
+            "FROM applications a JOIN candidates c ON c.id = a.candidate_id WHERE a.id = :id"
+        ),
+        {"id": application_id},
+    ).mappings().first()
+    if not row:
+        return None
+
+    items: list[dict] = []
+
+    # 1. Markaz communication_history (the platform's own send log).
+    for h in (row["communication_history"] or []):
+        if not isinstance(h, dict):
+            continue
+        items.append({
+            "source": "markaz",
+            "ts": h.get("sentAt") or h.get("sent_at"),
+            "subject": h.get("subject") or h.get("templateName") or h.get("template_name"),
+            "actor": h.get("sentBy") or h.get("sent_by"),
+            "snippet": None,
+            "link": None,
+        })
+
+    # 2. Coco-sent communications (sent through this app).
+    for c in db.execute(
+        text(
+            "SELECT subject, sent_at, created_by FROM communications "
+            "WHERE application_id = :id AND status = 'sent' ORDER BY sent_at"
+        ),
+        {"id": application_id},
+    ).mappings():
+        items.append({
+            "source": "coco",
+            "ts": c["sent_at"].isoformat() if c["sent_at"] else None,
+            "subject": c["subject"],
+            "actor": c["created_by"],
+            "snippet": None,
+            "link": None,
+        })
+
+    # 3. Gmail — live whole-mailbox search (best-effort; never breaks the page).
+    email = row["email"]
+    if email:
+        try:
+            from . import gmail_evidence
+
+            for m in gmail_evidence.search_candidate_messages(email, limit=25):
+                ts = None
+                if m.get("internal_ms"):
+                    ts = dt.datetime.fromtimestamp(
+                        m["internal_ms"] / 1000, tz=dt.timezone.utc
+                    ).isoformat()
+                mid = (m.get("message_id") or "").strip("<>")
+                items.append({
+                    "source": "gmail",
+                    "ts": ts,
+                    "subject": m.get("subject"),
+                    "actor": m.get("from"),
+                    "snippet": m.get("snippet"),
+                    "link": f"https://mail.google.com/mail/u/0/#search/rfc822msgid:{mid}" if mid else None,
+                })
+        except Exception:  # noqa: BLE001 — Gmail is optional context for the timeline
+            pass
+
+    items.sort(key=lambda x: (x.get("ts") or ""), reverse=True)
+    return items
+
+
 def get_sync_status(db: Session) -> dict:
     """Latest sync run + 'last synced' time for the dashboard indicator."""
     last_ok = db.execute(

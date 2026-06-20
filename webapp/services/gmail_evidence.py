@@ -31,7 +31,7 @@ from sqlalchemy.orm import Session
 from ..config import get_settings
 
 GMAIL_SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
-_METADATA_HEADERS = ["To", "Cc", "Bcc", "Subject", "Date", "Message-ID"]
+_METADATA_HEADERS = ["From", "To", "Cc", "Bcc", "Subject", "Date", "Message-ID"]
 
 # Safety bounds.
 MAX_MESSAGES_PER_RUN = 6000
@@ -189,12 +189,24 @@ def _meta_from_message(msg: dict) -> dict:
         "thread_id": msg.get("threadId"),
         "message_id": (headers.get("Message-ID") or "").strip() or None,
         "subject": headers.get("Subject"),
+        "from": headers.get("From"),
         "snippet": msg.get("snippet"),
         "internal_ms": internal_ms,
         "to": rec["to"],
         "cc": rec["cc"],
         "bcc": rec["bcc"],
     }
+
+
+def search_candidate_messages(email: str, limit: int = 25) -> list[dict]:
+    """Live whole-mailbox search for all messages addressed to a candidate
+    (newest first). Used by the unified communication timeline."""
+    if not email:
+        return []
+    svc = _build_service()
+    ids = _search_message_ids(svc, f"(to:{email} OR cc:{email})", cap=limit)
+    metas = _fetch_metas(svc, ids)
+    return sorted(metas, key=lambda m: m.get("internal_ms") or 0, reverse=True)
 
 
 def _fetch_message_meta(svc, msg_id: str) -> Optional[dict]:

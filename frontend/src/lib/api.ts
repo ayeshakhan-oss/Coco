@@ -14,6 +14,7 @@ import type {
   QueueStats,
   ScorecardResponse,
   SendResponse,
+  TimelineItem,
 } from './types'
 
 export class ApiError extends Error {
@@ -103,6 +104,7 @@ export const api = {
   gmailSyncStatus: () => get<GmailSyncStatus>('/api/gmail-sync/status'),
   refreshGmailSync: (full = false) => post<GmailSyncStatus>(`/api/gmail-sync/refresh?full=${full}`),
   gmailMatch: (applicationId: number) => get<GmailMatch>(`/api/candidates/${applicationId}/gmail-match`),
+  timeline: (applicationId: number) => get<TimelineItem[]>(`/api/candidates/${applicationId}/timeline`),
   markSent: (applicationId: number, reason?: string) =>
     post<GmailMatch>(`/api/candidates/${applicationId}/mark-sent`, { reason }),
   clearMark: (applicationId: number) => request<GmailMatch>('DELETE', `/api/candidates/${applicationId}/mark-sent`),

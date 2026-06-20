@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { ArrowLeft, Clock, Loader2, Mail, PenLine } from 'lucide-react'
+import { ArrowLeft, Clock, Loader2, Mail, PenLine, Sparkles } from 'lucide-react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { GmailMatchModal } from '../components/GmailMatchModal'
 import { Pill, StatusBadge } from '../components/StatusBadge'
@@ -11,6 +11,7 @@ import { ApiError, api } from '../lib/api'
 import { emailTypeLabel, formatDate, fullName } from '../lib/format'
 import { canEdit } from '../lib/roles'
 import { EMAIL_TYPES } from '../lib/types'
+import type { TimelineItem } from '../lib/types'
 
 export function ApplicationDetailPage() {
   const { id } = useParams()
@@ -22,6 +23,7 @@ export function ApplicationDetailPage() {
   const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
   const detailQuery = useQuery({ queryKey: ['candidate', appId], queryFn: () => api.candidate(appId), enabled: !Number.isNaN(appId) })
   const scorecardQuery = useQuery({ queryKey: ['scorecard', appId], queryFn: () => api.scorecard(appId), enabled: !Number.isNaN(appId) })
+  const timelineQuery = useQuery({ queryKey: ['timeline', appId], queryFn: () => api.timeline(appId), enabled: !Number.isNaN(appId) })
 
   const [emailType, setEmailType] = useState('values_feedback')
   const [generating, setGenerating] = useState(false)
@@ -93,7 +95,7 @@ export function ApplicationDetailPage() {
         <div className="space-y-6">
           <Card title="Communication status">
             <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <StatusBadge status={d.display_status} />
                 {d.days_waiting != null && (
                   <span className="inline-flex items-center gap-1 text-xs text-ink-dim">
@@ -101,34 +103,21 @@ export function ApplicationDetailPage() {
                   </span>
                 )}
               </div>
-              <div className="text-ink-muted">
-                Gmail evidence: <span className="font-medium text-ink">{GMAIL_LABEL[d.gmail_status ?? 'not_checked']}</span>
-              </div>
+              <p className="text-ink-muted">{statusReason(d)}</p>
               {d.comm_required && d.required_email_type && (
                 <div className="text-ink-muted">Suggested: <span className="font-medium text-ink">{emailTypeLabel(d.required_email_type)}</span></div>
               )}
               <button type="button" onClick={() => setMatchOpen(true)} className="btn btn-ghost h-8 text-sm">
-                <Mail className="h-4 w-4" /> View Gmail match · mark sent · ignore
+                <Mail className="h-4 w-4" /> Gmail match · mark sent · ignore
               </button>
             </div>
           </Card>
 
-          <Card title="Email history (on record)">
-            {d.comm_history.length === 0 ? (
-              <p className="text-sm text-ink-dim">No prior emails recorded for this application.</p>
+          <Card title="Communication timeline">
+            {timelineQuery.isLoading ? (
+              <Spinner label="Loading timeline…" />
             ) : (
-              <ul className="space-y-3">
-                {d.comm_history.map((h, i) => (
-                  <li key={i} className="rounded-lg border border-hairline bg-surface-2 p-3">
-                    <div className="flex items-center gap-2 text-xs text-ink-dim">
-                      <Mail className="h-3.5 w-3.5" />
-                      {formatDate(h.sent_at)} · {h.source}
-                    </div>
-                    <div className="mt-1 text-sm font-medium text-ink">{h.subject || h.template_name || '(no subject)'}</div>
-                    {h.sent_by && <div className="text-xs text-ink-dim">by {h.sent_by}</div>}
-                  </li>
-                ))}
-              </ul>
+              <Timeline items={timelineQuery.data ?? []} />
             )}
           </Card>
         </div>
@@ -146,11 +135,69 @@ export function ApplicationDetailPage() {
   )
 }
 
-const GMAIL_LABEL: Record<string, string> = {
-  found: 'Found in Gmail Sent',
-  uncertain: 'Needs review (ambiguous)',
-  none: 'No matching email found',
-  not_checked: 'Not checked yet',
+function statusReason(d: { display_status?: string | null; days_waiting?: number | null }): string {
+  switch (d.display_status) {
+    case 'sent':
+      return 'Communication is on record (found in Gmail and/or Markaz, or marked sent).'
+    case 'needs_review':
+      return 'Coco found a possible match it could not confirm — please verify the Gmail match.'
+    case 'in_progress':
+      return 'A draft is in progress for this candidate.'
+    case 'high_priority':
+      return `High priority — no counted communication found and waiting ${d.days_waiting ?? '7+'} days.`
+    case 'needs_comms':
+      return 'No counted communication found yet — this candidate still needs an email.'
+    case 'awaiting_scorecard':
+      return 'Decision still pending — no communication required yet.'
+    default:
+      return ''
+  }
+}
+
+const SOURCE_STYLE: Record<string, { label: string; cls: string }> = {
+  gmail: { label: 'Gmail', cls: 'bg-blurple/15 text-[#4752c4]' },
+  markaz: { label: 'Markaz', cls: 'bg-elevated text-ink-muted' },
+  coco: { label: 'Coco', cls: 'bg-green/15 text-green' },
+}
+
+function Timeline({ items }: { items: TimelineItem[] }) {
+  if (!items.length) {
+    return <p className="text-sm text-ink-dim">Coco found no emails for this candidate yet — in Gmail or Markaz.</p>
+  }
+  const g = items.filter((i) => i.source === 'gmail').length
+  const m = items.filter((i) => i.source === 'markaz').length
+  const c = items.filter((i) => i.source === 'coco').length
+  const parts = [g && `${g} via Gmail`, m && `${m} via Markaz`, c && `${c} via Coco`].filter(Boolean)
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-start gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-muted">
+        <Sparkles className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-blurple" />
+        <span>Coco found <span className="font-semibold text-ink">{items.length}</span> {items.length === 1 ? 'email' : 'emails'} for this candidate{parts.length ? ` — ${parts.join(', ')}` : ''}.</span>
+      </div>
+      <ul className="space-y-3">
+        {items.map((h, i) => {
+          const s = SOURCE_STYLE[h.source] ?? SOURCE_STYLE.markaz
+          return (
+            <li key={i} className="rounded-lg border border-hairline bg-surface p-3">
+              <div className="flex items-center gap-2 text-xs text-ink-dim">
+                <span className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${s.cls}`}>{s.label}</span>
+                {formatDate(h.ts)}
+              </div>
+              <div className="mt-1 text-sm font-medium text-ink">{h.subject || '(no subject)'}</div>
+              {h.actor && <div className="text-xs text-ink-dim">{h.source === 'gmail' ? `from ${h.actor}` : `by ${h.actor}`}</div>}
+              {h.snippet && <div className="mt-1 text-xs italic text-ink-muted line-clamp-2">“{h.snippet}”</div>}
+              {h.link && (
+                <a href={h.link} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-medium text-[#4752c4] hover:underline">
+                  Open in Gmail →
+                </a>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
 }
 
 function Card({ title, children }: { title: string; children: ReactNode }) {

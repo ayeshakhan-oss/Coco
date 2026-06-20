@@ -300,5 +300,14 @@ class BulkResult(_Base):
     updated: int
 
 
+class TimelineItem(_Base):
+    source: str  # 'markaz' | 'gmail' | 'coco'
+    ts: Optional[str] = None
+    subject: Optional[str] = None
+    actor: Optional[str] = None
+    snippet: Optional[str] = None
+    link: Optional[str] = None
+
+
 # Resolve the forward reference (GmailMatch is defined after ApplicationDetail).
 ApplicationDetail.model_rebuild()

@@ -85,6 +85,15 @@ export interface GmailMatch {
   checked_at?: string | null
 }
 
+export interface TimelineItem {
+  source: 'markaz' | 'gmail' | 'coco'
+  ts?: string | null
+  subject?: string | null
+  actor?: string | null
+  snippet?: string | null
+  link?: string | null
+}
+
 export interface GmailSyncStatus {
   last_sync_at?: string | null
   status?: string | null

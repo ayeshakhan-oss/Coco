@@ -30,6 +30,7 @@ from ..schemas import (
     GmailSyncStatusOut,
     IgnoreRequest,
     MarkSentRequest,
+    TimelineItem,
 )
 from ..services import evidence
 
@@ -91,6 +92,18 @@ def gmail_match(
     _user: dict = Depends(get_current_user),
 ):
     return evidence.get_match(db, application_id)
+
+
+@router.get("/candidates/{application_id}/timeline", response_model=list[TimelineItem])
+def candidate_timeline(
+    application_id: int,
+    db: Session = Depends(get_db),
+    _user: dict = Depends(get_current_user),
+):
+    items = evidence.build_timeline(db, application_id)
+    if items is None:
+        raise HTTPException(404, "Application not found")
+    return items
 
 
 @router.post("/candidates/{application_id}/mark-sent", response_model=GmailMatch)
