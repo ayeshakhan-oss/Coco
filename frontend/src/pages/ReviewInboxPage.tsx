@@ -41,7 +41,7 @@ export function ReviewInboxPage() {
                   <td className="px-5 py-3 text-ink-muted">{c.role_title}</td>
                   <td className="px-5 py-3 text-ink-dim">{c.email_type.replace('_', ' ')}</td>
                   <td className="px-5 py-3 text-ink-dim">{formatDate(c.updated_at)}</td>
-                  <td className="px-5 py-3 text-right text-sm font-medium text-[#4752c4]">Review →</td>
+                  <td className="px-5 py-3 text-right text-sm font-medium text-blurple-600">Review →</td>
                 </tr>
               ))}
             </tbody>

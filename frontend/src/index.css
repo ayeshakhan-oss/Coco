@@ -7,21 +7,21 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: 'Space Grotesk', 'Inter', sans-serif;
 
-  --color-canvas: #f5f6fb;        /* app background */
+  --color-canvas: #f8f7fd;        /* app background — soft lavender white */
   --color-surface: #ffffff;       /* cards, sidebar */
-  --color-surface-2: #f1f3fb;     /* inputs, nested */
-  --color-elevated: #eaedf8;      /* hover / raised */
-  --color-blurple: #5865f2;       /* primary (Discord brand) */
-  --color-blurple-600: #4752c4;   /* hover + accent text on light */
-  --color-green: #16a34a;
-  --color-magenta: #c026d3;
-  --color-cyan: #0284c7;
-  --color-violet: #7c3aed;
-  --color-danger: #dc2626;
-  --color-hairline: #e3e6f2;      /* borders */
-  --color-ink: #14163a;           /* primary text */
-  --color-ink-muted: #515a82;     /* secondary text */
-  --color-ink-dim: #8b93b8;       /* tertiary text / placeholders */
+  --color-surface-2: #f3f1fb;     /* inputs, nested — lavender tint */
+  --color-elevated: #ece9f8;      /* hover / raised — lavender */
+  --color-blurple: #6366f1;       /* primary — indigo (modern, professional) */
+  --color-blurple-600: #4f46e5;   /* hover + accent text on light */
+  --color-green: #16a34a;         /* Sent */
+  --color-magenta: #db2777;       /* Needs comms — refined rose (Coco's pink, grown-up) */
+  --color-cyan: #0ea5e9;          /* Needs review — sky blue */
+  --color-violet: #8b5cf6;        /* Open positions / Coco accent — violet */
+  --color-danger: #dc2626;        /* High priority */
+  --color-hairline: #e8e4f4;      /* borders — soft lavender */
+  --color-ink: #1b1840;           /* primary text — deep violet-navy */
+  --color-ink-muted: #565078;     /* secondary text */
+  --color-ink-dim: #948dba;       /* tertiary text / placeholders */
 }
 
 html,
@@ -72,7 +72,7 @@ body {
   height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #cdd2e6;
+  background: #d6d2ee;
   border-radius: 9999px;
 }
 *::-webkit-scrollbar-track {

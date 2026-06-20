@@ -155,7 +155,7 @@ function statusReason(d: { display_status?: string | null; days_waiting?: number
 }
 
 const SOURCE_STYLE: Record<string, { label: string; cls: string }> = {
-  gmail: { label: 'Gmail', cls: 'bg-blurple/15 text-[#4752c4]' },
+  gmail: { label: 'Gmail', cls: 'bg-blurple/15 text-blurple-600' },
   markaz: { label: 'Markaz', cls: 'bg-elevated text-ink-muted' },
   coco: { label: 'Coco', cls: 'bg-green/15 text-green' },
 }
@@ -188,7 +188,7 @@ function Timeline({ items }: { items: TimelineItem[] }) {
               {h.actor && <div className="text-xs text-ink-dim">{h.source === 'gmail' ? `from ${h.actor}` : `by ${h.actor}`}</div>}
               {h.snippet && <div className="mt-1 text-xs italic text-ink-muted line-clamp-2">“{h.snippet}”</div>}
               {h.link && (
-                <a href={h.link} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-medium text-[#4752c4] hover:underline">
+                <a href={h.link} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-medium text-blurple-600 hover:underline">
                   Open in Gmail →
                 </a>
               )}

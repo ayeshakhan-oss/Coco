@@ -41,7 +41,7 @@ export function ScorecardView({ values, gwc }: { values: ValuesScorecard | null;
           </ul>
           {values.final_comments && (
             <div className="mt-2 rounded-lg bg-blurple/10 p-2 text-[12px] text-ink-muted">
-              <span className="font-medium text-[#4752c4]">Final comments: </span>{values.final_comments}
+              <span className="font-medium text-blurple-600">Final comments: </span>{values.final_comments}
             </div>
           )}
         </div>
@@ -59,7 +59,7 @@ export function ScorecardView({ values, gwc }: { values: ValuesScorecard | null;
           </div>
           {gwc.additional_comments && (
             <div className="mt-2 rounded-lg bg-blurple/10 p-2 text-[12px] text-ink-muted">
-              <span className="font-medium text-[#4752c4]">Comments: </span>{gwc.additional_comments}
+              <span className="font-medium text-blurple-600">Comments: </span>{gwc.additional_comments}
             </div>
           )}
         </div>

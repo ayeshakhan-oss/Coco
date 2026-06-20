@@ -437,7 +437,7 @@ function Row({
             e.stopPropagation()
             onMatch()
           }}
-          className="rounded-lg p-1.5 text-ink-dim transition-colors hover:bg-surface-2 hover:text-[#4752c4]"
+          className="rounded-lg p-1.5 text-ink-dim transition-colors hover:bg-surface-2 hover:text-blurple-600"
           title="View Gmail match / mark sent / ignore"
         >
           <Mail className="h-4 w-4" />

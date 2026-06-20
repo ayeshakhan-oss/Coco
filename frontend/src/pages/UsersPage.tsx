@@ -106,7 +106,7 @@ export function UsersPage() {
                         <button
                           type="button"
                           onClick={() => updateM.mutate({ id: u.id, active: !u.active })}
-                          className="text-sm font-medium text-[#4752c4] hover:underline"
+                          className="text-sm font-medium text-blurple-600 hover:underline"
                         >
                           {u.active ? 'Deactivate' : 'Activate'}
                         </button>

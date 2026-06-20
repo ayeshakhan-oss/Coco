@@ -52,7 +52,7 @@ export function SectionEditor({
 
       {sections.map((s, i) => (
         <div key={i} className="rounded-xl border border-hairline bg-surface-2/60 p-3">
-          <div className="mb-2 text-sm font-semibold text-[#4752c4]">{s.heading ?? `Section ${i + 1}`}</div>
+          <div className="mb-2 text-sm font-semibold text-blurple-600">{s.heading ?? `Section ${i + 1}`}</div>
           <input placeholder="Optional sub-heading" value={s.subhead ?? ''} disabled={disabled} onChange={(e) => setSubhead(i, e.target.value)} className="input mb-2 text-xs" />
           <textarea
             rows={5}

@@ -12,7 +12,7 @@ interface StatCardProps {
 
 const TONES: Record<StatCardProps['tone'], { icon: string; bar: string; ring: string }> = {
   amber: { icon: 'bg-magenta/15 text-magenta', bar: 'bg-magenta', ring: 'ring-magenta/50' },
-  brand: { icon: 'bg-blurple/20 text-[#4752c4]', bar: 'bg-blurple', ring: 'ring-blurple/60' },
+  brand: { icon: 'bg-blurple/20 text-blurple-600', bar: 'bg-blurple', ring: 'ring-blurple/60' },
   green: { icon: 'bg-green/15 text-green', bar: 'bg-green', ring: 'ring-green/50' },
   slate: { icon: 'bg-elevated text-ink-dim', bar: 'bg-ink-dim', ring: 'ring-ink-dim/50' },
   danger: { icon: 'bg-danger/15 text-danger', bar: 'bg-danger', ring: 'ring-danger/50' },

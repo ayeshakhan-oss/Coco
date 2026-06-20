@@ -24,12 +24,22 @@ export function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-8 py-12">
       {/* Hero */}
-      <div className="text-center">
-        <img src="/coco.png" alt="Coco" className="mx-auto h-24 w-24 rounded-full object-cover shadow-sm" />
-        <h1 className="mt-4 font-display text-3xl font-bold tracking-tight text-ink">
-          {meQ.data?.first_name ? `Hi ${meQ.data.first_name} — meet Coco` : 'Meet Coco'}
+      <div className="relative text-center">
+        {/* Soft ambient glow behind the hero (decorative) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[40rem] max-w-full -translate-x-1/2 rounded-full bg-gradient-to-r from-blurple/20 via-violet/20 to-magenta/15 blur-3xl"
+        />
+        <img
+          src="/coco.png"
+          alt="Coco"
+          className="mx-auto h-24 w-24 rounded-full object-cover shadow-lg shadow-violet/20 ring-1 ring-violet/10"
+        />
+        <h1 className="mt-5 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          {meQ.data?.first_name ? `Hi ${meQ.data.first_name} — meet ` : 'Meet '}
+          <span className="bg-gradient-to-r from-blurple via-violet to-magenta bg-clip-text text-transparent">Coco</span>
         </h1>
-        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
           Your AI talent-acquisition agent for Taleemabad. Coco helps you screen, evaluate, communicate with,
           and keep track of every candidate — across the whole hiring journey, in one place.
         </p>

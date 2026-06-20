@@ -108,7 +108,7 @@ export function GmailMatchModal({
                   {m?.internal_date && <div className="text-xs text-ink-dim">{formatDate(m.internal_date)}</div>}
                   {m?.matched_snippet && <div className="mt-2 text-xs italic text-ink-muted">“{m.matched_snippet}”</div>}
                   {link && (
-                    <a href={link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[#4752c4] hover:underline">
+                    <a href={link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-blurple-600 hover:underline">
                       Open in Gmail <ExternalLink className="h-3 w-3" />
                     </a>
                   )}
