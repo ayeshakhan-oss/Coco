@@ -7,6 +7,7 @@ import {
   ClipboardList,
   Clock,
   HelpCircle,
+  Inbox,
   Loader2,
   Mail,
   RefreshCw,
@@ -123,13 +124,15 @@ function PositionsView() {
         <p className="mt-1 text-sm text-ink-muted">Click a total to see those candidates across all positions, or open a position below.</p>
       </header>
 
-      {/* Overall volume — the at-a-glance "tiny dashboard" line */}
-      <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-ink-muted">
-        <span><span className="font-display text-base font-bold text-ink tabular-nums">{(s?.total_applications ?? 0).toLocaleString()}</span> applications received</span>
-        <span className="text-ink-dim">·</span>
-        <span><span className="font-display text-base font-bold text-ink tabular-nums">{(s?.total_candidates ?? 0).toLocaleString()}</span> candidates</span>
-        <span className="text-ink-dim">·</span>
-        <span><span className="font-display text-base font-bold text-ink tabular-nums">{s?.open_positions ?? 0}</span> open positions</span>
+      {/* Overall volume — the at-a-glance "tiny dashboard" card */}
+      <div className="mb-5 max-w-sm">
+        <StatCard
+          label="Applications received"
+          value={s?.total_applications ?? 0}
+          icon={Inbox}
+          tone="slate"
+          sub={`across ${s?.open_positions ?? 0} open positions`}
+        />
       </div>
 
       <SyncBar />

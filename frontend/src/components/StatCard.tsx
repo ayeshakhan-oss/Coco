@@ -6,6 +6,7 @@ interface StatCardProps {
   icon: LucideIcon
   tone: 'amber' | 'brand' | 'green' | 'slate' | 'danger' | 'cyan'
   active?: boolean
+  sub?: string
   onClick?: () => void
 }
 
@@ -18,7 +19,7 @@ const TONES: Record<StatCardProps['tone'], { icon: string; bar: string; ring: st
   cyan: { icon: 'bg-cyan/15 text-cyan', bar: 'bg-cyan', ring: 'ring-cyan/50' },
 }
 
-export function StatCard({ label, value, icon: Icon, tone, active, onClick }: StatCardProps) {
+export function StatCard({ label, value, icon: Icon, tone, active, sub, onClick }: StatCardProps) {
   const t = TONES[tone]
   const cls = `relative flex items-center gap-4 overflow-hidden rounded-2xl border border-hairline bg-surface p-4 text-left shadow-sm ${
     onClick ? 'cursor-pointer transition-all duration-200 hover:bg-elevated' : ''
@@ -30,8 +31,9 @@ export function StatCard({ label, value, icon: Icon, tone, active, onClick }: St
         <Icon className="h-5 w-5" />
       </span>
       <span>
-        <span className="block font-display text-2xl font-bold tabular-nums text-ink">{value}</span>
+        <span className="block font-display text-2xl font-bold tabular-nums text-ink">{value.toLocaleString()}</span>
         <span className="block text-xs font-medium uppercase tracking-wide text-ink-dim">{label}</span>
+        {sub && <span className="mt-0.5 block text-[11px] text-ink-dim">{sub}</span>}
       </span>
     </>
   )
