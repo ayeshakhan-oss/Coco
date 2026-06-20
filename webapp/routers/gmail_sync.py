@@ -85,6 +85,28 @@ def gmail_sync_refresh(
     return evidence.get_sync_status(db)
 
 
+# NOTE: bulk routes MUST be declared before the /candidates/{application_id}/...
+# routes, or FastAPI captures the literal "bulk" segment as application_id (422).
+@router.post("/candidates/bulk/mark-sent", response_model=BulkResult)
+def bulk_mark_sent(
+    body: BulkMarkSentRequest,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_approver),
+):
+    n = evidence.bulk_mark_sent(db, body.application_ids, user["id"], body.reason)
+    return {"updated": n}
+
+
+@router.post("/candidates/bulk/ignore", response_model=BulkResult)
+def bulk_ignore(
+    body: BulkIgnoreRequest,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    n = evidence.bulk_set_ignore(db, body.application_ids, user["id"], body.ignored)
+    return {"updated": n}
+
+
 @router.get("/candidates/{application_id}/gmail-match", response_model=GmailMatch)
 def gmail_match(
     application_id: int,
@@ -140,23 +162,3 @@ def set_ignore(
     if not ok:
         raise HTTPException(404, "Application not found")
     return evidence.get_match(db, application_id)
-
-
-@router.post("/candidates/bulk/mark-sent", response_model=BulkResult)
-def bulk_mark_sent(
-    body: BulkMarkSentRequest,
-    db: Session = Depends(get_db),
-    user: dict = Depends(require_approver),
-):
-    n = evidence.bulk_mark_sent(db, body.application_ids, user["id"], body.reason)
-    return {"updated": n}
-
-
-@router.post("/candidates/bulk/ignore", response_model=BulkResult)
-def bulk_ignore(
-    body: BulkIgnoreRequest,
-    db: Session = Depends(get_db),
-    user: dict = Depends(require_editor),
-):
-    n = evidence.bulk_set_ignore(db, body.application_ids, user["id"], body.ignored)
-    return {"updated": n}

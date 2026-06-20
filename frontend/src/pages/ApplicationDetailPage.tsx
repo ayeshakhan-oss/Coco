@@ -147,6 +147,8 @@ function statusReason(d: { display_status?: string | null; days_waiting?: number
       return `High priority — no counted communication found and waiting ${d.days_waiting ?? '7+'} days.`
     case 'needs_comms':
       return 'No counted communication found yet — this candidate still needs an email.'
+    case 'ignored':
+      return 'Ignored — dismissed from the action queue (e.g. the interview was never scheduled). You can un-ignore from the Gmail-match panel.'
     case 'awaiting_scorecard':
       return 'Decision still pending — no communication required yet.'
     default:

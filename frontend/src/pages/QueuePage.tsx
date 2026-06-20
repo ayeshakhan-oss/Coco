@@ -368,6 +368,7 @@ const BORDER_TONE: Record<string, string> = {
   needs_review: 'border-l-cyan',
   in_progress: 'border-l-blurple',
   awaiting_scorecard: 'border-l-ink-dim',
+  ignored: 'border-l-ink-dim',
 }
 
 function Row({

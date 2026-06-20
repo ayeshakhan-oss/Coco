@@ -92,6 +92,7 @@ class QueueStats(_Base):
     sent: int
     needs_review: int = 0
     awaiting_scorecard: int
+    ignored: int = 0
     scored: int
     total: int
     total_applications: int = 0

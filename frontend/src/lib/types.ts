@@ -1,6 +1,6 @@
 export type AppRole = 'viewer' | 'editor' | 'approver' | 'super_admin'
 export type Bucket = 'awaiting_scorecard' | 'needs_comms' | 'in_progress' | 'sent'
-export type DisplayStatus = Bucket | 'high_priority' | 'needs_review'
+export type DisplayStatus = Bucket | 'high_priority' | 'needs_review' | 'ignored'
 export type GmailStatus = 'not_checked' | 'none' | 'found' | 'uncertain'
 
 export interface CurrentUser {
@@ -63,6 +63,7 @@ export interface QueueStats {
   sent: number
   needs_review: number
   awaiting_scorecard: number
+  ignored: number
   scored: number
   total: number
   total_applications: number

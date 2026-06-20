@@ -30,6 +30,7 @@ from sqlalchemy.orm import Session
 
 DISPLAY_STATUSES = (
     "sent",
+    "ignored",
     "needs_review",
     "in_progress",
     "high_priority",
@@ -95,11 +96,15 @@ def derive_display_status(
     comm_required: bool,
     is_high_priority: bool,
     markaz_comms: int = 0,
+    ignored: bool = False,
 ) -> str:
     """Pure derivation — MUST match the SQL `displayed` CTE precedence below.
-    Evidence of communication = app-sent OR manual OR Gmail-found OR Markaz log."""
+    Evidence of communication = app-sent OR manual OR Gmail-found OR Markaz log.
+    An ignored candidate (no evidence) is dismissed out of all action queues."""
     if sent_count > 0 or manual_marked or gmail_status == "found" or (markaz_comms or 0) > 0:
         return "sent"
+    if ignored:
+        return "ignored"
     if gmail_status == "uncertain":
         return "needs_review"
     if active_count > 0:
@@ -198,6 +203,7 @@ displayed AS (
   SELECT flagged.*,
     CASE
       WHEN sent_count > 0 OR manual_marked OR gmail_status = 'found' OR prior_platform_comms > 0 THEN 'sent'
+      WHEN ignored THEN 'ignored'
       WHEN gmail_status = 'uncertain' THEN 'needs_review'
       WHEN active_count > 0 THEN 'in_progress'
       WHEN comm_required AND is_high_priority THEN 'high_priority'
@@ -220,10 +226,10 @@ _BUCKET_PREDICATE = """
     WHEN 'sent' THEN (sent_count > 0)
     WHEN 'already_sent' THEN (comms_relevant AND has_evidence)
     WHEN 'needs_comms' THEN (comms_relevant AND comm_required AND active_count = 0
-        AND NOT has_evidence AND gmail_status <> 'uncertain')
+        AND NOT has_evidence AND gmail_status <> 'uncertain' AND NOT ignored)
     WHEN 'high_priority' THEN is_high_priority
     WHEN 'needs_review' THEN (comms_relevant AND gmail_status = 'uncertain'
-        AND sent_count = 0 AND NOT manual_marked)
+        AND sent_count = 0 AND NOT manual_marked AND NOT ignored)
     WHEN 'in_progress' THEN (active_count > 0 AND sent_count = 0)
     WHEN 'awaiting_scorecard' THEN (comms_relevant AND display_status = 'awaiting_scorecard')
     WHEN 'ignored' THEN (comms_relevant AND ignored)
@@ -304,6 +310,7 @@ SELECT
   count(*) FILTER (WHERE display_status = 'sent') AS sent,
   count(*) FILTER (WHERE display_status = 'needs_review') AS needs_review,
   count(*) FILTER (WHERE display_status = 'awaiting_scorecard') AS awaiting_scorecard,
+  count(*) FILTER (WHERE display_status = 'ignored') AS ignored,
   count(*) FILTER (WHERE values_filled OR gwc_filled) AS scored,
   count(*) AS total
 FROM displayed
@@ -329,6 +336,7 @@ WHERE comms_relevant
         "sent": int(r.get("sent", 0) or 0),
         "needs_review": int(r.get("needs_review", 0) or 0),
         "awaiting_scorecard": int(r.get("awaiting_scorecard", 0) or 0),
+        "ignored": int(r.get("ignored", 0) or 0),
         "scored": int(r.get("scored", 0) or 0),
         "total": int(r.get("total", 0) or 0),
         "total_applications": int(o.get("total_applications", 0) or 0),

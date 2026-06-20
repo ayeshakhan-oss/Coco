@@ -66,6 +66,8 @@ export function suggestedAction(row: QueueRow): string {
       return 'View'
     case 'needs_review':
       return 'Verify Gmail match'
+    case 'ignored':
+      return 'Ignored'
     case 'awaiting_scorecard':
       return 'Awaiting decision'
     default:

@@ -101,6 +101,16 @@ def test_high_priority_and_needs_comms():
     assert _d(comm_required=True, is_high_priority=False) == "needs_comms"
 
 
+def test_ignored_leaves_the_action_queues():
+    # Ignored dismisses a candidate out of needs_comms / high_priority.
+    assert _d(ignored=True, comm_required=True, is_high_priority=True) == 'ignored'
+    assert _d(ignored=True, comm_required=True) == 'ignored'
+    assert _d(ignored=True, gmail_status='uncertain') == 'ignored'
+    # But real evidence still wins over ignore (they WERE contacted).
+    assert _d(ignored=True, sent_count=1) == 'sent'
+    assert _d(ignored=True, markaz_comms=1) == 'sent'
+
+
 def test_awaiting_scorecard_default():
     assert _d() == "awaiting_scorecard"
     assert _d(comm_required=False, is_high_priority=False) == "awaiting_scorecard"

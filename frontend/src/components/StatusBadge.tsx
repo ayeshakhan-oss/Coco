@@ -8,6 +8,7 @@ const STATUS_STYLES: Record<DisplayStatus, { label: string; cls: string }> = {
   sent: { label: 'Sent', cls: 'bg-green/15 text-green' },
   needs_review: { label: 'Needs review', cls: 'bg-cyan/15 text-cyan' },
   awaiting_scorecard: { label: 'Awaiting scorecard', cls: 'bg-elevated text-ink-dim' },
+  ignored: { label: 'Ignored', cls: 'bg-elevated text-ink-dim line-through decoration-ink-dim/40' },
 }
 
 export function StatusBadge({ status }: { status?: DisplayStatus | null }) {
