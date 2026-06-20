@@ -4,7 +4,7 @@ interface StatCardProps {
   label: string
   value: number
   icon: LucideIcon
-  tone: 'amber' | 'brand' | 'green' | 'slate' | 'danger' | 'cyan'
+  tone: 'amber' | 'brand' | 'green' | 'slate' | 'danger' | 'cyan' | 'violet'
   active?: boolean
   sub?: string
   onClick?: () => void
@@ -17,6 +17,7 @@ const TONES: Record<StatCardProps['tone'], { icon: string; bar: string; ring: st
   slate: { icon: 'bg-elevated text-ink-dim', bar: 'bg-ink-dim', ring: 'ring-ink-dim/50' },
   danger: { icon: 'bg-danger/15 text-danger', bar: 'bg-danger', ring: 'ring-danger/50' },
   cyan: { icon: 'bg-cyan/15 text-cyan', bar: 'bg-cyan', ring: 'ring-cyan/50' },
+  violet: { icon: 'bg-violet/15 text-violet', bar: 'bg-violet', ring: 'ring-violet/50' },
 }
 
 export function StatCard({ label, value, icon: Icon, tone, active, sub, onClick }: StatCardProps) {

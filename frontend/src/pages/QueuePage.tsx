@@ -109,8 +109,11 @@ function PositionsView() {
   const positionsQuery = useQuery({ queryKey: ['positions'], queryFn: api.positions })
   const s = statsQuery.data
 
-  // Clicking a card drills into that population across ALL positions.
+  // Overview cards (volume) + comms cards (status). The comms ones drill into
+  // that population across ALL positions; the volume ones are at-a-glance.
   const cards = [
+    { label: 'Applications received', value: s?.total_applications ?? 0, icon: Inbox, tone: 'brand', filter: null },
+    { label: 'Open positions', value: s?.open_positions ?? 0, icon: Briefcase, tone: 'violet', filter: null },
     { label: 'Needs comms', value: s?.needs_comms ?? 0, icon: ClipboardList, tone: 'amber', filter: 'needs_comms' },
     { label: 'High priority', value: s?.high_priority ?? 0, icon: AlertTriangle, tone: 'danger', filter: 'high_priority' },
     { label: 'Sent', value: s?.sent ?? 0, icon: CheckCircle2, tone: 'green', filter: 'already_sent' },
@@ -124,20 +127,9 @@ function PositionsView() {
         <p className="mt-1 text-sm text-ink-muted">Click a total to see those candidates across all positions, or open a position below.</p>
       </header>
 
-      {/* Overall volume — the at-a-glance "tiny dashboard" card */}
-      <div className="mb-5 max-w-sm">
-        <StatCard
-          label="Applications received"
-          value={s?.total_applications ?? 0}
-          icon={Inbox}
-          tone="slate"
-          sub={`across ${s?.open_positions ?? 0} open positions`}
-        />
-      </div>
-
       <SyncBar />
 
-      <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {cards.map((c) => (
           <StatCard
             key={c.label}
@@ -145,7 +137,7 @@ function PositionsView() {
             value={c.value}
             icon={c.icon}
             tone={c.tone}
-            onClick={() => setParams({ status: c.filter })}
+            onClick={c.filter ? () => setParams({ status: c.filter as string }) : undefined}
           />
         ))}
       </div>
