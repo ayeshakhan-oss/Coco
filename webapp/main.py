@@ -56,10 +56,25 @@ def _run_scheduled_sync() -> None:
 
 @asynccontextmanager
 async def lifespan(_app: "FastAPI"):
+    global _scheduler
+    # Self-heal: ensure the app-owned tables exist. A Neon restore / branch-swap
+    # can drop them while leaving alembic_version stamped (so `alembic upgrade`
+    # is a no-op) — which 500s every read and empties the dashboard. See
+    # docs/RAILWAY_DEPLOYMENT_LESSONS.md (incident 2026-06-20). create_all is
+    # idempotent (checkfirst) and only touches the 4 app-owned tables; it
+    # restores STRUCTURE only (app_users would still need its 0003 seed).
+    if settings.database_url:
+        try:
+            from . import models  # noqa: F401  (registers app-owned tables on Base)
+            from .db import Base, get_engine
+
+            Base.metadata.create_all(get_engine(), checkfirst=True)
+        except Exception:  # noqa: BLE001
+            _log.exception("startup self-heal (create_all) failed")
+
     # Only run the in-app scheduler where a Gmail token is configured (Railway),
     # so local dev / tests never fire a real sync. Single uvicorn worker => one
     # scheduler. If a redeploy interrupts it, it resumes on the next tick.
-    global _scheduler
     if settings.gmail_oauth_token_json:
         try:
             from apscheduler.schedulers.background import BackgroundScheduler
