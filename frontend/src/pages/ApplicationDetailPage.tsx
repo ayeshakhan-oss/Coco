@@ -47,7 +47,7 @@ export function ApplicationDetailPage() {
   if (detailQuery.isError || !detailQuery.data) return <div className="p-8 text-sm text-danger">Could not load this application.</div>
 
   const d = detailQuery.data
-  const backTo = navState?.backTo ?? (d.job_pk ? `/?job=${d.job_pk}` : '/')
+  const backTo = navState?.backTo ?? (d.job_pk ? `/queue?job=${d.job_pk}` : '/queue')
   const backLabel = navState?.backLabel ?? d.job_title ?? 'queue'
 
   return (

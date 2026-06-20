@@ -336,7 +336,7 @@ function CandidatesView({ job }: { job: number | null }) {
                   onToggle={() => toggle(row.application_id)}
                   onOpen={() =>
                     navigate(`/applications/${row.application_id}`, {
-                      state: { backTo: `/?${params.toString()}`, backLabel: title },
+                      state: { backTo: `/queue?${params.toString()}`, backLabel: title },
                     })
                   }
                   onMatch={() => setMatch({ appId: row.application_id, name: fullName(row) })}

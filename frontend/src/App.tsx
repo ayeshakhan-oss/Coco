@@ -4,6 +4,7 @@ import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
 import { HistoryPage } from './pages/HistoryPage'
+import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 import { QueuePage } from './pages/QueuePage'
 import { ReviewInboxPage } from './pages/ReviewInboxPage'
@@ -15,7 +16,8 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route element={<AppLayout />}>
-          <Route index element={<QueuePage />} />
+          <Route index element={<HomePage />} />
+          <Route path="/queue" element={<QueuePage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

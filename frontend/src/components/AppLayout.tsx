@@ -13,7 +13,7 @@ export function AppLayout() {
 
   // Pages that belong to the live skill (Candidate Communication).
   const pages = [
-    { to: '/', label: 'Candidates', icon: ClipboardList, end: true },
+    { to: '/queue', label: 'Candidates', icon: ClipboardList, end: true },
     { to: '/review', label: 'Review', icon: Inbox, end: false },
     { to: '/history', label: 'History', icon: History, end: false },
   ]
@@ -21,8 +21,8 @@ export function AppLayout() {
   return (
     <div className="flex h-full bg-canvas">
       <aside className="flex w-64 flex-shrink-0 flex-col border-r border-hairline bg-surface">
-        {/* Coco — the agent */}
-        <div className="flex items-center gap-2.5 px-5 py-5">
+        {/* Coco — the agent (click to go Home) */}
+        <Link to="/" className="flex items-center gap-2.5 px-5 py-5 transition-colors hover:bg-surface-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blurple text-white">
             <Sparkles className="h-5 w-5" />
           </span>
@@ -30,7 +30,7 @@ export function AppLayout() {
             <div className="font-display text-base font-bold tracking-tight text-ink">Coco</div>
             <div className="text-[11px] text-ink-dim">Your talent-acquisition agent</div>
           </div>
-        </div>
+        </Link>
 
         {/* Skills (all 6, numbered, click to expand) */}
         <nav className="flex-1 overflow-auto px-3 py-2">
