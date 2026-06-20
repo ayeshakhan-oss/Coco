@@ -21,6 +21,15 @@ A candidate counts as "communicated with" if evidence exists in **either** sourc
 
 Enforced in code: `webapp/services/gmail_evidence.py` (whole-mailbox per-candidate search) + `webapp/services/reads.py` (`has_evidence` / `is_high_priority` / `display_status` all include `prior_platform_comms`). Mirrored in the pure functions `derive_display_status` / `compute_is_high_priority` (+ unit tests). **If you ever change matching, both sources must stay referenced.** Known limit: emails sent from a teammate's mailbox that were NOT addressed to / CC'd anything in Ayesha's mailbox can't be seen — full multi-mailbox coverage needs Google domain-wide delegation (deferred).
 
+### P2 — Theming / UI changes are DASHBOARD-ONLY; never touch candidate emails or invites
+"Apply the theme globally" means the **deployed dashboard chrome only**. All app colors live in `frontend/src/index.css` `@theme` design tokens — change them in that one place and the whole dashboard updates; nothing else needs editing.
+
+**NEVER** recolor, restyle, or re-theme:
+- the **candidate email** design — the locked **v8 layout** (`scripts/utils/v8_template.py` + the 4 locked templates), or
+- the **interview-invite** design (**Skill 06**).
+
+These are signed-off, tone-tuned, and guarded by the validation harness; restyling them could break brand/tone and the HARD-BLOCK rules. The email preview renders in a **sandboxed iframe** precisely so dashboard CSS can't leak into the email. Confirmed with Ayesha (2026-06-20): *"we will never change the theme of the emails or the way we communicate."* Mirrors CLAUDE.md Rules 8 & 9.
+
 ---
 
 ## Incident log
