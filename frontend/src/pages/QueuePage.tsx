@@ -118,10 +118,19 @@ function PositionsView() {
 
   return (
     <div className="mx-auto max-w-7xl px-8 py-7">
-      <header className="mb-5">
+      <header className="mb-4">
         <h1 className="font-display text-2xl font-bold text-ink">Candidate Queue</h1>
         <p className="mt-1 text-sm text-ink-muted">Click a total to see those candidates across all positions, or open a position below.</p>
       </header>
+
+      {/* Overall volume — the at-a-glance "tiny dashboard" line */}
+      <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-ink-muted">
+        <span><span className="font-display text-base font-bold text-ink tabular-nums">{(s?.total_applications ?? 0).toLocaleString()}</span> applications received</span>
+        <span className="text-ink-dim">·</span>
+        <span><span className="font-display text-base font-bold text-ink tabular-nums">{(s?.total_candidates ?? 0).toLocaleString()}</span> candidates</span>
+        <span className="text-ink-dim">·</span>
+        <span><span className="font-display text-base font-bold text-ink tabular-nums">{s?.open_positions ?? 0}</span> open positions</span>
+      </div>
 
       <SyncBar />
 

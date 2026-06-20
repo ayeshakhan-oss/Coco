@@ -94,6 +94,9 @@ class QueueStats(_Base):
     awaiting_scorecard: int
     scored: int
     total: int
+    total_applications: int = 0
+    total_candidates: int = 0
+    open_positions: int = 0
 
 
 class PositionSummary(_Base):

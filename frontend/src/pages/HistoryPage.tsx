@@ -12,15 +12,16 @@ export function HistoryPage() {
   return (
     <div className="mx-auto max-w-5xl px-8 py-7">
       <h1 className="font-display text-2xl font-bold text-ink">History</h1>
-      <p className="mt-1 text-sm text-ink-muted">Communications that have been sent.</p>
+      <p className="mt-1 text-sm text-ink-muted">Emails sent through Coco. (Emails sent via Gmail or Markaz show on each candidate&rsquo;s timeline.)</p>
 
       <div className="card mt-6 overflow-hidden">
         {q.isLoading ? (
           <Spinner label="Loading…" />
         ) : !q.data?.length ? (
-          <div className="flex flex-col items-center py-16 text-center text-sm text-ink-dim">
+          <div className="mx-auto flex max-w-sm flex-col items-center py-16 text-center text-sm text-ink-dim">
             <History className="mb-2 h-7 w-7 text-ink-dim" />
-            No communications sent yet.
+            <p className="font-medium text-ink-muted">Nothing sent through Coco yet</p>
+            <p className="mt-1">Emails you draft, approve and send here will be logged in this history. Emails already sent via Gmail or Markaz appear on each candidate&rsquo;s timeline instead.</p>
           </div>
         ) : (
           <table className="w-full text-left text-sm">

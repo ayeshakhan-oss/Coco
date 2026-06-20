@@ -18,9 +18,10 @@ export function ReviewInboxPage() {
         {q.isLoading ? (
           <Spinner label="Loading…" />
         ) : !q.data?.length ? (
-          <div className="flex flex-col items-center py-16 text-center text-sm text-ink-dim">
+          <div className="mx-auto flex max-w-sm flex-col items-center py-16 text-center text-sm text-ink-dim">
             <Inbox className="mb-2 h-7 w-7 text-ink-dim" />
-            Nothing waiting for approval.
+            <p className="font-medium text-ink-muted">Nothing waiting for approval</p>
+            <p className="mt-1">When you draft a candidate email and submit it for review, it&rsquo;ll appear here for an approver to check and send.</p>
           </div>
         ) : (
           <table className="w-full text-left text-sm">

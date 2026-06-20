@@ -65,6 +65,9 @@ export interface QueueStats {
   awaiting_scorecard: number
   scored: number
   total: number
+  total_applications: number
+  total_candidates: number
+  open_positions: number
 }
 
 export interface GmailMatch {

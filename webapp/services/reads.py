@@ -311,6 +311,17 @@ WHERE comms_relevant
 """
     row = db.execute(text(sql)).mappings().first()
     r = dict(row) if row else {}
+    # Overall volume (whole Markaz, not just comms-relevant) for the dashboard strip.
+    o = db.execute(
+        text(
+            """
+            SELECT
+              (SELECT count(*) FROM applications) AS total_applications,
+              (SELECT count(*) FROM candidates) AS total_candidates,
+              (SELECT count(*) FROM jobs WHERE job_status = 'Active') AS open_positions
+            """
+        )
+    ).mappings().first() or {}
     return {
         "needs_comms": int(r.get("needs_comms", 0) or 0),
         "high_priority": int(r.get("high_priority", 0) or 0),
@@ -320,6 +331,9 @@ WHERE comms_relevant
         "awaiting_scorecard": int(r.get("awaiting_scorecard", 0) or 0),
         "scored": int(r.get("scored", 0) or 0),
         "total": int(r.get("total", 0) or 0),
+        "total_applications": int(o.get("total_applications", 0) or 0),
+        "total_candidates": int(o.get("total_candidates", 0) or 0),
+        "open_positions": int(o.get("open_positions", 0) or 0),
     }
 
 
