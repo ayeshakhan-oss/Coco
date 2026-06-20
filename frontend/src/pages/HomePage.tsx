@@ -35,10 +35,14 @@ export function HomePage() {
           alt="Coco"
           className="mx-auto h-24 w-24 rounded-full object-cover shadow-lg shadow-violet/20 ring-1 ring-violet/10"
         />
-        <h1 className="mt-5 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-          {meQ.data?.first_name ? `Hi ${meQ.data.first_name} — meet ` : 'Meet '}
-          <span className="bg-gradient-to-r from-blurple via-violet to-magenta bg-clip-text text-transparent">Coco</span>
-        </h1>
+        {meQ.isLoading ? (
+          <div className="mx-auto mt-5 h-9 w-72 max-w-full animate-pulse rounded-lg bg-elevated sm:h-10" />
+        ) : (
+          <h1 className="mt-5 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+            {meQ.data?.first_name ? `Hi ${meQ.data.first_name} — meet ` : 'Meet '}
+            <span className="bg-gradient-to-r from-blurple via-violet to-magenta bg-clip-text text-transparent">Coco</span>
+          </h1>
+        )}
         <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
           Your AI talent-acquisition agent for Taleemabad. Coco helps you screen, evaluate, communicate with,
           and keep track of every candidate — across the whole hiring journey, in one place.
