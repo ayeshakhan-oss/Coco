@@ -108,6 +108,10 @@ export const api = {
   clearMark: (applicationId: number) => request<GmailMatch>('DELETE', `/api/candidates/${applicationId}/mark-sent`),
   setIgnore: (applicationId: number, ignored: boolean) =>
     post<GmailMatch>(`/api/candidates/${applicationId}/ignore`, { ignored }),
+  bulkMarkSent: (application_ids: number[], reason?: string) =>
+    post<{ updated: number }>('/api/candidates/bulk/mark-sent', { application_ids, reason }),
+  bulkIgnore: (application_ids: number[], ignored: boolean) =>
+    post<{ updated: number }>('/api/candidates/bulk/ignore', { application_ids, ignored }),
 
   // User management (super admin)
   listUsers: () => get<ManagedUser[]>('/api/users'),

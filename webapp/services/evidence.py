@@ -108,6 +108,50 @@ def set_ignore(db: Session, application_id: int, user_id: str, ignored: bool) ->
     return True
 
 
+def bulk_mark_sent(
+    db: Session, application_ids: list[int], user_id: str, reason: Optional[str] = None
+) -> int:
+    """Mark many candidates as manually sent in one transaction. Returns count."""
+    n = 0
+    ts = _utcnow()
+    for app_id in application_ids:
+        if not _ensure_row(db, app_id):
+            continue
+        db.execute(
+            text(
+                "UPDATE comm_evidence SET marked_sent_by=:uid, marked_sent_at=:ts, "
+                "marked_sent_reason=:reason, updated_at=:ts WHERE application_id=:app_id"
+            ),
+            {"uid": user_id, "ts": ts, "reason": reason, "app_id": app_id},
+        )
+        n += 1
+    db.commit()
+    return n
+
+
+def bulk_set_ignore(
+    db: Session, application_ids: list[int], user_id: str, ignored: bool
+) -> int:
+    """Ignore / un-ignore many candidates in one transaction. Returns count."""
+    n = 0
+    ts = _utcnow()
+    for app_id in application_ids:
+        if not _ensure_row(db, app_id):
+            continue
+        db.execute(
+            text(
+                "UPDATE comm_evidence SET ignored=:ignored, "
+                "ignored_by = CASE WHEN :ignored THEN :uid ELSE NULL END, "
+                "ignored_at = CASE WHEN :ignored THEN :ts ELSE NULL END, "
+                "updated_at=:ts WHERE application_id=:app_id"
+            ),
+            {"ignored": ignored, "uid": user_id, "ts": ts, "app_id": app_id},
+        )
+        n += 1
+    db.commit()
+    return n
+
+
 def get_match(db: Session, application_id: int) -> dict:
     """The Gmail/override evidence for one application (drives the match modal).
     Returns a default 'not_checked' shape if no evidence row exists yet."""

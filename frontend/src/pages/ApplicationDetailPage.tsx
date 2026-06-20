@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { ArrowLeft, Clock, Loader2, Mail, PenLine } from 'lucide-react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { GmailMatchModal } from '../components/GmailMatchModal'
 import { Pill, StatusBadge } from '../components/StatusBadge'
 import { ScorecardView } from '../components/ScorecardView'
@@ -16,6 +16,8 @@ export function ApplicationDetailPage() {
   const { id } = useParams()
   const appId = Number(id)
   const navigate = useNavigate()
+  const location = useLocation()
+  const navState = (location.state as { backTo?: string; backLabel?: string } | null) || null
 
   const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
   const detailQuery = useQuery({ queryKey: ['candidate', appId], queryFn: () => api.candidate(appId), enabled: !Number.isNaN(appId) })
@@ -43,11 +45,13 @@ export function ApplicationDetailPage() {
   if (detailQuery.isError || !detailQuery.data) return <div className="p-8 text-sm text-danger">Could not load this application.</div>
 
   const d = detailQuery.data
+  const backTo = navState?.backTo ?? (d.job_pk ? `/?job=${d.job_pk}` : '/')
+  const backLabel = navState?.backLabel ?? d.job_title ?? 'queue'
 
   return (
     <div className="mx-auto max-w-6xl px-8 py-7">
-      <Link to="/" className="mb-4 inline-flex items-center gap-1.5 text-sm text-ink-dim hover:text-ink">
-        <ArrowLeft className="h-4 w-4" /> Back to queue
+      <Link to={backTo} className="mb-4 inline-flex items-center gap-1.5 text-sm text-ink-dim hover:text-ink">
+        <ArrowLeft className="h-4 w-4" /> Back to {backLabel}
       </Link>
 
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">

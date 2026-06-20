@@ -22,7 +22,15 @@ from sqlalchemy.orm import Session
 from ..config import get_settings
 from ..db import get_db
 from ..deps import ROLE_LEVEL, get_current_user, require_approver, require_editor
-from ..schemas import GmailMatch, GmailSyncStatusOut, IgnoreRequest, MarkSentRequest
+from ..schemas import (
+    BulkIgnoreRequest,
+    BulkMarkSentRequest,
+    BulkResult,
+    GmailMatch,
+    GmailSyncStatusOut,
+    IgnoreRequest,
+    MarkSentRequest,
+)
 from ..services import evidence
 
 router = APIRouter(prefix="/api", tags=["gmail-sync"])
@@ -119,3 +127,23 @@ def set_ignore(
     if not ok:
         raise HTTPException(404, "Application not found")
     return evidence.get_match(db, application_id)
+
+
+@router.post("/candidates/bulk/mark-sent", response_model=BulkResult)
+def bulk_mark_sent(
+    body: BulkMarkSentRequest,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_approver),
+):
+    n = evidence.bulk_mark_sent(db, body.application_ids, user["id"], body.reason)
+    return {"updated": n}
+
+
+@router.post("/candidates/bulk/ignore", response_model=BulkResult)
+def bulk_ignore(
+    body: BulkIgnoreRequest,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    n = evidence.bulk_set_ignore(db, body.application_ids, user["id"], body.ignored)
+    return {"updated": n}

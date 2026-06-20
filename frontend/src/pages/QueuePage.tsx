@@ -7,9 +7,11 @@ import {
   ClipboardList,
   Clock,
   HelpCircle,
+  Loader2,
   Mail,
   RefreshCw,
   Search,
+  XCircle,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -19,10 +21,18 @@ import { StatusBadge } from '../components/StatusBadge'
 import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
 import { fullName, relativeTime, suggestedAction } from '../lib/format'
-import { canEdit } from '../lib/roles'
+import { canApprove, canEdit } from '../lib/roles'
 import type { GmailStatus, PositionSummary, QueueRow } from '../lib/types'
 
-type Filter = 'relevant' | 'needs_comms' | 'high_priority' | 'already_sent' | 'awaiting_scorecard' | 'needs_review'
+type Filter =
+  | 'relevant'
+  | 'needs_comms'
+  | 'high_priority'
+  | 'already_sent'
+  | 'awaiting_scorecard'
+  | 'needs_review'
+  | 'ignored'
+
 const FILTER_CHIPS: { key: Filter; label: string }[] = [
   { key: 'relevant', label: 'All' },
   { key: 'needs_comms', label: 'Needs comms' },
@@ -30,12 +40,17 @@ const FILTER_CHIPS: { key: Filter; label: string }[] = [
   { key: 'already_sent', label: 'Sent' },
   { key: 'awaiting_scorecard', label: 'Awaiting' },
   { key: 'needs_review', label: 'Needs review' },
+  { key: 'ignored', label: 'Ignored' },
 ]
+const FILTER_LABEL: Record<string, string> = Object.fromEntries(FILTER_CHIPS.map((c) => [c.key, c.label]))
 
 export function QueuePage() {
   const [params] = useSearchParams()
   const job = params.get('job') ? Number(params.get('job')) : null
-  return job == null ? <PositionsView /> : <CandidatesView job={job} />
+  const status = params.get('status')
+  if (job != null) return <CandidatesView job={job} />
+  if (status) return <CandidatesView job={null} /> // global, filtered by status
+  return <PositionsView />
 }
 
 /* ── Gmail sync bar (global) ─────────────────────────────────────────────── */
@@ -75,7 +90,7 @@ function SyncBar() {
           onClick={() => refresh.mutate()}
           disabled={refresh.isPending}
           className="btn btn-ghost h-8 text-sm"
-          title="Re-check Gmail Sent mail for new evidence"
+          title="Re-check Gmail for new evidence"
         >
           <RefreshCw className={`h-4 w-4 ${refresh.isPending ? 'animate-spin' : ''}`} />
           {refresh.isPending ? 'Syncing…' : 'Refresh Gmail sync'}
@@ -89,30 +104,37 @@ function SyncBar() {
 /* ── Level 1: positions ─────────────────────────────────────────────────── */
 function PositionsView() {
   const [, setParams] = useSearchParams()
-  const onOpen = (jobPk: number) => setParams({ job: String(jobPk) }, { replace: true })
   const statsQuery = useQuery({ queryKey: ['stats'], queryFn: api.stats })
   const positionsQuery = useQuery({ queryKey: ['positions'], queryFn: api.positions })
   const s = statsQuery.data
 
+  // Clicking a card drills into that population across ALL positions.
   const cards = [
-    { label: 'Needs comms', value: s?.needs_comms ?? 0, icon: ClipboardList, tone: 'amber' },
-    { label: 'High priority', value: s?.high_priority ?? 0, icon: AlertTriangle, tone: 'danger' },
-    { label: 'Sent', value: s?.sent ?? 0, icon: CheckCircle2, tone: 'green' },
-    { label: 'Needs review', value: s?.needs_review ?? 0, icon: HelpCircle, tone: 'cyan' },
+    { label: 'Needs comms', value: s?.needs_comms ?? 0, icon: ClipboardList, tone: 'amber', filter: 'needs_comms' },
+    { label: 'High priority', value: s?.high_priority ?? 0, icon: AlertTriangle, tone: 'danger', filter: 'high_priority' },
+    { label: 'Sent', value: s?.sent ?? 0, icon: CheckCircle2, tone: 'green', filter: 'already_sent' },
+    { label: 'Needs review', value: s?.needs_review ?? 0, icon: HelpCircle, tone: 'cyan', filter: 'needs_review' },
   ] as const
 
   return (
     <div className="mx-auto max-w-7xl px-8 py-7">
       <header className="mb-5">
         <h1 className="font-display text-2xl font-bold text-ink">Candidate Queue</h1>
-        <p className="mt-1 text-sm text-ink-muted">Pick a position to see its candidates. Totals across all positions:</p>
+        <p className="mt-1 text-sm text-ink-muted">Click a total to see those candidates across all positions, or open a position below.</p>
       </header>
 
       <SyncBar />
 
       <div className="mb-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
-          <StatCard key={c.label} label={c.label} value={c.value} icon={c.icon} tone={c.tone} />
+          <StatCard
+            key={c.label}
+            label={c.label}
+            value={c.value}
+            icon={c.icon}
+            tone={c.tone}
+            onClick={() => setParams({ status: c.filter })}
+          />
         ))}
       </div>
 
@@ -124,7 +146,7 @@ function PositionsView() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {positionsQuery.data.map((p) => (
-            <PositionCard key={p.job_pk} p={p} onClick={() => onOpen(p.job_pk)} />
+            <PositionCard key={p.job_pk} p={p} onClick={() => setParams({ job: String(p.job_pk) })} />
           ))}
         </div>
       )}
@@ -156,13 +178,17 @@ function PositionCard({ p, onClick }: { p: PositionSummary; onClick: () => void 
   )
 }
 
-/* ── Level 2: candidates within a position ──────────────────────────────── */
-function CandidatesView({ job }: { job: number }) {
+/* ── Level 2: candidate list — per-position (job set) OR global (job null) ── */
+function CandidatesView({ job }: { job: number | null }) {
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
+  const qc = useQueryClient()
   const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
-  const bucket = (params.get('status') as Filter) || 'relevant'
+  const role = meQ.data?.app_role
+  const global = job == null
+  const bucket = ((params.get('status') as Filter) || 'relevant') as Filter
   const [match, setMatch] = useState<{ appId: number; name: string } | null>(null)
+  const [selected, setSelected] = useState<Set<number>>(new Set())
 
   const [search, setSearch] = useState(params.get('q') || '')
   const [debouncedQ, setDebouncedQ] = useState(search)
@@ -174,19 +200,47 @@ function CandidatesView({ job }: { job: number }) {
   const positionsQuery = useQuery({ queryKey: ['positions'], queryFn: api.positions })
   const candidatesQuery = useQuery({
     queryKey: ['candidates', bucket, job, debouncedQ],
-    queryFn: () => api.candidates({ status: bucket, job, q: debouncedQ || undefined }),
+    queryFn: () => api.candidates({ status: bucket, job: job ?? undefined, q: debouncedQ || undefined }),
   })
+  const rows = candidatesQuery.data ?? []
 
-  const title = positionsQuery.data?.find((p) => p.job_pk === job)?.job_title || candidatesQuery.data?.[0]?.job_title || 'Position'
+  // Clear selection whenever the view (filter / position / search) changes.
+  useEffect(() => setSelected(new Set()), [bucket, job, debouncedQ])
+
+  const title = global
+    ? `${FILTER_LABEL[bucket] ?? 'Candidates'} · all positions`
+    : positionsQuery.data?.find((p) => p.job_pk === job)?.job_title || rows[0]?.job_title || 'Position'
 
   function setBucket(next: Filter) {
     const p = new URLSearchParams(params)
-    if (next === 'relevant') p.delete('status')
+    if (next === 'relevant' && !global) p.delete('status')
     else p.set('status', next)
     setParams(p, { replace: true })
   }
   function back() {
     setParams(new URLSearchParams(), { replace: true })
+  }
+
+  const invalidate = () => {
+    qc.invalidateQueries({ queryKey: ['candidates'] })
+    qc.invalidateQueries({ queryKey: ['stats'] })
+    qc.invalidateQueries({ queryKey: ['positions'] })
+    setSelected(new Set())
+  }
+  const bulkMarkSent = useMutation({ mutationFn: () => api.bulkMarkSent([...selected]), onSuccess: invalidate })
+  const bulkIgnore = useMutation({ mutationFn: () => api.bulkIgnore([...selected], true), onSuccess: invalidate })
+  const bulkBusy = bulkMarkSent.isPending || bulkIgnore.isPending
+
+  function toggle(id: number) {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+  const allSelected = rows.length > 0 && rows.every((r) => selected.has(r.application_id))
+  function toggleAll() {
+    setSelected(allSelected ? new Set() : new Set(rows.map((r) => r.application_id)))
   }
 
   return (
@@ -196,7 +250,7 @@ function CandidatesView({ job }: { job: number }) {
       </button>
       <header className="mb-5">
         <h1 className="font-display text-2xl font-bold text-ink">{title}</h1>
-        <p className="mt-1 text-sm text-ink-muted">Communication status from Markaz decisions cross-checked with Gmail.</p>
+        <p className="mt-1 text-sm text-ink-muted">Communication status from Markaz decisions cross-checked with Gmail + Markaz history.</p>
       </header>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -220,18 +274,46 @@ function CandidatesView({ job }: { job: number }) {
         </div>
       </div>
 
+      {/* Bulk action bar */}
+      {selected.size > 0 && (
+        <div className="mb-3 flex flex-wrap items-center gap-3 rounded-xl border border-blurple/40 bg-blurple/5 px-4 py-2.5">
+          <span className="text-sm font-semibold text-ink">{selected.size} selected</span>
+          {canApprove(role) && (
+            <button type="button" disabled={bulkBusy} onClick={() => bulkMarkSent.mutate()} className="btn btn-green h-8 text-sm">
+              {bulkMarkSent.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
+              Mark sent
+            </button>
+          )}
+          {canEdit(role) && (
+            <button type="button" disabled={bulkBusy} onClick={() => bulkIgnore.mutate()} className="btn btn-ghost h-8 text-sm">
+              {bulkIgnore.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <XCircle className="h-4 w-4" />}
+              Ignore (e.g. interview never scheduled)
+            </button>
+          )}
+          <button type="button" onClick={() => setSelected(new Set())} className="ml-auto text-sm text-ink-dim hover:text-ink">
+            Clear
+          </button>
+        </div>
+      )}
+
       <div className="card overflow-hidden">
         {candidatesQuery.isLoading ? (
           <Spinner label="Loading candidates…" />
         ) : candidatesQuery.isError ? (
           <div className="p-8 text-center text-sm text-danger">Failed to load candidates.</div>
-        ) : !candidatesQuery.data?.length ? (
-          <div className="p-12 text-center text-sm text-ink-dim">No candidates match this view.</div>
+        ) : !rows.length ? (
+          <div className="p-12 text-center text-sm text-ink-dim">Nothing here — all clear for this view 🎉</div>
         ) : (
           <table className="w-full text-left text-sm">
             <thead className="border-b border-hairline bg-surface-2 text-xs uppercase tracking-wide text-ink-dim">
               <tr>
+                {canEdit(role) && (
+                  <th className="w-10 px-4 py-3">
+                    <input type="checkbox" checked={allSelected} onChange={toggleAll} aria-label="Select all" />
+                  </th>
+                )}
                 <th className="px-5 py-3 font-medium">Candidate</th>
+                {global && <th className="px-5 py-3 font-medium">Position</th>}
                 <th className="px-5 py-3 font-medium">Status</th>
                 <th className="px-5 py-3 font-medium">Waiting</th>
                 <th className="px-5 py-3 font-medium">Gmail</th>
@@ -240,11 +322,19 @@ function CandidatesView({ job }: { job: number }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-hairline">
-              {candidatesQuery.data.map((row) => (
+              {rows.map((row) => (
                 <Row
                   key={row.application_id}
                   row={row}
-                  onOpen={() => navigate(`/applications/${row.application_id}`)}
+                  showPosition={global}
+                  selectable={canEdit(role)}
+                  selected={selected.has(row.application_id)}
+                  onToggle={() => toggle(row.application_id)}
+                  onOpen={() =>
+                    navigate(`/applications/${row.application_id}`, {
+                      state: { backTo: `/?${params.toString()}`, backLabel: title },
+                    })
+                  }
                   onMatch={() => setMatch({ appId: row.application_id, name: fullName(row) })}
                 />
               ))}
@@ -254,12 +344,7 @@ function CandidatesView({ job }: { job: number }) {
       </div>
 
       {match && (
-        <GmailMatchModal
-          applicationId={match.appId}
-          candidateName={match.name}
-          role={meQ.data?.app_role}
-          onClose={() => setMatch(null)}
-        />
+        <GmailMatchModal applicationId={match.appId} candidateName={match.name} role={role} onClose={() => setMatch(null)} />
       )}
     </div>
   )
@@ -281,19 +366,50 @@ const BORDER_TONE: Record<string, string> = {
   awaiting_scorecard: 'border-l-ink-dim',
 }
 
-function Row({ row, onOpen, onMatch }: { row: QueueRow; onOpen: () => void; onMatch: () => void }) {
+function Row({
+  row,
+  showPosition,
+  selectable,
+  selected,
+  onToggle,
+  onOpen,
+  onMatch,
+}: {
+  row: QueueRow
+  showPosition: boolean
+  selectable: boolean
+  selected: boolean
+  onToggle: () => void
+  onOpen: () => void
+  onMatch: () => void
+}) {
   const tone = BORDER_TONE[row.display_status] ?? 'border-l-ink-dim'
   const dot = GMAIL_DOT[row.gmail_status] ?? GMAIL_DOT.not_checked
   const overdue = row.display_status === 'high_priority'
 
   return (
-    <tr onClick={onOpen} className={`cursor-pointer border-l-4 ${tone} transition-colors hover:bg-elevated`}>
-      <td className="px-5 py-3">
-        <div className="font-medium text-ink">{fullName(row)}{row.ignored && <span className="ml-2 text-[11px] text-ink-dim">(ignored)</span>}</div>
+    <tr className={`border-l-4 ${tone} transition-colors hover:bg-elevated ${selected ? 'bg-blurple/5' : ''}`}>
+      {selectable && (
+        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+          <input type="checkbox" checked={selected} onChange={onToggle} aria-label="Select candidate" />
+        </td>
+      )}
+      <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
+        <div className="font-medium text-ink">
+          {fullName(row)}
+          {row.ignored && <span className="ml-2 text-[11px] text-ink-dim">(ignored)</span>}
+        </div>
         <div className="text-xs text-ink-dim">{row.email}</div>
       </td>
-      <td className="px-5 py-3"><StatusBadge status={row.display_status} /></td>
-      <td className="px-5 py-3">
+      {showPosition && (
+        <td className="cursor-pointer px-5 py-3 text-ink-muted" onClick={onOpen}>
+          {row.job_title}
+        </td>
+      )}
+      <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
+        <StatusBadge status={row.display_status} />
+      </td>
+      <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
         {row.days_waiting != null ? (
           <span className={`inline-flex items-center gap-1 ${overdue ? 'font-semibold text-danger' : 'text-ink-muted'}`}>
             <Clock className="h-3.5 w-3.5" /> {row.days_waiting}d
@@ -302,16 +418,21 @@ function Row({ row, onOpen, onMatch }: { row: QueueRow; onOpen: () => void; onMa
           <span className="text-ink-dim">—</span>
         )}
       </td>
-      <td className="px-5 py-3">
+      <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
         <span className={`inline-flex items-center gap-1.5 text-xs ${dot.cls}`}>
           <span className="h-1.5 w-1.5 rounded-full bg-current" /> {dot.label}
         </span>
       </td>
-      <td className="px-5 py-3 text-ink-muted">{suggestedAction(row)}</td>
+      <td className="cursor-pointer px-5 py-3 text-ink-muted" onClick={onOpen}>
+        {suggestedAction(row)}
+      </td>
       <td className="px-5 py-3 text-right">
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); onMatch() }}
+          onClick={(e) => {
+            e.stopPropagation()
+            onMatch()
+          }}
           className="rounded-lg p-1.5 text-ink-dim transition-colors hover:bg-surface-2 hover:text-[#4752c4]"
           title="View Gmail match / mark sent / ignore"
         >

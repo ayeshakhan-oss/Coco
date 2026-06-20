@@ -38,6 +38,7 @@ _BUCKETS = {
     "in_progress",
     "sent",
     "awaiting_scorecard",
+    "ignored",
 }
 
 

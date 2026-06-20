@@ -226,6 +226,7 @@ _BUCKET_PREDICATE = """
         AND sent_count = 0 AND NOT manual_marked)
     WHEN 'in_progress' THEN (active_count > 0 AND sent_count = 0)
     WHEN 'awaiting_scorecard' THEN (comms_relevant AND display_status = 'awaiting_scorecard')
+    WHEN 'ignored' THEN (comms_relevant AND ignored)
     ELSE display_status = :bucket
   END
 """

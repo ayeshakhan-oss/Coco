@@ -286,5 +286,19 @@ class IgnoreRequest(_Base):
     ignored: bool = True
 
 
+class BulkMarkSentRequest(_Base):
+    application_ids: list[int]
+    reason: Optional[str] = None
+
+
+class BulkIgnoreRequest(_Base):
+    application_ids: list[int]
+    ignored: bool = True
+
+
+class BulkResult(_Base):
+    updated: int
+
+
 # Resolve the forward reference (GmailMatch is defined after ApplicationDetail).
 ApplicationDetail.model_rebuild()
