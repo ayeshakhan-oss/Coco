@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light" />
     <link rel="icon" type="image/png" href="/coco.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,9 +12,33 @@
       rel="stylesheet"
     />
     <title>Coco · Talent Acquisition</title>
+    <style>
+      /* App shell — paints instantly, before the JS bundle loads, so there's
+         never a blank/dark flash. React replaces #root on mount. */
+      html, body { margin: 0; background: #f8f7fd; }
+      #boot {
+        position: fixed; inset: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 16px;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      }
+      #boot img { width: 64px; height: 64px; border-radius: 9999px; }
+      #boot .ring {
+        width: 30px; height: 30px; border-radius: 50%;
+        border: 3px solid #e8e4f4; border-top-color: #6366f1;
+        animation: coco-spin 0.7s linear infinite;
+      }
+      #boot .label { color: #948dba; font-size: 13px; font-weight: 600; letter-spacing: 0.03em; }
+      @keyframes coco-spin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="boot">
+        <img src="/coco.png" alt="Coco" />
+        <div class="ring"></div>
+        <div class="label">Loading Coco…</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
