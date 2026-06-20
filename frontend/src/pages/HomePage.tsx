@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ArrowRight, Briefcase, CheckCircle2, ClipboardList, Inbox, Search, Sparkles } from 'lucide-react'
+import { ArrowRight, Briefcase, CheckCircle2, ClipboardList, Inbox, Search } from 'lucide-react'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -25,9 +25,7 @@ export function HomePage() {
     <div className="mx-auto max-w-5xl px-8 py-12">
       {/* Hero */}
       <div className="text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blurple text-white shadow-sm">
-          <Sparkles className="h-7 w-7" />
-        </span>
+        <img src="/coco.png" alt="Coco" className="mx-auto h-24 w-24 rounded-full object-cover shadow-sm" />
         <h1 className="mt-4 font-display text-3xl font-bold tracking-tight text-ink">
           {meQ.data?.first_name ? `Hi ${meQ.data.first_name} — meet Coco` : 'Meet Coco'}
         </h1>

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ChevronDown, ClipboardList, History, Inbox, LogOut, Sparkles, Users } from 'lucide-react'
+import { ChevronDown, ClipboardList, History, Inbox, LogOut, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../lib/api'
@@ -23,9 +23,7 @@ export function AppLayout() {
       <aside className="flex w-64 flex-shrink-0 flex-col border-r border-hairline bg-surface">
         {/* Coco — the agent (click to go Home) */}
         <Link to="/" className="flex items-center gap-2.5 px-5 py-5 transition-colors hover:bg-surface-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blurple text-white">
-            <Sparkles className="h-5 w-5" />
-          </span>
+          <img src="/coco.png" alt="Coco" className="h-10 w-10 rounded-full object-cover" />
           <div>
             <div className="font-display text-base font-bold tracking-tight text-ink">Coco</div>
             <div className="text-[11px] text-ink-dim">Your talent-acquisition agent</div>
