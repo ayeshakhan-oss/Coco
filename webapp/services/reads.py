@@ -70,14 +70,17 @@ def compute_is_high_priority(
     gmail_status: str,
     ignored: bool,
     days_waiting: Optional[int],
+    markaz_comms: int = 0,
 ) -> bool:
-    """High priority = needs comms, no evidence, not in progress/ignored, >7 days."""
+    """High priority = needs comms, NO evidence (incl. no Markaz log), not in
+    progress/ignored, >7 days. Both Gmail and Markaz are referenced."""
     return bool(
         comm_required
         and active_count == 0
         and sent_count == 0
         and not manual_marked
         and gmail_status not in ("found", "uncertain")
+        and (markaz_comms or 0) == 0
         and not ignored
         and (days_waiting or 0) > 7
     )
@@ -91,9 +94,11 @@ def derive_display_status(
     manual_marked: bool,
     comm_required: bool,
     is_high_priority: bool,
+    markaz_comms: int = 0,
 ) -> str:
-    """Pure derivation — MUST match the SQL `displayed` CTE precedence below."""
-    if sent_count > 0 or manual_marked or gmail_status == "found":
+    """Pure derivation — MUST match the SQL `displayed` CTE precedence below.
+    Evidence of communication = app-sent OR manual OR Gmail-found OR Markaz log."""
+    if sent_count > 0 or manual_marked or gmail_status == "found" or (markaz_comms or 0) > 0:
         return "sent"
     if gmail_status == "uncertain":
         return "needs_review"
@@ -178,10 +183,13 @@ _ENRICHED_CTE = (
 ),
 flagged AS (
   SELECT enriched.*,
-    (sent_count > 0 OR manual_marked OR gmail_status = 'found') AS has_evidence,
+    -- Evidence = ANY of: app-sent / manual override / Gmail match / Markaz log.
+    -- BOTH Gmail and Markaz are always referenced (prior_platform_comms is the
+    -- Markaz communication_history count) — see RAILWAY_DEPLOYMENT_LESSONS.md.
+    (sent_count > 0 OR manual_marked OR gmail_status = 'found' OR prior_platform_comms > 0) AS has_evidence,
     (comm_required AND active_count = 0 AND sent_count = 0 AND NOT manual_marked
-       AND gmail_status NOT IN ('found','uncertain') AND NOT ignored
-       AND COALESCE(days_waiting, 0) > 7) AS is_high_priority,
+       AND gmail_status NOT IN ('found','uncertain') AND prior_platform_comms = 0
+       AND NOT ignored AND COALESCE(days_waiting, 0) > 7) AS is_high_priority,
     (comm_required OR sent_count > 0 OR active_count > 0
        OR status IN ('shortlisted','gwc_scheduled','case_study_sent','P2')) AS comms_relevant
   FROM enriched
@@ -189,7 +197,7 @@ flagged AS (
 displayed AS (
   SELECT flagged.*,
     CASE
-      WHEN sent_count > 0 OR manual_marked OR gmail_status = 'found' THEN 'sent'
+      WHEN sent_count > 0 OR manual_marked OR gmail_status = 'found' OR prior_platform_comms > 0 THEN 'sent'
       WHEN gmail_status = 'uncertain' THEN 'needs_review'
       WHEN active_count > 0 THEN 'in_progress'
       WHEN comm_required AND is_high_priority THEN 'high_priority'

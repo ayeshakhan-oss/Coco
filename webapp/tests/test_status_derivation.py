@@ -76,6 +76,14 @@ def test_gmail_found_is_sent():
     assert _d(gmail_status="found", comm_required=True) == "sent"
 
 
+def test_markaz_log_counts_as_sent():
+    # A logged Markaz communication is real evidence — both sources are referenced.
+    assert _d(markaz_comms=1) == "sent"
+    assert _d(markaz_comms=2, comm_required=True, is_high_priority=True) == "sent"
+    # No Markaz log + comm required + no other evidence -> still needs comms.
+    assert _d(markaz_comms=0, comm_required=True) == "needs_comms"
+
+
 def test_gmail_uncertain_is_needs_review():
     assert _d(gmail_status="uncertain") == "needs_review"
     # Needs Review beats in_progress / needs_comms (but not actual sent/manual).
@@ -153,3 +161,4 @@ def test_high_priority_requires_all_conditions():
     assert _hp(gmail_status="uncertain") is False  # needs review, not high priority
     assert _hp(ignored=True) is False  # dismissed
     assert _hp(days_waiting=None) is False  # no clock
+    assert _hp(markaz_comms=1) is False  # a Markaz email exists -> communicated

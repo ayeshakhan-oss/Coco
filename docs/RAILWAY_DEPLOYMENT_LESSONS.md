@@ -12,7 +12,24 @@ Stack at a glance:
 
 ---
 
+## 🔒 Locked principles (do not regress)
+
+### P1 — Communication evidence ALWAYS references BOTH Gmail and Markaz
+A candidate counts as "communicated with" if evidence exists in **either** source — never one alone:
+1. **Gmail** — search Ayesha's **whole mailbox** (`to:<email> OR cc:<email>`, *any* folder), **not just Sent**. Comms are often sent by teammates with the hiring group added, so they arrive in Ayesha's **inbox**, not her Sent. A Sent-only search silently under-counts (this caused real false "High Priority" flags on 2026-06-20).
+2. **Markaz** — a non-empty `applications.communication_history` (the platform's own send log) counts as evidence too (`prior_platform_comms > 0` in `webapp/services/reads.py`).
+
+Enforced in code: `webapp/services/gmail_evidence.py` (whole-mailbox per-candidate search) + `webapp/services/reads.py` (`has_evidence` / `is_high_priority` / `display_status` all include `prior_platform_comms`). Mirrored in the pure functions `derive_display_status` / `compute_is_high_priority` (+ unit tests). **If you ever change matching, both sources must stay referenced.** Known limit: emails sent from a teammate's mailbox that were NOT addressed to / CC'd anything in Ayesha's mailbox can't be seen — full multi-mailbox coverage needs Google domain-wide delegation (deferred).
+
+---
+
 ## Incident log
+
+### 2026-06-20 — Visible emails not counted as communication (trust bug)
+**Symptom:** Candidates with an email clearly visible in their history (e.g. "Update on your Application" for Abdullah Shahzad, Aitzaz Rehman Sheikh) were still flagged **High Priority**. ~251 candidates affected.
+**Root cause:** (1) Gmail matching searched only Ayesha's **Sent** folder, missing teammate/Markaz-sent emails that reached her **inbox** via the hiring group; (2) Markaz's `communication_history` was treated as "context only" and never counted.
+**Fix:** Search the **whole mailbox** per candidate (`to/cc`, any folder) + **count Markaz `communication_history`** as evidence. Locked as principle **P1** above.
+**Rule:** Evidence = Gmail (whole mailbox) **OR** Markaz log **OR** app-sent **OR** manual override. Never Sent-only; never single-source.
 
 ### 2026-06-20 — Dashboard went totally empty ("synced never", all zeros, Refresh "failed")
 **Symptom:** The live app loaded but every stat was 0, "Gmail sync: synced never", "No positions", and clicking Refresh said "Sync failed or already running."

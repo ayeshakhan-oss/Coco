@@ -380,77 +380,46 @@ def run_sync(
         svc = _build_service()
         dup = _duplicate_emails(db)
 
-        # ── Tier 1: exact message-id match for comms Coco itself sent ──
-        for row in _sent_comms_with_message_id(db):
-            mid = (row["message_id"] or "").strip().strip("<>")
-            if not mid:
-                continue
-            ids = _search_message_ids(svc, f"rfc822msgid:{mid}", cap=1)
-            scanned += len(ids)
-            if ids:
-                meta = _fetch_message_meta(svc, ids[0])
-                if meta:
-                    ev = _evidence_from(meta, "found", "message_id", None)
-                    _upsert_evidence(db, row["application_id"], row["candidate_id"],
-                                     row.get("job_id"), ev)
-                    found += 1
-                    evaluated += 1
-        db.commit()
-
-        # ── Tier 2: index the Sent stream once, match candidates locally ──
         incremental = bool(watermark_before) and not full
-        if incremental:
-            after = int(watermark_before.timestamp())
-        else:
-            after = int(
-                (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=FULL_WINDOW_DAYS)).timestamp()
-            )
-        query = f"in:sent after:{after}"
+        after = int(watermark_before.timestamp()) if incremental else None
+        query = "(to:<candidate> OR cc:<candidate>)" + (
+            f" after:{after}" if after else "  [whole mailbox, all time]"
+        )
 
-        msg_ids = _search_message_ids(svc, query, cap=MAX_MESSAGES_PER_RUN)
-        capped = len(msg_ids) >= MAX_MESSAGES_PER_RUN
-
-        metas = _fetch_metas(svc, msg_ids)
-        scanned += len(metas)
-        index: dict[str, list[dict]] = {}
-        for meta in metas:
-            if meta["internal_ms"]:
-                ts = dt.datetime.fromtimestamp(meta["internal_ms"] / 1000, tz=dt.timezone.utc)
-                if watermark_after is None or ts > watermark_after:
-                    watermark_after = ts
-            for addr in set(meta["to"]) | set(meta["cc"]) | set(meta["bcc"]):
-                index.setdefault(addr, []).append(meta)
-
-        # Match the working set against the index. We only WRITE evidence rows
-        # for actual matches (found / uncertain): "no match" is equivalent to
-        # "not_checked" for display + it keeps the sync fast (no row-per-candidate
-        # write). Iterate only the intersection of message-recipients ∩ candidates.
+        # Per-candidate WHOLE-MAILBOX search (not just Sent). We search every folder
+        # for messages addressed to the candidate, so we catch comms sent by Ayesha
+        # AND comms sent by teammates that reach her inbox via the hiring group — a
+        # Sent-only search misses the latter. This is the Gmail half of the locked
+        # "always reference BOTH Gmail + Markaz" rule (Markaz history is counted in
+        # reads.py). See docs/RAILWAY_DEPLOYMENT_LESSONS.md.
         candidates = _candidates_to_check(db)
         evaluated = len(candidates)
-        by_email: dict[str, list[dict]] = {}
-        for c in candidates:
-            by_email.setdefault(c["email"], []).append(c)
-
-        for email in set(index.keys()) & set(by_email.keys()):
-            cands = by_email[email]
-            # Shared address (in the candidates table or within this working set)
-            # can't be disambiguated by recipient -> uncertain.
-            ambiguous = (email in dup) or (len(cands) > 1)
-            ev = classify_candidate(email, index[email], duplicate_email=ambiguous)
-            if ev["gmail_status"] not in ("found", "uncertain"):
-                continue
-            for c in cands:
-                _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
-                if ev["gmail_status"] == "found":
-                    found += 1
-                else:
-                    uncertain += 1
+        for i, c in enumerate(candidates):
+            email = c["email"]
+            q = f"(to:{email} OR cc:{email})"
+            if after:
+                q += f" after:{after}"
+            ids = _search_message_ids(svc, q, cap=10)
+            scanned += len(ids)
+            if ids:
+                metas = _fetch_metas(svc, ids)
+                for m in metas:
+                    ms = m.get("internal_ms")
+                    if ms:
+                        ts = dt.datetime.fromtimestamp(ms / 1000, tz=dt.timezone.utc)
+                        if watermark_after is None or ts > watermark_after:
+                            watermark_after = ts
+                ev = classify_candidate(email, metas, duplicate_email=email in dup)
+                if ev["gmail_status"] in ("found", "uncertain"):
+                    _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
+                    if ev["gmail_status"] == "found":
+                        found += 1
+                    else:
+                        uncertain += 1
+            if i % 50 == 49:
+                db.commit()  # persist progress periodically on long full backfills
         none = max(0, evaluated - found - uncertain)
         db.commit()
-
-        if capped:
-            status = "partial"
-            error_detail = f"hit MAX_MESSAGES_PER_RUN={MAX_MESSAGES_PER_RUN}; rerun"
     except Exception as e:  # noqa: BLE001
         db.rollback()
         status = "failed"
