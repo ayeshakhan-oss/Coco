@@ -26,7 +26,36 @@ from __future__ import annotations
 from typing import Optional
 
 from sqlalchemy import text
+from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlalchemy.orm import Session
+
+
+def _ensure_app_tables(db: Session) -> None:
+    """Re-create the app-owned evidence tables if they're missing. A Neon
+    restore/branch-swap can drop them while leaving alembic stamped (see
+    docs/RAILWAY_DEPLOYMENT_LESSONS.md) — this lets reads self-heal at runtime."""
+    from ..db import Base
+    from ..models import CommEvidence, GmailSyncRun  # noqa: F401
+
+    Base.metadata.create_all(
+        db.get_bind(),
+        tables=[CommEvidence.__table__, GmailSyncRun.__table__],
+        checkfirst=True,
+    )
+
+
+def _heal_exec(db: Session, sql: str, params: Optional[dict] = None):
+    """Execute a read; if it fails because an app-owned table is missing,
+    recreate the tables and retry once (so a DB reset can't blank the dashboard)."""
+    try:
+        return db.execute(text(sql), params or {})
+    except (ProgrammingError, OperationalError) as e:
+        msg = str(e).lower()
+        if "comm_evidence" in msg or "gmail_sync_runs" in msg or "does not exist" in msg:
+            db.rollback()
+            _ensure_app_tables(db)
+            return db.execute(text(sql), params or {})
+        raise
 
 DISPLAY_STATUSES = (
     "sent",
@@ -274,7 +303,7 @@ ORDER BY is_high_priority DESC,
 LIMIT :limit OFFSET :offset
 """
     )
-    rows = db.execute(text(sql), params).mappings().all()
+    rows = _heal_exec(db, sql, params).mappings().all()
     return [dict(r) for r in rows]
 
 
@@ -297,7 +326,7 @@ WHERE comms_relevant
 GROUP BY job_pk, job_code, job_title
 ORDER BY high_priority DESC, needs_comms DESC, total DESC
 """
-    rows = db.execute(text(sql)).mappings().all()
+    rows = _heal_exec(db, sql).mappings().all()
     return [dict(r) for r in rows]
 
 
@@ -316,7 +345,7 @@ SELECT
 FROM displayed
 WHERE comms_relevant
 """
-    row = db.execute(text(sql)).mappings().first()
+    row = _heal_exec(db, sql).mappings().first()
     r = dict(row) if row else {}
     # Overall volume (whole Markaz, not just comms-relevant) for the dashboard strip.
     o = db.execute(
@@ -370,7 +399,7 @@ def get_application(db: Session, application_id: int) -> Optional[dict]:
     JOIN candidates c ON c.id = d.candidate_id
     WHERE d.application_id = :app_id
     """
-    row = db.execute(text(sql), {"app_id": application_id}).mappings().first()
+    row = _heal_exec(db, sql, {"app_id": application_id}).mappings().first()
     return dict(row) if row else None
 
 
