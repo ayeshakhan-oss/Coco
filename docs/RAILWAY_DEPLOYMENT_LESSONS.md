@@ -113,6 +113,14 @@ The app's queries `LEFT JOIN comm_evidence`; with the table gone, every read 500
 **Symptom:** Fetching 50 message-metadata per batch dropped ~22% to rate limits (250 quota units/user/sec; get=5 units).
 **Rule:** Batch ~40/req, space batches (~0.3s), retry dropped ids, and put a socket timeout on the client so a stalled call can't hang the sync.
 
+### 11. A long sync MUST survive a transient network blip
+**Symptom (2026-06-23):** A full backfill died with `ConnectionResetError [WinError 10054]` on one Gmail batch; the exception aborted the *whole* `run_sync`, and a coincident dropped Neon connection then crashed the rollback too. Run marked `failed`, dashboard "synced never", ~630 evidence rows unrestored.
+**Rule:** Treat transient transport errors (`ConnectionError`/`TimeoutError`/`ssl.SSLError`) as recoverable, never fatal:
+- Retry each Gmail batch / `list()` a few times (rebuild the batch; leftover ids fall to the next pass).
+- Guard **each candidate** in the sync loop — a per-candidate blip skips that candidate (it's non-terminal, re-checked next run) and marks the run `partial`, not `failed`.
+- Make the outer rollback defensive (`try/except pass`) so a dropped DB connection can't crash the process.
+- Periodic commits (every ~50) persist partial progress so a worst-case abort loses little, and an idempotent upsert means a re-run safely converges. Implemented in `webapp/services/gmail_evidence.py` (`_TRANSIENT_NET`).
+
 ---
 
 ## How to add a learning
