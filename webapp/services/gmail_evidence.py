@@ -37,6 +37,15 @@ _METADATA_HEADERS = ["From", "To", "Cc", "Bcc", "Subject", "Date", "Message-ID"]
 MAX_MESSAGES_PER_RUN = 6000
 FULL_WINDOW_DAYS = 730  # bounded backfill window for a full / first-ever sync
 
+# Transient transport errors. A connection reset / timeout mid-backfill must be
+# retried (or skip just that candidate) — never abort a whole sync. (Subclasses:
+# ConnectionResetError/BrokenPipeError < ConnectionError; socket.timeout is an
+# alias of TimeoutError on modern Python, kept explicit for safety.)
+import socket as _socket  # noqa: E402
+import ssl as _ssl  # noqa: E402
+
+_TRANSIENT_NET = (ConnectionError, TimeoutError, _socket.timeout, _ssl.SSLError)
+
 
 # ── Pure helpers (unit-tested; no I/O) ───────────────────────────────────────
 
@@ -241,29 +250,51 @@ def _fetch_metas(svc, ids: list[str], chunk: int = 40, max_passes: int = 4) -> l
         if not remaining:
             break
         for i in range(0, len(remaining), chunk):
-            batch = svc.new_batch_http_request(callback=_cb)
-            for mid in remaining[i : i + chunk]:
-                batch.add(
-                    svc.users().messages().get(
-                        userId="me", id=mid, format="metadata", metadataHeaders=_METADATA_HEADERS
+            slice_ids = remaining[i : i + chunk]
+            # Retry the batch on a transient transport error (e.g. a connection
+            # reset mid-backfill). If it still fails after a few tries, leave
+            # these ids in `remaining` for the next pass — never throw out of a
+            # whole sync over one dropped batch.
+            for attempt in range(3):
+                batch = svc.new_batch_http_request(callback=_cb)
+                for mid in slice_ids:
+                    batch.add(
+                        svc.users().messages().get(
+                            userId="me", id=mid, format="metadata", metadataHeaders=_METADATA_HEADERS
+                        )
                     )
-                )
-            batch.execute()
+                try:
+                    batch.execute()
+                    break
+                except _TRANSIENT_NET:
+                    if attempt == 2:
+                        break  # give up this batch this pass; ids retried next pass
+                    time.sleep(1.0 * (attempt + 1))
             time.sleep(0.3)  # stay under the per-second quota
         remaining = [m for m in remaining if m not in metas_by_id]
     return list(metas_by_id.values())
 
 
 def _search_message_ids(svc, query: str, cap: int) -> list[str]:
+    import time
+
     ids: list[str] = []
     page_token = None
     while len(ids) < cap:
-        resp = (
-            svc.users()
-            .messages()
-            .list(userId="me", q=query, pageToken=page_token, maxResults=500)
-            .execute()
-        )
+        resp = None
+        for attempt in range(3):  # absorb a transient connection reset on .list()
+            try:
+                resp = (
+                    svc.users()
+                    .messages()
+                    .list(userId="me", q=query, pageToken=page_token, maxResults=500)
+                    .execute()
+                )
+                break
+            except _TRANSIENT_NET:
+                if attempt == 2:
+                    raise
+                time.sleep(1.0 * (attempt + 1))
         ids.extend(m["id"] for m in resp.get("messages", []))
         page_token = resp.get("nextPageToken")
         if not page_token:
@@ -406,34 +437,50 @@ def run_sync(
         # reads.py). See docs/RAILWAY_DEPLOYMENT_LESSONS.md.
         candidates = _candidates_to_check(db)
         evaluated = len(candidates)
+        errored = 0
         for i, c in enumerate(candidates):
             email = c["email"]
-            q = f"(to:{email} OR cc:{email})"
-            if after:
-                q += f" after:{after}"
-            ids = _search_message_ids(svc, q, cap=10)
-            scanned += len(ids)
-            if ids:
-                metas = _fetch_metas(svc, ids)
-                for m in metas:
-                    ms = m.get("internal_ms")
-                    if ms:
-                        ts = dt.datetime.fromtimestamp(ms / 1000, tz=dt.timezone.utc)
-                        if watermark_after is None or ts > watermark_after:
-                            watermark_after = ts
-                ev = classify_candidate(email, metas, duplicate_email=email in dup)
-                if ev["gmail_status"] in ("found", "uncertain"):
-                    _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
-                    if ev["gmail_status"] == "found":
-                        found += 1
-                    else:
-                        uncertain += 1
+            try:
+                q = f"(to:{email} OR cc:{email})"
+                if after:
+                    q += f" after:{after}"
+                ids = _search_message_ids(svc, q, cap=10)
+                scanned += len(ids)
+                if ids:
+                    metas = _fetch_metas(svc, ids)
+                    for m in metas:
+                        ms = m.get("internal_ms")
+                        if ms:
+                            ts = dt.datetime.fromtimestamp(ms / 1000, tz=dt.timezone.utc)
+                            if watermark_after is None or ts > watermark_after:
+                                watermark_after = ts
+                    ev = classify_candidate(email, metas, duplicate_email=email in dup)
+                    if ev["gmail_status"] in ("found", "uncertain"):
+                        _upsert_evidence(db, c["application_id"], c["candidate_id"], c.get("job_id"), ev)
+                        if ev["gmail_status"] == "found":
+                            found += 1
+                        else:
+                            uncertain += 1
+            except _TRANSIENT_NET as e:
+                # One candidate's network blip must not abort the whole backfill.
+                # The Gmail calls above don't write to the DB, so the session is
+                # still healthy (don't roll back — that would discard the good,
+                # uncommitted rows since the last periodic commit). The candidate
+                # is non-terminal, so the next sync re-checks it.
+                errored += 1
+                error_detail = f"{type(e).__name__}: {e}"
             if i % 50 == 49:
                 db.commit()  # persist progress periodically on long full backfills
-        none = max(0, evaluated - found - uncertain)
+        none = max(0, evaluated - found - uncertain - errored)
         db.commit()
+        if errored:
+            status = "partial"
+            error_detail = f"{errored} candidate(s) skipped on transient network errors; last: {error_detail}"
     except Exception as e:  # noqa: BLE001
-        db.rollback()
+        try:
+            db.rollback()
+        except Exception:  # noqa: BLE001 — a dropped DB connection must not crash the sync
+            pass
         status = "failed"
         error_detail = f"{type(e).__name__}: {e}"
         watermark_after = watermark_before  # don't advance on failure
