@@ -34,6 +34,12 @@ These are signed-off, tone-tuned, and guarded by the validation harness; restyli
 
 ## Incident log
 
+### 2026-06-23 — Dashboard empty AGAIN (3rd time) → added runtime self-heal
+**Symptom:** Home/queue all zeros again (apps, positions, needs-comms, sent). `comm_evidence` + `gmail_sync_runs` missing once more; `applications` intact & grown (3,556); `alembic_version` still `0004`. Same drop-on-DB-reset signature as 6/18 and 6/20.
+**Why the boot self-heal wasn't enough:** the `create_all` self-heal (6/20) runs only in the app's **lifespan/startup**. The DB gets reset *while the app is running*, so the app keeps 500-ing on every request until a redeploy — Railway doesn't auto-restart on a DB reset.
+**Fix:** added a **runtime self-heal** in `webapp/services/reads.py` (`_heal_exec` + `_ensure_app_tables`): the four dashboard reads catch "relation does not exist", recreate the two tables, and retry once. Dashboard now heals on the **next request** after a reset. The hourly scheduler repopulates Gmail evidence within the hour (no watermark after a reset ⇒ full sync).
+**Root cause still upstream:** something keeps resetting the shared Markaz Neon DB (NOT Coco — it never drops tables). Permanent cure: find who/what resets it, or give Coco its own DB with Markaz data synced in.
+
 ### 2026-06-20 — Visible emails not counted as communication (trust bug)
 **Symptom:** Candidates with an email clearly visible in their history (e.g. "Update on your Application" for Abdullah Shahzad, Aitzaz Rehman Sheikh) were still flagged **High Priority**. ~251 candidates affected.
 **Root cause:** (1) Gmail matching searched only Ayesha's **Sent** folder, missing teammate/Markaz-sent emails that reached her **inbox** via the hiring group; (2) Markaz's `communication_history` was treated as "context only" and never counted.
