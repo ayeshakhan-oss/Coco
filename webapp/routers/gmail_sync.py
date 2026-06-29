@@ -68,6 +68,13 @@ def gmail_sync_refresh(
 ):
     trigger, triggered_by = _authorize_sync(request, db, x_sync_token)
 
+    # Self-heal first: a DB reset can drop gmail_sync_runs, which would make the
+    # guard query below 500 and surface as "sync failed". Recreate it durably so
+    # Refresh recovers on its own instead of hard-failing.
+    from ..db import ensure_app_tables
+
+    ensure_app_tables()
+
     # Concurrency guard: refuse if a sync started in the last 15 minutes is still running.
     busy = db.execute(
         text(

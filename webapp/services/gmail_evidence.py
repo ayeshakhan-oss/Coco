@@ -401,6 +401,13 @@ def run_sync(
     triggered_by: Optional[str] = None,
 ) -> dict:
     """Execute one sync. Returns the gmail_sync_runs row as a dict."""
+    # Self-heal: if a DB reset dropped the app-owned tables, recreate them
+    # durably before the first write, so the sync (scheduled or manual) recovers
+    # on its own instead of 500-ing on a missing gmail_sync_runs table.
+    from ..db import ensure_app_tables
+
+    ensure_app_tables()
+
     run_id = "sync-" + _rand_hex()
     db.execute(
         text(

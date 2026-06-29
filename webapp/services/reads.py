@@ -33,15 +33,12 @@ from sqlalchemy.orm import Session
 def _ensure_app_tables(db: Session) -> None:
     """Re-create the app-owned evidence tables if they're missing. A Neon
     restore/branch-swap can drop them while leaving alembic stamped (see
-    docs/RAILWAY_DEPLOYMENT_LESSONS.md) — this lets reads self-heal at runtime."""
-    from ..db import Base
-    from ..models import CommEvidence, GmailSyncRun  # noqa: F401
+    docs/RAILWAY_DEPLOYMENT_LESSONS.md) — this lets reads self-heal at runtime.
+    Delegates to the shared, DURABLE (committing) helper so reads, the sync
+    service, and the refresh endpoint all recover the same way."""
+    from ..db import ensure_app_tables
 
-    Base.metadata.create_all(
-        db.get_bind(),
-        tables=[CommEvidence.__table__, GmailSyncRun.__table__],
-        checkfirst=True,
-    )
+    ensure_app_tables()
 
 
 def _heal_exec(db: Session, sql: str, params: Optional[dict] = None):

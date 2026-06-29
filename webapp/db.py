@@ -75,6 +75,22 @@ def get_sessionmaker() -> sessionmaker:
     return _SessionLocal
 
 
+def ensure_app_tables() -> None:
+    """Recreate the app-owned evidence tables (comm_evidence, gmail_sync_runs) if
+    a DB reset/restore dropped them. Idempotent and DURABLE: create_all on the
+    Engine commits the DDL, so the tables persist (unlike a self-heal run inside
+    an uncommitted request transaction). Shared by the read path, the Gmail sync
+    service, and the refresh endpoint so a reset can't hard-break any of them.
+    See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
+    from .models import CommEvidence, GmailSyncRun  # local import avoids a cycle
+
+    Base.metadata.create_all(
+        get_engine(),
+        tables=[CommEvidence.__table__, GmailSyncRun.__table__],
+        checkfirst=True,
+    )
+
+
 def get_db() -> Iterator[Session]:
     """FastAPI dependency: yields a per-request session and always closes it."""
     SessionLocal = get_sessionmaker()

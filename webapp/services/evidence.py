@@ -15,6 +15,7 @@ import datetime as dt
 from typing import Optional
 
 from sqlalchemy import text
+from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlalchemy.orm import Session
 
 
@@ -248,23 +249,41 @@ def build_timeline(db: Session, application_id: int) -> Optional[list[dict]]:
 
 def get_sync_status(db: Session) -> dict:
     """Latest sync run + 'last synced' time for the dashboard indicator."""
-    last_ok = db.execute(
-        text(
-            "SELECT max(finished_at) AS ts FROM gmail_sync_runs WHERE status IN ('ok','partial')"
-        )
-    ).mappings().first()
-    latest = db.execute(
-        text(
-            """
-            SELECT status, trigger, messages_scanned, candidates_evaluated,
-                   found_count, uncertain_count, none_count, started_at, finished_at,
-                   error_detail
-            FROM gmail_sync_runs
-            ORDER BY started_at DESC
-            LIMIT 1
-            """
-        )
-    ).mappings().first()
+
+    def _query():
+        last_ok = db.execute(
+            text(
+                "SELECT max(finished_at) AS ts FROM gmail_sync_runs WHERE status IN ('ok','partial')"
+            )
+        ).mappings().first()
+        latest = db.execute(
+            text(
+                """
+                SELECT status, trigger, messages_scanned, candidates_evaluated,
+                       found_count, uncertain_count, none_count, started_at, finished_at,
+                       error_detail
+                FROM gmail_sync_runs
+                ORDER BY started_at DESC
+                LIMIT 1
+                """
+            )
+        ).mappings().first()
+        return last_ok, latest
+
+    try:
+        last_ok, latest = _query()
+    except (ProgrammingError, OperationalError) as e:
+        # A DB reset can drop gmail_sync_runs; recreate it and retry once so the
+        # status indicator self-heals instead of 500-ing the dashboard.
+        if "gmail_sync_runs" in str(e).lower() or "does not exist" in str(e).lower():
+            db.rollback()
+            from ..db import ensure_app_tables
+
+            ensure_app_tables()
+            last_ok, latest = _query()
+        else:
+            raise
+
     out: dict = {"last_sync_at": last_ok["ts"] if last_ok else None}
     if latest:
         out.update(dict(latest))
