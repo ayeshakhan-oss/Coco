@@ -30,9 +30,24 @@ Enforced in code: `webapp/services/gmail_evidence.py` (whole-mailbox per-candida
 
 These are signed-off, tone-tuned, and guarded by the validation harness; restyling them could break brand/tone and the HARD-BLOCK rules. The email preview renders in a **sandboxed iframe** precisely so dashboard CSS can't leak into the email. Confirmed with Ayesha (2026-06-20): *"we will never change the theme of the emails or the way we communicate."* Mirrors CLAUDE.md Rules 8 & 9.
 
+### P3 — Coco's app-owned tables live in the `coco` schema, NEVER `public`
+Markaz is hosted on **Replit**, which shares this Neon DB and runs a **schema push on every Markaz deploy that drops `public` tables not in Markaz's schema** (proven 2026-06-30 — see incident below). Coco's `comm_evidence` + `gmail_sync_runs` therefore live in a dedicated **`coco` schema**, out of that prune path (Replit's own `_system` schema survives every deploy, proving non-`public` schemas are safe).
+- Models carry `__table_args__ = {... , {"schema": "coco"}}`; **all** SQL references are qualified `coco.<table>` (don't rely on `search_path` — PgBouncer transaction mode doesn't reliably keep it).
+- Cross-schema is fine: FKs `coco.* → public.app_users` and joins to `public.applications/candidates` work natively in the same DB, so Coco still reads Markaz live with no second connection.
+- `ensure_app_tables()` + both startup self-heal paths `CREATE SCHEMA IF NOT EXISTS coco` first. Any NEW Coco-owned table must go in `coco` too (never add an unqualified table to `public` — it will be dropped on the next Markaz deploy).
+- Residual: `communications`, `app_users`, `alembic_version` still live in `public` (they've survived because Markaz "knows" them); move them to `coco` if they ever start getting dropped.
+
 ---
 
 ## Incident log
+
+### 2026-06-30 — ROOT CAUSE FOUND: Markaz's Replit deploys drop Coco's public tables
+**The recurring "dashboard zeros / Gmail sync failed / comm_evidence does not exist" bug (6/18, 6/20, 6/23, 6/29) — finally diagnosed and fixed at the source.**
+**Not a Neon reset** (a restore would revert `communications`/`app_users`/`applications` too, but those survive and `applications` keeps growing) and **not Coco** (its only `DROP`s are in Alembic `downgrade()`, and `alembic_version` never changed off 0004). It was a **targeted drop of exactly the two migration-0004 tables**.
+**Diagnosis path (read-only SQL):** `pg_stat_activity` showed a Node app querying `"notifications"` (quoted-identifier ORM) → Markaz is Node. No `pg_cron`. The only non-`public` schema is `_system`, holding **`replit_database_migrations_v1`** → Markaz is on **Replit**. That deploy log lines up with every incident, and on 6/29 a backfill wrote 712 rows, **migration #132 applied at 09:00:30**, and the tables vanished at that exact second.
+**Why:** Replit's per-deploy schema push prunes `public` tables not in Markaz's schema. Coco's 0004 tables aren't in it → dropped every deploy (4× on 6/29 alone). `communications`/`app_users` (0001–0003) survive because Markaz's schema was introspected when they already existed.
+**Fix:** moved `comm_evidence` + `gmail_sync_runs` into a dedicated **`coco` schema** (commit 77124c6 / Alembic 0005). See **P3**. Verified: schema+tables create, all reads + a mark/clear write round-trip (cross-schema FK) pass; awaiting confirmation across the next Markaz deploy.
+**Rule:** the shared DB is fine to **read** Markaz from, but Coco must **own its data in `coco`**, never `public`.
 
 ### 2026-06-23 — Dashboard empty AGAIN (3rd time) → added runtime self-heal
 **Symptom:** Home/queue all zeros again (apps, positions, needs-comms, sent). `comm_evidence` + `gmail_sync_runs` missing once more; `applications` intact & grown (3,556); `alembic_version` still `0004`. Same drop-on-DB-reset signature as 6/18 and 6/20.
