@@ -58,10 +58,33 @@ class SmtpTransport:
     def __init__(self, host: str, port: int, sender: str, password: str):
         self.host, self.port, self.sender, self.password = host, port, sender, password
 
-    def send(self, *, sender, recipients, message, context):
-        server = smtplib.SMTP(self.host, self.port)
+    def _connect(self) -> smtplib.SMTP:
+        """Connect over IPv4 explicitly. Railway containers frequently have no
+        IPv6 route, so resolving smtp.gmail.com to its AAAA (IPv6) record yields
+        "[Errno 101] Network is unreachable". We pin the A (IPv4) record, then
+        validate STARTTLS against the real hostname (not the IP literal). Falls
+        back to the default resolver if the IPv4 lookup itself fails."""
+        import socket
+
         try:
-            server.starttls()
+            ipv4 = socket.getaddrinfo(
+                self.host, self.port, socket.AF_INET, socket.SOCK_STREAM
+            )[0][4][0]
+        except OSError:
+            return smtplib.SMTP(self.host, self.port, timeout=30)
+        server = smtplib.SMTP(timeout=30)
+        server.connect(ipv4, self.port)
+        server._host = self.host  # STARTTLS uses this for SNI + cert hostname check
+        return server
+
+    def send(self, *, sender, recipients, message, context):
+        import ssl
+
+        server = self._connect()
+        try:
+            server.ehlo()
+            server.starttls(context=ssl.create_default_context())
+            server.ehlo()
             server.login(self.sender, self.password)
             safe_sendmail(server, sender, recipients, message, context=context)
         finally:
