@@ -128,6 +128,12 @@ The app's queries `LEFT JOIN comm_evidence`; with the table gone, every read 500
 **Symptom:** Fetching 50 message-metadata per batch dropped ~22% to rate limits (250 quota units/user/sec; get=5 units).
 **Rule:** Batch ~40/req, space batches (~0.3s), retry dropped ids, and put a socket timeout on the client so a stalled call can't hang the sync.
 
+### 12. Outbound SMTP must force IPv4 (Railway has no IPv6 route)
+**Symptom (2026-06-30):** First live/pilot send from Railway failed — `502 "Send failed: [Errno 101] Network is unreachable"`. The draft itself passed all checks.
+**Cause:** `smtp.gmail.com` publishes an AAAA (IPv6) record; Railway containers typically have **no IPv6 route**, so connecting to the IPv6 address returns `ENETUNREACH`.
+**Fix:** `SmtpTransport._connect()` pins the A (IPv4) record via `getaddrinfo(AF_INET)`, connects to it, and resets `server._host` to the hostname so STARTTLS still validates SNI + cert against `smtp.gmail.com`. 30s timeout; falls back to the default resolver if the IPv4 lookup fails. Send is **from `ayesha.khan@taleemabad.com`** (`hiring@` is a group → can't SMTP-login; `EMAIL_SENDER=ayesha.khan@…`, `EMAIL_PASSWORD`=her 16-char Gmail App Password).
+**If IPv4 still fails the same way:** Railway is blocking outbound SMTP (587) entirely → switch sending to the **Gmail API over HTTPS** (needs a `gmail.send` re-consent; the current Gmail OAuth is `gmail.readonly`).
+
 ### 11. A long sync MUST survive a transient network blip
 **Symptom (2026-06-23):** A full backfill died with `ConnectionResetError [WinError 10054]` on one Gmail batch; the exception aborted the *whole* `run_sync`, and a coincident dropped Neon connection then crashed the rollback too. Run marked `failed`, dashboard "synced never", ~630 evidence rows unrestored.
 **Rule:** Treat transient transport errors (`ConnectionError`/`TimeoutError`/`ssl.SSLError`) as recoverable, never fatal:
