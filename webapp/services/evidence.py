@@ -42,7 +42,7 @@ def _ensure_row(db: Session, application_id: int) -> bool:
     db.execute(
         text(
             """
-            INSERT INTO comm_evidence (id, application_id, candidate_id, job_id, gmail_status)
+            INSERT INTO coco.comm_evidence (id, application_id, candidate_id, job_id, gmail_status)
             VALUES ('ev-' || replace(gen_random_uuid()::text, '-', ''),
                     :app_id, :cand_id, :job_id, 'not_checked')
             ON CONFLICT (application_id) DO NOTHING
@@ -61,7 +61,7 @@ def mark_sent(
     db.execute(
         text(
             """
-            UPDATE comm_evidence
+            UPDATE coco.comm_evidence
             SET marked_sent_by = :uid, marked_sent_at = :ts, marked_sent_reason = :reason,
                 updated_at = :ts
             WHERE application_id = :app_id
@@ -77,7 +77,7 @@ def clear_mark(db: Session, application_id: int) -> bool:
     res = db.execute(
         text(
             """
-            UPDATE comm_evidence
+            UPDATE coco.comm_evidence
             SET marked_sent_by = NULL, marked_sent_at = NULL, marked_sent_reason = NULL,
                 updated_at = :ts
             WHERE application_id = :app_id
@@ -95,7 +95,7 @@ def set_ignore(db: Session, application_id: int, user_id: str, ignored: bool) ->
     db.execute(
         text(
             """
-            UPDATE comm_evidence
+            UPDATE coco.comm_evidence
             SET ignored = :ignored,
                 ignored_by = CASE WHEN :ignored THEN :uid ELSE NULL END,
                 ignored_at = CASE WHEN :ignored THEN :ts ELSE NULL END,
@@ -120,7 +120,7 @@ def bulk_mark_sent(
             continue
         db.execute(
             text(
-                "UPDATE comm_evidence SET marked_sent_by=:uid, marked_sent_at=:ts, "
+                "UPDATE coco.comm_evidence SET marked_sent_by=:uid, marked_sent_at=:ts, "
                 "marked_sent_reason=:reason, updated_at=:ts WHERE application_id=:app_id"
             ),
             {"uid": user_id, "ts": ts, "reason": reason, "app_id": app_id},
@@ -141,7 +141,7 @@ def bulk_set_ignore(
             continue
         db.execute(
             text(
-                "UPDATE comm_evidence SET ignored=:ignored, "
+                "UPDATE coco.comm_evidence SET ignored=:ignored, "
                 "ignored_by = CASE WHEN :ignored THEN :uid ELSE NULL END, "
                 "ignored_at = CASE WHEN :ignored THEN :ts ELSE NULL END, "
                 "updated_at=:ts WHERE application_id=:app_id"
@@ -163,7 +163,7 @@ def get_match(db: Session, application_id: int) -> dict:
                    internal_date, matched_subject, matched_to, matched_snippet,
                    uncertain_reason, marked_sent_at, marked_sent_by, marked_sent_reason,
                    ignored, ignored_at, checked_at
-            FROM comm_evidence WHERE application_id = :app_id
+            FROM coco.comm_evidence WHERE application_id = :app_id
             """
         ),
         {"app_id": application_id},
@@ -253,7 +253,7 @@ def get_sync_status(db: Session) -> dict:
     def _query():
         last_ok = db.execute(
             text(
-                "SELECT max(finished_at) AS ts FROM gmail_sync_runs WHERE status IN ('ok','partial')"
+                "SELECT max(finished_at) AS ts FROM coco.gmail_sync_runs WHERE status IN ('ok','partial')"
             )
         ).mappings().first()
         latest = db.execute(
@@ -262,7 +262,7 @@ def get_sync_status(db: Session) -> dict:
                 SELECT status, trigger, messages_scanned, candidates_evaluated,
                        found_count, uncertain_count, none_count, started_at, finished_at,
                        error_detail
-                FROM gmail_sync_runs
+                FROM coco.gmail_sync_runs
                 ORDER BY started_at DESC
                 LIMIT 1
                 """

@@ -322,7 +322,7 @@ def _candidates_to_check(db: Session) -> list[dict]:
     SELECT a.id AS application_id, a.candidate_id, a.job_id, lower(c.email) AS email
     FROM applications a
     JOIN candidates c ON c.id = a.candidate_id
-    LEFT JOIN comm_evidence ev ON ev.application_id = a.id
+    LEFT JOIN coco.comm_evidence ev ON ev.application_id = a.id
     WHERE (a.status = 'rejected'
            OR a.status IN ('warm_bench','consider_other_roles')
            OR a.status IN ('shortlisted','gwc_scheduled','case_study_sent','P2'))
@@ -348,7 +348,7 @@ def _upsert_evidence(db: Session, application_id: int, candidate_id: int,
     db.execute(
         text(
             """
-            INSERT INTO comm_evidence
+            INSERT INTO coco.comm_evidence
               (id, application_id, candidate_id, job_id, gmail_status, match_method,
                matched_message_id, gmail_thread_id, internal_date, matched_subject,
                matched_to, matched_snippet, uncertain_reason, checked_at)
@@ -385,7 +385,7 @@ def _upsert_evidence(db: Session, application_id: int, candidate_id: int,
 def _last_watermark(db: Session) -> Optional[dt.datetime]:
     row = db.execute(
         text(
-            "SELECT watermark_after FROM gmail_sync_runs "
+            "SELECT watermark_after FROM coco.gmail_sync_runs "
             "WHERE status IN ('ok','partial') AND watermark_after IS NOT NULL "
             "ORDER BY started_at DESC LIMIT 1"
         )
@@ -412,7 +412,7 @@ def run_sync(
     db.execute(
         text(
             """
-            INSERT INTO gmail_sync_runs (id, trigger, triggered_by, full_resync, status, started_at)
+            INSERT INTO coco.gmail_sync_runs (id, trigger, triggered_by, full_resync, status, started_at)
             VALUES (:id, :trigger, :by, :full, 'running', now())
             """
         ),
@@ -495,7 +495,7 @@ def run_sync(
     db.execute(
         text(
             """
-            UPDATE gmail_sync_runs SET status=:status, query=:query,
+            UPDATE coco.gmail_sync_runs SET status=:status, query=:query,
               messages_scanned=:scanned, candidates_evaluated=:evaluated,
               found_count=:found, uncertain_count=:uncertain, none_count=:none,
               watermark_before=:wb, watermark_after=:wa, error_detail=:err, finished_at=now()
@@ -511,7 +511,7 @@ def run_sync(
     db.commit()
 
     row = db.execute(
-        text("SELECT * FROM gmail_sync_runs WHERE id=:id"), {"id": run_id}
+        text("SELECT * FROM coco.gmail_sync_runs WHERE id=:id"), {"id": run_id}
     ).mappings().first()
     return dict(row) if row else {"id": run_id, "status": status}
 

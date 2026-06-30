@@ -210,7 +210,7 @@ _ENRICHED_CTE = (
       ELSE NULL
     END AS required_email_type
   FROM classified
-  LEFT JOIN comm_evidence ev ON ev.application_id = classified.application_id
+  LEFT JOIN coco.comm_evidence ev ON ev.application_id = classified.application_id
 ),
 flagged AS (
   SELECT enriched.*,
@@ -375,10 +375,10 @@ def last_sync_at(db: Session) -> Optional[str]:
     """Most recent successful Gmail sync finish time (for the 'last synced' chip)."""
     sql = """
     SELECT max(finished_at) AS ts
-    FROM gmail_sync_runs
+    FROM coco.gmail_sync_runs
     WHERE status IN ('ok','partial')
     """
-    row = db.execute(text(sql)).mappings().first()
+    row = _heal_exec(db, sql).mappings().first()
     return row["ts"] if row and row["ts"] else None
 
 

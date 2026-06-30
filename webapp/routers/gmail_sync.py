@@ -78,7 +78,7 @@ def gmail_sync_refresh(
     # Concurrency guard: refuse if a sync started in the last 15 minutes is still running.
     busy = db.execute(
         text(
-            "SELECT 1 FROM gmail_sync_runs WHERE status='running' "
+            "SELECT 1 FROM coco.gmail_sync_runs WHERE status='running' "
             "AND started_at > now() - interval '15 minutes' LIMIT 1"
         )
     ).first()

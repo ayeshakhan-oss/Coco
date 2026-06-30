@@ -84,8 +84,13 @@ def ensure_app_tables() -> None:
     See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
     from .models import CommEvidence, GmailSyncRun  # local import avoids a cycle
 
+    engine = get_engine()
+    # The tables live in a dedicated `coco` schema (out of Markaz's Replit
+    # schema-push blast radius) — create the schema first, then the tables.
+    with engine.begin() as conn:
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS coco"))
     Base.metadata.create_all(
-        get_engine(),
+        engine,
         tables=[CommEvidence.__table__, GmailSyncRun.__table__],
         checkfirst=True,
     )

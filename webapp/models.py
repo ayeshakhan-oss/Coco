@@ -268,6 +268,10 @@ class CommEvidence(Base):
         Index("ix_evidence_candidate_id", "candidate_id"),
         Index("ix_evidence_gmail_status", "gmail_status"),
         Index("ix_evidence_ignored", "ignored", postgresql_where=text("ignored")),
+        # Live in a dedicated `coco` schema so Markaz's Replit per-deploy schema
+        # push (which prunes unknown `public` tables) can't drop them. See
+        # docs/RAILWAY_DEPLOYMENT_LESSONS.md + the 2026-06-30 root-cause memo.
+        {"schema": "coco"},
     )
 
 
@@ -331,4 +335,5 @@ class GmailSyncRun(Base):
         ),
         Index("ix_syncrun_status", "status"),
         Index("ix_syncrun_started_at", "started_at"),
+        {"schema": "coco"},  # see CommEvidence — protected from Markaz's schema push
     )

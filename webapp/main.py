@@ -39,9 +39,12 @@ def _run_scheduled_sync() -> None:
 
     db = get_sessionmaker()()
     try:
+        from .db import ensure_app_tables
+
+        ensure_app_tables()  # self-heal before the busy-check reads gmail_sync_runs
         busy = db.execute(
             text(
-                "SELECT 1 FROM gmail_sync_runs WHERE status='running' "
+                "SELECT 1 FROM coco.gmail_sync_runs WHERE status='running' "
                 "AND started_at > now() - interval '15 minutes' LIMIT 1"
             )
         ).first()
@@ -66,8 +69,11 @@ async def lifespan(_app: "FastAPI"):
     if settings.database_url:
         try:
             from . import models  # noqa: F401  (registers app-owned tables on Base)
-            from .db import Base, get_engine
+            from .db import Base, ensure_app_tables, get_engine
 
+            # ensure_app_tables() creates the `coco` schema + its two tables;
+            # then create_all fills in the public tables (communications, app_users).
+            ensure_app_tables()
             Base.metadata.create_all(get_engine(), checkfirst=True)
         except Exception:  # noqa: BLE001
             _log.exception("startup self-heal (create_all) failed")
