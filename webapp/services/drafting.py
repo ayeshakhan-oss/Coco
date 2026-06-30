@@ -52,6 +52,59 @@ def _fix_instruction(prior_violations: list[dict]) -> str:
     )
 
 
+# The mandatory opening line (locked 2026-06-18) — must mirror the eval's
+# REQUIRED_OPENING_LINE in scripts/evals/candidate_communication_eval.py.
+REQUIRED_OPENING_LINE = "This is not a yes for now."
+_REQUIRED_OPENING_NORM = "this is not a yes for now"
+
+
+def _strip_em_dashes(s):
+    """Replace the em dash (U+2014, a HARD_BLOCK) with a comma. Leaves the en
+    dash (U+2013) untouched — it legitimately appears in role titles like
+    'Deputy Manager – Admin Ops' and is NOT blocked."""
+    if not isinstance(s, str):
+        return s
+    return re.sub(r"\s*—\s*", ", ", s)
+
+
+def _normalize_content(content: dict) -> dict:
+    """Deterministically satisfy the two mechanical HARD_BLOCK rules BEFORE the
+    eval, instead of hoping the model fixes them across retries:
+      1. the mandatory opening line is the first opening paragraph, and
+      2. there are no em dashes anywhere.
+    This is why a generated draft should never hand the user these two blocks."""
+    # 1. Mandatory opening line — ensure the phrase is present in the opening.
+    opening = content.get("opening")
+    if isinstance(opening, str):
+        opening = [opening]
+    elif not isinstance(opening, list):
+        opening = []
+    opening = [p for p in opening if isinstance(p, str)]
+
+    def _norm(s: str) -> str:
+        return re.sub(r"[^a-z ]", "", s.lower()).strip()
+
+    if not any(_REQUIRED_OPENING_NORM in _norm(p) for p in opening):
+        opening = [REQUIRED_OPENING_LINE] + opening
+    content["opening"] = opening
+
+    # 2. Strip em dashes from every text field (subject/title, greeting, opening,
+    #    section sub-heads + paragraphs, P.S.).
+    content["title_line"] = _strip_em_dashes(content.get("title_line"))
+    content["greeting"] = _strip_em_dashes(content.get("greeting"))
+    content["opening"] = [_strip_em_dashes(p) for p in content["opening"]]
+    content["ps"] = _strip_em_dashes(content.get("ps"))
+    sections = content.get("sections") or []
+    for sec in sections:
+        if isinstance(sec, dict):
+            sec["subhead"] = _strip_em_dashes(sec.get("subhead"))
+            sec["paragraphs"] = [
+                _strip_em_dashes(p) for p in (sec.get("paragraphs") or []) if isinstance(p, str)
+            ]
+    content["sections"] = sections
+    return content
+
+
 class StubDrafter:
     """Deterministic, offline drafter. Produces compliant, evidence-shaped filler
     so the full pipeline (render + eval + persistence) can be verified without a key."""
@@ -172,6 +225,10 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
                 system=system, user=user, email_type=email_type,
                 first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
             )
+
+        # Deterministically satisfy the two mechanical hard-blocks (mandatory
+        # opening line + no em dashes) so the user never has to fix them by hand.
+        content = _normalize_content(content)
 
         body_html = rendering.render_body(
             content, email_type=email_type, candidate_name=first_name, role=role, app_id=app_id
