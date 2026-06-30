@@ -94,6 +94,70 @@ class SmtpTransport:
                 pass
 
 
+GMAIL_SEND_SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+]
+
+
+def _build_gmail_send_service():
+    """Gmail API client authorized to send as the OAuth token's account
+    (ayesha.khan@). Reuses the same GMAIL_OAUTH_TOKEN_JSON / token file as the
+    read-only evidence sync; that token must additionally carry the gmail.send
+    scope (re-consent via scripts/auth/setup_gmail_sync_token.py)."""
+    import json
+
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+    import google_auth_httplib2
+    import httplib2
+
+    s = get_settings()
+    if s.gmail_oauth_token_json:
+        creds = Credentials.from_authorized_user_info(
+            json.loads(s.gmail_oauth_token_json), GMAIL_SEND_SCOPES
+        )
+    else:
+        creds = Credentials.from_authorized_user_file(s.gmail_token_file, GMAIL_SEND_SCOPES)
+    if not creds.valid and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+    authed = google_auth_httplib2.AuthorizedHttp(creds, http=httplib2.Http(timeout=30))
+    return build("gmail", "v1", http=authed, cache_discovery=False)
+
+
+class GmailApiTransport:
+    """Sends via the Gmail API over HTTPS (port 443). Used on hosts that block
+    outbound SMTP (e.g. Railway). Delivers as the OAuth account (ayesha.khan@),
+    using the candidate's own To/Cc headers in the raw MIME. Goes through the
+    same recipient allow-list guard as SmtpTransport."""
+
+    def send(self, *, sender, recipients, message, context):
+        import base64
+
+        from ..reuse import guard_and_log_api_send
+
+        raw = base64.urlsafe_b64encode(message.encode("utf-8")).decode("ascii")
+
+        def _deliver():
+            from googleapiclient.errors import HttpError
+
+            svc = _build_gmail_send_service()
+            try:
+                svc.users().messages().send(userId="me", body={"raw": raw}).execute()
+            except HttpError as e:
+                status = getattr(getattr(e, "resp", None), "status", None)
+                if status in (401, 403):
+                    raise SendNotConfigured(
+                        "Gmail token lacks send permission. Re-run "
+                        "scripts/auth/setup_gmail_sync_token.py to grant gmail.send, then "
+                        "update GMAIL_OAUTH_TOKEN_JSON on Railway."
+                    ) from e
+                raise
+
+        guard_and_log_api_send(sender, recipients, context, _deliver)
+
+
 class CaptureTransport:
     """Records sends without delivering — for tests/dry runs."""
 
@@ -110,6 +174,11 @@ def get_transport() -> Transport:
     if _transport_override is not None:
         return _transport_override
     s = get_settings()
+    # Prefer the Gmail API over HTTPS when a Google OAuth token is configured: it
+    # works where outbound SMTP is blocked (Railway drops 587 -> "timed out").
+    # SMTP remains the local-dev path (no token env there).
+    if s.gmail_oauth_token_json:
+        return GmailApiTransport()
     if not s.email_password:
         raise SendNotConfigured("EMAIL_PASSWORD not configured — sending is disabled")
     return SmtpTransport(s.smtp_host, s.smtp_port, s.email_sender, s.email_password)

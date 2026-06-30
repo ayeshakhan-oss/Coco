@@ -44,6 +44,7 @@ from scripts.utils.feedback_widget import feedback_widget  # noqa: E402
 # Recipient-allowlist send bouncer + audit log
 from scripts.utils.safe_send import (  # noqa: E402
     safe_sendmail,
+    guard_and_log_api_send,
     allow_candidate_addresses,
     SecurityError,
 )
@@ -69,6 +70,7 @@ __all__ = [
     "attach_logo",
     "feedback_widget",
     "safe_sendmail",
+    "guard_and_log_api_send",
     "allow_candidate_addresses",
     "SecurityError",
     "evaluate_email",

@@ -112,6 +112,36 @@ def safe_sendmail(
     print(f"[safe_send] SENT | {context} -> {recipients}")
 
 
+def guard_and_log_api_send(sender, recipients, context, deliver):
+    """Allow-list guard + audit logging for NON-SMTP transports (e.g. the Gmail
+    API, used where outbound SMTP is blocked). Same policy as safe_sendmail(),
+    but the actual delivery is delegated to `deliver` (a zero-arg callable) so
+    this bouncer stays free of any transport/library dependency.
+
+    Raises SecurityError (and sends nothing) if any recipient is unapproved.
+    """
+    blocked = [r for r in recipients if not _is_allowed(r)]
+    if blocked:
+        logging.warning(
+            f"BLOCKED | context={context} | sender={sender} | "
+            f"blocked_recipients={blocked} | all_recipients={recipients}"
+        )
+        raise SecurityError(
+            f"\n\nSEND BLOCKED -- unapproved recipient(s) detected:\n"
+            f"   {blocked}\n\n"
+            f"   Only @taleemabad.com, @niete.edu.pk, and explicitly approved\n"
+            f"   candidate addresses are allowed.\n"
+            f"   To send to an external address, call allow_candidate_addresses([...]) first."
+        )
+
+    deliver()
+
+    logging.info(
+        f"SENT | context={context} | sender={sender} | recipients={recipients} | via=gmail_api"
+    )
+    print(f"[safe_send] SENT (gmail-api) | {context} -> {recipients}")
+
+
 class SecurityError(Exception):
     """Raised when a send is blocked due to unapproved recipient."""
     pass

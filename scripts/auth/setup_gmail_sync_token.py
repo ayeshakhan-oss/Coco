@@ -1,9 +1,10 @@
-"""One-time setup: mint (or reuse) a gmail.readonly token for Coco's webapp
-Gmail-evidence sync, and print the authorized-user JSON to paste into Railway as
-GMAIL_OAUTH_TOKEN_JSON.
+"""One-time setup: mint (or reuse) a Gmail token for Coco's webapp and print the
+authorized-user JSON to paste into Railway as GMAIL_OAUTH_TOKEN_JSON.
 
-The webapp only ever READS the Sent mailbox (scope = gmail.readonly). It never
-sends and never reads anything else.
+Scopes: gmail.readonly (the Markaz<->Gmail evidence sync) + gmail.send (so the
+webapp can send candidate emails from ayesha.khan@ over HTTPS — required because
+Railway blocks outbound SMTP). An older readonly-only token is NOT reused; the
+consent window re-opens to add the send scope.
 
 Run locally (Ayesha's machine, signed into ayesha.khan@taleemabad.com):
 
@@ -22,7 +23,10 @@ import json
 import os
 import sys
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",  # evidence sync (read Sent/inbox)
+    "https://www.googleapis.com/auth/gmail.send",       # send candidate emails from the webapp
+]
 TOKEN_PATH = os.path.join(".claude", "config", "token_gmail.json")
 CLIENT_SECRETS = os.path.join("data", "credentials.json")
 EXPECTED_MAILBOX = "ayesha.khan@taleemabad.com"
@@ -47,6 +51,13 @@ def _load_existing():
     except Exception:
         return None
     if not creds.refresh_token:
+        return None
+    # Force a fresh consent if the saved token doesn't already include EVERY
+    # scope we need (e.g. an older readonly-only token can't send).
+    try:
+        if not creds.has_scopes(SCOPES):
+            return None
+    except Exception:
         return None
     try:
         if not creds.valid and creds.expired:
@@ -85,7 +96,7 @@ def main() -> None:
 
     print("\n" + "=" * 70)
     print("Paste the following as the Railway env var  GMAIL_OAUTH_TOKEN_JSON")
-    print("(single line, keep it SECRET — it grants read access to the mailbox):")
+    print("(single line, keep it SECRET — it grants read + SEND on the mailbox):")
     print("=" * 70)
     # Compact single-line JSON for the env var.
     print(json.dumps(json.loads(creds.to_json())))
