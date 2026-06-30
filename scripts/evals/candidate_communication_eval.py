@@ -327,14 +327,20 @@ def check_interviewer_names(text: str) -> Tuple[bool, Optional[str]]:
     Returns: (passed, detail_msg_if_found)
     """
     clean = strip_html(text)
+    # Exclude the salutation ("Dear <Name>,") from this scan: it legitimately
+    # contains the CANDIDATE's OWN name, which can collide with a known
+    # interviewer first name (e.g. a candidate genuinely named Jawwad / Ali /
+    # Fatima). This rule targets an interviewer being NAMED in the body /
+    # rationale, never the candidate's own greeting.
+    scan = re.sub(r'(?i)\bdear\b[^,\n]{1,60},', ' ', clean)
     for name in KNOWN_INTERVIEWERS:
         # Whole-word match (case-sensitive for common names)
         pattern = r'\b' + re.escape(name) + r'\b'
-        matches = re.finditer(pattern, clean)
+        matches = re.finditer(pattern, scan)
         for match in matches:
             start = max(0, match.start() - 40)
-            end = min(len(clean), match.end() + 40)
-            context = clean[start:end].replace('\n', ' ')
+            end = min(len(scan), match.end() + 40)
+            context = scan[start:end].replace('\n', ' ')
             detail = f'Found interviewer name "{match.group()}" in context: ...{context}...'
             return False, detail
     return True, None
