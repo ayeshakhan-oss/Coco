@@ -10,6 +10,7 @@ import {
   Inbox,
   Loader2,
   Mail,
+  PenLine,
   RefreshCw,
   Search,
   XCircle,
@@ -21,8 +22,10 @@ import { StatCard } from '../components/StatCard'
 import { StatusBadge } from '../components/StatusBadge'
 import { Spinner } from '../components/Spinner'
 import { api } from '../lib/api'
-import { fullName, relativeTime, suggestedAction } from '../lib/format'
+import { useBulk } from '../lib/bulk'
+import { emailTypeLabel, fullName, relativeTime, suggestedAction } from '../lib/format'
 import { canApprove, canEdit } from '../lib/roles'
+import { EMAIL_TYPES } from '../lib/types'
 import type { GmailStatus, PositionSummary, QueueRow } from '../lib/types'
 
 type Filter =
@@ -193,6 +196,9 @@ function CandidatesView({ job }: { job: number | null }) {
   const bucket = ((params.get('status') as Filter) || 'relevant') as Filter
   const [match, setMatch] = useState<{ appId: number; name: string } | null>(null)
   const [selected, setSelected] = useState<Set<number>>(new Set())
+  const bulk = useBulk()
+  const [showTypes, setShowTypes] = useState(false)
+  const [banner, setBanner] = useState<string | null>(null)
 
   const [search, setSearch] = useState(params.get('q') || '')
   const [debouncedQ, setDebouncedQ] = useState(search)
@@ -234,6 +240,29 @@ function CandidatesView({ job }: { job: number | null }) {
   const bulkMarkSent = useMutation({ mutationFn: () => api.bulkMarkSent([...selected]), onSuccess: invalidate })
   const bulkIgnore = useMutation({ mutationFn: () => api.bulkIgnore([...selected], true), onSuccess: invalidate })
   const bulkBusy = bulkMarkSent.isPending || bulkIgnore.isPending
+
+  // Bulk-draft: generate a feedback email of the chosen type for each selected
+  // candidate and submit it, so the batch lands in Review ready to approve/send.
+  async function bulkDraft(emailType: string) {
+    setShowTypes(false)
+    setBanner(null)
+    const ids = [...selected]
+    const { failed } = await bulk.run(
+      ids,
+      async (appId) => {
+        const r = await api.generate(appId, emailType)
+        await api.submit(r.communication.id)
+      },
+      (id) => `#${id}`,
+    )
+    const ok = ids.length - failed.length
+    setBanner(
+      `Drafted ${ok} of ${ids.length} ${emailTypeLabel(emailType).toLowerCase()} email${ids.length === 1 ? '' : 's'}` +
+        (failed.length ? `, ${failed.length} could not be drafted (open them individually)` : '') +
+        ' — now in Review for approval.',
+    )
+    invalidate()
+  }
 
   function toggle(id: number) {
     setSelected((prev) => {
@@ -278,10 +307,54 @@ function CandidatesView({ job }: { job: number | null }) {
         </div>
       </div>
 
+      {/* Bulk-draft result banner */}
+      {banner && (
+        <div className="mb-3 flex items-center gap-3 rounded-xl border border-green/30 bg-green/10 px-4 py-2.5 text-sm text-ink">
+          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-green" />
+          <span>{banner}</span>
+          <button type="button" onClick={() => navigate('/review')} className="ml-auto whitespace-nowrap font-medium text-blurple-600 hover:underline">
+            Go to Review →
+          </button>
+          <button type="button" onClick={() => setBanner(null)} className="text-ink-dim hover:text-ink" aria-label="Dismiss">
+            <XCircle className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       {/* Bulk action bar */}
       {selected.size > 0 && (
         <div className="mb-3 flex flex-wrap items-center gap-3 rounded-xl border border-blurple/40 bg-blurple/5 px-4 py-2.5">
           <span className="text-sm font-semibold text-ink">{selected.size} selected</span>
+          {canEdit(role) && (
+            <div className="relative">
+              <button
+                type="button"
+                disabled={bulk.running || bulkBusy}
+                onClick={() => setShowTypes((v) => !v)}
+                className="btn btn-primary h-8 text-sm"
+              >
+                {bulk.running ? <Loader2 className="h-4 w-4 animate-spin" /> : <PenLine className="h-4 w-4" />}
+                {bulk.running ? `Drafting ${bulk.done}/${bulk.total}…` : 'Draft feedback'}
+              </button>
+              {showTypes && !bulk.running && (
+                <div className="absolute left-0 top-full z-20 mt-1 w-60 overflow-hidden rounded-lg border border-hairline bg-surface shadow-lg">
+                  <div className="border-b border-hairline px-3 py-1.5 text-xs font-medium text-ink-dim">
+                    Draft which email for all {selected.size}?
+                  </div>
+                  {EMAIL_TYPES.map((t) => (
+                    <button
+                      key={t.value}
+                      type="button"
+                      onClick={() => bulkDraft(t.value)}
+                      className="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-elevated"
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
           {canApprove(role) && (
             <button type="button" disabled={bulkBusy} onClick={() => bulkMarkSent.mutate()} className="btn btn-green h-8 text-sm">
               {bulkMarkSent.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
