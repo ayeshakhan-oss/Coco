@@ -346,6 +346,29 @@ def check_interviewer_names(text: str) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
+# First-person-SINGULAR pronouns. The email speaks in the company's collective
+# voice ("we"/"our"/"us"), never as one individual ("I"/"my"/"me"). Whole-word
+# matching, so "AI", "many", "time", "some" never trip it.
+_FIRST_PERSON_SINGULAR = re.compile(
+    r"\bI\b|\bI['’](?:m|ve|ll|d)\b|\b[Mm]y\b|\b[Mm]ine\b|\b[Mm]e\b|\b[Mm]yself\b"
+)
+
+
+def check_first_person_singular(text: str) -> Tuple[bool, Optional[str]]:
+    """The email must use the collective 'we' voice, never first-person singular.
+    A decision from Taleemabad is 'we', not one person's 'I'."""
+    clean = strip_html(text)
+    m = _FIRST_PERSON_SINGULAR.search(clean)
+    if m:
+        i = m.start()
+        ctx = clean[max(0, i - 40): i + 40].replace('\n', ' ')
+        detail = (f'First-person singular "{m.group()}" found. Write in the '
+                  f'collective "we"/"our"/"us" voice, never "I"/"my"/"me". '
+                  f'Context: ...{ctx}...')
+        return False, detail
+    return True, None
+
+
 def check_haroon_balance(body: str, email_type: str) -> Tuple[bool, Optional[str], int, int]:
     """
     Check Haroon Yasin balance rule: praise count should ≈ decision count.
@@ -577,6 +600,15 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'No interviewer names',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 7b. Collective "we" voice (no first-person singular)
+    passed, detail = check_first_person_singular(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'Collective "we" voice (no "I"/"my"/"me")',
             'severity': 'HARD_BLOCK',
             'detail': detail,
         })

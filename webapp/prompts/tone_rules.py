@@ -57,6 +57,11 @@ You are drafting ONE candidate-communication email. Return ONLY valid JSON
 {headings}
 
 HARD RULES (the email is automatically REJECTED if any is violated):
+- VOICE: write ONLY in the first-person PLURAL, collective voice — "we", "our",
+  "us". This message is from Taleemabad as a team, never one individual. NEVER
+  use first-person singular anywhere: no "I", "I'm", "I've", "I'll", "I'd",
+  "my", "me", "mine", "myself". (e.g. write "we reviewed", "we want to be
+  honest", "we noticed" — never "I reviewed", "I want to share", "I know".)
 - At least 800 words total across greeting + opening + all paragraphs + ps.
 - The FIRST item in "opening" MUST be exactly: "This is not a yes for now."
   (verbatim, its own paragraph, right after the greeting, for EVERY email type).
