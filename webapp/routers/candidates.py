@@ -37,6 +37,9 @@ _BUCKETS = {
     "needs_review",
     "in_progress",
     "sent",
+    "shortlisted",
+    "interview_scheduled",
+    "case_study",
     "awaiting_scorecard",
     "ignored",
 }
