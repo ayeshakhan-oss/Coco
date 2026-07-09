@@ -287,6 +287,29 @@ Internally, we do revisit and look back at warm-bench candidates. That truth sta
 
 ---
 
+## RULE 12 — COLLECTIVE "WE" VOICE (LOCKED 2026-07-09)
+
+Every candidate email speaks in Taleemabad's collective voice: **"we" / "our" /
+"us"**, never one individual. **FORBIDDEN anywhere:** "I", "I'm", "I've", "I'll",
+"I'd", "my", "me", "mine", "myself". A decision is the organisation's, not a
+person's. Write "we reviewed", "we want to be honest", "we noticed" — never "I
+reviewed", "I want to share", "I know". Harness HARD BLOCK + drafting prompt.
+
+## RULE 13 — CV / APPLICATION-STAGE = WRITTEN APPLICATION ONLY (LOCKED 2026-07-09)
+
+A **CV rejection** is for a candidate screened out at the application stage.
+**There was NO interview, call, conversation, meeting, or assessment with them.**
+NEVER reference or imply one. Forbidden in a `cv_rejection`: "conversation(s)",
+"we spoke", "we met", "our discussion/meeting/call", "our time together", "across
+conversations and assessments", "what we observed [in you]". Ground EVERYTHING in
+the written application ("your application", "your CV", "the experience you
+described"). Referencing the interview **stage they did not reach** ("we've
+decided not to move you forward to the interview stage") is fine — a conversation
+that occurred is not. Warm bench / GWC / values feedback DID have an interview and
+may reference it. Harness HARD BLOCK (cv_rejection only) + drafting prompt.
+
+---
+
 ## HARNESS VALIDATION RULES (2026-06-09)
 
 ### HARD BLOCKS (Email cannot send)
@@ -304,6 +327,8 @@ Internally, we do revisit and look back at warm-bench candidates. That truth sta
 | Interviewer names | "Sarah said", "When Jawad asked" | Anonymity Rule: Haroon Yasin |
 | Missing sections | Missing required section (e.g., "What Stayed With Us") | Structure Rule: Haroon Yasin |
 | Missing opening line | "This is not a yes for now." absent, or buried after a heading | Rule 10: Mandatory Opening Line (2026-06-18) |
+| First-person singular | "I", "I'm", "I've", "my", "me", "mine", "myself" anywhere | Rule 12: Collective "We" Voice (2026-07-09) |
+| Fabricated interaction (CV rejection ONLY) | "conversation", "we spoke", "we met", "our discussion/meeting/call", "our time together" in a `cv_rejection` | Rule 13: CV-Stage = Application Only (2026-07-09) |
 
 ### WARNINGS (Email allowed to send, Ayesha notified)
 
