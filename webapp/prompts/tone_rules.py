@@ -85,9 +85,36 @@ HARD RULES (the email is automatically REJECTED if any is violated):
 """
 
 
+_CV_STAGE_NOTE = """
+========================================================================
+CV / APPLICATION-STAGE REJECTION — NO INTERACTION EVER HAPPENED
+========================================================================
+This candidate was screened out at the CV / application stage. There was NO
+interview, NO phone/video call, NO conversation, NO meeting, and NO assessment
+with them. You have ONLY their written application / CV.
+- NEVER reference or imply any interview, conversation, call, meeting, or
+  discussion WITH the candidate, and never "across conversations and
+  assessments", "our conversation", "when we spoke/met", "our time together",
+  or "what we observed [in you]". None of that happened — writing it is a
+  fabrication and will be rejected.
+- Ground EVERYTHING only in what a written application can show: "your
+  application", "your CV", "the experience you described", "your materials".
+- "What we appreciated" = specific genuine strengths visible in the written
+  application. "Where we found questions" = specific gaps/uncertainties in the
+  application relative to the role. Honest and concrete, never invented.
+- You MAY refer to the interview stage they did not reach (e.g. "we've decided
+  not to move forward to the interview stage") — that is about a stage, not a
+  conversation that occurred.
+========================================================================
+"""
+
+
 @lru_cache
 def system_prompt(email_type: str) -> str:
     required = SECTION_HEADINGS.get(email_type, {}).get("required", [])
     headings = "\n".join(f"    {i + 1}. {h}" for i, h in enumerate(required))
     contract = _OUTPUT_CONTRACT.replace("{headings}", headings or "    (none)")
-    return _tone_master() + "\n\n" + contract
+    prompt = _tone_master() + "\n\n" + contract
+    if email_type == "cv_rejection":
+        prompt += "\n" + _CV_STAGE_NOTE
+    return prompt

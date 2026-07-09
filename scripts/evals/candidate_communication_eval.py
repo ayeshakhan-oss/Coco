@@ -369,6 +369,37 @@ def check_first_person_singular(text: str) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
+# CV/application-stage rejections had NO interview, call, or conversation — only
+# a written application. These phrases fabricate an interaction that never
+# happened. Checked for cv_rejection ONLY. Domain words that CAN be legit ("the
+# interview stage", "assessment", an "in-person" role) are deliberately excluded.
+_CV_INTERACTION_PHRASES = (
+    "conversation", "we spoke", "spoke with", "we met", "met with you",
+    "when we talked", "talked with you", "our discussion", "we discussed",
+    "our meeting", "our call", "our time together",
+)
+
+
+def check_cv_no_interaction(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """A CV/application-stage rejection must not imply an interview / call /
+    conversation that never happened. Applies to cv_rejection ONLY — everything
+    must be grounded in the written application/CV."""
+    if email_type != "cv_rejection":
+        return True, None
+    clean = strip_html(text).lower()
+    for phrase in _CV_INTERACTION_PHRASES:
+        idx = clean.find(phrase)
+        if idx != -1:
+            ctx = clean[max(0, idx - 30): idx + 40].replace("\n", " ")
+            detail = (f'CV-stage rejection implies an interaction that never happened '
+                      f'("{phrase}"). This candidate was screened on their WRITTEN '
+                      f'application only. Ground everything in "your application"/"your CV"; '
+                      f'do not reference interviews, calls, or conversations. '
+                      f'Context: ...{ctx}...')
+            return False, detail
+    return True, None
+
+
 def check_haroon_balance(body: str, email_type: str) -> Tuple[bool, Optional[str], int, int]:
     """
     Check Haroon Yasin balance rule: praise count should ≈ decision count.
@@ -609,6 +640,15 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'Collective "we" voice (no "I"/"my"/"me")',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 7c. CV-stage rejection must not fabricate an interview/conversation
+    passed, detail = check_cv_no_interaction(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'CV rejection: no fabricated interview/conversation',
             'severity': 'HARD_BLOCK',
             'detail': detail,
         })
