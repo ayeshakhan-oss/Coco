@@ -249,6 +249,7 @@ def send(
     app_row = reads.get_application(db, comm.application_id) if comm.application_id else None
     first_name = (app_row.get("first_name") if app_row else None) or "there"
     candidate_email = app_row.get("email") if app_row else None
+    hm_email = reads.hiring_manager_email(db, comm.job_id) if mode == "live" else None
 
     if mode == "live":
         if ROLE_LEVEL.get(user.get("app_role", "viewer"), 0) < ROLE_LEVEL["approver"]:
@@ -258,7 +259,8 @@ def send(
 
     try:
         result = sending.send_communication(
-            comm, mode=mode, first_name=first_name, candidate_email=candidate_email
+            comm, mode=mode, first_name=first_name, candidate_email=candidate_email,
+            hiring_manager_email=hm_email,
         )
     except sending.SendBlocked as e:
         raise HTTPException(422, detail={"message": "Blocked by validation", "violations": e.violations})

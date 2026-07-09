@@ -409,6 +409,20 @@ def get_scorecards_raw(db: Session, application_id: int) -> Optional[dict]:
     return dict(row) if row else None
 
 
+def hiring_manager_email(db: Session, job_pk: Optional[int]) -> Optional[str]:
+    """Email of the hiring manager for a job (Markaz jobs.hiring_manager -> users.id
+    -> users.email). Used to CC the hiring manager on LIVE candidate sends."""
+    if not job_pk:
+        return None
+    row = _heal_exec(
+        db,
+        "SELECT lower(u.email) AS email FROM jobs j JOIN users u ON u.id = j.hiring_manager "
+        "WHERE j.id = :j AND u.email IS NOT NULL",
+        {"j": job_pk},
+    ).mappings().first()
+    return row["email"] if row and row["email"] else None
+
+
 def list_jobs(db: Session, active_only: bool = True) -> list[dict]:
     sql = """
     SELECT j.id AS job_pk, j.job_id AS job_code, j.title, j.job_status, j.department

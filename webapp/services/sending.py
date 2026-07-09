@@ -184,14 +184,22 @@ def get_transport() -> Transport:
     return SmtpTransport(s.smtp_host, s.smtp_port, s.email_sender, s.email_password)
 
 
-def resolve_recipients(mode: str, candidate_email: Optional[str]) -> tuple[list[str], list[str], list[str]]:
-    """Returns (to, all_recipients, cc)."""
+def resolve_recipients(
+    mode: str, candidate_email: Optional[str], hiring_manager: Optional[str] = None
+) -> tuple[list[str], list[str], list[str]]:
+    """Returns (to, all_recipients, cc). Pilot -> Ayesha only. Live -> candidate,
+    CC hiring@ + Ayesha + (when known) the role's hiring manager from Markaz."""
     if mode == "pilot":
         return [PILOT_RECIPIENT], [PILOT_RECIPIENT], []
     if not candidate_email:
         raise ValueError("Live send requires a candidate email")
     to = [candidate_email]
     cc = list(LIVE_CC)
+    if hiring_manager:
+        hm = hiring_manager.strip().lower()
+        seen = {c.lower() for c in cc} | {candidate_email.strip().lower()}
+        if hm and hm not in seen:
+            cc.append(hm)
     return to, to + cc, cc
 
 
@@ -223,6 +231,7 @@ def send_communication(
     mode: str,
     first_name: str,
     candidate_email: Optional[str],
+    hiring_manager_email: Optional[str] = None,
     transport: Optional[Transport] = None,
 ) -> dict:
     """Gate + build + send. Returns the resolved recipients / subject / message_id
@@ -241,7 +250,7 @@ def send_communication(
     if any(v["severity"] == "HARD_BLOCK" for v in result["violations"]):
         raise SendBlocked(result["violations"])
 
-    to, all_recipients, cc = resolve_recipients(mode, candidate_email)
+    to, all_recipients, cc = resolve_recipients(mode, candidate_email, hiring_manager_email)
     msg, message_id = _build_message(
         full_html=full_html, subject=subject, sender=settings.email_sender, to=to, cc=cc
     )
