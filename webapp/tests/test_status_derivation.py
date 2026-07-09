@@ -71,24 +71,40 @@ def test_manual_override_is_sent():
     assert _d(manual_marked=True, comm_required=True, is_high_priority=True) == "sent"
 
 
-def test_gmail_found_is_sent():
-    assert _d(gmail_status="found") == "sent"
+def test_gmail_found_is_sent_only_when_comms_required():
+    # External evidence = "Sent" ONLY for a candidate who needs a rejection/feedback.
+    # For a not-yet-decided candidate a found email is an interview invite, so they
+    # stay in their pipeline stage (default status -> awaiting_scorecard).
     assert _d(gmail_status="found", comm_required=True) == "sent"
+    assert _d(gmail_status="found", comm_required=False) == "awaiting_scorecard"
 
 
-def test_markaz_log_counts_as_sent():
-    # A logged Markaz communication is real evidence — both sources are referenced.
-    assert _d(markaz_comms=1) == "sent"
+def test_markaz_log_counts_as_sent_only_when_comms_required():
+    # A logged Markaz communication is evidence of a rejection ONLY if one was due.
     assert _d(markaz_comms=2, comm_required=True, is_high_priority=True) == "sent"
+    # Markaz log on a not-decided candidate is an invite -> NOT "sent".
+    assert _d(markaz_comms=1, comm_required=False) == "awaiting_scorecard"
     # No Markaz log + comm required + no other evidence -> still needs comms.
     assert _d(markaz_comms=0, comm_required=True) == "needs_comms"
 
 
-def test_gmail_uncertain_is_needs_review():
-    assert _d(gmail_status="uncertain") == "needs_review"
-    # Needs Review beats in_progress / needs_comms (but not actual sent/manual).
-    assert _d(gmail_status="uncertain", active_count=1) == "needs_review"
+def test_gmail_uncertain_is_needs_review_only_when_comms_required():
+    assert _d(gmail_status="uncertain", comm_required=True) == "needs_review"
     assert _d(gmail_status="uncertain", comm_required=True, is_high_priority=True) == "needs_review"
+    # Ambiguous match on a not-decided candidate -> still their pipeline stage.
+    assert _d(gmail_status="uncertain", comm_required=False) == "awaiting_scorecard"
+
+
+def test_pipeline_stage_is_mirrored_from_markaz():
+    # Not-yet-decided candidates show their Markaz stage, never "Sent" (an invite
+    # in Gmail/Markaz must not flip them to Sent).
+    assert _d(status="shortlisted") == "shortlisted"
+    assert _d(status="shortlisted", gmail_status="found") == "shortlisted"
+    assert _d(status="shortlisted", markaz_comms=1) == "shortlisted"
+    assert _d(status="gwc_scheduled") == "interview_scheduled"
+    assert _d(status="case_study_sent") == "case_study"
+    # But a real app-send/manual mark still wins (they truly were sent something).
+    assert _d(status="shortlisted", sent_count=1) == "sent"
 
 
 def test_in_progress():
@@ -105,10 +121,12 @@ def test_ignored_leaves_the_action_queues():
     # Ignored dismisses a candidate out of needs_comms / high_priority.
     assert _d(ignored=True, comm_required=True, is_high_priority=True) == 'ignored'
     assert _d(ignored=True, comm_required=True) == 'ignored'
-    assert _d(ignored=True, gmail_status='uncertain') == 'ignored'
-    # But real evidence still wins over ignore (they WERE contacted).
+    assert _d(ignored=True, gmail_status='uncertain', comm_required=True) == 'ignored'
+    # A real app-send always wins over ignore (they WERE contacted).
     assert _d(ignored=True, sent_count=1) == 'sent'
-    assert _d(ignored=True, markaz_comms=1) == 'sent'
+    # Markaz/Gmail evidence beats ignore only when a rejection was actually due.
+    assert _d(ignored=True, markaz_comms=1, comm_required=True) == 'sent'
+    assert _d(ignored=True, markaz_comms=1, comm_required=False) == 'ignored'
 
 
 def test_awaiting_scorecard_default():

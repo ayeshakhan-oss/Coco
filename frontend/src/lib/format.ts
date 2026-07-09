@@ -68,6 +68,12 @@ export function suggestedAction(row: QueueRow): string {
       return 'Verify Gmail match'
     case 'ignored':
       return 'Ignored'
+    case 'shortlisted':
+      return 'Shortlisted · awaiting decision'
+    case 'interview_scheduled':
+      return 'Interview scheduled'
+    case 'case_study':
+      return 'Case study sent'
     case 'awaiting_scorecard':
       return 'Awaiting decision'
     default:

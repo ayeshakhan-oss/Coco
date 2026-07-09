@@ -7,6 +7,9 @@ const STATUS_STYLES: Record<DisplayStatus, { label: string; cls: string }> = {
   in_progress: { label: 'In progress', cls: 'bg-blurple/20 text-blurple-600' },
   sent: { label: 'Sent', cls: 'bg-green/15 text-green' },
   needs_review: { label: 'Needs review', cls: 'bg-cyan/15 text-cyan' },
+  shortlisted: { label: 'Shortlisted', cls: 'bg-violet/15 text-violet' },
+  interview_scheduled: { label: 'Interview scheduled', cls: 'bg-blurple/15 text-blurple-600' },
+  case_study: { label: 'Case study sent', cls: 'bg-blurple/15 text-blurple-600' },
   awaiting_scorecard: { label: 'Awaiting scorecard', cls: 'bg-elevated text-ink-dim' },
   ignored: { label: 'Ignored', cls: 'bg-elevated text-ink-dim line-through decoration-ink-dim/40' },
 }

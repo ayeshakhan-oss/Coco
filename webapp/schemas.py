@@ -91,6 +91,7 @@ class QueueStats(_Base):
     in_progress: int
     sent: int
     needs_review: int = 0
+    shortlisted: int = 0
     awaiting_scorecard: int
     ignored: int = 0
     scored: int
@@ -109,6 +110,7 @@ class PositionSummary(_Base):
     in_progress: int
     sent: int
     needs_review: int = 0
+    shortlisted: int = 0
     awaiting_scorecard: int = 0
     scored: int
     total: int = 0

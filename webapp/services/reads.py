@@ -113,6 +113,13 @@ def compute_is_high_priority(
     )
 
 
+_STAGE_DISPLAY = {
+    "shortlisted": "shortlisted",
+    "gwc_scheduled": "interview_scheduled",
+    "case_study_sent": "case_study",
+}
+
+
 def derive_display_status(
     *,
     sent_count: int,
@@ -123,15 +130,20 @@ def derive_display_status(
     is_high_priority: bool,
     markaz_comms: int = 0,
     ignored: bool = False,
+    status: Optional[str] = None,
 ) -> str:
     """Pure derivation — MUST match the SQL `displayed` CTE precedence below.
-    Evidence of communication = app-sent OR manual OR Gmail-found OR Markaz log.
-    An ignored candidate (no evidence) is dismissed out of all action queues."""
-    if sent_count > 0 or manual_marked or gmail_status == "found" or (markaz_comms or 0) > 0:
+    A deliberate app-send or manual mark is always Sent. External evidence
+    (Gmail-found / Markaz log) counts as Sent ONLY when a rejection/feedback is
+    actually required (comm_required); for a not-yet-decided candidate an email
+    on record is an interview INVITE, so they stay 'awaiting_scorecard'."""
+    if sent_count > 0 or manual_marked:
+        return "sent"
+    if comm_required and (gmail_status == "found" or (markaz_comms or 0) > 0):
         return "sent"
     if ignored:
         return "ignored"
-    if gmail_status == "uncertain":
+    if comm_required and gmail_status == "uncertain":
         return "needs_review"
     if active_count > 0:
         return "in_progress"
@@ -139,7 +151,8 @@ def derive_display_status(
         return "high_priority"
     if comm_required:
         return "needs_comms"
-    return "awaiting_scorecard"
+    # Not decided yet -> mirror the Markaz pipeline stage.
+    return _STAGE_DISPLAY.get(status or "", "awaiting_scorecard")
 
 
 # ── Shared CTE chain ─────────────────────────────────────────────────────────
@@ -228,12 +241,23 @@ flagged AS (
 displayed AS (
   SELECT flagged.*,
     CASE
-      WHEN sent_count > 0 OR manual_marked OR gmail_status = 'found' OR prior_platform_comms > 0 THEN 'sent'
+      -- A deliberate app-send or a human "mark sent" is always Sent.
+      WHEN sent_count > 0 OR manual_marked THEN 'sent'
+      -- External evidence (Gmail / Markaz log) counts as Sent ONLY for candidates
+      -- who actually need a rejection/feedback. For a not-yet-decided candidate
+      -- (shortlisted, scheduled, etc.) an email on record is an interview INVITE,
+      -- not their decision — so they stay "Awaiting scorecard", not "Sent".
+      WHEN comm_required AND (gmail_status = 'found' OR prior_platform_comms > 0) THEN 'sent'
       WHEN ignored THEN 'ignored'
-      WHEN gmail_status = 'uncertain' THEN 'needs_review'
+      WHEN comm_required AND gmail_status = 'uncertain' THEN 'needs_review'
       WHEN active_count > 0 THEN 'in_progress'
       WHEN comm_required AND is_high_priority THEN 'high_priority'
       WHEN comm_required THEN 'needs_comms'
+      -- Not decided yet: mirror the Markaz pipeline stage instead of a generic
+      -- label, so an invited/shortlisted candidate reads "Shortlisted", never "Sent".
+      WHEN status = 'shortlisted' THEN 'shortlisted'
+      WHEN status = 'gwc_scheduled' THEN 'interview_scheduled'
+      WHEN status = 'case_study_sent' THEN 'case_study'
       ELSE 'awaiting_scorecard'
     END AS display_status
   FROM flagged
@@ -250,7 +274,7 @@ _BUCKET_PREDICATE = """
     WHEN 'relevant' THEN comms_relevant
     WHEN 'scored' THEN (values_filled OR gwc_filled)
     WHEN 'sent' THEN (sent_count > 0)
-    WHEN 'already_sent' THEN (comms_relevant AND has_evidence)
+    WHEN 'already_sent' THEN (display_status = 'sent')
     WHEN 'needs_comms' THEN (comms_relevant AND comm_required AND active_count = 0
         AND NOT has_evidence AND gmail_status <> 'uncertain' AND NOT ignored)
     WHEN 'high_priority' THEN is_high_priority
@@ -314,6 +338,7 @@ SELECT job_pk, job_code, job_title,
   count(*) FILTER (WHERE display_status = 'in_progress') AS in_progress,
   count(*) FILTER (WHERE display_status = 'sent') AS sent,
   count(*) FILTER (WHERE display_status = 'needs_review') AS needs_review,
+  count(*) FILTER (WHERE display_status = 'shortlisted') AS shortlisted,
   count(*) FILTER (WHERE display_status = 'awaiting_scorecard') AS awaiting_scorecard,
   count(*) FILTER (WHERE values_filled OR gwc_filled) AS scored,
   count(*) AS total,
@@ -335,6 +360,7 @@ SELECT
   count(*) FILTER (WHERE display_status = 'in_progress') AS in_progress,
   count(*) FILTER (WHERE display_status = 'sent') AS sent,
   count(*) FILTER (WHERE display_status = 'needs_review') AS needs_review,
+  count(*) FILTER (WHERE display_status = 'shortlisted') AS shortlisted,
   count(*) FILTER (WHERE display_status = 'awaiting_scorecard') AS awaiting_scorecard,
   count(*) FILTER (WHERE display_status = 'ignored') AS ignored,
   count(*) FILTER (WHERE values_filled OR gwc_filled) AS scored,
@@ -361,6 +387,7 @@ WHERE comms_relevant
         "in_progress": int(r.get("in_progress", 0) or 0),
         "sent": int(r.get("sent", 0) or 0),
         "needs_review": int(r.get("needs_review", 0) or 0),
+        "shortlisted": int(r.get("shortlisted", 0) or 0),
         "awaiting_scorecard": int(r.get("awaiting_scorecard", 0) or 0),
         "ignored": int(r.get("ignored", 0) or 0),
         "scored": int(r.get("scored", 0) or 0),

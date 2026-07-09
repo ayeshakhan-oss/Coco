@@ -33,6 +33,7 @@ type Filter =
   | 'needs_comms'
   | 'high_priority'
   | 'already_sent'
+  | 'shortlisted'
   | 'awaiting_scorecard'
   | 'needs_review'
   | 'ignored'
@@ -42,6 +43,7 @@ const FILTER_CHIPS: { key: Filter; label: string }[] = [
   { key: 'needs_comms', label: 'Needs comms' },
   { key: 'high_priority', label: 'High priority' },
   { key: 'already_sent', label: 'Sent' },
+  { key: 'shortlisted', label: 'Shortlisted' },
   { key: 'awaiting_scorecard', label: 'Awaiting' },
   { key: 'needs_review', label: 'Needs review' },
   { key: 'ignored', label: 'Ignored' },
@@ -178,6 +180,7 @@ function PositionCard({ p, onClick }: { p: PositionSummary; onClick: () => void 
         {p.needs_comms > 0 && <span className="text-magenta">{p.needs_comms} need comms</span>}
         {p.sent > 0 && <span className="text-green">{p.sent} sent</span>}
         {p.needs_review > 0 && <span className="text-cyan">{p.needs_review} review</span>}
+        {p.shortlisted > 0 && <span className="text-violet">{p.shortlisted} shortlisted</span>}
         {p.awaiting_scorecard > 0 && <span className="text-ink-dim">{p.awaiting_scorecard} awaiting</span>}
       </div>
       <div className="mt-3 pl-10 text-[11px] text-ink-dim">Gmail synced {relativeTime(p.last_gmail_sync_at)}</div>
@@ -440,6 +443,9 @@ const BORDER_TONE: Record<string, string> = {
   needs_comms: 'border-l-magenta',
   needs_review: 'border-l-cyan',
   in_progress: 'border-l-blurple',
+  shortlisted: 'border-l-violet',
+  interview_scheduled: 'border-l-blurple',
+  case_study: 'border-l-blurple',
   awaiting_scorecard: 'border-l-ink-dim',
   ignored: 'border-l-ink-dim',
 }
