@@ -63,6 +63,7 @@ scripts/send_noor_ul_ain_warm_bench_cpd_pilot.py
 scripts/send_tehreem_gulalai_gwc_rejection_draft.py
 scripts/send_tehreem_gulalai_gwc_rejection_pilot.py
 scripts/tehreem_gulalai_gwc_rejection_pilot.html
+scripts/send_role_closure_pilot.py
 
 # VENDORED THIRD-PARTY UI/UX SKILL (local-only, reinstall via: npx uipro-cli init --ai claude)
 .claude/skills/ui-ux-pro-max/
