@@ -1,6 +1,6 @@
 ---
 name: 06_candidate-invites
-description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite, Keep-in-Touch Note. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, communicate next steps, or send a post-conversation warm-hold/keep-in-touch note while a decision is pending. The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
+description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite, Keep-in-Touch Note, Interview Reminder. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, communicate next steps, send a post-conversation warm-hold/keep-in-touch note while a decision is pending, or remind a candidate about an already-booked interview (day-before reminder with verified date/time from the calendar or Gmail). The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
 compatibility:
   tools:
     - safe_sendmail (scripts/utils/safe_send.py)
@@ -17,6 +17,7 @@ compatibility:
 - ✅ Exploratory Call Invite
 - ✅ Warm Bench Opportunity Invite
 - ✅ Keep-in-Touch Note (post-conversation warm hold — NO booking button)
+- ✅ Interview Reminder (day-before nudge for an ALREADY-BOOKED interview — verified calendar data only)
 
 ---
 
@@ -28,7 +29,7 @@ compatibility:
 
 ---
 
-## The Five Invite Types
+## The Six Invite Types
 
 ### 1. Values Interview Invite
 
@@ -149,6 +150,37 @@ Booking: [Google Calendar URL]
 2. **NO promise or commitment.** Forbidden: "we will reach out / be in touch / contact you", hard dates ("by early July"), or any outcome guarantee. Use honest, conditional language only ("when we have more clarity, we would genuinely welcome the chance to be back in touch"). The candidate must have nothing to "count on."
 
 Full spec + tone rationale: [memory/keep_in_touch_note_type_2026_06_19.md](../../memory/keep_in_touch_note_type_2026_06_19.md)
+
+---
+
+### 6. Interview Reminder (Day-Before)
+
+**When:** A candidate has an ALREADY-BOOKED interview tomorrow (any stage — zero-in, values, GWC, debrief). We remind them of the date and time so no-shows drop. Sent the day before, one individual email per candidate.
+
+**Required Info (ALL must come from verified sources — the calendar event or its Gmail booking/invitation emails; NEVER assumed):**
+- Candidate first name + email (from the booking email / Markaz — cross-check both)
+- Position title
+- Interview date ("Friday, July 24, 2026") and time range ("11:00 AM – 12:00 PM, Pakistan Standard Time")
+- Google Meet link — OPTIONAL (see rules below)
+
+**Script:** `scripts/send_interview_reminder_pilot.py` (holds an `INTERVIEWS` list; pilots every email to Ayesha first, then sends each candidate an individual live email)
+
+**Key Content:**
+- Header label: `TALENT ACQUISITION • INTERVIEW REMINDER`
+- Title: "Your Interview is Tomorrow" / Subtitle: position title
+- Greeting: "Hi [First Name],"
+- Hook: friendly reminder naming the role + tomorrow's date and time (date/time also repeated as a bold blue callout line)
+- Recording consent line (same as invite): "This session will be recorded..."
+- Reschedule offer: "If anything has come up and the time no longer works, simply reply to this email..."
+- CTA: purple button **"🎥 Join your Interview"** linking to the Google Meet link — ONLY if the real Meet link is verified. If no verified link, NO button; use the line "You can join using the Google Meet link in your calendar invitation." instead.
+- Subject (default): "Reminder: Your Interview for [POSITION] is Tomorrow — [Day, Month DD]"
+
+**🔒 HARD RULES for this type:**
+1. **Verified calendar data only.** Date, time, timezone, and Meet link must come from the actual calendar event or its Gmail notification emails. If the calendar API token is unavailable, use the Gmail evidence trail (booking confirmations / "Invitation:" emails). NEVER reconstruct a time from memory or from Markaz stage data.
+2. **Check for cancellations/reschedules first.** Before drafting, search Gmail for `subject:(cancelled OR canceled OR rescheduled)` + the date. A reminder for a cancelled slot is worse than no reminder.
+3. **Never fabricate the Meet link.** No verified link → no button (fallback line above). A wrong link strands the candidate.
+4. **No unverified names.** If the candidate booked with an email that has no display name and no Markaz record, get the name confirmed by Ayesha before drafting — never guess from the email address.
+5. **Timing:** send the day before the interview (candidate already has the invite; this is a nudge, not a new invitation).
 
 ---
 
