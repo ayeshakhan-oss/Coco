@@ -1,6 +1,6 @@
 ---
 name: 06_candidate-invites
-description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite, Keep-in-Touch Note, Interview Reminder. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, communicate next steps, send a post-conversation warm-hold/keep-in-touch note while a decision is pending, or remind a candidate about an already-booked interview (day-before reminder with verified date/time from the calendar or Gmail). The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
+description: "Send interview invites and candidate communication emails for all stages: Values Interview Invite, Case Study Debrief Invite, Exploratory Call Invite, Warm Bench Opportunity Invite, Keep-in-Touch Note, Interview Reminder, Assessment Center Activity Invite. Always use this skill when you need to invite a candidate to any interview stage, send them an opportunity, communicate next steps, send a post-conversation warm-hold/keep-in-touch note while a decision is pending, remind a candidate about an already-booked interview (day-before reminder with verified date/time from the calendar or Gmail), or invite shortlisted candidates to an onsite assessment center day. The skill enforces locked design—design is 100% locked, ONLY content changes. Uses scripts/send_[type]_pilot.py."
 compatibility:
   tools:
     - safe_sendmail (scripts/utils/safe_send.py)
@@ -18,6 +18,7 @@ compatibility:
 - ✅ Warm Bench Opportunity Invite
 - ✅ Keep-in-Touch Note (post-conversation warm hold — NO booking button)
 - ✅ Interview Reminder (day-before nudge for an ALREADY-BOOKED interview — verified calendar data only)
+- ✅ Assessment Center Activity Invite (onsite full-day assessment — booking button to reserve slot)
 
 ---
 
@@ -29,7 +30,7 @@ compatibility:
 
 ---
 
-## The Six Invite Types
+## The Seven Invite Types
 
 ### 1. Values Interview Invite
 
@@ -181,6 +182,40 @@ Full spec + tone rationale: [memory/keep_in_touch_note_type_2026_06_19.md](../..
 3. **Never fabricate the Meet link.** No verified link → no button (fallback line above). A wrong link strands the candidate.
 4. **No unverified names.** If the candidate booked with an email that has no display name and no Markaz record, get the name confirmed by Ayesha before drafting — never guess from the email address.
 5. **Timing:** send the day before the interview (candidate already has the invite; this is a nudge, not a new invitation).
+
+---
+
+### 7. Assessment Center Activity Invite
+
+**When:** Candidate clears the preceding stage and is invited to the onsite Assessment Center day (full-day, in-person group assessment). Added 2026-07-31 (first use: coach position, JOB-0017).
+
+**Required Info:**
+- Candidate name + email (CANDIDATE_NAME)
+- Position title (POSITION)
+- Activity day/date (ACTIVITY_DATE — e.g. "Thursday, August 6, 2026"; changes per position/batch)
+- Start + end time (e.g. "10:30 AM" to "5:00 PM")
+- Confirm-by / calendar-invite date (CONFIRM_BY_DATE — the day we send the Google Calendar invitation to confirmed candidates, e.g. "Monday, August 3, 2026")
+
+**Script:** `scripts/send_assessment_center_pilot.py`
+
+**Key Content (locked wording, approved by Ayesha 2026-07-31):**
+- Header label: `TALENT ACQUISITION • ASSESSMENT CENTER ACTIVITY`
+- Title: "Invitation to Our Assessment Center Activity" / Subtitle: position title
+- Greeting: "Hi [First Name],"
+- Hook: "Congratulations on making it to the next stage of our recruitment process! We're excited to invite you to our Assessment Center Activity."
+- Logistics paragraph: onsite activity on [ACTIVITY_DATE], starting promptly at [START_TIME] and continuing until [END_TIME]; request to arrive on time
+- Venue line: "**Venue:** [ADDRESS] — [view on Google Maps](MAPS_LINK)." — address + Maps link explicitly provided by Ayesha per batch (first batch: Service Rd W, Sector H-9/1, Islamabad, 44000, Pakistan / https://maps.app.goo.gl/wmSUN8BKUBkhaeYA8 — Ayesha: no plus code like "M27R+H5X" in the address)
+- Out-of-town line: "If you're joining us from outside Islamabad, please let us know by replying to this email so we can coordinate accordingly."
+- Confirmation ask (replaces any booking CTA): "To confirm your attendance, kindly reply to this email with your acknowledgement. We will send the Google Calendar invitation by [CONFIRM_BY_DATE] to the candidates who have confirmed."
+- CTA: **NONE** — no booking button, no booking link (Ayesha, 2026-07-31: acknowledgement-by-reply flow, calendar invitation follows to confirmed candidates)
+- Closing: "We look forward to meeting you and wish you the very best for this stage of the process. If you have any questions, please feel free to reach out."
+- Signature addition (this type, Ayesha 2026-07-31): below the standard hiring@/website line, add "**Ayesha Raza Khan**" hyperlinked to https://www.linkedin.com/in/ayesha-raza-khan-386668177/ with "03354288844" on the next line
+- Subject (default): "Invitation to the Assessment Center Activity for [POSITION] - [CANDIDATE_NAME]"
+
+**Rules for this type:**
+1. **Onsite, not virtual.** No Meet link, no recording-consent line. Venue address + Google Maps link go in the email ONLY as explicitly provided by Ayesha for that batch — never source an address yourself.
+2. **No booking button/link.** Candidates confirm by REPLYING to the email; the Google Calendar invitation (with venue) is sent afterwards to confirmed candidates only. Body flows straight from the closing paragraph to the signature.
+3. **Dates change per position and batch** — confirm activity date/time AND the calendar-invite date with Ayesha for each send; never reuse a previous batch's dates.
 
 ---
 
