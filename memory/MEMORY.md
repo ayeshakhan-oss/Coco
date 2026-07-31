@@ -11,6 +11,12 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — VALUES SCORECARD: MUNEEB ARIF, GM-KARACHI (2026-07-31)
+- **[Values Scorecard — Muneeb Arif, Growth Manager – Karachi (2026-07-31)](values_scorecard_muneeb_arif_gm_karachi_2026_07_31.md)** — Zero In call 2026-07-30. **PASS** (5 plus, 1 plus-minus on Continuously Improve, zero minuses); GWC CONDITIONAL (Gets it / Wants it not probed — ask "why Taleemabad?" at case-study debrief). ⚠️ **NOT submitted to Markaz: no candidate/application record exists for him** (verified incl. duplicate-record Step 0) — confirm/create record with Ayesha first, then ask before submitting. Candidate promised detailed feedback by Mon Aug 3.
+
+## 🆕 NEW — CASE STUDIES: SMG + GROWTH MANAGER, DERIVED FROM HOG (2026-07-31)
+- **[SMG + GM Case Studies from HOG (2026-07-31)](case_studies_smg_gm_from_hog_2026_07_31.md)** — Two role-calibrated case studies derived from the HOG "Growth Flywheel Stress Test": SMG "The Execution Sprint" (2.5–3h, execution-level: scoped Alpha dataset analysis, run-the-given-growth-loop plan w/ K-factor 0.2, stalled B2G deal) + GM "The Story, the Room, and the Deal" (2–2.5h: policy storytelling, convening design, partnership pipeline). Delivered as Google Docs matching HOG layout (Quicksand, blue #3C78D8, per-page logo). Sources: `docs/case_studies/`, generator: `scripts/case_studies/make_growth_case_study_docs.py`. **⚠️ SMG "Data Access: Here" links still need Ayesha to attach the Alpha Platform dataset URLs.**
+
 ## 🆕 NEW — CASE STUDY: PROJECT EXTENSION/RENEWAL (2026-07-31)
 - **[Case Study — Project Extension/Renewal (2026-07-31)](case_study_project_extension_renewal_2026_07_31.md)** — Growth/Govt-Partnerships case-study question: how will you get a government-funded institute program extended or renewed (FD → Ministry → Planning Commission, PC-1). **Locked rules:** "How will you get the project extended?" leads; NEVER the word "award"; no real figures; institute anonymized. Full text: `docs/case_studies/case_study_project_extension_renewal.md`.
 
