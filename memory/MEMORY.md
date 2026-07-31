@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — CASE STUDY: PROJECT EXTENSION/RENEWAL (2026-07-31)
+- **[Case Study — Project Extension/Renewal (2026-07-31)](case_study_project_extension_renewal_2026_07_31.md)** — Growth/Govt-Partnerships case-study question: how will you get a government-funded institute program extended or renewed (FD → Ministry → Planning Commission, PC-1). **Locked rules:** "How will you get the project extended?" leads; NEVER the word "award"; no real figures; institute anonymized. Full text: `docs/case_studies/case_study_project_extension_renewal.md`.
+
 ## 🆕 NEW — ASSESSMENT CENTER ACTIVITY (invite type #7, 2026-07-31)
 - **[Assessment Center Activity — invite type #7 (2026-07-31)](assessment_center_invite_type_2026_07_31.md)** — Onsite full-day assessment center invite. Lives under **Skill 06 (candidate invites)**, locked invite design. **HARD RULES:** NO booking button/link — candidates REPLY to confirm and the Google Calendar invitation follows to confirmed candidates; venue address + Maps link in the email ONLY as Ayesha provides them (no plus codes); dates re-confirmed per batch; signature adds Ayesha Raza Khan (LinkedIn-hyperlinked) + 03354288844. Scripts: `send_assessment_center_pilot.py` (reference) + `send_assessment_center_cpd_coach_batch.py` (gitignored, PII). First live use 2026-07-31: 11 CPD Coach (JOB-0017) candidates for the Aug-6 assessment day.
 
