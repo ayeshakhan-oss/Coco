@@ -66,6 +66,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 | **Values Feedback Email Tone** | **[memory/values_feedback_email_tone_locked_2026_05_12.md](memory/values_feedback_email_tone_locked_2026_05_12.md)** (warm, observational, no life-coach language) |
 | **Interview Reminder (Skill 06, type #6)** | **[memory/interview_reminder_note_type_2026_07_23.md](memory/interview_reminder_note_type_2026_07_23.md)** (day-before nudge for booked interviews; verified calendar/Gmail data only; optional Meet button) |
 | **Assessment Center Activity (Skill 06, type #7)** | **[memory/assessment_center_invite_type_2026_07_31.md](memory/assessment_center_invite_type_2026_07_31.md)** (onsite full-day assessment invite; reply-to-confirm — NO booking link; venue + Maps link only as Ayesha provides; Calendar invitation follows to confirmed candidates) |
+| **Candidate case studies (Growth roles)** | **[docs/case_studies/](docs/case_studies/)** — SMG + GM case studies derived from HOG "Growth Flywheel Stress Test"; layout/generator pattern in [memory/case_studies_smg_gm_from_hog_2026_07_31.md](memory/case_studies_smg_gm_from_hog_2026_07_31.md) |
 | Session focus | [SESSIONS.md](SESSIONS.md) |
 | Database schema | [docs/schema.md](docs/schema.md) |
 | Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
