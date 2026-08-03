@@ -1,6 +1,6 @@
 ---
 name: Values Scorecard — Muneeb Arif (Growth Manager – Karachi, 2026-07-31)
-description: Filled values scorecard from the 2026-07-30 Zero In call. PASS (5 plus, 1 plus-minus). GWC CONDITIONAL. NOT yet submitted to Markaz — no candidate/application record exists for him. Feedback promised to candidate by Mon Aug 3.
+description: Filled values scorecard from the 2026-07-30 Zero In call. PASS (5 plus, 1 plus-minus). GWC CONDITIONAL. SUBMITTED to Markaz 2026-08-03 (candidate 3129, app 3869, job 41) after creating his record with Ayesha's approval. Feedback promised to candidate by Mon Aug 3.
 type: project
 ---
 
@@ -11,7 +11,7 @@ type: project
 **Position:** Growth Manager – Karachi
 **Verdict:** **PASS** — 5 pluses, 1 plus-minus (Continuously Improve), zero minuses
 **GWC:** CONDITIONAL — Gets it / Wants it not probed in this call; Capacity yes
-**Markaz status:** ⚠️ **NOT SUBMITTED** — see blocker below
+**Markaz status:** ✅ **SUBMITTED 2026-08-03** — candidate id 3129, application id 3869, job 41 (Growth Manager - Karachi), status `shortlisted`, values_interview_result `pass`, score 5, proceedToRightSeat "Yes". Record did not exist; created with Ayesha's approval using verified data only (name/position from interview; email `muneebarifkhalid@gmail.com` from the Gmail values-invite + calendar booking thread). Scorecard JSON mirrors the live-rendering shape (reference: app 3608). Submission script: scratchpad `submit_muneeb_arif_values_scorecard.py`.
 
 ---
 
@@ -64,9 +64,9 @@ type: project
 
 ---
 
-## ⚠️ Markaz blocker (open item)
+## Markaz submission (resolved 2026-08-03)
 
-Step-4 identity check + duplicate-record check run 2026-07-31: **no candidate record and no Growth Manager – Karachi application exists for Muneeb Arif** (searched by name, surname, email patterns, and full active Karachi pipeline). Several anonymous `linkedin.temp` "Applicant" records exist on that job — he may be one of them, or the record was never created. **Do NOT submit until Ayesha confirms the correct record (or one is created), then run the duplicate-record Step 0 again and ask her explicitly: "Should I go and submit this on Markaz or not?"**
+Step-4 identity + duplicate-record checks on 2026-07-31 and again 2026-08-03 found **no candidate or application record for Muneeb Arif anywhere in Markaz**. His verified email (`muneebarifkhalid@gmail.com`, from the Gmail values-invite thread + calendar booking) also matched nothing — confirming a missing record, not a name variant. On Ayesha's instruction ("go to markaz and fill muneeb's scorecard", 2026-08-03), created candidate 3129 + application 3869 on job 41 and wrote the scorecard in one transaction, with a pre-insert duplicate guard and post-insert verification (1 record, 6 values, renders shape identical to app 3608). Lesson: when a values interview happens for someone with no Markaz application (e.g. sourced/direct-booked candidates), the record must be created before the scorecard can exist.
 
 ## Interview process feedback (delivered to Ayesha 2026-07-31)
 
