@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — VALUES SCORECARD: ABDUL WAHAB, GM-LAHORE (2026-08-03)
+- **[Values Scorecard — Abdul Wahab, Growth Manager – Lahore (2026-08-03)](values_scorecard_abdul_wahab_gm_lahore_2026_08_03.md)** — Zero In call 2026-07-27. **PASS boundary** (4 plus, 2 plus-minus: All for One + Don't Hold On Too Tight). Filled onto EXISTING app 3614 (candidate 2911) via UPDATE. ⚠️ Scored from Fathom recap + Read AI report (no full transcript — Ayesha's instruction); summaries conflict on management style, flagged + excluded. **Prior Taleemabad employee** → GWC Gets-it YES (rare); Wants-it probe at debrief. NOT the same person as Waqas Hassan (GM-Karachi).
+
 ## 🆕 NEW — VALUES SCORECARD: WAQAS HASSAN, GM-KARACHI (2026-08-03)
 - **[Values Scorecard — Waqas Hassan, Growth Manager – Karachi (2026-08-03)](values_scorecard_waqas_hassan_gm_karachi_2026_08_03.md)** — Zero In call 2026-07-24. **PASS at the exact boundary** (4 plus, 2 plus-minus: Don't Walk Away + Continuously Improve; zero minuses); GWC CONDITIONAL (Gets it untested, Wants it mixed via Lahore openness, Capacity yes). ✅ Submitted to Markaz 2026-08-03 — no record existed, created candidate 3130 + app 3870 (job 41, `shortlisted`, `pass`, score 4). ⚠️ NOT the same person as Muhammad Waqas (GM-Lahore, app 3651). Open: possible 2nd app row for GM-Lahore (Ayesha agreed verbally on the call, unconfirmed); salary 425–450k ask vs 350k current.
 
