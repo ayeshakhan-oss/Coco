@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — VALUES SCORECARD: HAFIZ OSAMA, GM-LAHORE (2026-08-04)
+- **[Values Scorecard — Hafiz Osama, Growth Manager – Lahore (2026-08-04)](values_scorecard_hafiz_osama_gm_lahore_2026_08_04.md)** — Zero In 2026-07-29 (35 min). **PASS boundary** (4 plus, 2 plus-minus: Continuously Improve + Don't Hold On Too Tight). Filled onto existing app 3601 (candidate 2900). ⚠️ Worst transcript in pool (garbled mixed-language) — fairness rule applied, spot-check recording for Courageous Conversations + Practice Joy. **Ex-Taleemabad (his claim — verify): ~3 yrs, growth work Lahore, reported to Faisal.** GWC CONDITIONAL (Wants-it probe). No salary captured.
+
 ## 🆕 NEW — VALUES SCORECARD: ZIRGHAAM AHMAD, GM-KARACHI (2026-08-04)
 - **[Values Scorecard — Zirghaam Ahmad, Growth Manager – Karachi (2026-08-04)](values_scorecard_zirghaam_ahmad_gm_karachi_2026_08_04.md)** — Zero In 2026-07-27, 68 min. **PASS 6+/0± — strongest card in the GM pool**; GWC **all three YES** (first in pool) → Right Seat ready. Filled onto existing app 3830 (candidate 3100); status `new`→`shortlisted`. Scored from Fathom recap (single source — caveat in scorecard). ⚠️ Also holds GM-Lahore app 3831 (untouched). On vacation to mid-Aug — debrief after return; 48-hr case study to be sent.
 
