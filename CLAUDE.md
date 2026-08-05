@@ -36,6 +36,8 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 12. **🔒 CV REJECTION = WRITTEN APPLICATION ONLY, NO FABRICATED INTERACTION (CRITICAL — 2026-07-09)** — A CV/application-stage rejection had NO interview, call, conversation, meeting, or assessment with the candidate. NEVER reference or imply one ("conversation", "we spoke", "we met", "our discussion/call", "across conversations and assessments", "what we observed in you"). Ground everything in the written application ("your application", "your CV", "the experience you described"). Referencing the interview STAGE they didn't reach is fine; a conversation that occurred is not. Warm bench / GWC / values feedback DID have an interview and may reference it. Harness HARD BLOCK on `cv_rejection` + drafting prompt. **Rule 13** in the master philosophy file. See [memory/lesson_cv_rejection_no_interaction_2026_07_09.md](memory/lesson_cv_rejection_no_interaction_2026_07_09.md).
 
+13. **🔒 BULK MARKAZ STATUS UPDATES = ID WHITELIST ONLY (2026-08-05)** — On a LIVE job (still receiving applications), never bulk-update by status filter (`WHERE status='new'`): new applicants arrive between screening and update and get swept in unscreened (happened on Job 42 — 10 unscreened rejections, caught by row count, reverted). Always use the explicit screened application-ID list, assert expected vs returned row counts, and re-pull the applicant list if any time passed since screening. See [memory/project_job42_smg_screening_2026_08_05.md](memory/project_job42_smg_screening_2026_08_05.md).
+
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 
 ---
