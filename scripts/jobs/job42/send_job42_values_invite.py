@@ -62,7 +62,13 @@ CANDIDATES = [
     {"greet": "Salman",  "name": "Salman Ahmad",           "email": "zedef@hotmail.com"},
     {"greet": "Ali",     "name": "Ali Ahmed",              "email": "aliahmed209@gmail.com"},
     {"greet": "Hina",    "name": "Hina Rehman",            "email": "hinarehman1794@gmail.com"},
+    # Batch sent live 2026-08-05. Rimsha added after Ayesha reinstated her the same day:
+    {"greet": "Rimsha",  "name": "Rimsha Taj",             "email": "rimsha-taj@live.com"},
 ]
+
+# Send only to candidates in this list (empty = all). Used to add late approvals
+# without re-emailing the already-invited batch.
+ONLY = ["Rimsha Taj"]
 
 
 # ── EMAIL: BUILD HTML (design identical to job32 reference) ───────────────────
@@ -255,8 +261,10 @@ def main():
     print(f"Mode: {'PILOT (all 10 to Ayesha only)' if PILOT_MODE else 'LIVE (candidates + CC)'}")
     print("=" * 60)
 
+    todo = [c for c in CANDIDATES if not ONLY or c["name"] in ONLY]
+    print(f"Sending to {len(todo)} candidate(s): {', '.join(c['name'] for c in todo)}")
     sent, failed = 0, []
-    for c in CANDIDATES:
+    for c in todo:
         try:
             if PILOT_MODE:
                 send_invite(PILOT_TO, c["name"], c["greet"], pilot=True, cc_list=None)

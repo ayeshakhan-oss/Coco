@@ -14,8 +14,8 @@ type: project
 - JD pillars used: (1) growth/BD execution + B2B closure w/ revenue, (2) B2G/institutional stakeholders, (3) digital+field acquisition/growth loops, (4) CRM/pricing/RFP discipline. Modifiers: edtech/SaaS, genAI, 4–6 yrs, band.
 
 ## Final statuses (Ayesha-approved, 97 apps at time of writing)
-- **Shortlisted 10** (values invites sent LIVE 2026-08-05): Murtaza Hassan 3879, Fahad Ali 3916, M. Arshan Bilal 3884, Ali Ahmed 3946, Umar Zahid 3902, Shahmir Hashmat 3911, Salman Ahmad 3943, M. Shakeel Ahmad 3892, M. Zeshan 3921 (Motive one — 2 other unrelated "Zeeshan"s in pool), Hina Rehman 3958.
-- **Rejected 77** (status only — NO rejection emails sent yet). Ayesha knowingly rejected Rimsha Taj (78%) + Mujtaba Shuja (68%) from batch 2 (flagged twice, her call).
+- **Shortlisted 11** (values invites sent LIVE 2026-08-05): Murtaza Hassan 3879, Fahad Ali 3916, M. Arshan Bilal 3884, Ali Ahmed 3946, Umar Zahid 3902, Shahmir Hashmat 3911, Salman Ahmad 3943, M. Shakeel Ahmad 3892, M. Zeshan 3921 (Motive one — 2 other unrelated "Zeeshan"s in pool), Hina Rehman 3958, **Rimsha Taj 3956** (initially rejected by Ayesha, reinstated same day after flag — pool's best sector+function match; invited via ONLY filter in the script).
+- **Rejected 76** (status only — NO rejection emails sent yet). Mujtaba Shuja (68%, in-band digital specialist) remains knowingly rejected from batch 2.
 - **Kamran Ali 3930 left 'new'** — Orenda AM BD 2021-present, claims prior Taleemabad BD work; Ayesha said "leave kamran". Do not touch without her word.
 - **Unscreened 'new':** 9+ arrivals from 05 Aug (3964–3972...) — batch-3 sweep recommended at 15 Aug close.
 
