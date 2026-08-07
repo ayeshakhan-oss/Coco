@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — VALUES SCORECARD: ZUBAIR HUSSAIN, GM-KARACHI (2026-08-07)
+- **[Values Scorecard — Zubair Hussain / Hafiz Zubair (GM-Karachi, 2026-08-07)](values_scorecard_zubair_hussain_gm_karachi_2026_08_07.md)** — Zero In 2026-08-07 (35 min). **PASS 5+/1±** (single ± on All for One — vacancies-not-mistake; most-garbled answer). Filled onto existing app 3792 (candidate 699). ⚠️ Worst transcript garble of pool — fairness rule applied. Flags: based ~6 hrs from Karachi (family Islamabad) — confirm relocation; current employer Teach the World Foundation overlaps Sindh govt counterparts; separate CPD Coach app 3793 open. GWC: Gets-it YES-leaning, Wants-it probe, Capacity YES.
+
 ## 🆕 NEW — VALUES SCORECARD: MUHAMMAD ARSHAN BILAL, SMG (2026-08-07)
 - **[Values Scorecard — Muhammad Arshan Bilal (SMG, 2026-08-07)](values_scorecard_arshan_bilal_smg_2026_08_07.md)** — Zero In 2026-08-07 (35 min). **PASS 4+/2± via ADJUDICATION**: raw count 3+/3± = OUT; Ayesha upgraded Don't Walk Away from Hard Things to + — recorded transparently in scorecard. Filled onto existing app 3884 (candidate 3139). GWC CONDITIONAL (Gets-it probe; capacity B2G untested; ⚠️ short-contracts stability flag). **Available immediately** — fits mid-Sept replacement window. 🔒 New rule this session: NO cross-candidate comparisons in values evaluations (Ayesha).
 
