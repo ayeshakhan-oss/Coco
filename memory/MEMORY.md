@@ -11,6 +11,9 @@
 ## 🔒 LOCKED — OPENING LINE + NO FUTURE-PROMISE (2026-06-18)
 - **[Mandatory Opening Line + No Future-Promise (2026-06-18)](mandatory_opening_line_no_future_promise_2026_06_18.md)** — All 4 candidate-comms emails MUST open with `This is not a yes for now.` (first line after salutation; harness HARD BLOCK). No future-outreach promises ("we will reach out / keep your name on file") — express welcome as disposition + candidate-initiated (harness WARNING). Wired into harness, templates, CLAUDE.md Rule 10, master philosophy Rules 10-11, SKILL.md, RULES.md, webapp.
 
+## 🆕 NEW — VALUES SCORECARD: MUHAMMAD ARSHAN BILAL, SMG (2026-08-07)
+- **[Values Scorecard — Muhammad Arshan Bilal (SMG, 2026-08-07)](values_scorecard_arshan_bilal_smg_2026_08_07.md)** — Zero In 2026-08-07 (35 min). **PASS 4+/2± via ADJUDICATION**: raw count 3+/3± = OUT; Ayesha upgraded Don't Walk Away from Hard Things to + — recorded transparently in scorecard. Filled onto existing app 3884 (candidate 3139). GWC CONDITIONAL (Gets-it probe; capacity B2G untested; ⚠️ short-contracts stability flag). **Available immediately** — fits mid-Sept replacement window. 🔒 New rule this session: NO cross-candidate comparisons in values evaluations (Ayesha).
+
 ## 🆕 NEW — VALUES SCORECARD: JAM ZESHAN NAWAZ / MUHAMMAD ZESHAN, SMG (2026-08-07)
 - **[Values Scorecard — Jam Zeshan Nawaz (SMG, 2026-08-07)](values_scorecard_zeshan_nawaz_smg_2026_08_07.md)** — Zero In 2026-08-07 (30 min). **PASS 4+/2± via ADJUDICATION**: Coco's raw count was 3+/3± = OUT; Ayesha upgraded Don't Hold On Too Tight to + on the GTM-engine build-and-release evidence — recorded transparently in the scorecard. Filled onto existing app 3921 (candidate 3169, "Muhammad Zeshan"). ⚠️ Two emails, one person: xeshan.nawaz@ (Markaz/invite) + xishan.nawaz@ (his correspondence). GWC: Gets/Wants YES, Capacity YES-leaning (B2G untested). Salary 370k, matchable. Debrief retests: upward feedback (V4), advocacy (V2).
 
