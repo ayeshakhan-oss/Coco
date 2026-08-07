@@ -26,7 +26,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".en
 
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-PILOT_MODE  = False  # Ayesha approved pilots + gave CC list (2026-08-05) --> LIVE
+PILOT_MODE  = False  # batch 3 pilots approved by Ayesha 2026-08-07 (standard CC confirmed) --> LIVE
 
 POSITION    = "Senior Manager Growth"
 SENDER      = "ayesha.khan@taleemabad.com"
@@ -64,11 +64,18 @@ CANDIDATES = [
     {"greet": "Hina",    "name": "Hina Rehman",            "email": "hinarehman1794@gmail.com"},
     # Batch sent live 2026-08-05. Rimsha added after Ayesha reinstated her the same day:
     {"greet": "Rimsha",  "name": "Rimsha Taj",             "email": "rimsha-taj@live.com"},
+    # Batch 3 (2026-08-07, per Ayesha in chat) — NOT yet on Markaz; records to be created later:
+    {"greet": "Yusra",   "name": "Yusra Wahid",            "email": "yusra.wahid12@gmail.com"},
+    {"greet": "Basit",   "name": "Basit Hussain",          "email": "syed.basit89@gmail.com"},
+    {"greet": "Imran",   "name": "Imran Mehmood Choudhry", "email": "imranchoudhry@gmail.com"},
+    {"greet": "Furqan",  "name": "Furqan Afzal",           "email": "fafzal98@gmail.com"},
+    # Late add per Ayesha in chat, 2026-08-07 (approved batch-3 template):
+    {"greet": "Irfan",   "name": "Irfan Siddiqui",         "email": "irfanmsiddiqui@outlook.com"},
 ]
 
 # Send only to candidates in this list (empty = all). Used to add late approvals
 # without re-emailing the already-invited batch.
-ONLY = ["Rimsha Taj"]
+ONLY = ["Irfan Siddiqui"]
 
 
 # ── EMAIL: BUILD HTML (design identical to job32 reference) ───────────────────

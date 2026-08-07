@@ -4,21 +4,26 @@ description: Live notes for the current session. Wiped at session start by UserP
 type: project
 ---
 
-# Active Session — 2026-08-05/06
+# Active Session — 2026-08-07
 
 ## Task
-Job 42 wrap-up: git commit/push + memory updates; Rimsha Taj reinstated mid-turn.
+2026-08-06/07 sends, all piloted->approved->live unless noted:
+1. GM-Karachi values invites batch 2 (Aug 4): 6 candidates (Yashfeen Zahid, Huda Shaikh, Marzia Hasnain, M. Huzaifa Wakil, Syeda Masooma Asif, Zubair Hussain). App 3871 "Ayesha Khan" confirmed dummy, excluded.
+2. Case-study status audit (Markaz + Gmail): sent Aug 4 to 9 records; 4 Lahore submissions in.
+3. Case-study nudges (Aug 6): Muneeb Arif + Waqas Hassan, Ayesha's wording verbatim.
+4. Case-study debrief invites (Aug 7): 4 GM-Lahore submitters, booking link calendar.app.google/SzQgacaWQqnLEQ449, CC + zeest.qureshi.
+5. Job 42 SMG values invites batch 3 (Aug 7): Yusra Wahid, Basit Hussain, Imran Mehmood Choudhry, Furqan Afzal + late-add Irfan Siddiqui — all sourced, NOT on Markaz (records pending). Job 42 total now 16 invited.
 
 ## Decisions Made
-- Ayesha reinstated Rimsha Taj (3956): status rejected->shortlisted (ID-targeted UPDATE, row-count asserted), values invite sent LIVE same CC list (Ayesha/hiring@/Waqas Tanveer/Ali Sipra) via ONLY filter in send_job42_values_invite.py. Job 42 now: 11 shortlisted+invited, 76 rejected (no emails), Kamran 3930 'new', 9+ unscreened arrivals.
-- Memory updated: repo memory/project_job42_smg_screening_2026_08_05.md (+MEMORY.md index), CLAUDE.md Core Rule 13 (live-job bulk updates = ID whitelist), auto-memory: Neon HTTPS SQL workaround + whitelist lesson + Job-42 pointer.
-- Committed only this session's files (pre-existing dirty files left alone; output/ gitignored so candidate-PII reports stay local).
+- xishan/xeshan: Aug-5 batch invited "Muhammad Zeshan" (xeshan.nawaz@gmail.com); Jam Zeshan Nawaz books/writes from xishan.nawaz@gmail.com — same person presumed; reconcile Markaz record under xeshan spelling BEFORE filling his scorecard (avoid duplicate record).
+- Debrief-invite script has fabricated-link guard (blocks send on placeholder link).
 
 ## Mistakes / Corrections
-- (Logged earlier) live-job bulk-reject swept 10 unscreened arrivals; caught+reverted; rule institutionalized as CLAUDE.md Rule 13.
 
 ## Files Modified
-- CLAUDE.md, memory/MEMORY.md, memory/project_job42_smg_screening_2026_08_05.md, scripts/jobs/job42/* (committed da02b58 + follow-up), auto-memory files.
 
 ## Pre-Send Checks
-- [x] All sends piloted+approved before live; Rimsha's invite used the already-approved template
+- [ ] Self-QA 8-item checklist run
+- [ ] Template read side-by-side
+- [ ] Word count verified
+- [ ] Pilot sent to Ayesha (not candidate directly)
