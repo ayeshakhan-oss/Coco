@@ -71,11 +71,13 @@ CANDIDATES = [
     {"greet": "Furqan",  "name": "Furqan Afzal",           "email": "fafzal98@gmail.com"},
     # Late add per Ayesha in chat, 2026-08-07 (approved batch-3 template):
     {"greet": "Irfan",   "name": "Irfan Siddiqui",         "email": "irfanmsiddiqui@outlook.com"},
+    # Late add per Ayesha in chat, 2026-08-07 — on Markaz (candidate 3267, app 4033, shortlisted):
+    {"greet": "Vaneeza", "name": "Vaneeza Tashfeen Baig",  "email": "veniza.baig@gmail.com"},
 ]
 
 # Send only to candidates in this list (empty = all). Used to add late approvals
 # without re-emailing the already-invited batch.
-ONLY = ["Irfan Siddiqui"]
+ONLY = ["Vaneeza Tashfeen Baig"]
 
 
 # ── EMAIL: BUILD HTML (design identical to job32 reference) ───────────────────
