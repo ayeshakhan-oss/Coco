@@ -29,7 +29,7 @@ Highlights: Wahab best A1 vs the skeptical-Secretary ask; M. Waqas best convenin
 **Pending Ayesha:** live send + recipients; fill `case_study_score`/`case_study_notes` on Markaz for the four; M. Waqas's missing reflective; listen to Wahab's voice note; verify Ahmad/Salman's quoted impact figures.
 
 ## 3. SMG profile folders + submission archiving (later same day)
-- **All shortlisted/invited SMG candidates now have Drive subfolders with CVs from Markaz** — 16 total (14 built in this pass + Zeshan/Arshan earlier; Jawwad test entry excluded). Ayesha's open question: keep all 16 or prune to the case-study-stage six (Arshan, Junaid, Zeshan, M. Bilal, Yusra, Arooj) to mirror Noah's Lahore scope. Awaiting her call.
+- **All shortlisted/invited SMG candidates now have Drive subfolders with CVs from Markaz** — 16 total (14 built in this pass + Zeshan/Arshan earlier; Jawwad test entry excluded). **Ayesha decided (2026-08-10): KEEP ALL 16** — folders stay for the full shortlist; case-study files drop in per candidate as submissions arrive.
 - **Arshan Bilal (app 3884)** submitted via Markaz Aug 7: files live behind the Markaz staff-login API (`/api/case-study-file/3884/word|excel` — automation gets 401; any logged-in staff can download). His folder holds Submission Note (verbatim summary) + Submission Links; real copies pending a staff download.
 - **Junaid Ali (app 3992)** submitted via Markaz Aug 9 — same treatment (note + links; staff download pending).
 - **Arooj Khalid (app 3868)** submitted BY EMAIL Aug 10 19:17 (links: Google Doc + Drive folder). **Fully archived** — main PDF, Reflection & AI Note, Assignments 1a/1b/2a/2b/3 (exported from her Google-native files incl. subfolders) + Submission Links.txt; Markaz marked submitted with corrected note.
