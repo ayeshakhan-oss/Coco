@@ -86,9 +86,7 @@ email_template = """
             <p>Warm regards,<br>
             People and Culture Team<br>
             Taleemabad<br>
-            hiring@taleemabad.com | www.taleemabad.com<br>
-            <br>
-            Sent on behalf of Talent Acquisition Team by Coco</p>
+            hiring@taleemabad.com | www.taleemabad.com</p>
         </div>
     </div>
 </body>

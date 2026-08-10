@@ -109,7 +109,6 @@ People and Culture Team
 Taleemabad
 hiring@taleemabad.com | www.taleemabad.com
 
-Sent on behalf of Talent Acquisition Team by Coco
 
 ROLE BEING HIRED FOR:
 {JD_SUMMARY}

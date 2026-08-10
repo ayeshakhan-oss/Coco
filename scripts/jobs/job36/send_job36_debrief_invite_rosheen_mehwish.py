@@ -128,9 +128,6 @@ def build_html(candidate_first_name):
           &nbsp;|&nbsp;
           <a href="http://www.taleemabad.com"
              style="color:{BLUE};text-decoration:none;">www.taleemabad.com</a><br>
-          <span style="font-size:12px;color:#aaa;margin-top:4px;display:block;">
-            Sent on behalf of Talent Acquisition Team by Coco
-          </span>
         </td>
       </tr>
     </table>"""

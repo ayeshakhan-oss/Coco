@@ -137,7 +137,6 @@ def create_email_body(candidate_name, booking_link, document_link):
                                         <p style="font-size:16px; line-height:1.7; color:#2f5fc7; margin:0 0 18px 0;">
                                             <a href="mailto:hiring@taleemabad.com" style="color:#2f5fc7; text-decoration:underline;">hiring@taleemabad.com</a> <span style="color:#7d7d7d; margin:0 10px;">|</span> <a href="https://www.taleemabad.com" style="color:#2f5fc7; text-decoration:underline;">www.taleemabad.com</a>
                                         </p>
-                                        <p style="font-size:15px; line-height:1.7; color:#9a9a9a; margin:0; font-weight:400;">Sent on behalf of Talent Acquisition Team by Coco</p>
                                     </td>
                                 </tr>
                             </table>

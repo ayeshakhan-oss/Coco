@@ -70,7 +70,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -134,7 +133,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -194,7 +192,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -252,7 +249,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">

@@ -71,10 +71,7 @@ Warm regards,<br/>
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:8px 0 0 0; line-height:1.6;">
 <a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
 </p>
-
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>"""
+"""
 
     body_with_signature = body_html + signature_html
 

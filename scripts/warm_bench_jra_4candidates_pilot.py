@@ -84,8 +84,7 @@ DUR_E_NAYAB_HTML = """
 <p>Warm regards,<br>
 People and Culture Team<br>
 Taleemabad<br>
-hiring@taleemabad.com | www.taleemabad.com<br>
-Sent on behalf of Talent Acquisition Team by Coco</p>
+hiring@taleemabad.com | www.taleemabad.com</p>
 
 </div>
 
@@ -143,8 +142,7 @@ DANIYAH_NOOR_HTML = """
 <p>Warm regards,<br>
 People and Culture Team<br>
 Taleemabad<br>
-hiring@taleemabad.com | www.taleemabad.com<br>
-Sent on behalf of Talent Acquisition Team by Coco</p>
+hiring@taleemabad.com | www.taleemabad.com</p>
 
 </div>
 
@@ -208,8 +206,7 @@ HASSAN_ZAFAR_HTML = """
 <p>Warm regards,<br>
 People and Culture Team<br>
 Taleemabad<br>
-hiring@taleemabad.com | www.taleemabad.com<br>
-Sent on behalf of Talent Acquisition Team by Coco</p>
+hiring@taleemabad.com | www.taleemabad.com</p>
 
 </div>
 
@@ -273,8 +270,7 @@ MAHNOOR_HASAN_HTML = """
 <p>Warm regards,<br>
 People and Culture Team<br>
 Taleemabad<br>
-hiring@taleemabad.com | www.taleemabad.com<br>
-Sent on behalf of Talent Acquisition Team by Coco</p>
+hiring@taleemabad.com | www.taleemabad.com</p>
 
 </div>
 

@@ -222,9 +222,6 @@ html_body = f"""
                                             |
                                             <a href="https://taleemabad.com" style="color:#2f5fc7; text-decoration:underline;">taleemabad.com</a>
                                         </div>
-                                        <div class="signature-footer">
-                                            Sent on behalf of People &amp; Culture, Taleemabad
-                                        </div>
                                     </td>
                                 </tr>
                             </table>

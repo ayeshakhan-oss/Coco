@@ -76,7 +76,6 @@ HTML_CONTENT = """<!DOCTYPE html>
             <br />
             <a href="mailto:hiring@taleemabad.com">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com">www.taleemabad.com</a>
             <br /><br />
-            <div class="signature-coco">Sent on behalf of Talent Acquisition Team by Coco</div>
         </div>
     </div>
 </body>

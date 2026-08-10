@@ -91,9 +91,6 @@ Warm regards,<br/>
 <a href="mailto:hiring@taleemabad.com" style="color:#1565C0; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#1565C0; text-decoration:none;">www.taleemabad.com</a>
 </p>
 
-<p style="font-family:Georgia,serif; font-size:13px; color:#888; margin:12px 0 0 0; line-height:1.6; text-align:left;">
-Sent on behalf of Talent Acquisition Team by Coco
-</p>
 
 <p style="font-family:Georgia,serif; font-size:13px; color:#666; margin:32px 0 0 0; padding:16px 0 0 0; border-top:1px solid #ddd; line-height:1.6; text-align:justify;">
 <strong>P.S.</strong> That coach you described from your TFP fellowship, the one who believed in you enough to help you see what was possible - that's exactly who you're positioned to become for a government teacher. That's what your interview showed us. And that's what makes this particular timing so difficult.

@@ -95,7 +95,11 @@ In the `MIMEMultipart("related")` message, call `attach_logo(msg)` to embed the 
 
 **Footer**
 - `1px solid #e0e0e0` top border; "Warm regards, People and Culture Team, Taleemabad";
-  blue mailto/website links; muted "Sent on behalf of Talent Acquisition Team by Coco."
+  blue mailto/website links.
+- 🔒 **NO "Sent on behalf of … by Coco" line — REMOVED 2026-07-29 by Ayesha's instruction.**
+  This line (any variant) is FORBIDDEN in ALL emails — candidate comms, invites, reminders,
+  everything. Removed from v8_template.py, all 4 locked templates (regenerated), all send
+  scripts, and pending output/ drafts.
 
 **Email assembly**
 - `MIMEMultipart("related")` → inner `MIMEMultipart("alternative")` with the HTML →

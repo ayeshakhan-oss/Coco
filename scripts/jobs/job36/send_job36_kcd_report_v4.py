@@ -462,7 +462,6 @@ def build_html():
       <a href="mailto:hiring@taleemabad.com" style="color:{BLUE}">hiring@taleemabad.com</a>
       &nbsp;|&nbsp;
       <a href="http://www.taleemabad.com" style="color:{BLUE}">www.taleemabad.com</a><br>
-      <span style="color:#b2bec3">Sent on behalf of Talent Acquisition Team by Coco</span>
     </div>
     ''')
 

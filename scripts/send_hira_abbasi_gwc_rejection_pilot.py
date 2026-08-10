@@ -103,7 +103,6 @@ Taleemabad</p>
 <div class="signature">
 hiring@taleemabad.com | www.taleemabad.com<br>
 <br>
-Sent on behalf of Talent Acquisition Team by Coco
 </div>
 </div>
 

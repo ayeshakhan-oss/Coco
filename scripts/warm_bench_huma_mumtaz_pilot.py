@@ -200,7 +200,6 @@ Warm regards,<br />
 <br />
 <a href="mailto:hiring@taleemabad.com" style="color:#2f4fa2; text-decoration:none;">hiring@taleemabad.com</a> | <a href="http://www.taleemabad.com" style="color:#2f4fa2; text-decoration:none;">www.taleemabad.com</a>
 <br /><br />
-<div class="signature-coco">Sent on behalf of Talent Acquisition Team by Coco</div>
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ status: 🔒 LOCKED — content wording + rules approved by Ayesha 2026-07-31
 
 **What it is:** Invite to an onsite, full-day assessment center activity (e.g. 10:30 AM – 5:00 PM). Lives under **Skill 06 (candidate invites)** — locked interview-invite design (FINAL 2026-05-13), NOT candidate-communication (no "This is not a yes for now." opener, no 800-word rule).
 
-**First use:** CPD Coach (JOB-0017), 2026-07-31 — 12 pilots to Ayesha, 11 sent live same day (Hajra Sajjad excluded at Ayesha's instruction). Activity date Thursday, August 6, 2026.
+**First use:** CPD Coach (JOB-0017), 2026-07-31 — 12 pilots to Ayesha, then all 12 sent live the same day (11 in the first batch; Hajra Sajjad initially excluded at Ayesha's instruction, then included and sent separately when Ayesha reversed it). Activity date Thursday, August 6, 2026.
 
 ## Locked content (Ayesha's wording, 2026-07-31)
 

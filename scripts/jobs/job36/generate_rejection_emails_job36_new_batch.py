@@ -11,7 +11,7 @@ Rules:
 - Honest about the gap, warm in tone
 - No hollow closings
 - Sign-off: Warm regards, / People and Culture Team / Taleemabad /
-  hiring@taleemabad.com | www.taleemabad.com / Sent on behalf of Talent Acquisition Team by Coco
+  hiring@taleemabad.com | www.taleemabad.com / 
 - Never mention Coco or AI in the email body
 """
 
@@ -124,7 +124,6 @@ People and Culture Team
 Taleemabad
 hiring@taleemabad.com | www.taleemabad.com
 
-Sent on behalf of Talent Acquisition Team by Coco
 
 ROLE BEING HIRED FOR:
 {JD_SUMMARY}

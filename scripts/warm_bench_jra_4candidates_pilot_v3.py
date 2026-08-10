@@ -70,8 +70,7 @@ def create_email_html(candidate_name, opening_text, section1_title, section1_con
 <p style="margin: 35px 0 0 0;">Warm regards,<br>
 People and Culture Team<br>
 Taleemabad<br>
-hiring@taleemabad.com | www.taleemabad.com<br>
-Sent on behalf of Talent Acquisition Team by Coco</p>
+hiring@taleemabad.com | www.taleemabad.com</p>
 
 </div>
 

@@ -193,9 +193,6 @@ def build_email_html(candidate_name, booking_url):
                   &nbsp;|&nbsp;
                   <a href="http://www.taleemabad.com"
                      style="color:#1565c0;text-decoration:none;">www.taleemabad.com</a><br>
-                  <span style="font-size:12px;color:#aaa;margin-top:4px;display:block;">
-                    Sent on behalf of Talent Acquisition Team by Coco
-                  </span>
                 </td>
               </tr>
             </table>

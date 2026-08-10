@@ -72,7 +72,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 
@@ -134,7 +133,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 
@@ -196,7 +194,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 
@@ -262,7 +259,6 @@ Warm regards,<br/>
 People and Culture Team<br/>
 Taleemabad<br/>
 hiring@taleemabad.com | www.taleemabad.com<br/>
-Sent on behalf of Talent Acquisition Team by Coco
 </p>
 """
 

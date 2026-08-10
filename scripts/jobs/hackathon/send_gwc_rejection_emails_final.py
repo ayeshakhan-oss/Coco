@@ -112,7 +112,6 @@ def generate_perfect_pass_email(full_name, app_id):
                 Taleemabad<br>
                 hiring@taleemabad.com | www.taleemabad.com<br>
                 <br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </p>
         </div>
     </body>
@@ -175,7 +174,6 @@ def generate_low_want_email(full_name, app_id):
                 Taleemabad<br>
                 hiring@taleemabad.com | www.taleemabad.com<br>
                 <br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </p>
         </div>
     </body>
@@ -238,7 +236,6 @@ def generate_mixed_email(full_name, app_id):
                 Taleemabad<br>
                 hiring@taleemabad.com | www.taleemabad.com<br>
                 <br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </p>
         </div>
     </body>
@@ -301,7 +298,6 @@ def generate_low_understanding_email(full_name, app_id):
                 Taleemabad<br>
                 hiring@taleemabad.com | www.taleemabad.com<br>
                 <br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </p>
         </div>
     </body>
@@ -364,7 +360,6 @@ def generate_significant_gaps_email(full_name, app_id):
                 Taleemabad<br>
                 hiring@taleemabad.com | www.taleemabad.com<br>
                 <br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </p>
         </div>
     </body>

@@ -148,7 +148,7 @@ for i, (name, email_addr, subject, body) in enumerate(emails):
 
     # Footer
     story.append(Spacer(1, 0.3*inch))
-    footer_text = Paragraph("Warm regards,<br/><strong>People and Culture Team</strong><br/><strong>Taleemabad</strong><br/>hiring@taleemabad.com | www.taleemabad.com<br/><i>Sent on behalf of Talent Acquisition Team by Coco</i>", email_meta_style)
+    footer_text = Paragraph("Warm regards,<br/><strong>People and Culture Team</strong><br/><strong>Taleemabad</strong><br/>hiring@taleemabad.com | www.taleemabad.com<br/><i></i>", email_meta_style)
     story.append(footer_text)
 
     if i < len(emails) - 1:

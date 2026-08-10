@@ -178,7 +178,6 @@ HTML_BODY = """
                 People and Culture Team<br>
                 Taleemabad<br><br>
                 <a href="mailto:hiring@taleemabad.com" class="signature-link">hiring@taleemabad.com</a> | <a href="https://www.taleemabad.com" class="signature-link">www.taleemabad.com</a><br><br>
-                Sent on behalf of Talent Acquisition Team by Coco
             </div>
         </div>
     </div>
