@@ -7,18 +7,19 @@ type: project
 # Active Session — 2026-08-10
 
 ## Task
-2026-08-10: (1) Built Drive case-study submission folders for GM-Karachi + SMG (mirroring Noah's Lahore structure; links in memory/case_study_folders_and_gm_lahore_eval_2026_08_10.md). (2) Reconciled submissions: Muneeb Arif submitted via Markaz Aug 9 (link) — Submission Links.txt added to his folder + his CV (from Ayesha) stored to Markaz candidate 3129 + Drive; Waqas Hassan's emailed files archived + app 3870 marked submitted. (3) Full GM-Lahore case-study evaluation (4 candidates, all read in full incl. all sheet tabs + link folders) — detailed evaluation delivered in chat + locked-format report PILOTED to Ayesha.
+SMG batch-3 screening + growth-pipeline verification (debrief invites, calendar bookings) + memory/git housekeeping.
 
 ## Decisions Made
-- Evaluation verdicts: Salman Tariq STRONG PLUS (9.5 on A4 — only candidate hitting all 5 evaluator-guide criteria), Abdul Wahab STRONG, Muhammad Waqas STRONG w/ missing reflective, Ahmad Wajahat SOLID. No cross-candidate comparisons in write-ups (locked rule).
-- Pending Ayesha: live send recipients for eval report; Markaz case_study_score fill; M. Waqas reflective chase; Wahab voice-note listen; verify Ahmad/Salman quoted impact figures; Waqas Hassan CV still missing.
+- SMG batch-3: 85 arrivals, 76 read fully; 5 shortlist-grade / 10 maybe / 61 no-hire; pilot to Ayesha (awaiting call). No Markaz changes.
+- Debrief-invite verification via email_audit.log (authoritative): only 5 ever sent (7 Aug) — 4 GM-Lahore + Waqas Hassan GM-Karachi.
+- Calendar bookings verified via NEW capability: read-only IMAP into ayesha.khan@ using .env app password (Ayesha explicitly requested access; Calendar OAuth re-verified dead). 4/4 Lahore booked (Mon-Thu); Waqas Hassan NOT booked. Also surfaced parallel direct-send SMG values track (6 invites, 4 Zero-In bookings).
+- Memory written: repo reference_ayesha_mailbox_imap_2026_08_10.md + growth_roles_pipeline_snapshot_2026_08_10.md (+MEMORY.md index, CLAUDE.md docs-map row); auto-memory IMAP reference + index line.
 
 ## Mistakes / Corrections
+- (Batch-3 report) caught stale total (182 vs live 177) before send by verifying against DB — rule: verify counts at send time.
 
 ## Files Modified
+- scripts/jobs/job42/send_job42_screening_batch3_pilot.py (new), memory/reference_ayesha_mailbox_imap_2026_08_10.md (new), memory/growth_roles_pipeline_snapshot_2026_08_10.md (new), memory/MEMORY.md, CLAUDE.md, memory/session_active.md
 
 ## Pre-Send Checks
-- [ ] Self-QA 8-item checklist run
-- [ ] Template read side-by-side
-- [ ] Word count verified
-- [ ] Pilot sent to Ayesha (not candidate directly)
+- [x] Batch-3 pilot to Ayesha only; IMAP read logged to read_audit.log; readonly+PEEK only
