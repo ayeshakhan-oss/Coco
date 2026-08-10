@@ -4,14 +4,14 @@ description: Live notes for the current session. Wiped at session start by UserP
 type: project
 ---
 
-# Active Session — 2026-08-07
+# Active Session — 2026-08-10
 
 ## Task
-2026-08-07 (evening): (1) SMG values invite late-add sent LIVE to Vaneeza Tashfeen Baig (candidate 3267, app 4033 — on Markaz; Job 42 now 17 invited). (2) Waqas Hassan (GM-Karachi, app 3870) submitted case study BY EMAIL (Re: on original thread, 14:46, after Aug-6 nudge — nudge worked); verified dual-source; Markaz case_study fields still empty (email path) — offer open to set case_study_status='submitted'. Debrief invite piloted → approved → LIVE (booking link reused from GM-Lahore debriefs, Ayesha reviewed in pilot; CC + Zeest). (3) Earlier: values scorecards submitted for Zeshan Nawaz (app 3921, PASS 4+/2± adjudicated), Arshan Bilal (app 3884, PASS 4+/2± adjudicated), Zubair Hussain (app 3792, PASS 5+/1±).
+2026-08-10: (1) Built Drive case-study submission folders for GM-Karachi + SMG (mirroring Noah's Lahore structure; links in memory/case_study_folders_and_gm_lahore_eval_2026_08_10.md). (2) Reconciled submissions: Muneeb Arif submitted via Markaz Aug 9 (link) — Submission Links.txt added to his folder + his CV (from Ayesha) stored to Markaz candidate 3129 + Drive; Waqas Hassan's emailed files archived + app 3870 marked submitted. (3) Full GM-Lahore case-study evaluation (4 candidates, all read in full incl. all sheet tabs + link folders) — detailed evaluation delivered in chat + locked-format report PILOTED to Ayesha.
 
 ## Decisions Made
-- Debrief pipeline: 5 invites live (4 GM-Lahore + Waqas Hassan GM-Karachi). Outstanding case studies: Muneeb Arif (no reply to nudge), Hafiz Osama, Zirghaam (after vacation).
-- 🔒 Lesson locked this session: NO cross-candidate comparisons in values evaluations (Ayesha; auto-memory file saved).
+- Evaluation verdicts: Salman Tariq STRONG PLUS (9.5 on A4 — only candidate hitting all 5 evaluator-guide criteria), Abdul Wahab STRONG, Muhammad Waqas STRONG w/ missing reflective, Ahmad Wajahat SOLID. No cross-candidate comparisons in write-ups (locked rule).
+- Pending Ayesha: live send recipients for eval report; Markaz case_study_score fill; M. Waqas reflective chase; Wahab voice-note listen; verify Ahmad/Salman quoted impact figures; Waqas Hassan CV still missing.
 
 ## Mistakes / Corrections
 
