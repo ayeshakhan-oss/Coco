@@ -23,3 +23,16 @@ SMG batch-3 screening + growth-pipeline verification (debrief invites, calendar 
 
 ## Pre-Send Checks
 - [x] Batch-3 pilot to Ayesha only; IMAP read logged to read_audit.log; readonly+PEEK only
+
+---
+
+# Parallel pass (same day) — SMG Drive profiles + submission archiving
+
+## Task
+Built Drive subfolders+CVs for all 16 shortlisted/invited SMG candidates (Jawwad test entry excluded). Archived submissions: Arshan Bilal + Junaid Ali (Submission Note + Links; files behind Markaz staff-login API, 401 to automation — staff download pending) and Arooj Khalid FULLY (emailed Doc+folder links → real copies incl. Assignment subfolders exported to PDF/XLSX); Markaz app 3868 marked submitted. CLAUDE.md Documentation Map row added for the case-study Drive folders. Earlier same session: GM-Lahore case-study evaluation (4 candidates) piloted to Ayesha; GM-KHI/SMG folders built; Muneeb CV → Markaz+Drive.
+
+## Decisions Made
+- Pending Ayesha: keep all 16 SMG folders vs prune to case-study-stage 6; eval-report live send + Markaz score fill.
+
+## Mistakes / Corrections
+- **Mistake:** archived a 19KB "noname" attachment as Arooj's case study — it was the Taleemabad logo (image/png without .png extension). **Correction:** deleted it, read the email body, pulled her real deliverables from her Drive links. **Rule:** filter email attachments by MIME type, not filename; when an email has no real attachments, read the body for links before archiving.
