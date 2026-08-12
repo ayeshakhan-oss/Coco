@@ -71,3 +71,6 @@ scripts/send_assessment_center_cpd_coach_batch.py
 
 # VENDORED THIRD-PARTY UI/UX SKILL (local-only, reinstall via: npx uipro-cli init --ai claude)
 .claude/skills/ui-ux-pro-max/
+
+# HR contract documents (PII — never track)
+Contracts/
