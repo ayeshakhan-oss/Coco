@@ -59,6 +59,7 @@ EYEBROW = {
     "values_feedback": "People &amp; Culture &nbsp;&bull;&nbsp; Values Interview",
     "warm_bench":      "People &amp; Culture &nbsp;&bull;&nbsp; Application Update",
     "gwc_rejection":   "People &amp; Culture &nbsp;&bull;&nbsp; Application Update",
+    "warm_hold":       "People &amp; Culture &nbsp;&bull;&nbsp; Interview Update",
 }
 
 # ── BODY HELPERS (v8 design) ────────────────────────────────────────────────────

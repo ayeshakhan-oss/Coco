@@ -1,6 +1,6 @@
 ---
 name: candidate-communication
-description: Handle all candidate rejection and feedback emails. Covers CV rejections, values interview feedback, warm bench feedback, and GWC rejections. All emails require 800+ words (if feedback), evidence-based feedback, v8 HTML design, and pilot approval before sending.
+description: Handle all candidate rejection, feedback, and status-update emails. Covers CV rejections, values interview feedback, warm bench feedback, GWC rejections, and warm-hold decision-pending updates (interviewed, decision pending, dated follow-up promised). All emails require 800+ words (if feedback; decision-pending updates are 120-250 words), evidence-based feedback, v8 HTML design, and pilot approval before sending.
 compatibility: Requires memory/feedback_email_rules.md, locked templates, RULES.md
 ---
 
@@ -66,13 +66,21 @@ All these SOPs fall under this skill:
    - Interview transcript analysis
    - No "GWC" or "KCD" terminology
 
+5. **Warm Hold — Decision-Pending Updates** — `warm-hold-decision-pending-email.md` (this folder) — ADDED 2026-08-12
+   - Candidate interviewed, decision NOT yet made (still collecting panel notes); we commit to an update BY A STATED DATE (e.g. "next week")
+   - SHORT: 120-250 words. NOT a feedback email — no verdict, no evaluation, no direction-hints
+   - 🔓 TYPE-SPECIFIC EXEMPTIONS (Ayesha 2026-08-12): NO "This is not a yes for now." opening (no decision exists); the dated "we will reach out by [date]" promise is REQUIRED here (the one type where the future-promise ban is inverted); 800-word minimum does not apply
+   - Only commit to dates we will honour; if no reliable date exists, use the Keep-in-Touch Note (Skill 06 #5) instead
+   - Everything else unchanged: "we" voice, no em dashes, no jargon, no interviewer names, v8 layout, pilot to Ayesha first
+
 ---
 
 ## Universal Rules (All Communication)
 
 **Word Count:**
-- Minimum: 800 words (non-negotiable)
+- Minimum: 800 words (non-negotiable for feedback/rejection types 1-4)
 - Target: 800-1100 words (optimal)
+- Exception: Warm Hold decision-pending updates (type 5) target 120-250 words — they carry no feedback
 - Verify count before sending
 
 **Tone & Voice:**
@@ -82,7 +90,7 @@ All these SOPs fall under this skill:
 - Specific evidence from interview (never generic)
 - **NO EM DASHES (—)** — Replace with periods, commas, colons, or hyphens only
 
-**Opening Line & Future-Promise (LOCKED 2026-06-18 — ALL 4 types):**
+**Opening Line & Future-Promise (LOCKED 2026-06-18 — ALL 4 decision types; type 5 Warm Hold is EXEMPT per Ayesha 2026-08-12, see its file):**
 - **MANDATORY first line** after `Dear [Name],`: `This is not a yes for now.` Harness HARD BLOCK if missing or buried after a heading. Honest because of "now" (today's no, not never). Master philosophy Rule 10.
 - **NO future-outreach promise.** Express welcome as disposition + candidate-initiated ("if a closer-fit role opens, we would welcome a fresh application from you"). NEVER "we will reach out / be in touch / contact you / keep your name on file / expect to hear from us." Harness WARNING. Master philosophy Rule 11.
 
@@ -210,9 +218,8 @@ People and Culture Team
 Taleemabad
 
 hiring@taleemabad.com | www.taleemabad.com
-
-Sent on behalf of Talent Acquisition Team by Coco
 ```
+*(The "Sent on behalf of Talent Acquisition Team by Coco" line was REMOVED from all emails per locked rule 2026-07-29 — never re-add it.)*
 **Never deviate.** Use exact HTML structure and CSS classes from memory/warm_bench_final_locked_approach.md. Blue links (#2f4fa2). Simple <div> structure with class-based styling.
 
 ### 12. SECTION STRUCTURE
@@ -279,7 +286,7 @@ Before sending ANY rejection, warm bench, GWC, or feedback email, run this check
 
 **STEP 1: IDENTIFY EMAIL TYPE**
 - Ask if unclear: "What type of feedback email?"
-- Options: CV rejection, values feedback, warm bench, GWC rejection
+- Options: CV rejection, values feedback, warm bench, GWC rejection, warm-hold decision-pending update
 
 **STEP 2: READ LOCKED RESOURCES**
 - RULES.md: Core Discipline Rules 1-7

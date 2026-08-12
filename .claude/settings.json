@@ -41,5 +41,10 @@
     "slack@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Edit(/.claude/skills/07_contract-drafting/**)"
+    ]
   }
 }
