@@ -47,6 +47,7 @@ When you ask me to do a task, I automatically follow this wiring. No asking you 
 | **Create decision brief** | .claude/RULES.md + Rule 1.11 | .claude/skills/03_hiring-operations/decision-briefs.md | N/A (custom) | feedback_decision_brief_hyperlinks.md (CV links mandatory) | Check Markaz → Draft → Verify all names linked → Self-QA |
 | **Generate attendance report** | .claude/RULES.md | .claude/skills/03_hiring-operations/attendance-reports.md | attendance_report_complete_template.md | attendance_report_complete_template.md (colors, sections, no grid) | Query Teams/Markaz → Build → Self-QA |
 | **Talent sourcing** | .claude/RULES.md | .claude/skills/05_talent-sourcing/talent-sourcing.md | N/A (process-based) | talent_sourcing_7steps_complete.md | Execute 7 steps → Verify links → Excel → Add to Markaz |
+| **Draft contract / NDA / addendum / offer documents** | .claude/RULES.md + Rule 1.4 (approval) | .claude/skills/07_contract-drafting/SKILL.md | .claude/skills/07_contract-drafting/TEMPLATE_MAP.md + Contracts\ masters | skill07_contract_drafting_locked_2026_08_12.md | Confirm entity+type → Collect details+JD → Populate copy → Validate → Package (contract+NDA) → Show Ayesha |
 
 ---
 

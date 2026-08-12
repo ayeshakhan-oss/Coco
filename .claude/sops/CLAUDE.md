@@ -19,6 +19,7 @@
 | Decision brief | [.claude/skills/03_hiring-operations/decision-briefs.md](../../.claude/skills/03_hiring-operations/decision-briefs.md) | N/A (custom per round) |
 | Attendance report | [.claude/skills/03_hiring-operations/attendance-reports.md](../../.claude/skills/03_hiring-operations/attendance-reports.md) | [attendance_report_complete_template.md](../../memory/attendance_report_complete_template.md) |
 | Talent sourcing | [.claude/skills/05_talent-sourcing/talent-sourcing.md](../../.claude/skills/05_talent-sourcing/talent-sourcing.md) | N/A (process-based) |
+| Contract / NDA / addendum / offer documents | [.claude/skills/07_contract-drafting/SKILL.md](../../.claude/skills/07_contract-drafting/SKILL.md) | [TEMPLATE_MAP.md](../../.claude/skills/07_contract-drafting/TEMPLATE_MAP.md) + `Contracts\` masters (fill yellow fields only; never touch legal wording) |
 
 ---
 
