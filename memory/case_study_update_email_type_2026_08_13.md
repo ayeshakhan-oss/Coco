@@ -28,7 +28,9 @@ Short status note to a candidate who **already submitted their case study**: tha
 
 ## First use — Job 42 Senior Manager Growth, 2026-08-13
 Subject `A Quick Update from Our Side` (sibling of type #5's `A Quick Note from Our Side`, deliberately different so a candidate receiving both does not see the same subject twice). Timeline: **"early next week"** per Ayesha.
-4 pilots sent to Ayesha only (no CC) for the 4 dual-source-verified case-study submitters: **Muhammad Arshan Bilal** (app 3884), **Junaid Ali** (3992), **Arooj Khalid** (3868), **Yusra Amjad** (4061). **Awaiting Ayesha's approval before live send** (live = candidate TO + CC ayesha + hiring@, clean subject).
+✅ **SENT LIVE 2026-08-13** (Ayesha: "NOW GO LIVE WITH IT") to the 4 dual-source-verified case-study submitters: **Muhammad Arshan Bilal** (app 3884), **Junaid Ali** (3992), **Arooj Khalid** (3868), **Yusra Amjad** (4061). Candidate in TO, clean subject, **CC = ayesha.khan@ + waqas.tanveer@ + ali.sipra@ + hiring@** (Ayesha's list, same panel as the Job-42 values invites — this is now the default CC for this type). Two rounds of pilots preceded it (first wording, then the "debrief interview call" correction). Body 133 words, all self-QA checks passed, sent via `safe_sendmail()` and logged to logs/email_audit.log.
+
+**NOTE:** these sends are NOT in Markaz `communication_history` — our own scripts do not write there (only Markaz-UI sends appear). Anyone auditing comms for these candidates must check logs/email_audit.log + Gmail as well, per the dual-source rule.
 
 **Open flag raised with Ayesha:** Junaid Ali and Yusra Amjad hold only **blank values scorecard shells** — they submitted case studies with no values evidence on record. See [[audit_job42_smg_scorecards_vs_case_studies_2026_08_13]].
 **Diary:** promised update is "early next week" (Mon 18 / Tue 19 Aug) — a follow-up must go out before that passes if the debrief decision slips.

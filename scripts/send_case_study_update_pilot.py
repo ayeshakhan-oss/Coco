@@ -37,9 +37,11 @@ load_dotenv(r"c:\Agent Coco\.env")
 SENDER = "ayesha.khan@taleemabad.com"
 PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-PILOT_MODE = True                      # flip to False ONLY after Ayesha approves the pilots
+PILOT_MODE = False                     # Ayesha approved live send 2026-08-13 ("NOW GO LIVE WITH IT")
 PILOT_TO = "ayesha.khan@taleemabad.com"
-LIVE_CC = ["ayesha.khan@taleemabad.com", "hiring@taleemabad.com"]
+# CC list per Ayesha 2026-08-13 (same panel as the Job-42 values invites)
+LIVE_CC = ["ayesha.khan@taleemabad.com", "waqas.tanveer@taleemabad.com",
+           "ali.sipra@taleemabad.com", "hiring@taleemabad.com"]
 
 POSITION = "Senior Manager Growth"
 # Promised timeline - Ayesha's instruction 2026-08-13 ("early next week").
