@@ -24,7 +24,9 @@ Values FAIL = 2: Salman Ahmad (3943, OUT, status rejected ✅) · Fahad Ali (391
 **A. Booked calls with no scorecard — RESOLVED 2026-08-13 by mailbox check (Ayesha asked "check my email for any record of hina and ali ahmed"):**
 1. **Shahmir Hashmat** (3911) — booked + held Thu 13 Aug 12pm; **case study already sent same day** (so effectively passed) — **genuinely unscored**.
 2. **Ali Ahmed** (3946) — ❌ **NOT a missed scorecard.** He **cancelled himself**: "Appointment canceled: Zero In Call For Senior Growth Manager (Ali Ahmed) @ Tue Aug 11, 2026 12pm-1pm" sent FROM aliahmed209@gmail.com on Tue 11 Aug 06:17 UTC (11:17am PKT, 43 min before the slot). Never rebooked. No interview happened → nothing to score. **Needs rebooking or closing out.**
-3. **Hina Rehman** (3958) — **AMBIGUOUS, ask Ayesha.** Booking (Wed 12 Aug 11am-12pm) was **never cancelled** — no cancellation mail exists in either direction, and Hina never emailed back at all. Jawwad accepted that morning (10:16am PKT) and at **11:10am PKT — ten minutes into the slot — re-sent the invite including the notetaker bot rumi@hellorumi.ai** plus Tahir Saleem/Waqas/Zeshan, which reads like a live call. BUT there is **no candidate-named Fathom recap** for hinarehman1794@gmail.com, whereas every other scored candidate has one ("Recap of your meeting with zedef@hotmail.com / hudashaikh8080@ / yashfeen_zahid02@ / syed.basit89@ / merzia.hasnain99@"). Fathom labels some recaps by domain ("taleemabad.com"), so absence is not proof of a no-show. Either it happened and was never scored, or she no-showed.
+3. **Hina Rehman** (3958) — ❌ **NOT a missed scorecard. NO-SHOW, confirmed by Ayesha 2026-08-13 ("hina didn't join the call").** Her booking (Wed 12 Aug 11am-12pm) was never cancelled and she never emailed back — she simply did not join. The email trail matched this: no candidate-named Fathom recap for hinarehman1794@gmail.com, unlike every candidate who was actually interviewed ("Recap of your meeting with zedef@hotmail.com / hudashaikh8080@ / yashfeen_zahid02@ / syed.basit89@ / merzia.hasnain99@"). Jawwad's 11:10am PKT invite re-send (adding notetaker rumi@hellorumi.ai) was the panel waiting for a candidate who never arrived. **Decision needed from Ayesha: re-invite or close out; status still `shortlisted`.**
+
+**→ NET RESULT: only ONE confirmed unscored interview (Shahmir Hashmat) + the 4 blank shells. Ali Ahmed (cancelled) and Hina Rehman (no-show) were never interviewed — nothing was missed for either.**
 
 **⚠️ METHOD LESSON:** a calendar booking alone does NOT prove an interview happened — always check for cancellations. Gmail IMAP `SUBJECT "cancel"` returns **0 hits** for subjects containing "canceled" (no stem matching): search **`"canceled"` AND `"cancelled"` exactly**.
 
@@ -43,7 +45,7 @@ Values FAIL = 2: Salman Ahmad (3943, OUT, status rejected ✅) · Fahad Ali (391
 
 ## Invited but never booked (no booking mail on record)
 Murtaza Hassan + Muhammad Shakeel Ahmad (invited 5 Aug, 8 days) · Yusra Wahid + Imran Mehmood Choudhry (invited 7 Aug; also Markaz-missing) · Khushal Khan + Sara Obaid Ul Islam (invited 12 Aug, still recent).
-**Booked then cancelled, not rebooked:** Ali Ahmed (self-cancelled 11 Aug).
+**Booked but no interview (both still `shortlisted` — decision needed: re-invite or close out):** Ali Ahmed (self-cancelled 43 min before his 11 Aug slot, never rebooked) · Hina Rehman (**no-show** for her 12 Aug slot, confirmed by Ayesha; never cancelled, never wrote in).
 
 ## Related
 [[markaz_live_job_bulk_update_whitelist_2026_08_05]] · [[reference_ayesha_mailbox_imap_2026_08_10]] · repo memory/project_job42_smg_screening_2026_08_05.md · [[values_scorecard_syed_basit_smg_2026_08_13]] · case-study nudge type: repo memory/case_study_nudge_type_2026_08_10.md
