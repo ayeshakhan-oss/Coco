@@ -144,7 +144,10 @@ Entity · employment type · CNIC · name spelling · salutation · designation 
 4. **NIETE Project-Based contract is on OPL letterhead** — intentional; it also serves as OPL's project-based template. No changes required.
 5. **OWT templates unhighlighted** — treat `XYZ`/blank-after-colon as fill fields (approved).
 6. **Inc. contract** — effective date format "Date Month, Year"; acceptance line takes CNIC/Passport/Company registration; salary is a PKR figure "disbursed in dollars at time of conversion"; signed Haroon Yasin, CEO. Fill only the yellow fields; the "technical services and operation management" WHEREAS wording stays untouched.
-7. **Duplicate Inc. masters in Promotion\** (two near-identical files, filenames differ by a space) — use `Template - Contract Taleemabad Inc.  .docx` (64,664 bytes, matches the INC\ master); ignore the 64,663-byte near-duplicate until Ayesha cleans it up.
+7. **Fellow/Project-Based master hardcodes `Project: National Institute of Excellence in Teacher Education`** (terms table, NOT highlighted) — inherited from the NIETE original. For any non-NIETE Fellow, ASK Ayesha what that line should read; never leave it silently.
+8. **Fellow/Project-Based compensation cells carry no yellow highlighting** — `Total Earnings PKR XYZ` / `Base Salary PKR XYZ` / `Medical PKR XYZ` / `Others PKR XYZ` are fill spots regardless. Ask for the full split, not just a headline figure.
+9. **Acceptance line ends `…will join Orenda XYZ (joining date).`** — the parenthetical is a drafting instruction, not contract wording. Remove it after filling, and flag the removal to Ayesha.
+10. **Duplicate Inc. masters in Promotion\** (two near-identical files, filenames differ by a space) — use `Template - Contract Taleemabad Inc.  .docx` (64,664 bytes, matches the INC\ master); ignore the 64,663-byte near-duplicate until Ayesha cleans it up.
 
 ---
 
