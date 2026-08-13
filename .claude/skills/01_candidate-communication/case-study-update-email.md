@@ -12,7 +12,7 @@ A short, honest **status update** to a candidate who has **already submitted the
 
 1. Thank you for doing the case study — we know it cost you real time.
 2. We are still running interviews for this role, so no decision exists yet.
-3. We expect to update them **on the case study debrief by [a stated date]**.
+3. We expect to update them **on the case study debrief interview call by [a stated date]**. (Ayesha's exact wording, 2026-08-13: say "case study debrief interview call", not just "debrief" — it names the actual next step unambiguously.)
 
 **This is NOT a decision email and NOT an evaluation of their case study.** It carries no verdict, no feedback, no score, no hint of direction. Its only job is to stop post-submission silence from being read as rejection, and to put a date on when they will hear.
 
@@ -67,8 +67,8 @@ alongside everything else you have on, and we are grateful you gave it to us.
 
 We are currently still in the middle of interviews for this role, so we
 wanted to keep you in the loop rather than leave you waiting in silence.
-We expect to share an update with you on the case study debrief by
-[Timeline].
+We expect to share an update with you on the case study debrief interview
+call by [Timeline].
 
 Thank you for your patience and for your continued interest in joining
 Taleemabad. We really appreciate the time and effort you have invested in

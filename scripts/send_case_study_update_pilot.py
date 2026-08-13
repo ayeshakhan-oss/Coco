@@ -72,7 +72,7 @@ def build_body(first_name):
             f"gave it to us.")
         + P(f"We are currently still in the middle of interviews for this role, so we "
             f"wanted to keep you in the loop rather than leave you waiting in silence. We "
-            f"expect to share an update with you on the case study debrief by "
+            f"expect to share an update with you on the case study debrief interview call by "
             f"<strong>{UPDATE_BY}</strong>.")
         + P("Thank you for your patience and for your continued interest in joining "
             "Taleemabad. We really appreciate the time and effort you have invested in "

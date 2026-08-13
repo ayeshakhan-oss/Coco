@@ -13,7 +13,7 @@ type: project
 **Eyebrow key added:** `EYEBROW["case_study_update"]` in `scripts/utils/v8_template.py` → "PEOPLE & CULTURE • INTERVIEW UPDATE"
 
 ## What it is
-Short status note to a candidate who **already submitted their case study**: thanks for the work, we are still mid-interviews so nothing is decided, and we expect to update you **on the case study debrief by [timeline]**. No verdict, no evaluation, no direction hints, no new asks.
+Short status note to a candidate who **already submitted their case study**: thanks for the work, we are still mid-interviews so nothing is decided, and we expect to update you **on the case study debrief interview call by [timeline]** (Ayesha's exact wording 2026-08-13 — say "case study debrief interview call", never just "debrief"). No verdict, no evaluation, no direction hints, no new asks.
 
 ## Inherited exemptions (from type #5, Ayesha-sanctioned)
 1. NO "This is not a yes for now." opening (no decision exists).
