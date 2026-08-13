@@ -38,6 +38,13 @@ Values FAIL = 2: Salman Ahmad (3943, OUT, status rejected ✅) · Fahad Ali (391
 
 → 5 of these 7 (Shahmir, Rizvi, Junaid, M. Bilal, Yusra Amjad) already hold case studies without a completed values scorecard. Coco can score any of them from transcripts if Ayesha supplies the Fathom links.
 
+## Case studies: 11 sent, 4 submitted (verified BOTH sources 2026-08-13)
+**Sent (11 distinct):** 6 Aug — Jawwad Ali Syed Rizvi, Arooj Khalid · 7 Aug — Rizvi (resend), Arshan Bilal, Muhammad Zeshan, Junaid Ali, Muhammad Bilal, Yusra Amjad · 13 Aug — Umar Zahid, Rimsha Taj, Shahmir Hashmat (by jawwad.ali@), Syed Basit Hussain (by ayesha.khan@).
+**Submitted (4):** Arooj Khalid (10 Aug, link), Muhammad Arshan Bilal (7 Aug, link+Word+Excel), Junaid Ali (9 Aug, link+Word+Excel), Yusra Amjad (10 Aug, link+Word+Excel) — all four via the **Markaz portal**, not email.
+**Not submitted (7):** Rizvi (6 Aug, 7 days), Muhammad Zeshan (7 Aug, 6 days — nudge), Muhammad Bilal (7 Aug, 6 days — nudge), Umar Zahid / Rimsha Taj / Shahmir Hashmat / Syed Basit (all sent 13 Aug, still inside 48h).
+**IMAP cross-check:** no submission arrived by email that Markaz missed. Only inbound from recipients: Arooj replies 10 Aug (incl. a reply to a "Checking In: Your Case Study..." nudge already sent to her), Arshan Bilal reply **13 Aug 17:14** (after his 7 Aug portal submission — check whether he sent a revision), and calendar "Accepted" mails from Shahmir + Basit. Nothing at all from Rizvi, Zeshan, M. Bilal, Umar, Rimsha.
+**Data oddity:** Arshan Bilal's `case_study_submitted_at` (7 Aug 14:31) predates the case-study send (7 Aug 17:01) — timestamp/entry artifact, flag if his submission is ever disputed.
+
 ## Upcoming SMG interviews (booked, from IMAP)
 14 Aug: Furqan Afzal 11am, Irfan Siddiqui 12pm · 17 Aug: Ahmad Taj 11am, Shafaq Syed 12pm · 18 Aug: Kanooz Siddiqui 11am, Lamis Maniar 12pm · 19 Aug: Hania Khan 11am, Veniza (Vaneeza) Baig 12pm · 20 Aug: Ali Wajdan Khan 12pm.
 
