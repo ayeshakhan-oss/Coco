@@ -45,3 +45,10 @@ First "reject the rest" used `WHERE status='new'` and swept 10 unscreened same-d
 - **Held untouched:** Kamran 3930 (standing "leave Kamran") + Jawwad test entry 3867 (case_study_sent — his own test record).
 - Executed via guarded script `scripts/jobs/job42/job42_status_sweep_2026_08_12.py`: explicit ID whitelists, per-row expected-status pre-check (re-pulled at run time), row-count asserts (7 + 77 exact). Job 42 after sweep: 23 shortlisted / 155 rejected / 1 case_study_sent (test) / 1 new (Kamran).
 - ⚠️ Job open to 15 Aug — arrivals after this sweep stay 'new' for a final close-out pass.
+
+## Values-invite gap sweep + batch-4 invites (2026-08-12)
+- Audit of all 23 shortlisted vs safe_sendmail audit log (Markaz candidate_communications + coco communications tables both EMPTY for job 42 — Coco script sends only log to logs/email_audit.log; Gmail from Jawwad's mailbox blind to these sends since he's not CC'd).
+- **8 shortlisted had NO values invite** → piloted → Ayesha approved same day → **sent LIVE 2026-08-12** (standard CC: ayesha.khan@, hiring@, waqas.tanveer@, ali.sipra@): Ahmad Taj 3971, Ali Wajdan Khan 3977, Hania Khan 4035, Lamis Maniar 4062, Kanooz Siddiqui 4111 (fresh Job-42 app after May-Jul exploratory→closure arc), Khushal Khan 4134, Shafaq Syed 4137, Sara Obaid Ul Islam 4138. Script: send_job42_values_invite.py (ONLY-filter, candidates appended with app IDs).
+- Already invited: batch-1 ten (2026-08-05), Vaneeza 4033 + five off-Markaz names (2026-08-07, audit-verified: Yusra Wahid, Basit Hussain, Imran Choudhry, Furqan Afzal, Irfan Siddiqui). Past values, no invite needed: Arooj 3868, Junaid 3992, Bilal Sadiq 4051, Yusra Amjad 4061.
+- ⏰ **Open reminder (Ayesha):** create Markaz records for the 5 off-Markaz invitees above.
+- ⚠️ **Open flag:** Fahad Ali 3916 values_interview_result='fail' (2026-08-09) but status still 'shortlisted' — awaiting Ayesha's word to move to rejected.

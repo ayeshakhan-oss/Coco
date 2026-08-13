@@ -26,7 +26,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../..", ".en
 
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
-PILOT_MODE  = False  # batch 3 pilots approved by Ayesha 2026-08-07 (standard CC confirmed) --> LIVE
+PILOT_MODE  = False  # 2026-08-12: 8 pilots approved by Ayesha same day ("okay live with the pilots you sent me") --> LIVE
 
 POSITION    = "Senior Manager Growth"
 SENDER      = "ayesha.khan@taleemabad.com"
@@ -73,11 +73,30 @@ CANDIDATES = [
     {"greet": "Irfan",   "name": "Irfan Siddiqui",         "email": "irfanmsiddiqui@outlook.com"},
     # Late add per Ayesha in chat, 2026-08-07 — on Markaz (candidate 3267, app 4033, shortlisted):
     {"greet": "Vaneeza", "name": "Vaneeza Tashfeen Baig",  "email": "veniza.baig@gmail.com"},
+    # 2026-08-12 — shortlisted on Markaz with NO values invite on record (audit-log sweep, Ayesha requested pilots).
+    # Names/emails verified from Markaz (job 42, status='shortlisted'):
+    {"greet": "Ahmad",   "name": "Muhammad Ahmad Taj",     "email": "ahmad.taj138@gmail.com"},    # app 3971
+    {"greet": "Ali",     "name": "Ali Wajdan Khan",        "email": "malikaliwajdan@gmail.com"},  # app 3977
+    {"greet": "Hania",   "name": "Hania Khan",             "email": "hania.thekhan@gmail.com"},   # app 4035
+    {"greet": "Lamis",   "name": "Lamis Maniar",           "email": "lamis.maniar@gmail.com"},    # app 4062
+    {"greet": "Kanooz",  "name": "Kanooz Ahmed Siddiqui",  "email": "kanoozay@gmail.com"},        # app 4111
+    {"greet": "Khushal", "name": "Khushal Khan",           "email": "khusshaal@gmail.com"},       # app 4134
+    {"greet": "Shafaq",  "name": "Shafaq Syed",            "email": "shafaqsyed5@gmail.com"},     # app 4137
+    {"greet": "Sara",    "name": "Sara Obaid Ul Islam",    "email": "saraobaid48@gmail.com"},     # app 4138
 ]
 
 # Send only to candidates in this list (empty = all). Used to add late approvals
 # without re-emailing the already-invited batch.
-ONLY = ["Vaneeza Tashfeen Baig"]
+ONLY = [
+    "Muhammad Ahmad Taj",
+    "Ali Wajdan Khan",
+    "Hania Khan",
+    "Lamis Maniar",
+    "Kanooz Ahmed Siddiqui",
+    "Khushal Khan",
+    "Shafaq Syed",
+    "Sara Obaid Ul Islam",
+]
 
 
 # ── EMAIL: BUILD HTML (design identical to job32 reference) ───────────────────
