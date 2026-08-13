@@ -1,0 +1,244 @@
+<!-- Taleemabad joining email — Design 3 (two-column).
+     Reusable template. Never hard-code candidate data here; the sender script
+     substitutes the double-brace variables. Optional blocks are removed when empty.
+
+     Layout note: the two columns use the "fluid hybrid" technique — inline-block
+     divs with max-width, plus MSO ghost tables for Outlook. They stack on narrow
+     screens WITHOUT needing a media query, which is what makes this safe in
+     Gmail's mobile app (where <style> can be stripped). -->
+<style>
+  @media only screen and (max-width:620px) {
+    .pad       { padding-left:22px !important; padding-right:22px !important; }
+    .hero-pad  { padding:28px 22px !important; }
+    .h1        { font-size:25px !important; line-height:1.25 !important; }
+    .hero-sub  { font-size:14px !important; }
+    /* the sidebar's desktop gutter would indent it once stacked */
+    .col-right { padding-left:0 !important; padding-top:16px !important; }
+    /* long values must wrap rather than push the row wide */
+    .dval      { white-space:normal !important; text-align:right !important; }
+    .dlabel    { font-size:10px !important; }
+    /* full-width, easily tappable buttons */
+    .btn       { display:block !important; width:100% !important; margin:0 0 10px 0 !important; }
+    .btn a     { display:block !important; text-align:center !important; padding:15px 18px !important; }
+    .btn-gap   { display:none !important; }
+    /* justified text creates rivers in a narrow column */
+    .just      { text-align:left !important; }
+  }
+</style>
+
+<div style="background:#eef1f6;padding:34px 10px;">
+<!-- Outer table is width="100%" with max-width in CSS. A fixed width="880"
+     attribute pins the email at 880px and phones simply zoom out — max-width
+     never applies. Outlook is handled by the MSO ghost table below. -->
+<!--[if mso]><table role="presentation" width="880" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" width="100%"
+       style="width:100%;max-width:880px;margin:0 auto;background:#ffffff;border-radius:12px;
+              overflow:hidden;box-shadow:0 1px 10px rgba(17,24,39,0.06);">
+
+  <!-- 1. HERO -->
+  <tr>
+    <td class="hero-pad" background="cid:hero_pattern"
+        style="background-color:#1e3a8a;background-image:url(cid:hero_pattern);
+               background-position:right bottom;background-repeat:no-repeat;
+               padding:38px 44px 34px 44px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td valign="top">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;
+                        letter-spacing:2.2px;text-transform:uppercase;color:#a9bce4;
+                        margin-bottom:16px;">{{PROJECT_NAME}} &nbsp;&middot;&nbsp; Taleemabad</div>
+            <div class="h1" style="font-family:Georgia,'Times New Roman',serif;font-size:31px;
+                        line-height:1.22;color:#ffffff;font-weight:bold;">Welcome aboard,<br>
+              <span style="color:#8fd3a3;">{{CANDIDATE_FIRST_NAME}}!</span></div>
+            <div class="hero-sub" style="font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.65;
+                        color:#d7e0f4;margin-top:16px;max-width:430px;">
+              We're thrilled to have you join us as a
+              <span style="color:#ffffff;font-weight:bold;">{{ROLE}}</span>
+              for the {{PROJECT_NAME}} project.</div>
+          </td>
+          <td align="right" valign="top" width="78">
+            <img src="cid:talogo" width="64" alt="Taleemabad"
+                 style="display:block;border:0;background:#ffffff;border-radius:10px;padding:7px;">
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- 2. INTRODUCTION -->
+  <tr>
+    <td class="pad" style="padding:34px 44px 4px 44px;">
+      <p class="just" style="margin:0 0 15px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;
+                line-height:1.75;color:#374151;text-align:justify;">Hi {{CANDIDATE_FIRST_NAME}},</p>
+      <p class="just" style="margin:0 0 15px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;
+                line-height:1.75;color:#374151;text-align:justify;">I hope this message finds you in good health
+        and high spirits.</p>
+      <p class="just" style="margin:0 0 24px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;
+                line-height:1.75;color:#374151;text-align:justify;">We are pleased to announce that you have been
+        selected as <b style="color:#111827;">{{ROLE}}</b> for the {{PROJECT_NAME}} project at
+        <b style="color:#111827;">Taleemabad</b>, powered by
+        <b style="color:#111827;">{{PARTNER_NAME}}</b>.</p>
+    </td>
+  </tr>
+
+  <!-- 3. TWO-COLUMN AREA -->
+  <tr>
+    <td class="pad" style="padding:0 44px 8px 44px;font-size:0;">
+      <!--[if mso]><table role="presentation" width="792" cellpadding="0" cellspacing="0" border="0"><tr><td width="480" valign="top"><![endif]-->
+      <div style="display:inline-block;width:100%;max-width:480px;vertical-align:top;">
+
+        <!-- contract details -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+               style="border:1px solid #e6eaf2;border-radius:10px;">
+          <tr><td style="padding:6px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              {{DETAIL_ROWS}}
+            </table>
+          </td></tr>
+        </table>
+
+        <!-- attachment callout -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+               style="margin-top:16px;background:#eef2fb;border-radius:10px;">
+          <tr>
+            <td width="56" align="center" valign="middle" style="padding:16px 0 16px 16px;">
+              <img src="cid:ic_doc" width="22" height="22" alt="" style="display:block;border:0;">
+            </td>
+            <td class="just" style="padding:16px 18px 16px 6px;font-family:Georgia,'Times New Roman',serif;
+                font-size:14.5px;line-height:1.6;color:#374151;text-align:justify;">
+              Please find the <b style="color:#111827;">Contract and Non-Disclosure Agreement
+              (NDA)</b> attached to this email.</td>
+          </tr>
+        </table>
+
+        <!-- two things to do -->
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.8px;
+                    text-transform:uppercase;color:#2f4fa2;font-weight:bold;margin:30px 0 0 0;">
+          Two things to do</div>
+        <div style="width:32px;height:2px;background:#4c9a5b;margin:9px 0 20px 0;
+                    font-size:0;line-height:0;">&nbsp;</div>
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td width="36" valign="top" style="padding:0 0 16px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td width="24" height="24" align="center"
+                        style="background:#2f4fa2;border-radius:12px;font-family:Arial,sans-serif;
+                               font-size:11px;font-weight:bold;color:#ffffff;line-height:24px;">1</td></tr>
+              </table></td>
+            <td class="just" valign="top" style="padding:0 0 16px 0;font-family:Georgia,'Times New Roman',serif;
+                font-size:14.5px;line-height:1.7;color:#374151;text-align:justify;">
+              Complete the form with your information for record-keeping and upload your
+              educational documents, signed contracts, a signed NDA, and an experience letter.</td>
+          </tr>
+          <tr>
+            <td width="36" valign="top">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td width="24" height="24" align="center"
+                        style="background:#2f4fa2;border-radius:12px;font-family:Arial,sans-serif;
+                               font-size:11px;font-weight:bold;color:#ffffff;line-height:24px;">2</td></tr>
+              </table></td>
+            <td class="just" valign="top" style="font-family:Georgia,'Times New Roman',serif;font-size:14.5px;
+                line-height:1.7;color:#374151;text-align:justify;">
+              Provide your bank name, account title, and IBAN number, matching the details on
+              your cheque book. Once all documents are in, we will set up your Teams and
+              email ID.</td>
+          </tr>
+        </table>
+
+        <!-- buttons -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:22px;">
+          <tr>
+            <td class="btn" style="background:#2f4fa2;border-radius:7px;">
+              <a href="{{ONBOARDING_FORM_URL}}" target="_blank"
+                 style="display:inline-block;padding:13px 22px;font-family:Arial,Helvetica,sans-serif;
+                        font-size:13.5px;font-weight:bold;color:#ffffff;text-decoration:none;">
+                Complete the onboarding form &nbsp;&rarr;</a></td>
+            <td class="btn-gap" width="10" style="font-size:0;">&nbsp;</td>
+            <td class="btn" style="border:1.5px solid #cfd8e8;border-radius:7px;background:#ffffff;">
+              <a href="{{WHATSAPP_GROUP_URL}}" target="_blank"
+                 style="display:inline-block;padding:11.5px 20px;font-family:Arial,Helvetica,sans-serif;
+                        font-size:13.5px;font-weight:bold;color:#2f4fa2;text-decoration:none;">
+                Join the WhatsApp group</a></td>
+          </tr>
+        </table>
+      </div>
+      <!--[if mso]></td><td width="24">&nbsp;</td><td width="288" valign="top"><![endif]-->
+      <div class="col-right" style="display:inline-block;width:100%;max-width:288px;
+                  vertical-align:top;padding-left:24px;box-sizing:border-box;">
+
+        <!-- journey card -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+               style="background:#f5f8fd;border:1px solid #e6eaf2;border-radius:10px;">
+          <tr><td style="padding:20px 18px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;
+                        letter-spacing:1.6px;text-transform:uppercase;color:#2f4fa2;
+                        font-weight:bold;">Your journey starts here</div>
+            <div style="width:28px;height:2px;background:#4c9a5b;margin:8px 0 14px 0;
+                        font-size:0;line-height:0;">&nbsp;</div>
+            <img src="cid:journey" width="240" alt=""
+                 style="display:block;border:0;width:100%;max-width:240px;margin-bottom:16px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              {{JOURNEY_ITEMS}}
+            </table>
+          </td></tr>
+        </table>
+
+        <!-- important things -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+               style="margin-top:16px;background:#f5f8fd;border:1px solid #e6eaf2;border-radius:10px;">
+          <tr><td style="padding:20px 18px;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:10.5px;
+                        letter-spacing:1.6px;text-transform:uppercase;color:#2f4fa2;
+                        font-weight:bold;">A few important things to know</div>
+            <div style="width:28px;height:2px;background:#4c9a5b;margin:8px 0 14px 0;
+                        font-size:0;line-height:0;">&nbsp;</div>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              {{IMPORTANT_ITEMS}}
+            </table>
+          </td></tr>
+        </table>
+      </div>
+      <!--[if mso]></td></tr></table><![endif]-->
+    </td>
+  </tr>
+
+  <!-- 7. CLOSING -->
+  <tr>
+    <td class="pad" style="padding:30px 44px 34px 44px;">
+      <p class="just" style="margin:0 0 15px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;
+                line-height:1.75;color:#374151;text-align:justify;">Once everything is in place, we will activate
+        your HR portal account and proceed with team and email setup.</p>
+      <p class="just" style="margin:0 0 24px 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;
+                line-height:1.75;color:#374151;text-align:justify;">Welcome to the team! We're excited to have you
+        onboard. If you have any questions or concerns, please don't hesitate to reach out to
+        the HR team.</p>
+      <div style="border-top:1px solid #e8ecf1;padding-top:20px;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:15.5px;
+                    font-style:italic;color:#2f4fa2;margin-bottom:6px;">Warm regards,</div>
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:bold;
+                    color:#111827;">{{SENDER_NAME}}</div>
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7280;
+                    margin-top:3px;">{{SENDER_TITLE}}, Taleemabad</div>
+        {{SENDER_CONTACT}}
+      </div>
+    </td>
+  </tr>
+
+  <!-- 8. FOOTER -->
+  <tr>
+    <td class="pad" style="background:#f2f6fc;border-top:1px solid #e6eaf2;padding:18px 44px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;
+              color:#6b7280;">Empowering millions of children<br>with the learning tool of choice.</td>
+          <td align="right" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;">
+            <a href="http://www.taleemabad.com/"
+               style="color:#2f4fa2;text-decoration:none;font-weight:bold;">taleemabad.com</a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</div>

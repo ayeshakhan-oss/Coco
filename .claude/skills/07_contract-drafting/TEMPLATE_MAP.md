@@ -22,17 +22,21 @@ Status legend: ✅ approved master on disk · ⏳ pending from Ayesha · ➖ con
 
 ---
 
-## Email Templates — ALL PENDING ⏳
+## Email Templates
 
-Ayesha will share the full set. Until then, every package is flagged "email template missing"; never draft a freelance joining email.
+Fellow templates are LOCKED. The rest are still pending — flag "email template missing"; never draft a freelance joining email.
 
 | Situation | Status |
 |---|---|
+| **Fellow — paid** (Contract + NDA) | ✅ locked 2026-08-13 → [joining-emails.md](joining-emails.md) Template 1 |
+| **Fellow — volunteer/unpaid** (**NDA ONLY**) | ✅ locked 2026-08-13 → Template 2 |
+| **Fellow — unpaid→paid transition** (Contract only, threads onto original) | ✅ locked 2026-08-13 → Template 3 |
 | Permanent Full-Time joining email | ⏳ pending |
 | Part-Time joining email | ⏳ pending |
-| Fellow / Project-Based joining email | ⏳ pending |
 | Addendum / promotion email | ⏳ pending |
 | Internal team-move / new-contract email | ⏳ pending |
+
+⚠️ **Volunteer Fellows never receive a contract.** Confirm paid vs volunteer before building.
 
 ---
 

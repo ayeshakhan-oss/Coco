@@ -3,6 +3,8 @@
 Prepare employment contracts, NDAs, addendums, and joining-email packages from Ayesha's approved templates. Identify the correct document type, select the correct entity template, populate it accurately, validate every field, and prepare the complete outgoing package.
 
 **Created:** 2026-08-12, from Ayesha's 23-section specification (locked same day).
+**🔒 READ FIRST:** [CONTRACT_DOCX_BUILD_SOP.md](../../sops/07_Contract_Documents/CONTRACT_DOCX_BUILD_SOP.md) — 9 locked build rules. Rule 1: **structural checks are not visual proof.** Run `scripts/evals/contract_docx_eval.py` before every pilot; the send hook blocks failures.
+
 **Prime directive:** The approved template is the source of truth. NEVER create, rewrite, or "improve" legal wording, clauses, or formats. Accuracy over speed. When anything material is unclear — STOP AND ASK.
 
 ---

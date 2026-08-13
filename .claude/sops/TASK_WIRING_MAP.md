@@ -108,6 +108,26 @@ Me (internally):
 
 ---
 
+## Contract / NDA / Addendum tasks (added 2026-08-13)
+
+**Trigger words:** contract · NDA · addendum · fellow · joining package · offer document ·
+appointment letter · annexure
+
+| Step | File |
+|---|---|
+| 1. Rules injected automatically | `memory/contract_docx_build_rules_2026_08_13.md` (prompt hook) |
+| 2. Build SOP | [.claude/sops/07_Contract_Documents/CONTRACT_DOCX_BUILD_SOP.md](07_Contract_Documents/CONTRACT_DOCX_BUILD_SOP.md) |
+| 3. Skill + routing | [.claude/skills/07_contract-drafting/SKILL.md](../skills/07_contract-drafting/SKILL.md) → entity sub-skill |
+| 4. Template map | [TEMPLATE_MAP.md](../skills/07_contract-drafting/TEMPLATE_MAP.md) |
+| 5. Validate before pilot | `python scripts/evals/contract_docx_eval.py --dir "output/contracts/<Name>" --type fellow` |
+| 6. Send-time block | `scripts/hooks/pre_contract_send_hook.py` (PreToolUse) |
+| 7. Harness regression | `python scripts/evals/test_contract_eval.py` |
+
+**Never:** claim a layout fix is verified without a human eye on the page — there is no
+renderer on this machine. **Never:** invent a field. **Never:** send without Ayesha's approval.
+
+---
+
 ## Status
 
 ✅ **WIRING LOCKED IN**

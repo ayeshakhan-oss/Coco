@@ -29,6 +29,10 @@
           {
             "type": "command",
             "command": "python \"C:/Agent Coco/scripts/hooks/pre_send_validation_hook.py\""
+          },
+          {
+            "type": "command",
+            "command": "python \"C:/Agent Coco/scripts/hooks/pre_contract_send_hook.py\""
           }
         ]
       }

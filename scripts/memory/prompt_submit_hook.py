@@ -35,6 +35,12 @@ DRAFT_TEMPLATE_MAP = {
 
 # Keyword patterns → memory files to inject (in priority order)
 KEYWORD_MAP = [
+    # Contract work — inject the .docx build rules BEFORE anything is populated.
+    # Ordered first so contract tasks never fall through to a generic match.
+    (["contract", "nda", "addendum", "fellow", "joining package",
+      "offer document", "appointment letter", "annexure"], [
+        "contract_docx_build_rules_2026_08_13.md",
+    ]),
     (["warm bench", "warmbenck", "jra", "haroon"], [
         "warm_bench_final_locked_approach.md",
         "warm_bench_session_may5_2026_complete_learnings.md",

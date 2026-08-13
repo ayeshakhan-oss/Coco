@@ -49,3 +49,18 @@ max_entries: 50
 - Replying in-thread requires In-Reply-To + References headers (2026-04-08)
 - status='offer' in DB is a pipeline stage, NOT a sent offer — never assert (2026-04-08)
 - ALL ReportLab PDFs must use TA_JUSTIFY on body paragraph styles (2026-04-03)
+
+## 2026-08-13 — Contract Drafting (Muhammad Shayan Fellow package)
+- **Mistake:** Claimed "formatting fixed" three times on structural evidence (placeholder scans, master diffs, indent values) without ever seeing a rendered page. There is no Word/LibreOffice on this machine. Ayesha caught every layout defect by screenshot; the package took 6 review rounds.
+- **Correction:** Diagnosed each defect in the XML (heading right-indent ~5.3", empty auto-numbered paragraph, in-body NEW_PAGE section breaks, deepcopy duplicating sectPr, style-inherited bold lost in PDF conversion, missing keep_with_next), fixed the causes, and built a validator + blocking send hook encoding all of them.
+- **Rule:** Structural verification is NOT visual verification. Never claim a layout fix is done without a human eye on the page — state the limitation and ask Ayesha to look. See CLAUDE.md Rule 14 and .claude/sops/07_Contract_Documents/CONTRACT_DOCX_BUILD_SOP.md.
+
+## 2026-08-13 — Contract Drafting (pilot email hygiene)
+- **Mistake:** Put a pilot banner, flags and open questions inside the candidate email body, and sent the pilot as a standalone email instead of threading it into the conversation Ayesha had with the candidate.
+- **Correction:** Removed all meta-commentary; pilot and live now share one body and both thread onto the original via In-Reply-To/References. Mirrored the original email's formatting and signature by pulling it from Ayesha's Sent folder over IMAP.
+- **Rule:** The pilot IS the email — byte-identical to what the candidate receives, only the recipient differs. Notes to Ayesha go in chat. Harness blocks meta-commentary in email bodies.
+
+## 2026-08-13 — Contract Drafting (package composition)
+- **Mistake:** Locked a rule that "contract + NDA always ship together", which was wrong — volunteer/unpaid Fellows receive the NDA only, and an unpaid-to-paid transition receives the contract only.
+- **Correction:** Corrected the rule everywhere and added a send-time block that refuses a volunteer email carrying a contract, or a transition email carrying an NDA.
+- **Rule:** Confirm paid vs volunteer BEFORE building anything; never infer engagement type from a role title.
