@@ -37,6 +37,41 @@ This skill orchestrates the detailed procedure for tracking and evaluating case 
 
 ---
 
+## Scoring & Recommendation
+
+This file covers **tracking, completeness and AI flags**. For **scoring submissions and
+recommending proceed / don't-proceed to a debrief**, use
+[case-study-scoring-rubric.md](case-study-scoring-rubric.md) — benchmark-anchored six-dimension
+rubric, flags, bands and the evaluation-report spec. Build and QA the benchmark **before**
+reading any submission.
+
+---
+
+## Retrieving Submissions from Markaz (verified 2026-08-16)
+
+Two channels. Most candidates use one; some use both. Check both for every candidate.
+
+**Channel A — pasted links.** `applications.case_study_submission` holds a Drive/Docs URL.
+Readable directly via `.claude/config/token_sheets_broad.json` (full `drive` scope).
+
+**Channel B — uploaded files.** `case_study_word_file` / `_excel_file` / `_video_file` hold a
+**server path**, not a URL.
+
+🔴 **Two traps, both verified by testing:**
+
+1. **`markaz.taleemabad.com/uploads/case-studies/<path>` returns HTTP 200 with ~1,570 bytes of
+   `text/html`** — the SPA's `index.html`, not the file. It looks like success. Any script that
+   checks status code but not `content_type` will silently archive copies of a webpage.
+2. **The real endpoint is `/api/case-study-file/{app_id}/{word|excel|video}` and it returns 401
+   to automation.** It sits behind staff Google SSO. There is no workaround from the database
+   side — a logged-in team member must download and drop the files into the candidate's Drive
+   subfolder.
+
+**Also:** the Drive MCP connector cannot list shared-by-link folders it doesn't own. Use the
+Drive API with `token_sheets_broad.json` instead before concluding a folder is inaccessible.
+
+---
+
 ## Universal Rules (All Case Study Evaluation)
 
 **Source Verification (CRITICAL):**
