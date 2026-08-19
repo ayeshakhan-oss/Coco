@@ -5,6 +5,9 @@
 
 ---
 
+## 🆕 NEW — AUDIO MONITORING 15-DAY RE-ENGAGEMENT, LIVE TO 6 (2026-08-19)
+- **[Audio Monitoring Officer — 15-Day Re-Engagement (LIVE 2026-08-19)](project_audio_monitoring_extension_2026_08_19.md)** — 6 in-thread extension confirmations sent live (Fareeda, Kainat, Laraib, Gul Rukh, Arshad, Muddasir): **20 Aug → 3 Sep 2026, 15 days inclusive, PKR 50,000 each**. Establishes the **"Project Extension / Re-Engagement Confirmation"** email type — ~150w, threads onto the original "Welcome to Taleemabad" conversation, 3 bolded elements, NOT a decision email and NOT Design 3, no `[PILOT – ]` prefix (it breaks threading). Ayesha's **reusable signature HTML** captured in the script. 🔴 Three verified traps: (1) **Gmail thread IDs are mailbox-specific** — the MCP connector is authed as jawwad.ali@ while `token_gmail.json` is ayesha.khan@, so a borrowed threadId 404s; RFC822 Message-IDs are global, resolve threads in the mailbox you send FROM. (2) **Muddasir's 8 May welcome went to a typo'd `@gamil.com` and never landed** — unnoticed for 3 months; a thread with zero candidate replies is a signal. Real address recovered from his own calendar RSVP. (3) `newer_than:1h` is unreliable — verify sends with `newer_than:2d` + presence of a `Cc` header to tell live from pilot. Standing rule from Ayesha: **"go live" = keep the CC list the thread already has.**
+
 ## 🔴 CRITICAL LEARNING — PILOT RECIPIENTS (2026-06-08)
 - **[CRITICAL: PILOT RECIPIENTS ONLY AYESHA (2026-06-08)](CRITICAL_LEARNING_pilot_recipients_only_ayesha_2026_06_08.md)** — 🔒 **ABSOLUTE RULE:** When sending [PILOT – ] emails, TO = ayesha.khan@taleemabad.com ONLY. No CC. No hiring@. No other recipients. This was a discipline failure on 2026-06-08. Add HARD BLOCK to harness. Never deviate.
 
