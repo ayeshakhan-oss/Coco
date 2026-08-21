@@ -61,6 +61,8 @@ EYEBROW = {
     "gwc_rejection":   "People &amp; Culture &nbsp;&bull;&nbsp; Application Update",
     "warm_hold":       "People &amp; Culture &nbsp;&bull;&nbsp; Interview Update",
     "case_study_update": "People &amp; Culture &nbsp;&bull;&nbsp; Interview Update",
+    # INTERNAL audience (Skill 01 type #7) - staff, not candidates.
+    "announcement":    "People &amp; Culture &nbsp;&bull;&nbsp; Internal Announcement",
 }
 
 # ── BODY HELPERS (v8 design) ────────────────────────────────────────────────────
@@ -68,6 +70,20 @@ H   = lambda t: f'<h2 style="color:{BLUE};font-size:17px;font-weight:bold;margin
 SUB = lambda t: f'<p style="color:{GREEN};font-weight:bold;margin:0 0 14px 0;font-size:14px;">{t}</p>'
 P   = lambda t: f'<p style="margin:0 0 18px 0;text-align:justify;font-family:Georgia,serif;font-size:15px;line-height:1.8;">{t}</p>'
 PS  = lambda t: f'<p style="margin:32px 0 0 0;padding:20px 24px;background:{PS_BG};border-left:4px solid {GREEN};font-style:italic;color:#2a2a2a;font-size:14px;line-height:1.7;font-family:Georgia,serif;">{t}</p>'
+
+# Bulleted list. Added 2026-08-20 for the Internal Announcement type (#7), which
+# lists criteria and role facts. Same Georgia/leading as P, left-aligned (a
+# justified list reads badly). Shared here so no script redefines it inline.
+UL  = lambda items: (
+    '<ul style="margin:0 0 18px 0;padding-left:22px;font-family:Georgia,serif;'
+    'font-size:15px;line-height:1.8;color:' + TEXT + ';">'
+    + "".join(f'<li style="margin:0 0 6px 0;">{i}</li>' for i in items)
+    + "</ul>"
+)
+
+# Left-aligned paragraph (P is justified). For short lines and lead-ins where
+# justification would stretch the words apart.
+PL  = lambda t: f'<p style="margin:0 0 18px 0;text-align:left;font-family:Georgia,serif;font-size:15px;line-height:1.8;">{t}</p>'
 
 FOOTER = f"""
 <table width="100%" cellpadding="0" cellspacing="0"

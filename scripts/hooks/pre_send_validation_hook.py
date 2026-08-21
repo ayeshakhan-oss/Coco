@@ -70,6 +70,11 @@ def extract_email_params(tool_input: dict) -> tuple:
             email_type = 'values_feedback'
         elif 'rejection' in command or 'cv_rejection' in command:
             email_type = 'cv_rejection'
+        # Skill 01 type #7 - INTERNAL staff announcement (added 2026-08-20). Checked
+        # first-class so the [PILOT] prefix guard below still runs on it; the
+        # candidate content rules (800 words, opening line, jargon) do NOT apply.
+        elif 'announcement' in command:
+            email_type = 'announcement'
 
         return subject, None, pilot_mode, email_type
 

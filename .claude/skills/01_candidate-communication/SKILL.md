@@ -73,6 +73,18 @@ All these SOPs fall under this skill:
    - Only commit to dates we will honour; if no reliable date exists, use the Keep-in-Touch Note (Skill 06 #5) instead
    - Everything else unchanged: "we" voice, no em dashes, no jargon, no interviewer names, v8 layout, pilot to Ayesha first
 
+6. **Case Study Update — Debrief-Pending** — `case-study-update-email.md` (this folder) — ADDED 2026-08-13
+   - Case study SUBMITTED, debrief decision pending. 120-250 words, dated promise REQUIRED, same exemptions as type 5
+   - "case study" is permitted candidate-facing language for THIS type only
+
+7. **Internal Announcement** — `internal-announcement-email.md` (this folder) — ADDED 2026-08-20
+   - 🔴 **AUDIENCE IS TALEEMABAD STAFF, NOT CANDIDATES.** Internal broadcast: internal job openings, new joiners, new programmes, org changes
+   - SHORT: 150-400 words. Content varies per send (written or approved by Ayesha); the LAYOUT is what is locked
+   - 🔓 DISAPPLIED (internal audience): 800-word minimum · "This is not a yes for now." opening · future-promise ban · no-names ban · candidate-jargon ban · feedback widget
+   - ✅ STILL ENFORCED: no em dashes · v8 layout imported from `v8_template.py` · collective voice · `safe_sendmail()` · pilot to Ayesha first · clean subject live · no fabricated facts, no guessed distribution lists
+   - Eyebrow `EYEBROW["announcement"]` reads "INTERNAL ANNOUNCEMENT" as a visible tripwire if it ever reaches an external inbox
+   - Script: `scripts/send_internal_announcement_pilot.py` (keep `announcement` in the filename; never `warm_bench`/`gwc`/`values`/`rejection`)
+
 ---
 
 ## Universal Rules (All Communication)
