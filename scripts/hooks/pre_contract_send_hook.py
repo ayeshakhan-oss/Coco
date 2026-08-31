@@ -38,6 +38,21 @@ def log(msg, level="INFO"):
         pass
 
 
+def _takes_arg(fn) -> bool:
+    """True if fn requires at least one positional argument."""
+    try:
+        import inspect
+
+        params = [
+            p for p in inspect.signature(fn).parameters.values()
+            if p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD)
+            and p.default is p.empty
+        ]
+        return bool(params)
+    except Exception:  # noqa: BLE001
+        return True    # unknown signature -> do not attempt a zero-arg call
+
+
 def newest_package():
     """The package directory containing the most recently written .docx."""
     if not OUTPUT_DIR.exists():
@@ -134,6 +149,13 @@ def main():
                     spec.loader.exec_module(mod)
                     if hasattr(mod, "render") and hasattr(mod, "COACHES"):
                         rendered = mod.render(next(iter(mod.COACHES)))
+                    elif hasattr(mod, "render") and not _takes_arg(mod.render):
+                        # Single-candidate send scripts render with no key. Without
+                        # this branch the hook silently fell back to scanning the
+                        # .py source, which cannot connect a value held in a dict to
+                        # bold styling applied in a separate function — producing
+                        # FALSE "compensation is not bold" blocks on a correct email.
+                        rendered = mod.render()
                     elif hasattr(mod, "build_html") and hasattr(mod, "COACHES"):
                         rendered = mod.build_html(next(iter(mod.COACHES.values())))
                     elif hasattr(mod, "BODY"):
