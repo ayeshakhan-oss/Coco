@@ -60,6 +60,10 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 
 23. **🔒 A TRACKER IS A TASK LIST, NOT A WRITE-UP (2026-09-06)** — Ayesha's meeting/notes trackers carry **tasks and nothing else**. On the P&C Buddy Tracker Sheet she rejected three richer layouts in a row before accepting this: one row per task with the topic and minutes **repeated** down the page, then paragraph minutes written **once per topic block**, then even a **one-line summary column**. The accepted shape is `Date | Topic | Task | Owner | Priority | Done (checkbox)` with the topic shown **once per block** and blank beneath, and **the full minutes preserved only as a hover NOTE on the topic cell** (`updateCells` with `fields:'note'`) so the record survives at zero visual cost. **Never put narrative prose in a cell for her; when unsure, ship less.** Mechanics: the builder **aborts rather than create a second sheet of the same name** (`--update` rewrites in place and must wipe **values AND notes**, since `values().clear()` leaves stale notes); **`gspread` is not installed in `.venv`** so use the raw `googleapiclient` v4 clients; and **dropping a column shifts every index**, so re-check each conditional-format range, the validation range and the `=$F2=TRUE` formula after any layout change. Lossy Fathom transcripts get ⚠ flags inline, never a guess. See [memory/pnc_buddy_meeting_tracker_sheet_2026_09_06.md](memory/pnc_buddy_meeting_tracker_sheet_2026_09_06.md).
 
+24. **🔒 INVITE LINKS — PROVE THE CITY BY FETCHING THE LINK (2026-08-24)** — Growth Manager runs as **two** live roles (Job 39 Lahore, Job 41 Karachi) with **separate JDs and separate booking schedules**. 🔴 `scripts/jobs/job39/send_growth_manager_invites_batch.py` sits in the **job39** folder but its constants are **Job 41 / Karachi** — copying it for a Lahore candidate silently books them into the Karachi schedule. Never trust a folder name, a filename, or a repo constant: **fetch each JD / prep / booking URL and read its page `<title>`** before sending (Lahore booking must read "Zero in Call for Growth Manager Lahore"). Ground truth for what a cohort actually received is the **live send in Ayesha's mailbox**, not the script in the repo. Verified Lahore links + CC list: [memory/gm_lahore_values_invite_ushna_2026_08_24.md](memory/gm_lahore_values_invite_ushna_2026_08_24.md). Same file records that **Layer 3 send-time validation is inert** — run `scripts/evals/run_eval.py` by hand instead.
+
+24. **🔒 INTERNAL P&C DOCUMENTS: NO NAMES, NO INVENTED FACTS, NO CONSULTING VOICE (2026-09-06)** — For any capability, workshop or working document written for Ayesha's P&C work, three rules hold. **(a) NO PERSONAL NAMES, EVER.** Use role labels (*Senior Manager Fundraising*, *Track A*, *Track B*). Ayesha said this twice, the second time in caps, after I reintroduced names because her own brief referenced people by name in required content: **a brief that mentions someone by name is not permission to name them in the document.** Placeholders read `[To be added/validated with <function> / Finance / Programmes]`, never a person. Scan the **rendered** Doc and the deck's speaker notes, not just the markdown. **(b) NEVER INVENT A TALEEMABAD FACT.** No figure, programme result, cost, donor example or impact claim we have not been given. A visible placeholder always beats a generic example; the fundraising master carries **15 on purpose** and its budget exercise is deliberately blank. Keep **external research, what we are proposing, and what still needs validating** clearly separated, and never present a funder's published criteria as our existing practice. **(c) WRITE LIKE AN INTERNAL WORKING DOC, not a consulting report.** "we / our team / for our context"; hedge every proposal ("we could", "one way we can approach this"); leave real questions genuinely open. BANNED: "the key is", "at its core", "X is not Y, it is Z", "the most common mistake", motivational or dramatic one-liners, a tidy conclusion after every section, symmetrical three-part phrasing, and the same headings repeated under every item. 🔑 **And to check a generated deck or PDF visually:** poppler is not installed, so export from Drive as PDF → render pages to PNG with **PyMuPDF** → Read the PNGs. That is real visual proof and it lifts the Rule 14 limitation for anything Drive can export. See [memory/project_fundraising_capability_docs_2026_09_06.md](memory/project_fundraising_capability_docs_2026_09_06.md).
+
 **Full rules:** [CORE_DISCIPLINE](memory/CORE_DISCIPLINE.md)
 
 ---
@@ -86,6 +90,7 @@ Coco screens candidate CVs, ranks them against job descriptions, and sends hirin
 | **Automated task wiring** | **[.claude/sops/TASK_WIRING_MAP.md](.claude/sops/TASK_WIRING_MAP.md)** (skill+SOP+rules integration) |
 | Project memory | [memory/MEMORY.md](memory/MEMORY.md) |
 | Lessons learned | [memory/lessons_learned.md](memory/lessons_learned.md) |
+| **Fundraising capability doc set (P&C)** | **[memory/project_fundraising_capability_docs_2026_09_06.md](memory/project_fundraising_capability_docs_2026_09_06.md)** (working guide + facilitator guide + 10-slide deck; sources in `docs/pnc_buddy/`, deck builder `scripts/pnc/build_fundraising_workshop_deck.py`; re-render to the same Drive IDs, never create a second copy) |
 | **Values Scorecard SOP** | **[memory/_feedback/values_scorecard_duplicate_applications.md](memory/_feedback/values_scorecard_duplicate_applications.md)** (duplicate record detection + submission) |
 | **Values Feedback Email Tone** | **[memory/values_feedback_email_tone_locked_2026_05_12.md](memory/values_feedback_email_tone_locked_2026_05_12.md)** (warm, observational, no life-coach language) |
 | **Warm Hold — Decision-Pending Update (Skill 01, type #5)** | **[.claude/skills/01_candidate-communication/warm-hold-decision-pending-email.md](.claude/skills/01_candidate-communication/warm-hold-decision-pending-email.md)** (interviewed + decision pending; locked generic template, subject "A Quick Note from Our Side", 120-250 words, dated-promise REQUIRED, exempt from "not a yes for now"; script `scripts/send_decision_pending_update_pilot.py`) |
@@ -153,12 +158,20 @@ MANDATORY checklist before you can draft:
 
 ---
 
-### Layer 3: Send-Time Validation (Final Safety Net) ✅ ACTIVE
-PreToolUse hook validates before `safe_sendmail()` is called:
+### Layer 3: Send-Time Validation (Final Safety Net) 🔴 WIRED BUT INERT — DO NOT RELY ON IT
+**Verified broken 2026-08-24, still unfixed.** `scripts/hooks/pre_send_validation_hook.py:104`
+early-returns unless `tool_name` contains `"send"` / `"safe_sendmail"` — but the hook is
+registered in `.claude/settings.json` under `PreToolUse` matcher **`"Bash"`**, so `tool_name`
+is always literally `"Bash"`. **The hook returns 0 on every call and validates nothing.**
+
+Intended behaviour (currently NOT happening):
 - **HARD BLOCKS** block send (exit code 2): word count, intent-words, em dashes, PILOT prefix, sections, jargon, interviewer names
 - **WARNINGs** logged but allow send (exit code 0): Haroon balance, generic subject, recruiting abstractions
 
-**Benefit:** Catches anything that slips through layers 1-2.
+**Consequence:** there is no automated send-time safety net — the `[PILOT]`-prefix-in-live
+guard included. Layers 1-2 still work, so **run the CLI eval below by hand before any
+candidate send** and treat the self-QA checklist as the real gate. Fix = match on
+`tool_input.command`, not `tool_name`. See [memory/gm_lahore_values_invite_ushna_2026_08_24.md](memory/gm_lahore_values_invite_ushna_2026_08_24.md).
 
 ---
 
