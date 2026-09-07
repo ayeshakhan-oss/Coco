@@ -49,8 +49,9 @@ Markaz `applications.contract_drafting_cnic_number` for the app ID listed.
 | Syeda Mariam Abbas Naqvi | app 3843 / cand 19 | 24 Aug → 31 Dec 2026 | PKR 116,000 | Abdul Waheed | ✅ LIVE |
 | Naima Javed | app 3857 / cand 3122 | 26 Aug → 31 Dec 2026 | PKR 127,000 | Anam Masood | ✅ LIVE |
 | Hafiza Iqra Bashir | app 3873 / cand 1698 | 1 Sep → 31 Dec 2026 | PKR 108,000 | Abdul Waheed | pilot sent |
+| Zia Ul Hasnain (Sihala) | app 4166 / cand 3006 | **7 Sep** → 31 Dec 2026 | PKR 108,000 | Chaudhry Hashir Hussain | ✅ LIVE 2026-09-06 |
 
-All three: `Ms.` · NIETE project-based master · Contract **+** Permanent Employee NDA · PDFs ·
+First three: `Ms.` (Zia is `Mr.`) · NIETE project-based master · Contract **+** Permanent Employee NDA · PDFs ·
 signatory Ali Sipra, COO · designation `CPD - Coach` · compensation split **90% base / 9%
 medical / 1% other** of gross (the ratio set by the 13 Aug batch).
 
@@ -129,3 +130,37 @@ tracking them as-is would write PII into git history permanently.
 **Recommended fix (needs approval):** anchor the pattern to `/Contracts/` so it only matches the
 root masters folder, **and** refactor the build scripts to read candidate PII from Markaz or an
 untracked data file instead of hardcoding it — then the code can be versioned safely.
+
+---
+
+## 🔴 SANITY-CHECK THE START DATE AGAINST THE HIRING TIMELINE (2026-09-06, Zia Ul Hasnain)
+
+Ayesha's instruction read "contract starting from 7th August". The Markaz + mailbox timeline said
+otherwise: application 31 Aug, interview 2 Sep, offer 3 Sep, acceptance 4 Sep. **A start date that
+predates the offer is a typo until proven otherwise** — 7 September 2026 was the Monday after his
+acceptance, and she confirmed it. Cost of not checking: a contract backdated a month, with a
+signing date after the start date, and payroll implications.
+
+**The check is cheap and mechanical, so always run it:** compare the proposed start against
+`applied_at`, the interview invite, the offer send date and the acceptance date. Flag anything
+that lands before the offer, and say *why* it cannot be right rather than just asking.
+
+A genuinely backdated contract does exist (Sohaib Ahmad: joining 17 Jul, header 28 Jul) — so
+backdating is not impossible, only implausible without a reason. Ask; never silently accept
+or silently "fix".
+
+**Zia's evidence trail (all verified, nothing inferred):**
+- Name `Zia Ul Hasnain` agrees across Markaz legal-name field, his email signature and his Gmail
+  display name — no Rule 22 conflict for once, and worth stating that it was checked.
+- PKR 108,000 with **no counter-offer**; explicit written acceptance 4 Sep 11:50 PKT
+  ("I am pleased to formally confirm my acceptance of the offer"), CNIC already submitted 3 Sep.
+  Contrast Naima, whose acceptance was only implicit.
+- Direct report **Chaudhry Hashir Hussain** came from the interview invite text
+  ("our Regional Manager—Sihala, Chaudhry Hashir Hussain"), who also interviewed him and is CC'd
+  on the offer. Evidenced, then still confirmed with Ayesha.
+- ⚠️ **Duplicate Markaz application:** app 3726 (10 Jul 2026, status `new`) alongside the live
+  app 4166. Needs a cleanup call from Ayesha; app 4166 is the real one.
+- ⚠️ app 4166 is still `offer` in Markaz — status update to `hired` pending her go-ahead.
+
+**Live CC pattern** (matches the 19 Aug batch): candidate + `hr@`, `hiring@`, `ayesha.khan@`,
+the line manager (`hashir.hussain@niete.edu.pk`), `bilal@niete.edu.pk`, `ali.sipra@taleemabad.com`.
