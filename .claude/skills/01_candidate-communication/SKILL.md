@@ -1,6 +1,6 @@
 ---
 name: candidate-communication
-description: Handle all candidate rejection, feedback, and status-update emails. Covers CV rejections, values interview feedback, warm bench feedback, GWC rejections, and warm-hold decision-pending updates (interviewed, decision pending, dated follow-up promised). All emails require 800+ words (if feedback; decision-pending updates are 120-250 words), evidence-based feedback, v8 HTML design, and pilot approval before sending.
+description: Handle all candidate rejection, feedback and status-update emails, and internal staff announcements. Eight types. Decision emails: CV/application rejections, values interview feedback, warm bench feedback, GWC rejections, and case study outcomes where a submitted case study did not meet the 70% benchmark that gates final interviews (800+ words, evidence from the candidate's own submission plus the benchmark answer key, the rule stated but never the score). Pending-decision notes: warm-hold decision-pending updates and case study debrief-pending updates (120-250 words, dated promise required, exempt from the "not a yes for now" opening). Plus internal announcements to Taleemabad staff (150-400 words, candidate rules disapplied). Use for any case study rejection, below-benchmark outcome, interview feedback, keep-warm note or staff broadcast. All types use the v8 HTML layout, the collective "we" voice, no em dashes, and require a pilot to Ayesha before going live.
 compatibility: Requires memory/feedback_email_rules.md, locked templates, RULES.md
 ---
 
@@ -32,7 +32,14 @@ Trigger this skill when:
 - User wants to "write feedback for [candidate]"
 - User requests "warm bench email" or "values feedback"
 - User needs "GWC rejection" or interview stage feedback
+- **User needs a case study rejection / outcome** for someone who submitted but did
+  not meet the benchmark ("below 70", "didn't clear the bar", "case study rejection") - type #8
+- User needs a **status update** to someone still waiting on a decision (types #5, #6)
+- User needs an **internal announcement** to Taleemabad staff (type #7)
 - Any candidate communication requiring evidence-based, personalized feedback
+
+**Do NOT use this skill for:** interview invites, debrief invites, reminders or
+assessment-centre invites. Those are Skill 06 (`06_candidate-invites`).
 
 ---
 
