@@ -141,3 +141,30 @@ file was nearly missed the first time) into `output/rm_marking/originals/`, resu
 fetched from Drive, and her shared folder contained duplicates of the two files she also linked
 directly, so dedupe by filename. Khadija (3 files, submitted twice) and Sana (3 files, two resume
 versions) keep both versions in the record deliberately.
+
+### Version labelling, and how it was proved (2026-09-08)
+🔴 **In both multi-version cases the UN-SUFFIXED file was the EARLIER one**, which is the
+opposite of what a reader assumes. Both are now labelled in Drive and locally, and the index
+sheet's hyperlink labels were patched to match:
+
+| Was | Now |
+|---|---|
+| `Khadija Akbar -  RM Case Study.pdf` | `... (27 Aug - SUPERSEDED).pdf` |
+| `Khadija Akbar -  RM Case Study_1_.pdf` | `... (28 Aug - SCORED).pdf` |
+| `Sana Nawaz-Resume New Updated_01.pdf` | `... (28 Aug 22-18 - SUPERSEDED).pdf` |
+| `Final Updated Sana Nawaz-Resume_02.pdf` | `... (28 Aug 22-23 - CURRENT).pdf` |
+
+**Khadija's 28 Aug version IS the one that was scored** - proved three ways rather than assumed:
+byte size of the anonymised marked copy (196,310) matches the 28 Aug file (196,802) not the
+27 Aug one (317,205); extracted text is **47,728 chars, a 100.00% match** to 28 Aug versus 99.62%
+to 27 Aug; and the 27 Aug file carries **10 words the marked copy lacks** (`jawad`, `commented`,
+`screenshot`, `shared`, `updated`...) that look like review annotations she cleaned up. Every
+specific thing the marking commentary credited her with is present in the scored text.
+
+**Reusable check for "was the right version scored?":** compare the anonymised/marked copy
+against each original by (a) file size, (b) normalised-text similarity, and (c) **set difference
+of words** - the last is the sharpest, because the correct source has *zero* words the marked
+copy lacks. Then confirm the marking's own claims appear in that text.
+
+**Renaming a file in Drive keeps its ID**, so hyperlinks keep working, but any sheet using the
+old filename as its link LABEL goes stale. Patch those cells in the same pass.

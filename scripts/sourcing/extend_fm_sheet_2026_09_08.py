@@ -2,24 +2,45 @@
 Clean up the FM Sourcing Master sheet in place, then extend it with the 2026-09-08
 Fundraising & Partnerships (2-4 yr band) sourcing run.
 
-Ayesha's instruction 2026-09-08: band = 2-4 years, Islamabad-first, clean up in place then extend.
+Ayesha's instructions 2026-09-08:
+  band = 2-4 years - Islamabad-first - clean up in place then extend
+  "check there should be no fabrication"
+  "how would i know the profiles are new? Shouldn't have any older profiles"
 
-NON-DESTRUCTIVE BY DESIGN. Out-of-band rows are TAGGED, never deleted: the 8+ and 5-7 cohorts
-are a real asset for a future Head of Fundraising search, and deleting them is not reversible.
-Snapshot lives at output/sourcing/FM_sheet_snapshot_2026_09_08.json before any write.
+THREE GATES, all must pass before a row is appended:
+
+  GATE 1  NO FABRICATION.  Only rows whose LinkedIn slug is CONFIRMED by an independent
+          source are written as real profiles. Source is one of: an official org page, a
+          verbatim search result, or the raw SearXNG capture files. Everything else is
+          held back. Context: one sweep agent invented 12 candidates with plausible URLs,
+          then produced a retraction that was itself partly wrong, so neither an agent's
+          claim nor its confession is taken on trust.
+
+  GATE 2  GENUINELY NEW.  Excluded if the person appears anywhere in the cross-sheet index:
+          both FM tabs (including the live outreach tracker) and every other sourcing sheet
+          in the master Roles tracker. Slug match, or a name match on 2+ distinctive tokens.
+          Single-token name matches are treated as POSSIBLE duplicates and also held back,
+          because "Muhammad Bilal" collapses to one token and over-matches.
+
+  GATE 3  NOT ALREADY CONTACTED.  Anyone with Reached Out = TRUE on the Top picks tab is
+          excluded, so nobody gets a second cold approach.
+
+NON-DESTRUCTIVE. Out-of-band rows are TAGGED, never deleted: the 8+ and 5-7 cohorts are a
+real asset for a future Head of Fundraising search. Snapshot at
+output/sourcing/FM_sheet_snapshot_2026_09_08.json is required before any write.
 
 Usage:
     python scripts/sourcing/extend_fm_sheet_2026_09_08.py --dry-run
     python scripts/sourcing/extend_fm_sheet_2026_09_08.py --apply
 """
 import argparse
-import json
 import glob
+import json
 import os
 import re
 import sys
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -29,44 +50,47 @@ SID = "18oUr_4rcKJOEp3JRd2sY3GbhtMIbG92Xyr619IPkcLo"
 TAB = "FM-50-Candidates"
 SNAPSHOT = r"c:\Agent Coco\output\sourcing\FM_sheet_snapshot_2026_09_08.json"
 CLUSTER_DIR = r"c:\Agent Coco\output\sourcing\clusters"
+CONFIRM = r"c:\Agent Coco\output\sourcing\confirmation_final.json"
+SEEN = r"c:\Agent Coco\output\sourcing\seen_index.json"
 
-# Existing columns A-L, then the audit/extension columns we add.
-NEW_HEADERS = ["Band", "Data Flag", "Tier", "Evidence / Source URL", "Sourced By", "Status"]
-FIRST_NEW_COL = 12  # 0-indexed -> column M
+NEW_HEADERS = ["Band", "Data Flag", "Tier", "Verification", "Evidence / Source", "Sourced By", "Status"]
+FIRST_NEW_COL = 12  # column M
+RUN_TAG = "NEW - Coco 2026-09-08"
 
 STOP = {"dr", "mr", "ms", "mrs", "syed", "syeda", "muhammad", "mohammad", "bin", "obe", "prof", "the"}
 
 
-def name_tokens(s):
-    s = unicodedata.normalize("NFKD", s.lower())
+def toks(s):
+    s = unicodedata.normalize("NFKD", (s or "").lower())
     return [t for t in re.split(r"[^a-z]+", s) if len(t) > 2 and t not in STOP]
 
 
+def norm_name(s):
+    return " ".join(sorted(toks(s)))
+
+
+def slug_of(u):
+    m = re.search(r"linkedin\.com/in/([^/?\s\"]+)", u or "")
+    return m.group(1).lower().rstrip("/") if m else ""
+
+
 def band_of(years):
-    """Classify a Years cell into a band. Returns (band, in_band_bool)."""
     m = re.findall(r"\d+", years or "")
     if not m:
-        return "UNKNOWN", False
+        return "UNKNOWN"
     lo = int(m[0])
-    if lo <= 4:
-        return "2-4 IN BAND", True
-    if lo <= 7:
-        return "5-7", False
-    return "8+", False
+    return "2-4 IN BAND" if lo <= 4 else ("5-7" if lo <= 7 else "8+")
 
 
 def url_flag(name, url):
-    """Return a data flag for the LinkedIn cell, or '' if it looks sound."""
     if not url or url.strip().startswith("["):
         return "URL-PLACEHOLDER"
     m = re.search(r"linkedin\.com/in/([^/?\s]+)", url)
     if not m:
         return "URL-NOT-LINKEDIN"
     flat = re.sub(r"[^a-z]", "", m.group(1).lower())
-    toks = name_tokens(name)
-    if toks and not any(t in flat for t in toks):
-        return "URL-UNVERIFIED-MISMATCH"
-    return ""
+    t = toks(name)
+    return "URL-UNVERIFIED-MISMATCH" if t and not any(x in flat for x in t) else ""
 
 
 def svc():
@@ -76,21 +100,17 @@ def svc():
 
 
 def load_clusters():
-    """Load every cluster JSON produced by the sourcing sweeps."""
     rows = []
     for path in sorted(glob.glob(os.path.join(CLUSTER_DIR, "*.json"))):
-        data = json.load(open(path, encoding="utf-8"))
-        # c3 was restructured to "verified_rows" after its fabrication purge, so that only
-        # independently corroborated rows survive. Accept both key names.
-        for r in data.get("rows", []) + data.get("verified_rows", []):
+        d = json.load(open(path, encoding="utf-8"))
+        for r in d.get("rows", []) + d.get("verified_rows", []):
             r = dict(r)
-            r["_cluster"] = data.get("cluster", os.path.basename(path))
+            r["_cluster"] = d.get("cluster", os.path.basename(path))
             rows.append(r)
     return rows
 
 
 def audit_existing(values):
-    """Return (header, rows, per-row audit dicts) for the existing sheet."""
     hdr, data = values[0], values[1:]
     idx = {h.strip(): i for i, h in enumerate(hdr)}
     seen = defaultdict(list)
@@ -98,31 +118,28 @@ def audit_existing(values):
         nm = (r[idx["Name"]].strip() if idx["Name"] < len(r) else "")
         if nm:
             seen[nm.lower()].append(n)
-
     audits = []
     for n, r in enumerate(data, start=2):
         def cell(k):
             i = idx[k]
             return r[i].strip() if i < len(r) else ""
-
-        nm, org, yrs, url, email = cell("Name"), cell("Organization"), cell("Years"), cell("LinkedIn"), cell("Email")
+        nm, org, yrs, url, email = (cell("Name"), cell("Organization"), cell("Years"),
+                                    cell("LinkedIn"), cell("Email"))
         if not nm:
             audits.append(None)
             continue
-        band, _ = band_of(yrs)
         flags = []
         if "taleemabad" in org.lower() or "taleemabad.com" in email.lower():
-            flags.append("OWN-STAFF - not a candidate")
-        dupe_rows = [x for x in seen[nm.lower()] if x != n]
-        if dupe_rows:
-            flags.append("DUPLICATE of row " + ",".join(map(str, dupe_rows)))
+            flags.append("OWN-STAFF not a candidate")
+        d = [x for x in seen[nm.lower()] if x != n]
+        if d:
+            flags.append("DUPLICATE of row " + ",".join(map(str, d)))
         uf = url_flag(nm, url)
         if uf:
             flags.append(uf)
-        audits.append({"row": n, "name": nm, "band": band,
-                       "flag": "; ".join(flags) or "OK",
-                       "source": "FM sheet 2026-05"})
-    return hdr, data, audits
+        audits.append({"row": n, "name": nm, "band": band_of(yrs),
+                       "flag": "; ".join(flags) or "OK"})
+    return audits
 
 
 def main():
@@ -133,29 +150,24 @@ def main():
     args = ap.parse_args()
 
     if not os.path.exists(SNAPSHOT):
-        sys.exit("ABORT: snapshot missing at %s. Never write to this sheet without one." % SNAPSHOT)
+        sys.exit("ABORT: snapshot missing. Never write to this sheet without one.")
+    if not os.path.exists(CONFIRM):
+        sys.exit("ABORT: %s missing. Run verify_sourced_profiles.py then confirm_by_slug.py "
+                 "first - GATE 1 cannot be enforced without it." % CONFIRM)
 
+    confirm = json.load(open(CONFIRM, encoding="utf-8"))
+    seen = json.load(open(SEEN, encoding="utf-8"))
     s = svc()
+
     values = s.values().get(spreadsheetId=SID, range=TAB).execute().get("values", [])
-    hdr, data, audits = audit_existing(values)
+    audits = audit_existing(values)
     live = [a for a in audits if a]
+    print("EXISTING ROWS: %d   BANDS: %s   FLAGGED: %d"
+          % (len(live), dict(Counter(a["band"] for a in live)),
+             sum(1 for a in live if a["flag"] != "OK")))
 
-    print("EXISTING ROWS: %d" % len(live))
-    from collections import Counter
-    print("BANDS:", dict(Counter(a["band"] for a in live)))
-    print("FLAGGED:", sum(1 for a in live if a["flag"] != "OK"))
-
-    new_rows = load_clusters()
-    print("\nNEW SOURCED ROWS: %d" % len(new_rows))
-    print("  with verbatim URL: %d" % sum(1 for r in new_rows if r.get("url", "") != "NO_URL_FOUND"))
-    by_c = Counter(r["_cluster"] for r in new_rows)
-    for k, v in by_c.items():
-        print("  %-40s %d" % (k, v))
-
-    # The "Top picks" tab is a LIVE OUTREACH TRACKER for this exact role.
-    # Anyone with Reached Out = TRUE has already been messaged by Ayesha. Re-sourcing
-    # them risks a second cold approach to someone who already said no or already replied.
-    contacted = {}
+    # GATE 3 source: the live outreach tracker.
+    contacted = set()
     tp = s.values().get(spreadsheetId=SID, range="Top picks").execute().get("values", [])
     if tp:
         th = {h.strip(): i for i, h in enumerate(tp[0])}
@@ -163,78 +175,77 @@ def main():
             def tc(k):
                 i = th.get(k, -1)
                 return r[i].strip() if 0 <= i < len(r) else ""
-            nm = tc("Name")
-            if nm and tc("Reached Out").upper() == "TRUE":
-                contacted[nm.lower()] = tc("Comment") or tc("Responded") or "contacted, no note"
-    print("\nALREADY CONTACTED (Top picks tracker): %d people" % len(contacted))
+            if tc("Name") and tc("Reached Out").upper() == "TRUE":
+                contacted.add(norm_name(tc("Name")))
 
-    # Dedupe new rows against BOTH the main tab and the outreach tracker.
-    existing_names = {a["name"].lower() for a in live}
-    fresh, dupes, already = [], [], []
-    for r in new_rows:
-        key = r["name"].lower()
-        if key in contacted:
-            already.append(r)
-        elif key in existing_names:
-            dupes.append(r)
-        else:
-            fresh.append(r)
-    print("  DO NOT RE-CONTACT (already messaged): %d %s" % (len(already), [d["name"] for d in already]))
-    print("  already in sheet, not yet contacted: %d %s" % (len(dupes), [d["name"] for d in dupes]))
-    print("  genuinely new: %d" % len(fresh))
+    rows = load_clusters()
+    keep, rejected = [], defaultdict(list)
+    for r in rows:
+        nm, nk, sk = r["name"], norm_name(r["name"]), slug_of(r.get("url", ""))
+        c = confirm.get(nm, {})
+        status = c.get("status", "UNCONFIRMED")
+
+        if status != "CONFIRMED":
+            rejected["GATE1 not confirmed (%s)" % status].append(nm)
+            continue
+        if nk in contacted:
+            rejected["GATE3 already contacted"].append(nm)
+            continue
+        if sk and sk in seen["slugs"]:
+            rejected["GATE2 slug already in a sourcing sheet"].append(nm)
+            continue
+        if nk in seen["names"]:
+            n_tok = len(nk.split())
+            label = ("GATE2 duplicate name" if n_tok >= 2
+                     else "GATE2 POSSIBLE duplicate, single common token")
+            rejected["%s (%s)" % (label, "; ".join(sorted(set(seen["names"][nk])))[:60])].append(nm)
+            continue
+        r["_proof"] = c.get("proof", "")
+        keep.append(r)
+
+    print("\nSOURCED ROWS: %d" % len(rows))
+    for reason in sorted(rejected):
+        print("  REJECTED %-58s %d  %s" % (reason[:58], len(rejected[reason]),
+                                           rejected[reason][:4]))
+    print("\n>>> PASSING ALL THREE GATES: %d" % len(keep))
+    for r in keep:
+        print("     %-28s %-34s %-14s %s" % (r["name"][:28], r.get("org", "")[:34],
+                                             r.get("city", "")[:14], r.get("url", "")[:52]))
 
     if args.dry_run:
         print("\nDRY RUN - no writes performed.")
         return
 
-    # ---- WRITE 1: header for the new audit columns
-    s.values().update(
-        spreadsheetId=SID,
-        range="%s!%s1" % (TAB, chr(ord("A") + FIRST_NEW_COL)),
-        valueInputOption="RAW",
-        body={"values": [NEW_HEADERS]},
-    ).execute()
+    col = chr(ord("A") + FIRST_NEW_COL)
+    s.values().update(spreadsheetId=SID, range="%s!%s1" % (TAB, col),
+                      valueInputOption="RAW", body={"values": [NEW_HEADERS]}).execute()
 
-    # ---- WRITE 2: audit columns for every existing row
-    audit_block = []
+    block = []
     for a in audits:
         if a is None:
-            audit_block.append([""] * len(NEW_HEADERS))
+            block.append([""] * len(NEW_HEADERS))
         else:
-            tier = "" if a["band"] != "2-4 IN BAND" else "TBD"
-            audit_block.append([a["band"], a["flag"], tier, "", a["source"], ""])
-    s.values().update(
-        spreadsheetId=SID,
-        range="%s!%s2" % (TAB, chr(ord("A") + FIRST_NEW_COL)),
-        valueInputOption="RAW",
-        body={"values": audit_block},
-    ).execute()
-    print("wrote audit columns for %d rows" % len(audit_block))
+            block.append([a["band"], a["flag"], "", "", "", "FM sheet 2026-05 (pre-existing)", ""])
+    s.values().update(spreadsheetId=SID, range="%s!%s2" % (TAB, col),
+                      valueInputOption="RAW", body={"values": block}).execute()
+    print("wrote audit columns for %d existing rows" % len(block))
 
-    # ---- WRITE 3: append the newly sourced candidates
     start_rank = len(live) + 1
     append = []
-    for i, r in enumerate(fresh):
-        url = r.get("url", "")
-        flag = r.get("flag", "")
-        if url == "NO_URL_FOUND":
-            flag = ("NO VERIFIED URL - do not contact until resolved; " + flag).strip("; ")
-            url = ""
+    for i, r in enumerate(keep):
+        yrs = r.get("yrs", "")
+        band = "2-4 CLAIMED (tenure unverified)" if "UNVERIFIED" in yrs.upper() else band_of(yrs)
         append.append([
             start_rank + i, r["name"], r.get("org", ""), r.get("title", ""), r.get("city", ""),
-            r.get("yrs", ""), "", url, "", "", r.get("conf", ""), r.get("why", ""),
-            "2-4 CLAIMED (unverified)" if "UNVERIFIED" in r.get("yrs", "").upper() else "2-4 IN BAND",
-            flag or "OK", "TBD", r.get("source", ""), "Coco 2026-09-08 " + r["_cluster"], "Identified",
+            yrs, "", r.get("url", ""), "", "", r.get("conf", ""), r.get("why", ""),
+            band, r.get("flag", "") or "OK", "TBD", "CONFIRMED", r["_proof"],
+            RUN_TAG + " / " + r["_cluster"], "Identified",
         ])
     if append:
-        s.values().append(
-            spreadsheetId=SID,
-            range="%s!A1" % TAB,
-            valueInputOption="RAW",
-            insertDataOption="INSERT_ROWS",
-            body={"values": append},
-        ).execute()
-    print("appended %d new candidate rows" % len(append))
+        s.values().append(spreadsheetId=SID, range="%s!A1" % TAB, valueInputOption="RAW",
+                          insertDataOption="INSERT_ROWS", body={"values": append}).execute()
+        print("appended %d NEW rows at sheet rows %d-%d"
+              % (len(append), len(values) + 1, len(values) + len(append)))
 
 
 if __name__ == "__main__":
