@@ -115,3 +115,29 @@ That last one is the cheap guard against sending someone else's marked script.
 
 🔴 **Still open:** the tracker's Scores tab still shows the superseded first pass. The 8 have now
 been told they were below 70 while that tab shows all 25 above it.
+
+## Full documentation folder (2026-09-08)
+
+Ayesha: one place for all the round's documentation, **named originals, all 25, not the
+anonymised copies**.
+
+**Folder:** `1hIhLcu9TSLVptef9STFKZQ6CQ6lMebVn` "RM Internal Hiring 2026 - Full Documentation"
+**Index sheet:** `1_-H0hLYj0pujY-9Jfw8zEhXtPTdhGFBuJGMtfQhZ-bo` (lives inside the folder)
+**Builder:** `scripts/reports/build_rm_documentation_folder.py`
+
+25 named subfolders, 53 files, 7 round documents linked. Index has two tabs: **Round Documents**
+(benchmark answer key Doc + PDF, evaluation report, marked scripts, individual feedback
+workbooks, tracker, and the anonymised set) and **Submissions** (all 25 by score, with outcome
+against the 70% bar and a hyperlink to every file they sent).
+
+🔴 **This folder is NAMED and is the hiring record, not an evaluator pack.** The index carries a
+standing note pointing anyone who needs an evaluator set at the anonymised folder instead. Not
+link-shared.
+
+**Re-pulling originals:** they were never cached locally, only the anonymised copies were. Swept
+the mailbox **by SENDER ADDRESS with no subject filter** (a subject filter is how Bushra's second
+file was nearly missed the first time) into `output/rm_marking/originals/`, resumable with a
+`_pulled.json` checkpoint. **Bushra Karim (RM-08) sent Drive links, not attachments** - hers were
+fetched from Drive, and her shared folder contained duplicates of the two files she also linked
+directly, so dedupe by filename. Khadija (3 files, submitted twice) and Sana (3 files, two resume
+versions) keep both versions in the record deliberately.
