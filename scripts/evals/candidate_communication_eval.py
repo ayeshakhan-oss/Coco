@@ -71,6 +71,42 @@ FORBIDDEN_JARGON = [
     r'\bcase study\b',
 ]
 
+# Adversarial / judgmental register — HARD BLOCK (Ayesha 2026-09-08).
+# A rejection letter exists to be useful to the candidate, never to justify or defend the
+# decision. Warmth comes from respect and constructive language, not from withholding the
+# feedback. PREFER: "the main gap we identified", "where the analysis could have been
+# stronger", "one area that affected the conclusions", "what we would encourage you to look
+# at differently".
+HARSH_LANGUAGE = [
+    r"\bfailure\b",
+    r"\bwrong\b",
+    r"the honest part",
+    r"you failed",
+    r"the problem with your",
+    r"went wrong",
+    r"\bblame\b",
+    r"\bsloppy\b",
+    r"\bcareless\b",
+    r"you cannot\b",
+    r"you are unable",
+    r"\bincapable\b",
+    # never impute motive to a candidate's analysis
+    r"\bdeliberately\b",
+    r"reverse.?engineer",
+    r"until the arithmetic",
+    r"chose assumptions",
+    r"selecting assumptions",
+]
+
+# Corporate rejection boilerplate — HARD BLOCK. The opposite of a human letter.
+CORPORATE_BOILERPLATE = [
+    r"we regret to inform",
+    r"after careful consideration",
+    r"impressive (candidate )?pool",
+    r"strong field of candidates",
+    r"we wish you (all the best|the best) in your future",
+]
+
 # Recruiting abstractions (case-insensitive, whole-word match)
 RECRUITING_ABSTRACTIONS = [
     r'\bstrong candidate\b',
@@ -157,6 +193,25 @@ SECTION_HEADINGS = {
             'Where we found questions',
             'What we think you should do next',
         ]
+    },
+    # Skill 01 type #8 (2026-09-08). Submitted a case study, below the 70% benchmark.
+    # A slot given as a LIST accepts any one of its alternatives: the gap section is
+    # count-agnostic in most letters and count-specific where the letter names how many
+    # areas there were. 'optional' headings are allowed but never demanded, because the
+    # forward-looking lesson section only earns a place when there is one worth giving.
+    'case_study_outcome': {
+        'required': [
+            'What Your Work Showed Us',
+            [
+                'Where the Submission Could Have Been Stronger',
+                'Two Areas That Shaped the Outcome',
+                'The Main Gap We Identified',
+            ],
+            'Where We Want to Leave This',
+        ],
+        'optional': [
+            'What We Would Encourage You to Look at Differently',
+        ],
     },
 }
 
@@ -258,11 +313,17 @@ def check_section_headings(body: str, email_type: str) -> Tuple[bool, Optional[s
     required = SECTION_HEADINGS[email_type]['required']
     clean = strip_html(body)
 
+    def present(heading: str) -> bool:
+        return bool(re.search(re.escape(heading), clean, re.IGNORECASE))
+
     missing = []
-    for heading in required:
-        # Case-insensitive search
-        if not re.search(re.escape(heading), clean, re.IGNORECASE):
-            missing.append(heading)
+    for slot in required:
+        # A slot may be a single heading, or a list of accepted alternatives.
+        if isinstance(slot, (list, tuple)):
+            if not any(present(h) for h in slot):
+                missing.append(" OR ".join(slot))
+        elif not present(slot):
+            missing.append(slot)
 
     if missing:
         detail = f'Missing section headings: {", ".join(missing)}'
@@ -289,8 +350,12 @@ def check_opening_line(body: str, email_type: str) -> Tuple[bool, Optional[str]]
 
     # Must appear before the first section heading.
     required = SECTION_HEADINGS.get(email_type, {}).get('required', [])
+    # A slot may be a list of accepted alternatives; flatten before searching.
+    flat = []
+    for slot in required:
+        flat.extend(slot if isinstance(slot, (list, tuple)) else [slot])
     first_heading_idx = None
-    for heading in required:
+    for heading in flat:
         m = re.search(re.escape(heading), clean, re.IGNORECASE)
         if m and (first_heading_idx is None or m.start() < first_heading_idx):
             first_heading_idx = m.start()
@@ -330,6 +395,29 @@ def check_jargon(text: str, email_type: str = "") -> Tuple[bool, Optional[str]]:
             context = clean[start:end].replace('\n', ' ')
             detail = f'Found internal jargon: "{match.group()}" in context: ...{context}...'
             return False, detail
+    return True, None
+
+
+def check_harsh_language(text: str) -> Tuple[bool, Optional[str]]:
+    """
+    Adversarial or judgmental register (Ayesha 2026-09-08). Returns (passed, detail).
+    """
+    clean = strip_html(text)
+    for pattern in HARSH_LANGUAGE:
+        m = re.search(pattern, clean, re.IGNORECASE)
+        if m:
+            ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
+            return False, f'Harsh/adversarial language "{m.group()}" in context: ...{ctx}...'
+    return True, None
+
+
+def check_corporate_boilerplate(text: str) -> Tuple[bool, Optional[str]]:
+    """Generic rejection boilerplate. Returns (passed, detail)."""
+    clean = strip_html(text)
+    for pattern in CORPORATE_BOILERPLATE:
+        m = re.search(pattern, clean, re.IGNORECASE)
+        if m:
+            return False, f'Corporate rejection boilerplate: "{m.group()}"'
     return True, None
 
 
@@ -625,6 +713,23 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'Mandatory opening line ("This is not a yes for now.")',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 5c. Tone: adversarial register and corporate boilerplate (Ayesha 2026-09-08)
+    passed, detail = check_harsh_language(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No harsh or adversarial language (tone standard 2026-09-08)',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    passed, detail = check_corporate_boilerplate(html_body)
+    if not passed:
+        violations.append({
+            'rule': 'No corporate rejection boilerplate (tone standard 2026-09-08)',
             'severity': 'HARD_BLOCK',
             'detail': detail,
         })

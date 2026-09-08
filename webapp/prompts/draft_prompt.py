@@ -61,6 +61,11 @@ def build_user_prompt(
         "values_feedback": "warm, specific feedback after a values-based interview",
         "warm_bench": "a 'not a yes for now' message that keeps the door open and is honest about the gap",
         "gwc_rejection": "an honest, dignified decision that we will not be moving forward, grounded in the interview",
+        "case_study_outcome": (
+            "a decision email for a candidate who submitted the case study but did not "
+            "meet the 70% benchmark, walking them through what their work showed and "
+            "where it could have been stronger, so the feedback is useful to them"
+        ),
     }.get(email_type, "candidate communication")
 
     return f"""Draft {intent}.

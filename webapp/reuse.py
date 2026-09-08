@@ -56,7 +56,8 @@ from scripts.evals.candidate_communication_eval import (  # noqa: E402
 )
 
 # Email types the harness/templates support.
-EMAIL_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
+EMAIL_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection",
+               "case_study_outcome")
 
 __all__ = [
     "H",
