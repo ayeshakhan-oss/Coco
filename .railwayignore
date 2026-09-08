@@ -1,0 +1,18 @@
+# Never upload to the Railway builder. The Dockerfile copies none of these, but
+# `railway up` transmits the whole build context, so exclude them explicitly.
+# Candidate PII, credentials and local-only artefacts:
+output/
+Contracts/
+.claude/config/
+logs/
+data/
+*.pem
+*.p12
+token*.json
+.env
+.env.*
+# Local-only bulk:
+.venv/
+frontend/node_modules/
+**/__pycache__/
+.git/
