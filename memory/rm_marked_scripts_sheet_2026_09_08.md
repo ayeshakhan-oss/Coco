@@ -237,3 +237,22 @@ was deleted.
 the same day.** Re-pointing an index is not a fix, it just moves which wrong thing is one click
 away. And verify by reading the content back and asserting a figure only the superseded version
 contains is now ABSENT (here `Mean 88.3`), not just that the new one is present.
+
+
+### 🔴 Root cause of the three-strikes link failure: the report was an EMAIL (2026-09-08)
+Ayesha had to correct the evaluation-report link three times. The reason I could not find the
+right artefact: **the report she meant only ever existed as an email body.** The 2 Sep email
+"RM Case Study - full re-mark of all 25, and why the first pass was wrong" carried the whole
+report inline (headline, the three causes of the inflation, what changed in the marking, and the
+NOW / WAS / delta table for all 25). Its only attachment was the per-candidate detail PDF, so
+searching Drive for "the evaluation report" could never surface it.
+
+Now published as a Doc in the documentation folder, pulled from the mailbox and kept verbatim:
+`19_7fqUBGwrzBbJJZkrdR49zXB_HsLgt6IIyYOofqw88`. Script
+`scripts/reports/publish_rm_remark_report_doc.py`.
+
+**Rule: an artefact that lives only in an email body does not exist as far as anyone else is
+concerned.** When a report is delivered inline, publish it to Drive the same day, or the next
+person looking for it (including me) will link something that merely looks right. When someone
+says a linked document is wrong, ask WHICH artefact they mean before swapping the link a second
+time - I re-pointed the index twice before checking whether the thing existed at all.
