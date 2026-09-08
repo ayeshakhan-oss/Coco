@@ -204,7 +204,7 @@ def main():
 
     confirm = json.load(open(CONFIRM, encoding="utf-8"))
     seen = json.load(open(SEEN, encoding="utf-8"))
-    s = svc()
+    s = svc(write=args.apply)
 
     values = s.values().get(spreadsheetId=SID, range=TAB).execute().get("values", [])
     audits = audit_existing(values)

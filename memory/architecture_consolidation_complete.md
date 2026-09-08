@@ -30,8 +30,8 @@ User chose **Option 2 (Light Consolidation)** over three approaches:
 Each skill file now contains a structured **Detailed Procedure** section (100-150 lines) BEFORE the Execution Discipline section:
 
 **01_candidate-communication (2):**
-- values-feedback-emails.md (800-1100 word format, v8 design, 3 blue headings)
-- gwc-rejection-emails.md (530-770 words, warm tone, Haroon framework)
+- 02_values-feedback-emails.md (800-1100 word format, v8 design, 3 blue headings)
+- 04_gwc-rejection-emails.md (530-770 words, warm tone, Haroon framework)
 
 **02_candidate-evaluation (3):**
 - cv-screening.md (7-step prep + hyperlinks, Google Drive CV upload)
@@ -80,10 +80,10 @@ Kept in SOPs/:
 └── skills/
     ├── 01_candidate-communication/
 │   ├── SKILL.md
-│   ├── candidate-rejections.md
-│   ├── gwc-rejection-emails.md (UPDATED with Detailed Procedure)
-│   ├── values-feedback-emails.md (UPDATED with Detailed Procedure)
-│   └── warm-bench-feedback-email.md
+│   ├── 01_candidate-rejections.md
+│   ├── 04_gwc-rejection-emails.md (UPDATED with Detailed Procedure)
+│   ├── 02_values-feedback-emails.md (UPDATED with Detailed Procedure)
+│   └── 03_warm-bench-feedback-email.md
 ├── 02_candidate-evaluation/
 │   ├── SKILL.md
 │   ├── case-study-evaluation.md (UPDATED with Detailed Procedure)
@@ -199,11 +199,11 @@ User asks: "How do I send a values feedback email?"
 → Look at CLAUDE.md routing
 → Navigate to SOPs/01_Candidate_Communication/values_feedback_emails.md
 → Read full 300-line SOP for context
-→ Then find skills/01_candidate-communication/values-feedback-emails.md for format
+→ Then find skills/01_candidate-communication/02_values-feedback-emails.md for format
 
 ### After (Post-Consolidation)
 User asks: "How do I send a values feedback email?"
-→ Navigate to skills/01_candidate-communication/values-feedback-emails.md
+→ Navigate to skills/01_candidate-communication/02_values-feedback-emails.md
 → **One file has: context (Universal Rules) + procedures (Detailed Procedure) + execution pattern (Execution Discipline)**
 → Everything you need in one place
 

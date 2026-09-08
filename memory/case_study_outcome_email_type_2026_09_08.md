@@ -12,7 +12,7 @@ stage, **submitted**, and missed the **70% benchmark**. 800 words, evidence from
 submission plus the benchmark answer key**, reusable across positions, first built for
 **Senior Manager Growth**. "harness this rule or hardblock it."
 
-**Type doc:** [.claude/skills/01_candidate-communication/case-study-outcome-email.md](../.claude/skills/01_candidate-communication/case-study-outcome-email.md)
+**Type doc:** [.claude/skills/01_candidate-communication/08_case-study-outcome-email.md](../.claude/skills/01_candidate-communication/08_case-study-outcome-email.md)
 **Script:** `scripts/send_case_study_outcome_pilot.py` (`--check` gate only, `--only <key>`, `--live`)
 **Eyebrow:** `EYEBROW["case_study_outcome"]` = Application Update
 

@@ -27,7 +27,7 @@ Ayesha; only the LAYOUT is locked.
 
 ## Files
 
-- Type doc: `.claude/skills/01_candidate-communication/internal-announcement-email.md`
+- Type doc: `.claude/skills/01_candidate-communication/07_internal-announcement-email.md`
 - Script: `scripts/send_internal_announcement_pilot.py`
 - `scripts/utils/v8_template.py` — added `EYEBROW["announcement"]` plus two shared helpers,
   **`UL(items)`** (bulleted list) and **`PL(text)`** (left-aligned paragraph). A justified

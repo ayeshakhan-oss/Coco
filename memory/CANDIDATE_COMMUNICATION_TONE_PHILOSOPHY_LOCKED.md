@@ -376,8 +376,8 @@ may reference it. Harness HARD BLOCK (cv_rejection only) + drafting prompt.
 
 All candidate communication skills reference this master file:
 - `skill/cv-screening-rejections.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
-- `skill/gwc-rejection-emails.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
-- `skill/values-feedback-emails.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
+- `skill/04_gwc-rejection-emails.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
+- `skill/02_values-feedback-emails.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
 - `skill/warm-bench-feedback-emails.md` → READ: [This File](CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md)
 
 ---

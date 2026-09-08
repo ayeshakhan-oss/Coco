@@ -52,7 +52,7 @@ When Ayesha says "pilot this":
 
 ## Reference
 
-**Full SOP:** skills/values-feedback-emails.md
+**Full SOP:** skills/02_values-feedback-emails.md
 **Detailed rules:** memory/feedback_email_rules.md
 **Implementation:** scripts/jobs/job36/send_job36_values_feedback_junaid_jawad_formatted.py
 

@@ -21,7 +21,7 @@ metadata:
 This is NOT a traditional GWC rejection. It's a warm rejection-keep-warm email using warm bench methodology.
 
 **Template:** `templates/warm_bench_email.html` (locked)
-**SOP:** `.claude/skills/01_candidate-communication/gwc-rejection-emails.md`
+**SOP:** `.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md`
 **Structure:** Opening → "What Stayed With Us" → "Here's the Honest Part" → "Where We Want to Leave This" → P.S.
 **Length:** 800+ words MANDATORY
 
@@ -287,7 +287,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 ## Reference Files
 
 - **Template:** `templates/warm_bench_email.html` (locked colors, fonts, layout)
-- **SOP:** `.claude/skills/01_candidate-communication/gwc-rejection-emails.md`
+- **SOP:** `.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md`
 - **Warm Bench Rules:** `memory/warm_bench_locked_rules_2026_05_30.md`
 - **Haroon Yasin:** `memory/lesson_evidence_based_rejection_rationale_2026_06_01.md`
 - **No Intent Inference:** `memory/lesson_no_intent_inference_rejection_emails_2026_06_01.md`

@@ -80,9 +80,9 @@ python scripts/warm_bench_locked.py \
 - Logo embedded via `cid:logo_taleemabad` Content-ID
 - MIME structure: related/alternative/text-html + image attachment
 
-### 3. Skill Definition: `skills/warm-bench-feedback-email.md`
+### 3. Skill Definition: `skills/03_warm-bench-feedback-email.md`
 
-**Location:** `c:\Agent Coco\skills\warm-bench-feedback-email.md`
+**Location:** `c:\Agent Coco\skills\03_warm-bench-feedback-email.md`
 
 **Status:** UPDATED with locked asset references
 

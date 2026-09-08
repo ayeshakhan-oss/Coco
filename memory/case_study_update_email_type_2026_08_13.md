@@ -8,7 +8,7 @@ type: project
 
 **Created 2026-08-13 at Ayesha's request** ("we will use our warm hold decision skill but it will need a slight change or you can make a case study update email skill as a sub skill of candidate communication"). Built as a **separate sub-skill** rather than bending Warm Hold, so each type keeps its own trigger, subject and audit trail.
 
-**Skill file:** `.claude/skills/01_candidate-communication/case-study-update-email.md`
+**Skill file:** `.claude/skills/01_candidate-communication/06_case-study-update-email.md`
 **Script:** `scripts/send_case_study_update_pilot.py`
 **Eyebrow key added:** `EYEBROW["case_study_update"]` in `scripts/utils/v8_template.py` → "PEOPLE & CULTURE • INTERVIEW UPDATE"
 

@@ -5,7 +5,7 @@ Skill 01 type #6, added 2026-08-13 at Ayesha's request. Sibling of the Warm Hold
 Decision-Pending Update (type #5): same "pending, not decided" family, different
 trigger (case study SUBMITTED, debrief decision pending).
 
-Skill file: .claude/skills/01_candidate-communication/case-study-update-email.md
+Skill file: .claude/skills/01_candidate-communication/06_case-study-update-email.md
 Layout: v8 (Rule 8) imported from scripts/utils/v8_template.py - never inline.
 
 Exemptions (inherited from type #5, sanctioned by Ayesha): no "This is not a yes

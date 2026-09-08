@@ -184,3 +184,28 @@ candidates received. The builder carries a comment so the draft ID cannot creep 
 copied from memory or an older note can point at a draft, and the label in the sheet will still
 look right. Resolve every `fileId` to its name and print it. All 8 Round Documents links are now
 resolved and confirmed.
+
+
+### 🔴 The superseded first pass is still live in THREE places (2026-09-08)
+Ayesha caught the second one. The strict re-mark (mean 75, 8 below 70) replaced the first pass
+(mean 88.3, nobody below 70), but the old numbers were never retired from the artefacts:
+
+1. **Tracker "Scores" tab** - still the first pass. Still unfixed.
+2. **Google Doc `1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc`** - titled "RM Case Study -
+   Evaluation Report (all 25)", but its text reads *"Mean 88.3 | Range 70-100"* and *"the bar no
+   longer separates anyone"*. I linked it in the documentation index as THE evaluation report.
+   Wrong. Now relabelled in the index as **SUPERSEDED, do not use to judge this round**, kept
+   only for the record.
+3. **Benchmark PDF `1D_CTT66MCw8rx4ilja_50s2Im4mkaWGZ`** - "(Rev 2, DRAFT for QA)".
+
+**The correct live artefacts are the two PDFs emailed 2 Sep**, now uploaded into the
+documentation folder:
+- `RM Case Study - Candidate Detail (all 25).pdf` -> `1yIp7QfmwON9Y88GreQICYR-Qyl12WMHx`
+  (15 pages; contains "below the 70", Rida Abbas, 56; does NOT contain 88.3)
+- `RM Case Study - Question-by-Question Analysis (below 70).pdf` -> `1zmxfnpks8PypT_XropE7NrcxYblK-Gh9`
+  (44 pages, all 8 named)
+
+**Rule, twice-learned this week: when a re-mark supersedes a pass, retire the old numbers
+everywhere the same day - sheet tabs, Docs, PDFs, index links - or relabel them SUPERSEDED in
+place. A correct-looking title is not evidence of correct content: open the file and grep for a
+figure that only the superseded version contains** (here, `88.3`).

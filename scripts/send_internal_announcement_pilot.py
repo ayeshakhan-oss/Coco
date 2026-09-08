@@ -6,7 +6,7 @@ Broadcast to TALEEMABAD STAFF. This is NOT candidate communication: the audience
 internal colleagues, so the candidate rules (800-word minimum, "This is not a yes for
 now.", the no-names ban, the jargon ban, the feedback widget) do not apply.
 
-Skill file: .claude/skills/01_candidate-communication/internal-announcement-email.md
+Skill file: .claude/skills/01_candidate-communication/07_internal-announcement-email.md
 Layout:     v8 (Rule 8) imported from scripts/utils/v8_template.py - never inline.
 
 Still enforced: no em dashes, collective voice, safe_sendmail(), pilot to Ayesha first,
