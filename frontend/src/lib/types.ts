@@ -272,6 +272,8 @@ export const EMAIL_TYPES: { value: string; label: string }[] = [
   { value: 'gwc_rejection', label: 'GWC rejection' },
   { value: 'warm_bench', label: 'Warm bench' },
   { value: 'cv_rejection', label: 'CV rejection' },
+  // Skill 01 type #8 (2026-09-08): submitted a case study, below the 70% benchmark.
+  { value: 'case_study_outcome', label: 'Case study outcome (below benchmark)' },
 ]
 
 export interface ApplicationDetail {
