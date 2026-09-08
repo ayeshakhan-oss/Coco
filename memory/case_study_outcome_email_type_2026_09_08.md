@@ -332,3 +332,59 @@ was none. Now excludes `output/` (per-candidate scoring detail, submission corpo
 **Regression evidence:** all four pre-existing `system_prompt()` calls still build, "case study"
 is still blocked for `warm_bench`, `npm run build` compiles clean, and the CLI eval passes over
 all five letters that went live today.
+
+---
+
+## 🔒 Skill-file layout: the eight types are now numbered 01-08 (2026-09-08)
+
+Ayesha asked three times to "see it as a sub skill in candidate communication" and I kept
+explaining that Claude Code has no formal sub-skill concept instead of fixing what she was
+pointing at. **She was describing the file listing, and she was right that something was wrong.**
+
+🔴 **The real defect was my filename.** `case-study-outcome-email.md` (#8, the rejection) sat one
+word from `case-study-update-email.md` (#6, the pending note). In a truncated file tree they are
+indistinguishable, and she asked outright "I think you have added it as case study update haven't
+you". Alphabetical order also placed the newest type **third**, in the middle of the list.
+
+**Fixed by numbering all eight by type**, so the folder reads in the same order as the registry
+inside SKILL.md and the two case-study types can never be confused:
+
+```
+01_candidate-rejections.md              05_warm-hold-decision-pending-email.md
+02_values-feedback-emails.md            06_case-study-update-email.md      <- pending
+03_warm-bench-feedback-email.md         07_internal-announcement-email.md
+04_gwc-rejection-emails.md              08_case-study-outcome-email.md     <- the rejection
+```
+
+**Safe-rename procedure that worked** (reuse it): confirm no hook matches on the filenames
+(the memory hooks key off `memory/*.md`, **not** skill files) → `git mv` to preserve history →
+rewrite references repo-wide (25 files) → verify **every markdown link resolves on disk** →
+re-check imports and the send gate. Also caught a pre-existing wrong relative depth in
+`gwc_rejection_update_2026_05_30.md` (`../../../` from `memory/` points above the repo root).
+
+### 🔴 There is no such thing as a sub-skill, and naming is therefore the whole UX
+Claude Code discovers a skill **only** at `.claude/skills/<name>/SKILL.md`. Files inside a skill
+folder are supporting documents, never separately discoverable, and a nested `SKILL.md` inside
+another skill's directory is **not** picked up. (Verified against code.claude.com/docs/en/skills:
+project skills at `.claude/skills/<name>/SKILL.md`; skills in **subdirectories of the project**
+get a qualified name like `apps/web:deploy`, which is a different mechanism.) So the folder
+listing is the only navigation Ayesha has, which is exactly why the filename and its sort
+position are the whole user experience. **Name a new type file so it cannot be mistaken for its
+nearest neighbour, and number it.**
+
+### 🔴 A bare colon in a YAML description silently kills the skill
+Rewriting the frontmatter description, I wrote `... Eight types. Decision emails: CV/application
+rejections ...`. **A bare `word: ` inside an unquoted YAML scalar is a mapping delimiter**, so the
+frontmatter stopped parsing and the skill lost its entire description. Visible in the session's
+own skill listing, which showed only "Candidate Communication" with no description, i.e. the
+skill would no longer trigger reliably. **Always `yaml.safe_load` the frontmatter after editing
+it**, and avoid bare colons in a description. Fixed; description is 966 chars (cap is 1,536 for
+description + when_to_use combined).
+
+### Two pre-existing defects found while checking
+1. **The description stopped at type #5.** Types #6, #7 and #8 were never advertised, so asking
+   for a case study rejection could miss this skill entirely. That gap had existed since August.
+   The "When to Use This Skill" trigger list had the same hole. Both fixed, plus a pointer that
+   invites and reminders belong to Skill 06.
+2. 🔴 **`07_contract-drafting/SKILL.md` has NO frontmatter at all**, so it has no description and
+   falls back to its first paragraph for triggering. **Still unfixed. Worth doing.**
