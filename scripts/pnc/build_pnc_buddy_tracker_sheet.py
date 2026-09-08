@@ -1,28 +1,33 @@
 """
-P&C Buddy Tracker Sheet - Google Sheet builder / updater
+P&C Buddy Tracker Sheet - meeting notes tracker builder / updater
+Skill: .claude/skills/03_operations/meeting-notes-tracker-sheet.md
 
-Spreadsheet "P&C Buddy Tracker Sheet" in Ayesha's own Drive, one tab per P&C Buddy
-counterpart. First tab: "Sabeena".
+Spreadsheet "P&C Buddy Tracker Sheet" in Ayesha's own Drive. One tab per P&C Buddy
+counterpart; each tab accumulates every meeting with that person.
 
   A Date | B Topic | C Task | D Owner | E Priority | F Done (checkbox)
 
-TASK LIST ONLY. Ayesha iterated this down three times: one row per task with the topic
-and minutes repeated was too much, paragraph minutes written once per block was still too
-much, a one-line summary column was still too much. What she wants on the page is the
-tasks. Topic is shown once per block for grouping and left blank on the rows beneath it.
+TASK LIST ONLY. Ayesha iterated this down four times: one row per task with topic and
+minutes repeated was too much, paragraph minutes written once per block was too much, a
+one-line summary column was still too much. What goes on the page is the tasks. Date
+shows once per meeting, Topic once per topic block, both blank on the rows beneath.
 
-The full unabridged minutes for each topic are kept as a HOVER NOTE on the topic cell, so
-the meeting record survives at zero visual cost. Nothing else carries the minutes.
+The full unabridged minutes for each topic are kept as a HOVER NOTE on that topic's cell,
+so the meeting record survives at zero visual cost. Nothing else carries the minutes.
 
 Ticking F strikes through and greys A:E for that row.
 
-Source: Fathom transcript "Sabeena / Ayesha - September 04" plus Ayesha's own in-meeting
-notes. The transcript is a lossy auto-transcript, so uncertain items are flagged with a
-warning glyph rather than guessed (per memory/pnc_buddy_tracker_project_2026_08_19.md).
+TO ADD A MEETING: prepend a dict to that person's list in TABS and re-run with --update.
+--update rewrites each listed tab in full, so EVERY past meeting must stay in TABS or it
+will be erased from the sheet.
+
+Sources are Fathom auto-transcripts, which are lossy - garbled Urdu/English, switched
+pronouns, mangled names. Flag anything uncertain inline with the warning glyph. Never
+guess. (per memory/pnc_buddy_meeting_tracker_sheet_2026_09_06.md)
 
 Usage:
   python scripts/pnc/build_pnc_buddy_tracker_sheet.py            # create (aborts if it exists)
-  python scripts/pnc/build_pnc_buddy_tracker_sheet.py --update   # rewrite the Sabeena tab
+  python scripts/pnc/build_pnc_buddy_tracker_sheet.py --update    # rewrite every tab in TABS
 
 Token: .claude/config/token_sheets_broad.json  (OAuth user token for ayesha.khan@)
 """
@@ -36,17 +41,12 @@ from googleapiclient.discovery import build
 
 TOKEN_FILE = '.claude/config/token_sheets_broad.json'
 SHEET_NAME = 'P&C Buddy Tracker Sheet'
-TAB_NAME = 'Sabeena'
 KNOWN_SSID = '17eb8v55YQOKIiqpd3c2Bq6dDM8_6Wu9EzgsKh0WHr6w'
-RECORDING = 'https://fathom.video/share/N2YRsTRkYFxjJXY8U8hEAz8b6sV2xbYd'
 W = '⚠'
 
 HEADERS = ['Date', 'Topic', 'Task', 'Owner', 'Priority', 'Done']
 
-D = '2026-09-04'
-
-# (topic, full minutes -> hover note on the topic cell, [(task, owner, priority), ...])
-TOPICS = [
+SABEENA_2026_09_04 = [
     ('Usman | team management',
      "Fundraising team has difficult dynamics and Usman is not yet equipped to manage them. "
      "Sabeena's framing to him: treat it as a challenge, not a reason to step back, because a "
@@ -155,25 +155,41 @@ TOPICS = [
      [("Send Sabeena this list", 'Ayesha', 'CRITICAL')]),
 ]
 
+# One tab per counterpart. Newest meeting FIRST in each list.
+# Every past meeting must stay here or --update will erase it from the sheet.
+TABS = {
+    'Sabeena': [
+        {'date': '2026-09-04',
+         'recording': 'https://fathom.video/share/N2YRsTRkYFxjJXY8U8hEAz8b6sV2xbYd',
+         'topics': SABEENA_2026_09_04},
+    ],
+}
 
-def build_values():
-    """Rows, plus (block first-row index, hover note) for each topic."""
+
+def build_values(meetings):
+    """Rows, topic-block first-row indices with notes, and meeting first-row indices."""
     values = [HEADERS]
     blocks = []
-    first = True
-    for topic, note, tasks in TOPICS:
-        blocks.append((len(values), note))
-        for i, (task, owner, prio) in enumerate(tasks):
-            if i == 0:
-                date = ('=HYPERLINK("' + RECORDING + '","' + D + '")') if first else D
-                values.append([date, topic, task, owner, prio, False])
-                first = False
-            else:
-                values.append(['', '', task, owner, prio, False])
-    return values, blocks
+    meeting_starts = []
+    for m in meetings:
+        meeting_starts.append(len(values))
+        first_of_meeting = True
+        for topic, note, tasks in m['topics']:
+            blocks.append((len(values), note))
+            for i, (task, owner, prio) in enumerate(tasks):
+                date = ''
+                topic_cell = ''
+                if i == 0:
+                    topic_cell = topic
+                    if first_of_meeting:
+                        date = ('=HYPERLINK("' + m['recording'] + '","' + m['date'] + '")'
+                                if m.get('recording') else m['date'])
+                        first_of_meeting = False
+                values.append([date, topic_cell, task, owner, prio, False])
+    return values, blocks, meeting_starts
 
 
-def format_requests(sid, last, blocks):
+def format_requests(sid, last, blocks, meeting_starts):
     tail = last + 60
     reqs = [
         {'repeatCell': {
@@ -252,7 +268,26 @@ def format_requests(sid, last, blocks):
             'range': {'sheetId': sid, 'startRowIndex': r, 'endRowIndex': r + 1,
                       'startColumnIndex': 1, 'endColumnIndex': 2},
             'rows': [{'values': [{'note': note}]}], 'fields': 'note'}})
+    # A heavier rule separates one meeting from the next
+    for r in meeting_starts:
+        reqs.append({'updateBorders': {
+            'range': {'sheetId': sid, 'startRowIndex': r, 'endRowIndex': r + 1,
+                      'startColumnIndex': 0, 'endColumnIndex': 6},
+            'top': {'style': 'SOLID_THICK', 'width': 3,
+                    'color': {'red': 0.184, 'green': 0.310, 'blue': 0.635}}}})
     return reqs
+
+
+def write_tab(sheets, ssid, sid, name, meetings):
+    values, blocks, meeting_starts = build_values(meetings)
+    sheets.spreadsheets().values().update(
+        spreadsheetId=ssid, range="'" + name + "'!A1:F" + str(len(values)),
+        valueInputOption='USER_ENTERED', body={'values': values}).execute()
+    sheets.spreadsheets().batchUpdate(
+        spreadsheetId=ssid,
+        body={'requests': format_requests(sid, len(values), blocks, meeting_starts)}).execute()
+    n = sum(len(t[2]) for m in meetings for t in m['topics'])
+    print('[OK] ' + name + ': ' + str(len(meetings)) + ' meeting(s), ' + str(n) + ' tasks')
 
 
 def main():
@@ -266,26 +301,7 @@ def main():
     drive = build('drive', 'v3', credentials=creds)
     sheets = build('sheets', 'v4', credentials=creds)
 
-    values, blocks = build_values()
-
-    if update:
-        ssid = KNOWN_SSID
-        ss = sheets.spreadsheets().get(spreadsheetId=ssid).execute()
-        tab = [s for s in ss['sheets'] if s['properties']['title'] == TAB_NAME]
-        if not tab:
-            print("[ABORT] No tab named '" + TAB_NAME + "' in " + ssid)
-            sys.exit(1)
-        sid = tab[0]['properties']['sheetId']
-        wipe = [{'updateCells': {
-            'range': {'sheetId': sid, 'startRowIndex': 0, 'endRowIndex': 400,
-                      'startColumnIndex': 0, 'endColumnIndex': 8},
-            'fields': 'userEnteredValue,note'}}]
-        wipe += [{'deleteConditionalFormatRule': {'sheetId': sid, 'index': 0}}
-                 for _ in tab[0].get('conditionalFormats', [])]
-        sheets.spreadsheets().batchUpdate(spreadsheetId=ssid,
-                                          body={'requests': wipe}).execute()
-        print('[OK] Cleared values and notes on tab ' + TAB_NAME)
-    else:
+    if not update:
         q = ("mimeType='application/vnd.google-apps.spreadsheet' and trashed=false "
              "and name='" + SHEET_NAME + "'")
         found = drive.files().list(q=q, fields='files(id,webViewLink)',
@@ -296,26 +312,43 @@ def main():
                 print('         ' + f_['id'] + '  ' + f_['webViewLink'])
             print('[ABORT] Refusing to create a duplicate. Re-run with --update.')
             sys.exit(1)
+        first = list(TABS)[0]
         created = sheets.spreadsheets().create(body={
             'properties': {'title': SHEET_NAME},
-            'sheets': [{'properties': {
-                'title': TAB_NAME,
-                'gridProperties': {'rowCount': len(values) + 80,
-                                   'columnCount': len(HEADERS)}}}]}).execute()
+            'sheets': [{'properties': {'title': first,
+                                       'gridProperties': {'rowCount': 200,
+                                                          'columnCount': len(HEADERS)}}}]
+        }).execute()
         ssid = created['spreadsheetId']
-        sid = created['sheets'][0]['properties']['sheetId']
         print('[OK] Created spreadsheet ' + ssid)
+    else:
+        ssid = KNOWN_SSID
 
-    sheets.spreadsheets().values().update(
-        spreadsheetId=ssid, range=TAB_NAME + '!A1:F' + str(len(values)),
-        valueInputOption='USER_ENTERED', body={'values': values}).execute()
-    n_tasks = sum(len(t[2]) for t in TOPICS)
-    print('[OK] Wrote ' + str(n_tasks) + ' tasks across ' + str(len(TOPICS)) + ' topics')
+    ss = sheets.spreadsheets().get(spreadsheetId=ssid).execute()
+    existing = {s['properties']['title']: s for s in ss['sheets']}
 
-    sheets.spreadsheets().batchUpdate(
-        spreadsheetId=ssid,
-        body={'requests': format_requests(sid, len(values), blocks)}).execute()
-    print('[OK] Applied checkboxes, rules, block borders and hover notes')
+    for name, meetings in TABS.items():
+        if name not in existing:
+            res = sheets.spreadsheets().batchUpdate(
+                spreadsheetId=ssid,
+                body={'requests': [{'addSheet': {'properties': {
+                    'title': name,
+                    'gridProperties': {'rowCount': 200,
+                                       'columnCount': len(HEADERS)}}}}]}).execute()
+            sid = res['replies'][0]['addSheet']['properties']['sheetId']
+            print('[OK] Added tab ' + name)
+        else:
+            sid = existing[name]['properties']['sheetId']
+            wipe = [{'updateCells': {
+                'range': {'sheetId': sid, 'startRowIndex': 0, 'endRowIndex': 400,
+                          'startColumnIndex': 0, 'endColumnIndex': 8},
+                'fields': 'userEnteredValue,note'}}]
+            wipe += [{'deleteConditionalFormatRule': {'sheetId': sid, 'index': 0}}
+                     for _ in existing[name].get('conditionalFormats', [])]
+            sheets.spreadsheets().batchUpdate(spreadsheetId=ssid,
+                                              body={'requests': wipe}).execute()
+            print('[OK] Cleared tab ' + name)
+        write_tab(sheets, ssid, sid, name, meetings)
 
     print('\nSHEET ID : ' + ssid)
     print('URL      : https://docs.google.com/spreadsheets/d/' + ssid + '/edit')

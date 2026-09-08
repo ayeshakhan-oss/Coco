@@ -79,3 +79,22 @@ and Nawal/Namal.
 🔴 The **no-personal-names** rule that governs the Fundraising capability doc set does **not**
 apply here. That rule is scoped to shareable P&C working documents. This is Ayesha's private
 follow-up tracker and names are the entire point.
+
+---
+
+## Now a skill (2026-09-08)
+
+Skill **`03_hiring-operations` was renamed to `03_operations`** at Ayesha's request (drop
+"hiring", keep the `03_` prefix so the numbering convention across the seven skills holds).
+This tracker is **component #5** of it:
+[.claude/skills/03_operations/meeting-notes-tracker-sheet.md](../.claude/skills/03_operations/meeting-notes-tracker-sheet.md).
+`SKILL.md` opens with a **"Skills in Operations"** table so invoking Operations lists all five
+component names. References updated in `.claude/sops/CLAUDE.md`, `.claude/sops/TASK_WIRING_MAP.md`,
+`.claude/SKILL_CONSOLIDATION_AUDIT_2026_05_30.md`, `memory/architecture_consolidation_complete.md`,
+`memory/skills_consolidation_audit_2026_05_30.md`, `memory/discipline_one_master_file_per_skill.md`.
+
+**Builder generalised the same day:** data is now `TABS = {tab_name: [meeting, ...]}` where each
+meeting is `{'date', 'recording', 'topics'}`, so a tab accumulates meetings (newest first, date
+shown once per meeting with a thick rule between meetings) and a new counterpart is just a new
+key (`--update` creates the tab). 🔴 **`--update` still rewrites each listed tab in full, so every
+past meeting must stay in `TABS` or it is erased. There is no append mode.**

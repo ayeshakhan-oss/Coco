@@ -38,7 +38,7 @@ Each skill file now contains a structured **Detailed Procedure** section (100-15
 - case-study-evaluation.md (Check Markaz + Gmail, flag incomplete, weekly reporting)
 - kcd-evaluation.md (Prerequisites → Submit → Integrity checks → Report → Cross-check Noah)
 
-**03_hiring-operations (2):**
+**03_operations (2):**
 - attendance-reports.md (6-step data collection, 7 sections, 7 stat boxes LOCKED colors)
 - decision-briefs.md (4-part structure, hyperlinks mandatory, verdict labels exact)
 
@@ -90,7 +90,7 @@ Kept in SOPs/:
 │   ├── cv-screening.md (UPDATED with Detailed Procedure)
 │   ├── kcd-evaluation.md (UPDATED with Detailed Procedure)
 │   └── values-scorecard-scoring.md
-├── 03_hiring-operations/
+├── 03_operations/
 │   ├── SKILL.md
 │   ├── attendance-reports.md (UPDATED with Detailed Procedure)
 │   ├── decision-briefs.md (UPDATED with Detailed Procedure)

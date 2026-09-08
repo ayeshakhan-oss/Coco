@@ -1,12 +1,28 @@
 ---
-name: hiring-operations
-description: Manage hiring workflow operations including daily I-10 attendance reports, decision briefs to leadership, and weekly hiring pipeline monitoring. All reports require verified data from Teams/Markaz, locked formatting (colors, stat boxes, no grid borders), and pilot approval before sending.
-compatibility: Requires RULES.md, memory attendance templates, Teams API, MCP database access
+name: operations
+description: Operational reporting and tracking. Five components - Attendance Reports (daily I-10), Decision Briefs (to leadership), Hiring Pipeline Monitor (weekly), Hiring Decision Brief, and Meeting Notes Tracker Sheet (P&C Buddy 1:1 follow-ups in Google Sheets). All outputs require verified data from Teams/Markaz/Fathom, locked formatting, and pilot approval before sending.
+compatibility: Requires RULES.md, memory attendance templates, Teams API, MCP database access, token_sheets_broad.json
 ---
 
-# Hiring Operations
+# Operations
 
-Manage operational reporting and workforce tracking: attendance reports, decision briefs, and pipeline monitoring.
+Operational reporting and tracking: attendance, decision briefs, pipeline monitoring, and meeting-notes trackers.
+
+---
+
+## Skills in Operations
+
+| # | Skill | Use it for | Detail |
+|---|-------|-----------|--------|
+| 1 | **Attendance Reports** | Daily I-10 tracking, 7 stat boxes, ReportLab PDF + HTML email | [attendance-reports.md](attendance-reports.md) |
+| 2 | **Decision Briefs** | Leadership reports on candidate progress, 4 stat boxes, CV hyperlinks | [decision-briefs.md](decision-briefs.md) |
+| 3 | **Hiring Pipeline Monitor** | Weekly proactive monitoring, Mon 10:30 + Fri 3pm | [hiring-pipeline-weekly-report.md](hiring-pipeline-weekly-report.md) |
+| 4 | **Hiring Decision Brief** | Final-decision variant with structured recommendation | [hiring-decision-brief.md](hiring-decision-brief.md) |
+| 5 | **Meeting Notes Tracker Sheet** | Turning a 1:1 transcript into a tickable task list in Google Sheets (P&C Buddy tracker) | [meeting-notes-tracker-sheet.md](meeting-notes-tracker-sheet.md) |
+
+🔴 **Component 5 carries its own locked format rule: a tracker is a TASK LIST, not a
+write-up.** Tasks on the page, minutes in hover notes only, no narrative prose in a cell.
+Ayesha rejected three richer layouts before this one. See CLAUDE.md Rule 23.
 
 ---
 
@@ -32,6 +48,8 @@ Trigger this skill when:
 - User requests "decision brief" for position
 - User wants "pipeline status" or "hiring monitor"
 - User needs "workforce tracking" or "onsite coordination"
+- User asks for a "meeting notes tracker", "meeting minutes tracker", "tracker sheet",
+  "action items from my 1:1", or to turn a meeting transcript into tasks
 - Any operational hiring management task
 
 ---
@@ -67,6 +85,14 @@ This skill orchestrates the following detailed procedures:
    - Variant of decision brief for final hiring decisions
    - Structured recommendation format
    - Leadership-ready presentation
+
+5. **Meeting Notes Tracker Sheet** — [meeting-notes-tracker-sheet.md](meeting-notes-tracker-sheet.md)
+   - P&C Buddy 1:1 follow-ups, one tab per counterpart
+   - Sheet `17eb8v55YQOKIiqpd3c2Bq6dDM8_6Wu9EzgsKh0WHr6w`, owned by ayesha.khan@
+   - Columns: Date | Topic | Task | Owner | Priority | Done (checkbox)
+   - 🔒 TASKS ONLY; full minutes live as hover notes on the topic cell
+   - Builder `scripts/pnc/build_pnc_buddy_tracker_sheet.py --update`
+   - ⚠️ `--update` rewrites each tab in full; past meetings must stay in `TABS`
 
 ---
 

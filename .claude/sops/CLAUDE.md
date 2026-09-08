@@ -16,8 +16,9 @@
 | Reject candidate (values) | [.claude/skills/01_candidate-communication/values-feedback-emails.md](../../.claude/skills/01_candidate-communication/values-feedback-emails.md) | [email_template_format_FINAL.md](../../memory/email_template_format_FINAL.md) |
 | Warm bench feedback | [.claude/skills/01_candidate-communication/warm-bench-feedback-email.md](../../.claude/skills/01_candidate-communication/warm-bench-feedback-email.md) | [warm_bench_final_locked_approach.md](../../memory/warm_bench_final_locked_approach.md) |
 | Interview invite (values/case study/exploratory/warm bench) | [.claude/skills/06_candidate-invites/SKILL.md](../../.claude/skills/06_candidate-invites/SKILL.md) | [locked_email_template_interview_invites_FINAL_2026_05_13.md](../../memory/locked_email_template_interview_invites_FINAL_2026_05_13.md) |
-| Decision brief | [.claude/skills/03_hiring-operations/decision-briefs.md](../../.claude/skills/03_hiring-operations/decision-briefs.md) | N/A (custom per round) |
-| Attendance report | [.claude/skills/03_hiring-operations/attendance-reports.md](../../.claude/skills/03_hiring-operations/attendance-reports.md) | [attendance_report_complete_template.md](../../memory/attendance_report_complete_template.md) |
+| Decision brief | [.claude/skills/03_operations/decision-briefs.md](../../.claude/skills/03_operations/decision-briefs.md) | N/A (custom per round) |
+| Attendance report | [.claude/skills/03_operations/attendance-reports.md](../../.claude/skills/03_operations/attendance-reports.md) | [attendance_report_complete_template.md](../../memory/attendance_report_complete_template.md) |
+| Meeting notes tracker (1:1 action items) | [.claude/skills/03_operations/meeting-notes-tracker-sheet.md](../../.claude/skills/03_operations/meeting-notes-tracker-sheet.md) | 🔒 TASKS ONLY, minutes in hover notes; sheet `17eb8v55YQOKIiqpd3c2Bq6dDM8_6Wu9EzgsKh0WHr6w` |
 | Talent sourcing | [.claude/skills/05_talent-sourcing/talent-sourcing.md](../../.claude/skills/05_talent-sourcing/talent-sourcing.md) | N/A (process-based) |
 | Contract / NDA / addendum / offer documents | [.claude/skills/07_contract-drafting/SKILL.md](../../.claude/skills/07_contract-drafting/SKILL.md) | [TEMPLATE_MAP.md](../../.claude/skills/07_contract-drafting/TEMPLATE_MAP.md) + `Contracts\` masters (fill yellow fields only; never touch legal wording) |
 

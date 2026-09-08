@@ -137,13 +137,13 @@ Evaluate candidates across CV screening, case study evaluation, values interview
 
 ---
 
-## SKILL 3: HIRING OPERATIONS (03_hiring-operations)
+## SKILL 3: OPERATIONS (03_operations)
 
 ### Summary
 Manage operational reporting and workforce tracking: attendance reports, decision briefs, and hiring pipeline monitoring.
 
 ### Architecture
-- **Current Location:** `.claude/skills/03_hiring-operations/SKILL.md`
+- **Current Location:** `.claude/skills/03_operations/SKILL.md`
 - **Related SOPs (source of truth):** `SOPs/03_Hiring_Operations/` (orchestrated from main skill)
 - **Status:** ✅ PRODUCTION READY
 
@@ -463,7 +463,7 @@ All six skills have been audited for conflicts. No contradictions exist between:
 |-------|-----------------|--------|--------------|-----------|
 | **01_candidate-communication** | `.claude/skills/01_candidate-communication/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
 | **02_candidate-evaluation** | `.claude/skills/02_candidate-evaluation/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
-| **03_hiring-operations** | `.claude/skills/03_hiring-operations/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
+| **03_operations** | `.claude/skills/03_operations/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
 | **04_data-and-systems** | `.claude/skills/04_data-and-systems/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
 | **05_talent-sourcing** | `.claude/skills/05_talent-sourcing/SKILL.md` | ✅ PRODUCTION READY | 2026-05-15 | None |
 | **06_candidate-invites** | `.claude/skills/06_candidate-invites/SKILL.md` | 🔒 LOCKED PRODUCTION | 2026-05-15 | None |

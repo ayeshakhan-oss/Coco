@@ -16,7 +16,7 @@ type: project
 |-------|-----------|------|--------|
 | **Skill 1: Candidate Communication** | Warm bench: role-specific → Haroon framework. Tone locked. Subjects: poetic only. | 2026-05-04 to 2026-05-15 | ✅ LOCKED |
 | **Skill 2: Candidate Evaluation** | Step 0: Query all app records before Markaz. Stat count must = section count. | 2026-05-12 | ✅ LOCKED |
-| **Skill 3: Hiring Operations** | GRID BORDERS FORBIDDEN (use ROWBACKGROUNDS only). Colors locked (exact hex). | 2026-05-12 | ✅ LOCKED |
+| **Skill 3: Operations** | GRID BORDERS FORBIDDEN (use ROWBACKGROUNDS only). Colors locked (exact hex). | 2026-05-12 | ✅ LOCKED |
 | **Skill 4: Data & Systems** | Rules 1.12 & 1.13 locked: MCP only, safe_sendmail() only. Small API results verified. | 2026-05-12 | ✅ LOCKED |
 | **Skill 5: Talent Sourcing** | Adopted Noah's skill. Markaz timing rule: NEVER premature insertion. | 2026-04-16 | ✅ LOCKED |
 | **Skill 6: Candidate Invites** | Design 100% LOCKED (2026-05-13). Content-only changes. 4 types unified. | 2026-05-15 | 🔒 LOCKED |
@@ -42,7 +42,7 @@ type: project
 |-------|------|---------|--------|
 | 01 Candidate Communication | `.claude/skills/01_candidate-communication/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
 | 02 Candidate Evaluation | `.claude/skills/02_candidate-evaluation/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
-| 03 Hiring Operations | `.claude/skills/03_hiring-operations/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
+| 03 Operations | `.claude/skills/03_operations/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
 | 04 Data & Systems | `.claude/skills/04_data-and-systems/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
 | 05 Talent Sourcing | `.claude/skills/05_talent-sourcing/SKILL.md` | 2026-05-15 | ✅ PRODUCTION |
 | 06 Candidate Invites | `.claude/skills/06_candidate-invites/SKILL.md` | 2026-05-15 | 🔒 LOCKED |
@@ -78,7 +78,7 @@ When any task is requested:
 - NO life-coach language
 - Specific interview/CV evidence (never generic)
 
-### Colors (Skill 3 — Hiring Operations)
+### Colors (Skill 3 — Operations)
 - Header: #34495e, Onsite: #e8f5e9, Leave: #ffe0b2
 - WFH: #c8e6c9, Away: #ffccbc, Flagged: #ffcdd2, Additional: #f5f5f5
 - NO GRID BORDERS (use ROWBACKGROUNDS only)

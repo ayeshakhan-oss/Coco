@@ -41,7 +41,7 @@ When tasked with updating a skill:
 From session: Consolidation is the default for all skill work going forward.
 - Candidate Communication Skill → ONE master file
 - Talent Sourcing Skill → ONE master file
-- Hiring Operations Skill → ONE master file
+- Operations Skill → ONE master file
 - Any future skill → ONE master file
 
 **This is automatic. Do not ask Ayesha to remind you.**
