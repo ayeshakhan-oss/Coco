@@ -57,3 +57,45 @@ just the report.** Decide with Ayesha whether to overwrite the tab or archive it
 Related: [[project_rm_internal_case_study_round_2026_09_02]] ·
 [[lesson_scoring_anchor_floor_inflation_2026_09_02]] ·
 [[project_rm_internal_case_study_tracker_2026_08_31]]
+
+## Feedback emails to the 8 (Skill 01 type #8, RM variant)
+
+Script: `scripts/send_rm_case_study_outcome_pilot.py` (`--check` gate only, `--only <name>`,
+`--live` after approval). Individual workbooks: `scripts/reports/build_rm_individual_feedback_sheets.py`.
+Pilot to Ayesha 2026-09-08, 8 letters, 358 words each, two attachments per letter.
+
+**One identical letter for all eight, by design.** Ayesha supplied the wording herself. These
+are colleagues who sit near each other and will compare emails: one consistent letter plus an
+individualised attachment is fairer and easier to defend than eight letters of varying warmth.
+**All personalisation lives in the attached marked script**, which is far more specific than
+prose would be.
+
+**Two locked rules deliberately switched off, flagged as module constants so nothing is silent:**
+- `RULE10_OPENING = False` — type #8 mandates "This is not a yes for now." as the first line.
+  Her wording opens with thanks; it is still an unambiguous no by paragraph two.
+- `MIN_WORDS = 250` — types 1-4 and #8 require 800+. The 800 minimum exists so a rejection
+  carries real feedback; here the feedback is the attached script.
+**When a rule is overridden on the user's instruction, encode it as a named flag with the
+reason, never by deleting the check.**
+
+🔴 **Gate lesson: "your score" is not the same as a score.** The type-8 gate blocks the
+candidate's own number appearing in the body. Ayesha's wording says the sheet "shows your score
+against the different areas", which the blanket `your score|your total` pattern wrongly blocked.
+Narrowed to catch a printed *figure* (`you scored \d`, `your score of \d`, `NN/100`) while
+allowing a reference to the attachment. **Match the intent of the rule, not its keyword.**
+
+**Privacy:** each individual workbook is asserted at build time to contain no other candidate's
+name or code, and all 8 exported .xlsx were re-checked after export. The master marked-scripts
+sheet has all 8 side by side and must never be sent to a candidate.
+
+**Attachments per letter:** benchmark answer key PDF (exported from Ayesha's Doc
+`1pCwMsjq6RY6jhTZubTdif6np5jsboocBVk-2pZIE9_g`) + that person's own .xlsx from
+`output/rm_marking/individual/`. Private Drive folder `1eqrwZerEU6fj8cuibHqXWgJLvF1jJQrx`,
+deliberately NOT link-shared.
+
+**No booking URL is used.** Ayesha: "they can book their own if they need to." The offer of a
+twenty minute slot stands with no link, because internal colleagues share a calendar system.
+No link was invented.
+
+**Still open:** live send needs Ayesha's approval and a decision on CC; the tracker's Scores tab
+still shows the superseded first pass.

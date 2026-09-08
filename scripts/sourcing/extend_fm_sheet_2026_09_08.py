@@ -80,7 +80,9 @@ def load_clusters():
     rows = []
     for path in sorted(glob.glob(os.path.join(CLUSTER_DIR, "*.json"))):
         data = json.load(open(path, encoding="utf-8"))
-        for r in data.get("rows", []):
+        # c3 was restructured to "verified_rows" after its fabrication purge, so that only
+        # independently corroborated rows survive. Accept both key names.
+        for r in data.get("rows", []) + data.get("verified_rows", []):
             r = dict(r)
             r["_cluster"] = data.get("cluster", os.path.basename(path))
             rows.append(r)
