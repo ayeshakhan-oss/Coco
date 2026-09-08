@@ -96,3 +96,39 @@ objection. **Check the From display name on the person's OWN mail before any bat
 ayesha.khan@ Sent Mail BEFORE drafting (0 prior debrief invites to any of the 17) and AGAIN
 after (exactly 1 live each, correct CC on all 17, no PILOT prefix leaked, 0 of the 8
 below-70 wrongly invited). Console output alone cannot prove either.
+
+## Benchmark-comparison documents (2026-09-08)
+Ayesha asked for a question-by-question comparison of every submission against the answer
+key, split into two documents at the 70 line. Build: `scripts/reports/make_rm_benchmark_comparison.py`
+(both PDFs), mail: `scripts/reports/send_rm_benchmark_comparison.py`. Benchmark requirements
+per question live in `bench.py` in the session scratchpad, with **Ayesha's five Revision 2
+additions badged REV 2 in the rendered documents** so it is visible which requirements came
+from her QA round rather than the first draft of the key:
+Q1 *Where from* column · Q2 reframed off a flat "no" to "leads on some indicators but cannot
+be ranked overall" · Q3 evidence-to-intervention decision rule · Q4 corrected arithmetic
+(98.75%, demand inside the table) **+ Very High activities are never paused** · Q8 fifth
+column restored.
+
+**The comparison surfaced what the totals hid.** Two questions carry nearly all the
+discrimination and they are the two worth most marks:
+
+| | mean | at the key | short |
+|---|---|---|---|
+| Q2 Urban vs Rural | **62%** | 2 of 25 | 8 |
+| Q4 Forced prioritisation | **62%** | 6 of 25 | 10 |
+| Q1/Q3/Q5/Q6/Q7/Q8/Q9 | 78-85% | 4-11 each | 0-2 |
+
+- **17 of 25 misread the below-grade-level figures as population shares.** Urban's 34+75=109
+  proves they cannot be. Correct reading reverses the finding: Rural passes 49% of students
+  who started behind against Urban's 34%. Two candidates concluded Urban was better on it.
+- **6 of 25 showed no Q4 arithmetic at all** on the question that exists to make numbers close.
+- Nobody fell short on Q3, Q5, Q7 or Q9 - the pool is genuinely capable outside those two.
+
+**Reusable pattern.** Per candidate per question: *what the benchmark required* → *what they
+did* → *against the benchmark*. The last block is the debrief probe; where it reads "Met the
+benchmark" there is nothing left to test and panel time is better spent elsewhere.
+
+⚠️ **Coverage honesty.** The scoring pass recorded findings selectively, so 10 question-slots
+across the 17 had a mark but no note. Those were filled by a **targeted re-read of that
+section**, not reconstructed from memory - see `FILL` in `bench.py`. Where a question was
+scored at the benchmark and no shortfall existed, the document says so rather than padding.
