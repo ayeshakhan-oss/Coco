@@ -275,3 +275,60 @@ description of the document over confident description of the candidate.
 vagueness if hedged, and where clarity was also a stated requirement. Kanooz "it never mentions
 the budget deadline"; Wajdan "Sri Lanka is never examined" and "never reconciles them". These
 describe what is and is not in the document and are each verified true.
+
+---
+
+## 🚀 DEPLOYED LIVE ON RAILWAY (2026-09-08)
+
+Ayesha: "harness the tone for this one ... deploy this skill live too on railway in candidate
+communication."
+
+**Live:** https://coco-production-bcc8.up.railway.app · project **Ayesha Coco** · service
+`elegant-benevolence` · deployment `825aaea1` SUCCESS · `/healthz` and `/readyz` both 200.
+
+### 🔑 Two lessons about deploying a skill
+
+1. **The push did NOT auto-deploy.** The last successful deployment was the day before, so this
+   service is not wired to GitHub auto-deploy. **A `git push` is not a deploy here** — run
+   `railway up --detach`, then poll `railway deployment list` until SUCCESS.
+2. 🔴 **Backend registration alone does not ship a type.** The React picker builds its options
+   from a **hard-coded `EMAIL_TYPES` in `frontend/src/lib/types.ts`**. The API accepted the type
+   while the UI still could not offer it. **Five touch points, all required:**
+
+| File | What |
+|---|---|
+| `scripts/evals/candidate_communication_eval.py` | `SECTION_HEADINGS` + the tone blocks (shared source of truth) |
+| `webapp/reuse.py` | `EMAIL_TYPES` so the API accepts it |
+| `webapp/prompts/tone_rules.py` | tone hard-rules, type note, jargon exemption |
+| `webapp/prompts/draft_prompt.py` | the drafter's intent line |
+| `frontend/src/lib/types.ts` | **the UI dropdown** |
+
+**Verified in the shipped bundle, not just locally:** fetched
+`/assets/index-CuGjXBAl.js` off the live domain and confirmed the string
+`case_study_outcome` and the label "Case study outcome (below benchmark)" are present, with all
+five types accounted for.
+
+### Where shared rules belong
+`webapp/reuse.py` imports the validator and `SECTION_HEADINGS` **from the eval harness** so the
+drafting prompt and the validator can never disagree. **Tone rules therefore go in
+`candidate_communication_eval.py`, not in a send script** — that is what made them apply to the
+Railway app for free. Keep only batch-specific mechanics (anchors, corpora, send allowlisting)
+in `send_case_study_outcome_pilot.py`.
+
+### Section headings gained two capabilities
+A heading slot may be a **list of accepted alternatives** (the gap section is count-agnostic in
+most letters, count-specific where a letter names how many areas there were), and a type may
+declare **`optional`** slots that are allowed but never demanded. `check_opening_line` had to be
+taught to flatten list slots too, or it throws `TypeError` on `re.escape(list)`. The other four
+types are untouched: a plain string is still a plain required heading.
+
+### 🔒 `.railwayignore` added
+`railway up` uploads the whole build context regardless of what the Dockerfile copies, and there
+was none. Now excludes `output/` (per-candidate scoring detail, submission corpora),
+`Contracts/`, `.claude/config/` (OAuth tokens), `logs/`, `data/`, `.env*`, key files, plus
+`.venv/` and `node_modules/`. Confirmed first that no excluded path appears in a Dockerfile
+`COPY`.
+
+**Regression evidence:** all four pre-existing `system_prompt()` calls still build, "case study"
+is still blocked for `warm_bench`, `npm run build` compiles clean, and the CLI eval passes over
+all five letters that went live today.
