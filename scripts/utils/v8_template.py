@@ -61,6 +61,8 @@ EYEBROW = {
     "gwc_rejection":   "People &amp; Culture &nbsp;&bull;&nbsp; Application Update",
     "warm_hold":       "People &amp; Culture &nbsp;&bull;&nbsp; Interview Update",
     "case_study_update": "People &amp; Culture &nbsp;&bull;&nbsp; Interview Update",
+    # Skill 01 type #8 - submitted a case study, scored below the 70% benchmark.
+    "case_study_outcome": "People &amp; Culture &nbsp;&bull;&nbsp; Application Update",
     # INTERNAL audience (Skill 01 type #7) - staff, not candidates.
     "announcement":    "People &amp; Culture &nbsp;&bull;&nbsp; Internal Announcement",
 }

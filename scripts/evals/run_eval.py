@@ -78,7 +78,8 @@ def main():
         '--type',
         type=str,
         required=True,
-        choices=['cv_rejection', 'values_feedback', 'warm_bench', 'gwc_rejection'],
+        choices=['cv_rejection', 'values_feedback', 'warm_bench', 'gwc_rejection',
+                 'case_study_outcome'],
         help='Email type'
     )
     parser.add_argument(

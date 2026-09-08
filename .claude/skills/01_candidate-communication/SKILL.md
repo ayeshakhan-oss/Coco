@@ -85,6 +85,15 @@ All these SOPs fall under this skill:
    - Eyebrow `EYEBROW["announcement"]` reads "INTERNAL ANNOUNCEMENT" as a visible tripwire if it ever reaches an external inbox
    - Script: `scripts/send_internal_announcement_pilot.py` (keep `announcement` in the filename; never `warm_bench`/`gwc`/`values`/`rejection`)
 
+8. **Case Study Outcome, Below the Benchmark** — `case-study-outcome-email.md` (this folder) — ADDED 2026-09-08
+   - Candidate reached the case-study stage, **SUBMITTED**, and scored **below the 70% benchmark that gates final interviews**. This is a rejection, so types 1-4 rules apply in full: 800+ words, Rule 10 opening line, no future-promise, collective voice
+   - **Evidence comes from exactly two sources and nothing else:** the candidate's own submission, and the benchmark answer key written and QA'd BEFORE any submission was opened. Declared per candidate as `SUBMISSION_SOURCE` + `BENCHMARK_SOURCE` (must exist on disk) plus 3+ `ANCHORS` (exact strings from their submission, each asserted present in the rendered body). This is the mechanical guard against a generic letter
+   - **The 70% rule is STATED; the individual score is NOT.** No `NN/100`, no band label, no ranking, no pool comparison. The evaluation reports rank the pool; that framing is internal
+   - ✅ "case study" IS permitted candidate-facing language for this type, as for type #6
+   - 🔴 **No conversation references** unless a held interview is verified. `INTERVIEW_REFERENCE_ALLOWED = False` by default. A booked call is not a held interview
+   - Script: `scripts/send_case_study_outcome_pilot.py` (keep `case_study_outcome` in the filename). **The gate runs inside the script** and raises before SMTP, because the Layer 3 send hook is inert
+   - Also: `python scripts/evals/run_eval.py --file draft.html --type case_study_outcome`
+
 ---
 
 ## Universal Rules (All Communication)

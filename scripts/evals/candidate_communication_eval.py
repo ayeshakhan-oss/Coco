@@ -304,13 +304,25 @@ def check_opening_line(body: str, email_type: str) -> Tuple[bool, Optional[str]]
     return True, None
 
 
-def check_jargon(text: str) -> Tuple[bool, Optional[str]]:
+# Types where "case study" IS sanctioned candidate-facing language, because the case study
+# is the candidate's own deliverable and we invited them to produce it:
+#   case_study_update  - Skill 01 type #6 (Ayesha 2026-08-13)
+#   case_study_outcome - Skill 01 type #8 (Ayesha 2026-09-08)
+# The exemption is scoped to the phrase "case study" only. GWC, KCD, warm bench and values
+# scorecard stay blocked for every type.
+CASE_STUDY_PHRASE_ALLOWED = {"case_study_update", "case_study_outcome"}
+
+
+def check_jargon(text: str, email_type: str = "") -> Tuple[bool, Optional[str]]:
     """
     Check for internal jargon (GWC, KCD, warm bench, values scorecard, case study).
     Returns: (passed, detail_msg_if_found)
     """
     clean = strip_html(text)
-    for pattern in FORBIDDEN_JARGON:
+    patterns = list(FORBIDDEN_JARGON)
+    if email_type in CASE_STUDY_PHRASE_ALLOWED:
+        patterns = [p for p in patterns if p != r'\bcase study\b']
+    for pattern in patterns:
         matches = re.finditer(pattern, clean, re.IGNORECASE)
         for match in matches:
             start = max(0, match.start() - 30)
@@ -618,7 +630,7 @@ def evaluate_email(
         })
 
     # 6. Jargon
-    passed, detail = check_jargon(html_body)
+    passed, detail = check_jargon(html_body, email_type)
     if not passed:
         violations.append({
             'rule': 'No internal jargon (GWC/KCD/etc)',
