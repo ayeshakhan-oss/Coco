@@ -5,11 +5,20 @@ evaluate_email() -> if HARD-BLOCKs, feed them back and retry (<=3) -> return the
 best draft. The model never auto-sends; a human reviews and approves.
 
 Client selection (auto):
-  1. ANTHROPIC_API_KEY set  -> AnthropicDrafter (api key) — the production path.
-  2. else, non-production    -> AnthropicDrafter (local Claude Code OAuth token),
-                                best-effort so we can verify real output locally.
-  3. else                    -> StubDrafter (deterministic, offline).
-A live-call failure on (2) degrades to the stub for that request.
+  1. ANTHROPIC_API_KEY set     -> AnthropicDrafter (Console api key).
+  2. ANTHROPIC_AUTH_TOKEN set  -> AnthropicDrafter (OAuth bearer token). Works in
+                                  production; the token must be supplied by env
+                                  var because the container has no ~/.claude.
+  3. else, non-production      -> AnthropicDrafter (local Claude Code OAuth token
+                                  from ~/.claude/.credentials.json), best-effort.
+  4. else, non-production      -> StubDrafter (deterministic, offline).
+  5. else (production, none)   -> DraftingUnavailable.
+
+NEVER return StubDrafter in production. Its filler reads like a real letter (it
+even fabricates an interview conversation) and it pads by repeating a paragraph
+until the 800-word rule is satisfied, so it can PASS the eval and be mistaken for
+a genuine draft. In production a credential failure yields an EMPTY scaffold plus
+an explicit error instead, so the human is never handed an invented letter.
 """
 
 from __future__ import annotations
@@ -29,6 +38,31 @@ from . import rendering
 log = logging.getLogger("webapp.drafting")
 
 MAX_ATTEMPTS = 3
+
+
+class DraftingUnavailable(RuntimeError):
+    """No usable drafting credential, or the live call failed in production.
+
+    Raised instead of quietly substituting StubDrafter, whose output is
+    indistinguishable from a real letter to a reader.
+    """
+
+
+def _blank_content(email_type: str, first_name: str) -> dict:
+    """An EMPTY scaffold: correct shape, no invented prose.
+
+    Used in production when the model is unreachable. The editor still gets an
+    editable row (so a human can write the letter by hand) but nothing is
+    fabricated, and the eval fails on word count until real text is supplied.
+    """
+    required = SECTION_HEADINGS.get(email_type, {}).get("required", [])
+    return {
+        "title_line": rendering._DEFAULT_TITLE.get(email_type, "A note from us"),
+        "greeting": f"Dear {first_name},",
+        "opening": [],
+        "sections": [{"subhead": None, "paragraphs": []} for _ in required],
+        "ps": "",
+    }
 
 
 def _parse_json(text: str) -> dict:
@@ -187,19 +221,38 @@ def _load_oauth_token() -> Optional[str]:
 
 
 def get_drafter():
+    """Pick a drafter from the available credentials. See the module docstring.
+
+    Raises DraftingUnavailable in production when nothing is configured — never
+    falls back to StubDrafter there.
+    """
     s = get_settings()
+
     if s.anthropic_api_key:
+        log.info("Drafting via Anthropic Console API key.")
         return AnthropicDrafter(s.anthropic_model, api_key=s.anthropic_api_key)
+
+    # OAuth bearer token from the environment. Unlike the local-file path below
+    # this works in production, since the container has no ~/.claude directory.
+    if s.anthropic_auth_token:
+        log.info("Drafting via ANTHROPIC_AUTH_TOKEN (OAuth bearer).")
+        return AnthropicDrafter(s.anthropic_model, auth_token=s.anthropic_auth_token)
+
     if not s.is_production:
         token = _load_oauth_token()
         if token:
             log.warning(
-                "No ANTHROPIC_API_KEY; using the local Claude Code OAuth token for "
-                "drafting (DEV ONLY — a deployed service needs ANTHROPIC_API_KEY)."
+                "No ANTHROPIC_API_KEY/ANTHROPIC_AUTH_TOKEN; using the local Claude "
+                "Code OAuth token for drafting (DEV ONLY)."
             )
             return AnthropicDrafter(s.anthropic_model, auth_token=token)
-    log.warning("No Anthropic credential available — using StubDrafter.")
-    return StubDrafter()
+        log.warning("No Anthropic credential available — using StubDrafter (dev only).")
+        return StubDrafter()
+
+    raise DraftingUnavailable(
+        "No Anthropic credential configured. Set ANTHROPIC_API_KEY (Console key) "
+        "or ANTHROPIC_AUTH_TOKEN (OAuth token) on the service."
+    )
 
 
 def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app_id, email_type: str) -> dict:
@@ -218,13 +271,24 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
                 system=system, user=user, email_type=email_type,
                 first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
             )
-        except Exception as exc:  # live-call failure -> degrade to stub for this request
-            log.warning("Drafter %s failed (%s); falling back to StubDrafter.", drafter.name, exc)
-            drafter = StubDrafter()
-            content = drafter.draft(
-                system=system, user=user, email_type=email_type,
-                first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
-            )
+        except Exception as exc:
+            # In production, NEVER substitute invented prose for a failed call —
+            # the stub reads like a real letter and can pass the eval. Hand back an
+            # empty scaffold (still editable by hand) and record the reason.
+            if get_settings().is_production:
+                log.error("Drafter %s failed (%s); returning an empty scaffold.", drafter.name, exc)
+                content = _blank_content(email_type, first_name)
+                drafter_name = f"unavailable ({type(exc).__name__})"
+            else:
+                log.warning("Drafter %s failed (%s); falling back to StubDrafter.", drafter.name, exc)
+                drafter = StubDrafter()
+                drafter_name = drafter.name
+                content = drafter.draft(
+                    system=system, user=user, email_type=email_type,
+                    first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
+                )
+        else:
+            drafter_name = drafter.name
 
         # Deterministically satisfy the two mechanical hard-blocks (mandatory
         # opening line + no em dashes) so the user never has to fix them by hand.
@@ -244,8 +308,12 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             "full_html": full_html,
             "eval": result,
             "attempts": attempt + 1,
-            "drafter_used": drafter.name,
+            "drafter_used": drafter_name,
         }
+        # An empty scaffold can never satisfy the 800-word rule; retrying would
+        # just burn two more failing calls. Stop and let the human write it.
+        if drafter_name.startswith("unavailable"):
+            break
         hard = [v for v in result["violations"] if v["severity"] == "HARD_BLOCK"]
         if not hard:
             break

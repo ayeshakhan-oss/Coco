@@ -31,7 +31,13 @@ class Settings(BaseSettings):
     database_url: Optional[str] = None
 
     # --- Anthropic (Claude API) — used by the AI drafting service (Phase 5) ---
+    # Exactly one credential is needed. anthropic_api_key is a Console key
+    # (sk-ant-api03-…, billed to an org's API balance); anthropic_auth_token is an
+    # OAuth token (sk-ant-oat01-…, e.g. from `claude setup-token`) sent as
+    # Authorization: Bearer with the oauth beta header. The API key wins if both
+    # are set. See services/drafting.get_drafter().
     anthropic_api_key: Optional[str] = None
+    anthropic_auth_token: Optional[str] = None
     anthropic_model: str = "claude-opus-4-8"
 
     # --- Google Workspace SSO (Phase 3) ---

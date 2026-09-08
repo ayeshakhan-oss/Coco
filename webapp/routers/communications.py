@@ -58,13 +58,18 @@ def generate(
     first_name = (app_row.get("first_name") or "there").strip()
     role = (body.role_title or app_row.get("job_title") or "the role").strip()
 
-    drafted = drafting.generate_draft(
-        scorecard=scorecard,
-        first_name=first_name,
-        role=role,
-        app_id=body.application_id,
-        email_type=body.email_type,
-    )
+    try:
+        drafted = drafting.generate_draft(
+            scorecard=scorecard,
+            first_name=first_name,
+            role=role,
+            app_id=body.application_id,
+            email_type=body.email_type,
+        )
+    except drafting.DraftingUnavailable as exc:
+        # No credential at all. Say so plainly rather than persisting a draft the
+        # model never wrote — a silent placeholder is worse than a visible error.
+        raise HTTPException(503, f"Draft generation unavailable: {exc}") from exc
 
     comm = comm_svc.create_draft(
         db,
