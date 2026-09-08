@@ -93,9 +93,56 @@ def url_flag(name, url):
     return "URL-UNVERIFIED-MISMATCH" if t and not any(x in flat for x in t) else ""
 
 
-def svc():
-    creds = service_account.Credentials.from_service_account_file(
-        KEY, scopes=["https://www.googleapis.com/auth/spreadsheets"])
+FUNC_STRONG = re.compile(
+    r"fundrais|partnership|resource mobilis|resource mobiliz|grant|donor|proposal|"
+    r"philanthrop|bid\b|business development|resource development|sponsorship", re.I)
+FUNC_ADJACENT = re.compile(r"csr|sustainab|communicat|external relation|programme|program|policy", re.I)
+ISB = re.compile(r"islamabad|rawalpindi", re.I)
+
+
+def tier_of(r):
+    """Rank on what we can actually evidence, not on impressions.
+
+    Tier 1 needs BOTH a real tenure figure inside the band AND a core fundraising function.
+    Tier 2 is a core function where tenure is only inferred from grade - the common case,
+    because LinkedIn returns 999 so no profile body was ever opened in this run.
+    """
+    yrs = (r.get("yrs") or "")
+    blob = " ".join([r.get("title", ""), r.get("why", ""), r.get("org", "")])
+    nums = re.findall(r"\d+", yrs)
+    band_proven = bool(nums) and int(nums[0]) <= 4 and "UNVERIFIED" not in yrs.upper()
+    strong = bool(FUNC_STRONG.search(blob))
+    adjacent = bool(FUNC_ADJACENT.search(blob))
+    if band_proven and strong:
+        return "1"
+    if strong or (band_proven and adjacent):
+        return "2"
+    return "3"
+
+
+OAUTH = r"c:\Agent Coco\.claude\config\token_sheets_broad.json"
+
+
+def svc(write=False):
+    """Read via the service account; WRITE via Ayesha's own OAuth token.
+
+    The FM sheet is shared with the service account as Viewer only, so a write returns
+    403 "The caller does not have permission". token_sheets_broad.json is Ayesha's own
+    credential (drive + spreadsheets scopes), which is what has to own edits to her sheet.
+    """
+    if write:
+        from google.oauth2.credentials import Credentials
+        from google.auth.transport.requests import Request
+        creds = Credentials.from_authorized_user_file(
+            OAUTH, ["https://www.googleapis.com/auth/drive",
+                    "https://www.googleapis.com/auth/spreadsheets"])
+        if not creds.valid:
+            creds.refresh(Request())
+            with open(OAUTH, "w", encoding="utf-8") as f:
+                f.write(creds.to_json())
+    else:
+        creds = service_account.Credentials.from_service_account_file(
+            KEY, scopes=["https://www.googleapis.com/auth/spreadsheets"])
     return build("sheets", "v4", credentials=creds, cache_discovery=False).spreadsheets()
 
 
@@ -207,10 +254,13 @@ def main():
     for reason in sorted(rejected):
         print("  REJECTED %-58s %d  %s" % (reason[:58], len(rejected[reason]),
                                            rejected[reason][:4]))
-    print("\n>>> PASSING ALL THREE GATES: %d" % len(keep))
+    # Tier first, then Islamabad-first inside each tier, which is the brief's own priority.
+    keep.sort(key=lambda r: (tier_of(r), 0 if ISB.search(r.get("city", "")) else 1, r["name"]))
+    print("\n>>> PASSING ALL THREE GATES: %d   tiers=%s"
+          % (len(keep), dict(Counter(tier_of(r) for r in keep))))
     for r in keep:
-        print("     %-28s %-34s %-14s %s" % (r["name"][:28], r.get("org", "")[:34],
-                                             r.get("city", "")[:14], r.get("url", "")[:52]))
+        print("  T%s %-26s %-32s %-13s %s" % (tier_of(r), r["name"][:26], r.get("org", "")[:32],
+                                              r.get("city", "")[:13], r.get("url", "")[:50]))
 
     if args.dry_run:
         print("\nDRY RUN - no writes performed.")
@@ -238,7 +288,7 @@ def main():
         append.append([
             start_rank + i, r["name"], r.get("org", ""), r.get("title", ""), r.get("city", ""),
             yrs, "", r.get("url", ""), "", "", r.get("conf", ""), r.get("why", ""),
-            band, r.get("flag", "") or "OK", "TBD", "CONFIRMED", r["_proof"],
+            band, r.get("flag", "") or "OK", tier_of(r), "CONFIRMED", r["_proof"],
             RUN_TAG + " / " + r["_cluster"], "Identified",
         ])
     if append:

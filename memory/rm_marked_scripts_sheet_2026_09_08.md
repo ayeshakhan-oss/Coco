@@ -168,3 +168,19 @@ copy lacks. Then confirm the marking's own claims appear in that text.
 
 **Renaming a file in Drive keeps its ID**, so hyperlinks keep working, but any sheet using the
 old filename as its link LABEL goes stale. Patch those cells in the same pass.
+
+
+### Index sheet: folder links + a stale-link catch (2026-09-08)
+Added on Ayesha's instruction: the documentation folder's **own link** on Round Documents, and a
+**Folder column** on Submissions so each candidate's whole subfolder opens in one click (25 links).
+
+🔴 **Ayesha caught a stale link I had put in the index.** The row labelled "Benchmark answer key,
+PDF" pointed at `1D_CTT66MCw8rx4ilja_50s2Im4mkaWGZ`, whose real filename is
+**"RM Case Study - Benchmark Answer Key (Rev 2, DRAFT for QA).pdf"** - a superseded draft. It now
+points at `1ouFEBtT_OQrm-TolbnxAKZBzTOnD5piD`, the current export and the exact PDF the 8
+candidates received. The builder carries a comment so the draft ID cannot creep back.
+
+**Standing rule: a link is not verified until the file NAME behind it has been read.** A Drive ID
+copied from memory or an older note can point at a draft, and the label in the sheet will still
+look right. Resolve every `fileId` to its name and print it. All 8 Round Documents links are now
+resolved and confirmed.

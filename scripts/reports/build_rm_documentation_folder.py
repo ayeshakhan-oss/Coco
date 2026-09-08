@@ -45,8 +45,12 @@ ROUND_DOCS = [
     ("Benchmark answer key (the standard every submission was marked against)",
      "Google Doc",
      "https://docs.google.com/document/d/1pCwMsjq6RY6jhTZubTdif6np5jsboocBVk-2pZIE9_g/edit"),
-    ("Benchmark answer key", "PDF",
-     "https://drive.google.com/file/d/1D_CTT66MCw8rx4ilja_50s2Im4mkaWGZ/view"),
+    # 🔴 Do NOT link 1D_CTT66MCw8rx4ilja_50s2Im4mkaWGZ here: that file is
+    # "Benchmark Answer Key (Rev 2, DRAFT for QA).pdf", a superseded draft. Ayesha caught
+    # it in the index 2026-09-08. Below is the current export, the exact PDF the 8
+    # candidates received as an attachment.
+    ("Benchmark answer key, PDF (the exact file attached to the candidate emails)", "PDF",
+     "https://drive.google.com/file/d/1ouFEBtT_OQrm-TolbnxAKZBzTOnD5piD/view"),
     ("Case study evaluation report (all 25 scored, method and findings)", "Google Doc",
      "https://docs.google.com/document/d/1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc/edit"),
     ("Marked scripts, answer by answer, for the 8 below the 70% bar", "Google Sheet",
@@ -57,6 +61,8 @@ ROUND_DOCS = [
      "https://docs.google.com/spreadsheets/d/1xtQxfblMXmA5IpnvnABkK5bvmhPMK5_Q6Z1wDiI59A8/edit"),
     ("Case studies, ANONYMISED (this is the set to give an evaluator)", "Drive folder",
      "https://drive.google.com/drive/folders/1itkyxaIabK54IdKw7fJU5dMbXznQjlom"),
+    ("All 25 case study submissions, NAMED originals (this folder)", "Drive folder",
+     "https://drive.google.com/drive/folders/1hIhLcu9TSLVptef9STFKZQ6CQ6lMebVn"),
 ]
 
 NAVY = {"red": 0.102, "green": 0.169, "blue": 0.298}
@@ -136,7 +142,7 @@ def main():
     root = find_or_make(drive, FOLDER_NAME)
     print(f"Folder: https://drive.google.com/drive/folders/{root}\n")
 
-    uploaded = {}
+    uploaded, subfolder = {}, {}
     for code in sorted(pulled, key=lambda c: pulled[c]["name"]):
         nm = pulled[code]["name"]
         d = os.path.join(ORIG, code)
@@ -163,6 +169,7 @@ def main():
                     fields="id").execute()["id"]
             rows.append((fn, f"https://drive.google.com/file/d/{fid}/view"))
         uploaded[code] = rows
+        subfolder[code] = f"https://drive.google.com/drive/folders/{sub}"
         print(f"  {code}  {nm[:24]:24} {len(rows)} file(s)")
 
     # ---------- Round Documents tab ----------
@@ -183,7 +190,7 @@ def main():
 
     # ---------- Submissions tab ----------
     maxf = max((len(v) for v in uploaded.values()), default=1)
-    hdr = ["Name", "Code", "Score /100", "Outcome"] + \
+    hdr = ["Name", "Code", "Score /100", "Outcome", "Folder"] + \
           [f"File {i + 1}" for i in range(maxf)]
     d2 = [R([txt(h, bold=True, colour=WHITE, bg=NAVY,
                  halign="CENTER" if h in ("Code", "Score /100") else None) for h in hdr])]
@@ -194,7 +201,9 @@ def main():
         cells = [txt(nm, bold=True), txt(code, halign="CENTER"),
                  num(tot, bold=True, bg=GREENBG if cleared else REDBG),
                  txt("Met the 70% benchmark" if cleared else "Below the 70% benchmark",
-                     bg=GREENBG if cleared else REDBG)]
+                     bg=GREENBG if cleared else REDBG),
+                 link(subfolder[code], "Open folder") if subfolder.get(code)
+                 else txt("")]
         for fn, url in uploaded[code]:
             cells.append(link(url, fn))
         cells += [txt("")] * (maxf - len(uploaded[code]))
@@ -220,14 +229,14 @@ def main():
             "sheetId": ids["Round Documents"], "dimension": "COLUMNS",
             "startIndex": col, "endIndex": col + 1},
             "properties": {"pixelSize": w}, "fields": "pixelSize"}})
-    for col, w in [(0, 190), (1, 70), (2, 85), (3, 190)]:
+    for col, w in [(0, 190), (1, 70), (2, 85), (3, 190), (4, 110)]:
         reqs.append({"updateDimensionProperties": {"range": {
             "sheetId": ids["Submissions"], "dimension": "COLUMNS",
             "startIndex": col, "endIndex": col + 1},
             "properties": {"pixelSize": w}, "fields": "pixelSize"}})
     reqs.append({"updateDimensionProperties": {"range": {
         "sheetId": ids["Submissions"], "dimension": "COLUMNS",
-        "startIndex": 4, "endIndex": 4 + maxf},
+        "startIndex": 5, "endIndex": 5 + maxf},
         "properties": {"pixelSize": 300}, "fields": "pixelSize"}})
     for rr in (0, 1):
         reqs.append({"mergeCells": {"range": {
