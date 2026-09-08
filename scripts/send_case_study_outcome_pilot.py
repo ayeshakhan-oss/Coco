@@ -37,7 +37,8 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.utils.feedback_widget import feedback_widget  # noqa: E402
-from scripts.utils.safe_send import safe_sendmail  # noqa: E402
+from scripts.utils.safe_send import (allow_candidate_addresses,  # noqa: E402
+                                     safe_sendmail)
 from scripts.utils.v8_template import (EYEBROW, FOOTER, H, P, PS, attach_logo,  # noqa: E402
                                        wrap)
 
@@ -47,6 +48,14 @@ load_dotenv(os.path.join(ROOT, ".env"))
 ROLE = "Senior Manager Growth"
 SUBJECT_CORE = "An Update on Your Case Study for Senior Manager Growth"
 PILOT_TO = "ayesha.khan@taleemabad.com"
+
+# LIVE CC, given by Ayesha 2026-09-08. Same list as the Case Study Update type (#6).
+LIVE_CC = [
+    "waqas.tanveer@taleemabad.com",
+    "ali.sipra@taleemabad.com",
+    "hiring@taleemabad.com",
+    "ayesha.khan@taleemabad.com",
+]
 
 BENCHMARK_SOURCE = os.path.join(
     ROOT, "docs", "case_studies", "benchmarks", "smg_execution_sprint_benchmark.md")
@@ -772,7 +781,8 @@ def main():
     ap.add_argument("--live", action="store_true", help="send to candidates, needs approval")
     ap.add_argument("--check", action="store_true", help="run the gate only, send nothing")
     ap.add_argument("--only", help="one candidate key")
-    ap.add_argument("--cc", default="", help="comma-separated CC list, LIVE only")
+    ap.add_argument("--cc", default=",".join(LIVE_CC),
+                    help="comma-separated CC list, LIVE only")
     args = ap.parse_args()
 
     cands = [c for c in CANDIDATES if not args.only or c["key"] == args.only]
@@ -802,6 +812,10 @@ def main():
         s.login(sender, password)
         for c, subject, html in built:
             to = c["email"] if args.live else PILOT_TO
+            if args.live:
+                # the bouncer blocks external domains unless explicitly allowed;
+                # allow exactly this candidate, nobody else.
+                allow_candidate_addresses([to])
             msg = MIMEMultipart("related")
             msg["Subject"] = subject
             msg["From"] = f"Taleemabad People and Culture <{sender}>"

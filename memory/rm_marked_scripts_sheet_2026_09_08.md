@@ -97,5 +97,21 @@ deliberately NOT link-shared.
 twenty minute slot stands with no link, because internal colleagues share a calendar system.
 No link was invented.
 
-**Still open:** live send needs Ayesha's approval and a decision on CC; the tracker's Scores tab
-still shows the superseded first pass.
+## SENT LIVE 2026-09-08 — all 8, verified
+
+CC (Ayesha, verbatim): `asma.zaheer@niete.edu.pk`, `bilal@niete.edu.pk`,
+`ayesha.khan@taleemabad.com`, `hiring@taleemabad.com`, `ali.sipra@taleemabad.com`.
+Note `bilal@niete.edu.pk` was **given in full**, not resolved from the repo — a bare "bilal"
+grep once returned 11 addresses including a live candidate (Rule 20).
+
+**Pre-send scan proved 0 prior live sends** to all 8 addresses; **post-send scan proved exactly
+one clean-subject copy each**, 5 CC, 2 attachments, own .xlsx only, no other candidate's file
+attached to anyone. Run both halves of that scan on every batch (Rule 22) — a send loop's own
+console output cannot detect a duplicate or a mis-attached file.
+
+**Live-send asserts added to the script** and worth copying: recipient must end `@niete.edu.pk`,
+no `[PILOT` in the subject, and the attachment filename must contain the recipient's own name.
+That last one is the cheap guard against sending someone else's marked script.
+
+🔴 **Still open:** the tracker's Scores tab still shows the superseded first pass. The 8 have now
+been told they were below 70 while that tab shows all 25 above it.

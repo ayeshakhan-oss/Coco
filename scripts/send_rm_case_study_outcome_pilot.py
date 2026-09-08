@@ -77,6 +77,17 @@ MIN_WORDS = 250
 # directly. No link is invented, and none is needed.
 BOOKING_URL = ""
 
+# LIVE CC list, given verbatim by Ayesha 2026-09-08. Not inherited from any other role's
+# script, and no bare first name was resolved from the repo: every address here was either
+# supplied in full or is a verified Taleemabad address already seen in this thread.
+LIVE_CC = [
+    "asma.zaheer@niete.edu.pk",
+    "bilal@niete.edu.pk",
+    "ayesha.khan@taleemabad.com",
+    "hiring@taleemabad.com",
+    "ali.sipra@taleemabad.com",
+]
+
 KEEP = os.path.join(ROOT, "output", "rm_marking")
 BENCHMARK_SOURCE = os.path.join(
     ROOT, "docs", "case_studies", "benchmarks", "rm_regional_manager_benchmark.md")
@@ -564,10 +575,17 @@ def main():
     s.login("ayesha.khan@taleemabad.com", pw)
     for c, subject, html, _w in built:
         to = [c["email"]] if a.live else [PILOT_TO]
+        cc = LIVE_CC if a.live else []
+        if a.live:
+            assert c["email"] and c["email"].endswith("@niete.edu.pk"),                 f"bad recipient for {c['full']}: {c['email']!r}"
+            assert "[PILOT" not in subject, "PILOT prefix on a live send"
+            assert c["full"] in os.path.basename(c["xlsx"]),                 f"attachment does not belong to {c['full']}: {c['xlsx']}"
         msg = MIMEMultipart("mixed")
         msg["Subject"] = subject
         msg["From"] = "ayesha.khan@taleemabad.com"
         msg["To"] = ", ".join(to)
+        if cc:
+            msg["Cc"] = ", ".join(cc)
         alt = MIMEMultipart("alternative")
         alt.attach(MIMEText("HTML email. View in an HTML-capable client.", "plain"))
         alt.attach(MIMEText(html, "html"))
@@ -581,10 +599,11 @@ def main():
                 att = MIMEApplication(fh.read(), _subtype=sub)
             att.add_header("Content-Disposition", "attachment", filename=label)
             msg.attach(att)
-        safe_sendmail(s, "ayesha.khan@taleemabad.com", to, msg.as_string(),
+        safe_sendmail(s, "ayesha.khan@taleemabad.com", to + cc, msg.as_string(),
                       context=f"rm_case_study_outcome_{'live' if a.live else 'pilot'}_"
                               f"{c['code']}")
-        print(f"  sent {'LIVE' if a.live else 'PILOT'} {c['full']:20} -> {to}")
+        print(f"  sent {'LIVE' if a.live else 'PILOT'} {c['full']:20} -> {to}"
+              + (f"  cc {len(cc)}" if cc else ""))
     s.quit()
     return 0
 

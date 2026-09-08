@@ -107,11 +107,23 @@ Pilot 2026-09-08, five letters to ayesha.khan@ alone, no CC, verified by per-rec
 scan **before** drafting (0 prior outcome emails to any of the five) and **after** (exactly one
 each, PILOT prefix on all five, 0 sent to a candidate address). Word counts 955 to 1078.
 
-**Not yet live.** The close was written under a stated assumption Ayesha has not yet confirmed:
-this process concluding for them, no future promise, and **no invitation to reapply to Job 42,
-which is still an open requisition**. The usual "if a closer-fit role opens we would welcome a
-fresh application" line reads oddly to someone who just applied for a role that is still open,
-so each letter closes on disposition scoped to a different kind of seat.
+### ✅ LIVE 2026-09-08, all five sent
+Ayesha: "go live. in cc keep waqas, ali.sipra, hiring and ayesha.khan."
+
+**LIVE CC (now `LIVE_CC` in the script, and the `--cc` default):** waqas.tanveer@ ·
+ali.sipra@ · hiring@ · ayesha.khan@ (identical to the type #6 default list).
+
+🔑 **`safe_sendmail()` BLOCKS external domains** unless `allow_candidate_addresses([...])` is
+called first. Candidates are gmail/outlook/live.com, so a live run fails without it. The script
+now allowlists **exactly the one candidate being written to**, immediately before that send,
+rather than allowlisting the whole batch up front.
+
+Verified after: **1 copy each, CC exact on all 5, no PILOT prefix leaked, 0 duplicates**
+(09:01:22 to 09:01:32 PKT-7). Pre-send scan had confirmed 0 prior outcome emails to any of them.
+
+The close went out as written under the assumption Ayesha did not overrule: this process
+concluding, no future promise, and no invitation to reapply to Job 42 while it is still open.
+Each letter closes on disposition scoped to the kind of work the candidate showed strength in.
 
 Related: [[project_smg_case_study_evaluation_2026_08_17]] ·
 [[project_smg_case_study_round2_2026_08_24]] ·
