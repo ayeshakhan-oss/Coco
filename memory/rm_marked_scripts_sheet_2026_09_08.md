@@ -209,3 +209,31 @@ documentation folder:
 everywhere the same day - sheet tabs, Docs, PDFs, index links - or relabel them SUPERSEDED in
 place. A correct-looking title is not evidence of correct content: open the file and grep for a
 figure that only the superseded version contains** (here, `88.3`).
+
+
+### 🔴 The real fix: rewrite the artefact, do not re-point the link (2026-09-08)
+Ayesha had to tell me the evaluation report was wrong **three times**. Twice I moved a link
+instead of fixing the thing the link pointed at. That is the lesson.
+
+Doc `1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc` was titled "RM Case Study - Evaluation Report
+(all 25)" and opened *"Mean 88.3 | Range 70-100"*, *"the bar no longer separates anyone"*, with
+Javeria 91.5 / Khadija 86 / Sana 83 / Hafsa 80 / Salman 74.5 / Rida 73 / Areej 70. First-pass
+numbers. So was `docs/case_studies/rm_evaluation_report_2026_09_02.md`, the markdown it was
+generated from.
+
+**Rewritten IN PLACE** by `scripts/reports/rewrite_rm_evaluation_report_doc.py` from
+`strict_scores.json`: mean 75.0, range 56-100, 8 of 25 below the bar, a section explaining why
+this version supersedes the first, the full results table with Met/Below, and per-candidate
+detail with per-question marks, strengths, gaps and the caps that fired. Drive
+`files().update()` with `mimeType: application/vnd.google-apps.document` replaces a Doc's
+content **while keeping its ID**, so every link already shared now resolves to the truth.
+The repo markdown is stamped SUPERSEDED pointing at the Doc.
+
+**Why in place matters:** the URL was already circulating. A new file would have left the wrong
+numbers live at a link people hold. The index no longer needs a SUPERSEDED warning row, so it
+was deleted.
+
+**Rule: when a re-mark supersedes a pass, rewrite every artefact that carries the old numbers
+the same day.** Re-pointing an index is not a fix, it just moves which wrong thing is one click
+away. And verify by reading the content back and asserting a figure only the superseded version
+contains is now ABSENT (here `Mean 88.3`), not just that the new one is present.

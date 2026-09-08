@@ -51,17 +51,17 @@ ROUND_DOCS = [
     # candidates received as an attachment.
     ("Benchmark answer key, PDF (the exact file attached to the candidate emails)", "PDF",
      "https://drive.google.com/file/d/1ouFEBtT_OQrm-TolbnxAKZBzTOnD5piD/view"),
-    # 🔴 Doc 1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc is the SUPERSEDED FIRST PASS
-    # ("Mean 88.3 | Range 70-100", nobody below 70). Ayesha caught it in the index 2026-09-08.
-    # The live result is the strict re-mark, which exists as the two PDFs emailed on 2 Sep.
-    ("Case study evaluation report, all 25 scored (the strict re-mark: mean 75, 8 below the "
-     "70% bar)", "PDF",
-     "https://drive.google.com/file/d/1yIp7QfmwON9Y88GreQICYR-Qyl12WMHx/view"),
+    # Doc 1suHQOhK... was rewritten IN PLACE on 2026-09-08 with the strict re-mark, because
+    # it previously carried the first pass (mean 88.3, nobody below 70) at a URL people already
+    # held. Rebuild it with scripts/reports/rewrite_rm_evaluation_report_doc.py, never by
+    # creating a new file.
+    ("Case study evaluation report, all 25 scored (strict re-mark: mean 75, 8 below the "
+     "70% bar)", "Google Doc",
+     "https://docs.google.com/document/d/1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc/edit"),
     ("Answer-by-answer analysis for the 8 below the 70% bar", "PDF",
      "https://drive.google.com/file/d/1zmxfnpks8PypT_XropE7NrcxYblK-Gh9/view"),
-    ("SUPERSEDED first-pass report (mean 88.3, nobody below 70). Kept for the record only. "
-     "Do not use it to judge this round.", "Google Doc",
-     "https://docs.google.com/document/d/1suHQOhKzAjjBe26uPjSpHkl0EoSVBGqkhtReqjs8QMc/edit"),
+    ("Candidate detail, all 25 with per-question marks (strict re-mark)", "PDF",
+     "https://drive.google.com/file/d/1yIp7QfmwON9Y88GreQICYR-Qyl12WMHx/view"),
     ("Marked scripts, answer by answer, for the 8 below the 70% bar", "Google Sheet",
      "https://docs.google.com/spreadsheets/d/1tSl69wejsDdOBHppfqQXOpCC1HEdhCXNTBltcaNBt8k/edit"),
     ("Individual feedback workbooks sent to the 8 below the bar", "Drive folder",
