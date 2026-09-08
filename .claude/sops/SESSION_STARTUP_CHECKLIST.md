@@ -128,7 +128,7 @@ type: feedback
 - [ ] Confirmed: zero internal jargon rule active
 - [ ] Confirmed: "we" voice, no "I"
 
-**Reference:** skills/candidate-rejections.md
+**Reference:** skills/01_candidate-rejections.md
 
 ### If Task = Attendance Report
 - [ ] Located attendance template (attendance_DATE.py)
@@ -148,7 +148,7 @@ type: feedback
 - [ ] Confirmed: specific evidence required (no generics)
 - [ ] Confirmed: "we" voice, no "I"
 
-**Reference:** skills/values-feedback-emails.md
+**Reference:** skills/02_values-feedback-emails.md
 
 ### If Task = Case Study Evaluation
 - [ ] Located 8-step SOP (skills/case-study-evaluation.md)

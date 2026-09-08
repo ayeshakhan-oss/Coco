@@ -383,7 +383,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 ## Reference Implementations
 
-**Warm bench pattern + tone:** Similar structure to values feedback email but future-focused closing. See skills/values-feedback-emails.md for v8 design details.
+**Warm bench pattern + tone:** Similar structure to values feedback email but future-focused closing. See skills/02_values-feedback-emails.md for v8 design details.
 
 **GWC reference:** Markaz scorecard values + GWC assessment should be cited explicitly. See skills/values-scorecard-scoring.md for GWC structure.
 

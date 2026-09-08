@@ -185,7 +185,7 @@ Do not proceed until information is verified.
 5. **Consistency:** Across all date-specific reports, same structure
 
 ### Values Feedback Emails
-1. **Check:** Does SOP exist? (Yes — skills/values-feedback-emails.md)
+1. **Check:** Does SOP exist? (Yes — skills/02_values-feedback-emails.md)
 2. **Reuse:** 3-section structure, v8 design, tone from prior approved emails
 3. **Source:** Interview transcript (verified, not inferred)
 4. **Self-QA:** All 8 checklist items
@@ -230,7 +230,7 @@ Do not proceed until information is verified.
 
 **Correct approach (Discipline):**
 1. Check MEMORY.md → search "values feedback"
-2. Check skills/ directory for values-feedback-emails.md
+2. Check skills/ directory for 02_values-feedback-emails.md
 3. Check CLAUDE.md → Quick Reference section
 4. Search scripts/ for reference implementations
 5. Only if truly not found: ask "where should this be?"

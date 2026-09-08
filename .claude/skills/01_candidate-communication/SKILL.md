@@ -1,6 +1,6 @@
 ---
 name: candidate-communication
-description: Handle all candidate rejection, feedback and status-update emails, and internal staff announcements. Eight types. Decision emails: CV/application rejections, values interview feedback, warm bench feedback, GWC rejections, and case study outcomes where a submitted case study did not meet the 70% benchmark that gates final interviews (800+ words, evidence from the candidate's own submission plus the benchmark answer key, the rule stated but never the score). Pending-decision notes: warm-hold decision-pending updates and case study debrief-pending updates (120-250 words, dated promise required, exempt from the "not a yes for now" opening). Plus internal announcements to Taleemabad staff (150-400 words, candidate rules disapplied). Use for any case study rejection, below-benchmark outcome, interview feedback, keep-warm note or staff broadcast. All types use the v8 HTML layout, the collective "we" voice, no em dashes, and require a pilot to Ayesha before going live.
+description: Handle all candidate rejection, feedback and status-update emails, plus internal staff announcements. Eight types. Decision emails cover CV and application-stage rejections, values interview feedback, warm bench feedback, GWC rejections, and case study outcomes where a submitted case study did not meet the 70% benchmark that gates final interviews (800+ words, evidence drawn from the candidate's own submission plus the benchmark answer key, the benchmark rule stated but never the individual score). Pending-decision notes cover warm-hold decision-pending updates and case study debrief-pending updates (120-250 words, dated promise required). Internal announcements go to Taleemabad staff (150-400 words, candidate rules disapplied). Use for any case study rejection, below-benchmark outcome, interview feedback, keep-warm note or staff broadcast. All types use the v8 HTML layout, the collective we voice, no em dashes, and a pilot to Ayesha before going live.
 compatibility: Requires memory/feedback_email_rules.md, locked templates, RULES.md
 ---
 
@@ -73,18 +73,18 @@ All these SOPs fall under this skill:
    - Interview transcript analysis
    - No "GWC" or "KCD" terminology
 
-5. **Warm Hold — Decision-Pending Updates** — `warm-hold-decision-pending-email.md` (this folder) — ADDED 2026-08-12
+5. **Warm Hold — Decision-Pending Updates** — `05_warm-hold-decision-pending-email.md` (this folder) — ADDED 2026-08-12
    - Candidate interviewed, decision NOT yet made (still collecting panel notes); we commit to an update BY A STATED DATE (e.g. "next week")
    - SHORT: 120-250 words. NOT a feedback email — no verdict, no evaluation, no direction-hints
    - 🔓 TYPE-SPECIFIC EXEMPTIONS (Ayesha 2026-08-12): NO "This is not a yes for now." opening (no decision exists); the dated "we will reach out by [date]" promise is REQUIRED here (the one type where the future-promise ban is inverted); 800-word minimum does not apply
    - Only commit to dates we will honour; if no reliable date exists, use the Keep-in-Touch Note (Skill 06 #5) instead
    - Everything else unchanged: "we" voice, no em dashes, no jargon, no interviewer names, v8 layout, pilot to Ayesha first
 
-6. **Case Study Update — Debrief-Pending** — `case-study-update-email.md` (this folder) — ADDED 2026-08-13
+6. **Case Study Update — Debrief-Pending** — `06_case-study-update-email.md` (this folder) — ADDED 2026-08-13
    - Case study SUBMITTED, debrief decision pending. 120-250 words, dated promise REQUIRED, same exemptions as type 5
    - "case study" is permitted candidate-facing language for THIS type only
 
-7. **Internal Announcement** — `internal-announcement-email.md` (this folder) — ADDED 2026-08-20
+7. **Internal Announcement** — `07_internal-announcement-email.md` (this folder) — ADDED 2026-08-20
    - 🔴 **AUDIENCE IS TALEEMABAD STAFF, NOT CANDIDATES.** Internal broadcast: internal job openings, new joiners, new programmes, org changes
    - SHORT: 150-400 words. Content varies per send (written or approved by Ayesha); the LAYOUT is what is locked
    - 🔓 DISAPPLIED (internal audience): 800-word minimum · "This is not a yes for now." opening · future-promise ban · no-names ban · candidate-jargon ban · feedback widget
@@ -92,7 +92,7 @@ All these SOPs fall under this skill:
    - Eyebrow `EYEBROW["announcement"]` reads "INTERNAL ANNOUNCEMENT" as a visible tripwire if it ever reaches an external inbox
    - Script: `scripts/send_internal_announcement_pilot.py` (keep `announcement` in the filename; never `warm_bench`/`gwc`/`values`/`rejection`)
 
-8. **Case Study Outcome, Below the Benchmark** — `case-study-outcome-email.md` (this folder) — ADDED 2026-09-08
+8. **Case Study Outcome, Below the Benchmark** — `08_case-study-outcome-email.md` (this folder) — ADDED 2026-09-08
    - Candidate reached the case-study stage, **SUBMITTED**, and scored **below the 70% benchmark that gates final interviews**. This is a rejection, so types 1-4 rules apply in full: 800+ words, Rule 10 opening line, no future-promise, collective voice
    - **Evidence comes from exactly two sources and nothing else:** the candidate's own submission, and the benchmark answer key written and QA'd BEFORE any submission was opened. Declared per candidate as `SUBMISSION_SOURCE` + `BENCHMARK_SOURCE` (must exist on disk) plus 3+ `ANCHORS` (exact strings from their submission, each asserted present in the rendered body). This is the mechanical guard against a generic letter
    - **The 70% rule is STATED; the individual score is NOT.** No `NN/100`, no band label, no ranking, no pool comparison. The evaluation reports rank the pool; that framing is internal

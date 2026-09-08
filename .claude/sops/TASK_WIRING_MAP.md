@@ -20,7 +20,7 @@ When you ask me to do a task, I automatically follow this wiring. No asking you 
 2. ✅ **Check .claude/sops/00_General_SOPs/general_non_negotiable_sops.md** — Rule 1.11: Check Markaz first
 3. ✅ **Open Markaz** → Search Muhammad Junaid → Job title → Current status → Prior feedback
 4. ✅ **Check .claude/sops/CLAUDE.md** → Task router → "Reject candidate (values)" row
-5. ✅ **Check .claude/skills/01_candidate-communication/values-feedback-emails.md** → Read "When to Use", "Universal Rules", "Detailed Procedure", "Execution Discipline"
+5. ✅ **Check .claude/skills/01_candidate-communication/02_values-feedback-emails.md** → Read "When to Use", "Universal Rules", "Detailed Procedure", "Execution Discipline"
 6. ✅ **Check memory/email_template_format_FINAL.md** → Logo, blue header, Georgia text, NO asterisks
 7. ✅ **Check memory/skill_values_feedback_emails_sop.md** → 800-1100 words mandatory, v8 design, pilot to Ayesha+Jawad
 8. ✅ **Check memory/warm_bench_session_may5_2026_complete_learnings.md** → Subject line rules, section headings, language rules
@@ -36,10 +36,10 @@ When you ask me to do a task, I automatically follow this wiring. No asking you 
 
 | Task | Step 1: Rules | Step 2: SOP/Skill | Step 3: Template | Step 4: Memory | Step 5: Execute |
 |------|---------------|------------------|------------------|----------------|-----------------|
-| **Draft values feedback email** | .claude/RULES.md | .claude/skills/01_candidate-communication/values-feedback-emails.md | email_template_format_FINAL.md | skill_values_feedback_emails_sop.md + warm_bench_session_may5_2026 | Check Markaz → Draft → Self-QA |
-| **Draft GWC rejection email** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/gwc-rejection-emails.md | email_template_format_FINAL.md | warm_bench_final_locked_approach.md (warm tone) | Check Markaz → Draft → Self-QA |
-| **Draft warm bench feedback** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/warm-bench-feedback-email.md | warm_bench_final_locked_approach.md | warm_bench_session_may5_2026 (word count, subjects, P.S.) | Check Markaz → Draft (800-1100w) → Self-QA |
-| **Draft CV rejection email** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/candidate-rejections.md | email_template_format_FINAL.md | feedback_bulk_rejection_cv_truncation.md | Check Markaz → Draft → Self-QA |
+| **Draft values feedback email** | .claude/RULES.md | .claude/skills/01_candidate-communication/02_values-feedback-emails.md | email_template_format_FINAL.md | skill_values_feedback_emails_sop.md + warm_bench_session_may5_2026 | Check Markaz → Draft → Self-QA |
+| **Draft GWC rejection email** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/04_gwc-rejection-emails.md | email_template_format_FINAL.md | warm_bench_final_locked_approach.md (warm tone) | Check Markaz → Draft → Self-QA |
+| **Draft warm bench feedback** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/03_warm-bench-feedback-email.md | warm_bench_final_locked_approach.md | warm_bench_session_may5_2026 (word count, subjects, P.S.) | Check Markaz → Draft (800-1100w) → Self-QA |
+| **Draft CV rejection email** | .claude/RULES.md + Rule 1.11 | .claude/skills/01_candidate-communication/01_candidate-rejections.md | email_template_format_FINAL.md | feedback_bulk_rejection_cv_truncation.md | Check Markaz → Draft → Self-QA |
 | **Screen CVs against JD** | .claude/RULES.md | .claude/skills/02_candidate-evaluation/cv-screening.md | REPORT_FORMAT_LOCKED.md | skill_cv_screening_sop.md | Verify JD → Screen → Self-QA |
 | **Evaluate case study** | .claude/RULES.md + Rule 1.11 | .claude/skills/02_candidate-evaluation/case-study-evaluation.md | N/A | skill_case_study_evaluation_sop.md | Check Markaz → Eval → Flag incomplete → Report |
 | **Score values interview** | .claude/RULES.md + Rule 1.11 | .claude/skills/02_candidate-evaluation/values-scorecard-scoring.md | N/A (Markaz form) | feedback_values_scorecard_schema.md | Check Markaz → Score → Submit to Markaz |
@@ -79,7 +79,7 @@ When you ask me to do a task, I automatically follow this wiring. No asking you 
 Me (internally):
 1. Load .claude/RULES.md + Rule 1.11
 2. Open Markaz → Find candidate → Verify job and status
-3. Load .claude/skills/01_candidate-communication/values-feedback-emails.md
+3. Load .claude/skills/01_candidate-communication/02_values-feedback-emails.md
 4. Load memory/email_template_format_FINAL.md + memory/warm_bench_session_may5_2026
 5. Draft email
 6. Run 8-item Self-QA

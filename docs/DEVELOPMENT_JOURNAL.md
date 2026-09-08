@@ -212,7 +212,7 @@ Coco automatically:
 1. ✅ UserPromptSubmit hook fires → injects warm_bench_*.md files
 2. ✅ Rule 1.12 triggers → queries Markaz via `mcp__neon-postgres__query()` to get Mahnoor's application data
 3. ✅ Rule 1.11 verification → confirms candidate name, job, current status
-4. ✅ Loads .claude/skills/01_candidate-communication/warm-bench-feedback-email.md
+4. ✅ Loads .claude/skills/01_candidate-communication/03_warm-bench-feedback-email.md
 5. ✅ Loads memory/warm_bench_final_locked_approach.md (locked template)
 6. ✅ Loads memory/warm_bench_session_may5_2026_complete_learnings.md (rules)
 7. ✅ Drafts email following 800-1100 word rule, poetic subject, specific timestamps

@@ -235,7 +235,7 @@ about trade-offs and constraints. That's systems-level thinking, and it's rare.
 When you're ready to draft a GWC rejection email next:
 
 1. Read: [memory/warm_bench_locked_final_2026_05_30.md](warm_bench_locked_final_2026_05_30.md)
-2. Read: [.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md](../../../.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md) (updated)
+2. Read: [.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md](../.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md) (updated)
 3. Follow the 4-section structure + P.S.
 4. Start with "This is not a yes for now."
 5. Use warm bench tone and character-focused language

@@ -1,6 +1,6 @@
 ---
 name: Candidate Rejections SOP (CV-Stage)
-description: Reject candidates during CV screening with warm, specific feedback tied to their actual CV. 800+ words. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see warm-bench-feedback-email.md.
+description: Reject candidates during CV screening with warm, specific feedback tied to their actual CV. 800+ words. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see 03_warm-bench-feedback-email.md.
 type: feedback
 ---
 
@@ -32,7 +32,7 @@ Before drafting, read the master file. The harness validates these at send time.
 
 Reject candidates during CV screening phase with specific, warm, reflective feedback tied to their actual CV.
 
-**Note:** For candidates who cleared the values interview but weren't selected for the current role, see **skills/warm-bench-feedback-email.md** instead. That is a separate skill.
+**Note:** For candidates who cleared the values interview but weren't selected for the current role, see **skills/03_warm-bench-feedback-email.md** instead. That is a separate skill.
 
 ---
 
@@ -159,4 +159,4 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 ## Commitment (Coco, 2026-04-10)
 
-I will reject CV-stage candidates with warm, specific feedback tied to their actual CV. I will use v8 design. I will include feedback widget. I will pilot first, get approval, then go live. No em dashes. "We" voice. They/them pronouns. Safe_sendmail bouncer. Verification before sending. For warm bench feedback (values-passed candidates not selected for role), I will use skills/warm-bench-feedback-email.md instead.
+I will reject CV-stage candidates with warm, specific feedback tied to their actual CV. I will use v8 design. I will include feedback widget. I will pilot first, get approval, then go live. No em dashes. "We" voice. They/them pronouns. Safe_sendmail bouncer. Verification before sending. For warm bench feedback (values-passed candidates not selected for role), I will use skills/03_warm-bench-feedback-email.md instead.

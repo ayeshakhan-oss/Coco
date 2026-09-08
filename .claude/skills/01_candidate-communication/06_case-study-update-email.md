@@ -2,7 +2,7 @@
 
 **Added:** 2026-08-13 (requested by Ayesha)
 **Status:** 🔒 CONTENT LOCKED after first pilot approval — first live send requires pilot approval as always
-**Parent pattern:** [Warm Hold — Decision-Pending Update (Type 5)](warm-hold-decision-pending-email.md). This is its sibling, NOT a replacement. Same family, same exemptions, different trigger and different subject line.
+**Parent pattern:** [Warm Hold — Decision-Pending Update (Type 5)](05_warm-hold-decision-pending-email.md). This is its sibling, NOT a replacement. Same family, same exemptions, different trigger and different subject line.
 
 ---
 
