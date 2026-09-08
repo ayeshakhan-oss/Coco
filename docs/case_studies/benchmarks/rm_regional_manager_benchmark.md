@@ -5,9 +5,17 @@
 **Source doc:** Google Doc `15YVgih8s6gItnO0fFSD2C3OBADpCQLmF3rfwvJWHWBQ` (last modified 2026-08-23,
 i.e. **after** the Part B capacity typo fix announced in-thread on 23 Aug — this is the version
 candidates worked from).
-**Built:** 2026-08-31 · **Every figure below recomputed from the case text and reconciled.**
-**Status:** 🔴 DRAFT — pending Ayesha's QA. **Do not score any candidate against this until approved.**
+**Built:** 2026-08-31 · **Revision 2:** 2026-09-02, incorporating QA feedback.
+**Every figure below recomputed from the case text and reconciled.**
+**Status:** 🔴 DRAFT — pending final sign-off. **Do not score any candidate against this until approved.**
 **Contains no candidate names and no candidate responses.** Nothing was read before this was written.
+
+> **What changed in Revision 2.** Q1 now carries the **Where from** column the question requires,
+> plus a training-records item and a worked example in full four-part form. Q2's verdict is
+> reframed as *insufficient evidence to rank*, not a flat "no". Q3 gains an explicit
+> **evidence → intervention** decision rule. **Q4's arithmetic was wrong and is corrected** — the
+> old table cut 30pp for a 21.25pp problem and never showed the +6.25pp inside the table. Q8 now
+> carries all **five** required columns. Q5, Q6, Q7, Q9 and Q10 were reviewed and left unchanged.
 
 ---
 
@@ -120,29 +128,54 @@ information *list* from an information *strategy*.
 
 A strong ten covers these territories (wording will vary):
 
-| # | Information | Why | Source | Decision it changes |
+🔴 **Mark all four parts.** A submission that gives What / Why / Decision but omits **Where from** is
+incomplete against the question's own criteria, and the same is true in reverse. Evaluators should
+tick the four parts per item rather than judging the item as a whole.
+
+**Worked example of the required four-part form.** This is the shape a full item takes:
+
+> **Coach-visit dosage per school**
+> **What:** Number and frequency of coach visits to each school during the last 8 weeks.
+> **Why:** To determine whether differences in teacher performance are linked to differences in
+> coaching exposure.
+> **Where from:** Coach schedules, school visit logs, observation records, and coaching records.
+> **Decision:** Which schools require increased coaching support, and where limited coach time
+> should be prioritised.
+
+A strong ten covers these territories; wording will vary.
+
+| # | Information (What) | Why | Where from | Decision it changes |
 |---|---|---|---|---|
-| 1 | Sync/error logs: which records failed to upload, by school and date | Establishes the **direction and size** of the data error before any comparison | Platform/MIS logs, coach manual registers | Whether any region comparison is publishable at all |
-| 2 | LP *implementation* quality vs LP *completion* | Urban completion is compliance-driven | Classroom observation notes, work samples | Whether Urban's 76% means anything |
-| 3 | Coach-visit dosage per school (actual visits, last 8 weeks) | Rural's own evidence says consistency drives practice | Coach logs cross-checked with school registers | Where to concentrate scarce coach time |
-| 4 | Student assessment composition (baseline grade level by school) | Overall pass rates are not comparable across different mixes | Assessment data | Whether "Urban is better" survives |
-| 5 | Baseline→endline growth per student, not point-in-time pass rate | Value-added is the only fair cross-region measure | Assessment system | The entire performance narrative |
-| 6 | FICO sub-component scores | A flat composite hides which practices moved | Observation instrument | Which specific practice the 90 days targets |
-| 7 | Connectivity/device status by school | Separates *won't use* from *can't use* | Field audit, device logs | Whether Rural needs an offline model or a demand fix |
-| 8 | Actual coach time-on-task by activity | The 115% is an estimate; the cut must be real | Time logs / one-week sample | Which activity to cut in Q4 |
-| 9 | School closure and access calendar (incl. rain-affected routes) | Distinguishes non-delivery from non-recording | AEO, school heads | The AEO action plan |
-| 10 | Teacher workload/burden perception | Urban teachers privately report overwhelm | Short pulse survey, coach conversations | Whether to add or remove activities |
+| 1 | Sync/error logs: which records failed to upload, by school and date | Establishes the **direction and size** of the data error before any comparison | Platform/MIS error logs, coach manual registers | Whether any region comparison is publishable at all |
+| 2 | **Training completion records** — system status vs signed completion evidence | The dashboard shows 94% / 71%, but the case states completed modules are recorded as incomplete, so the training gap may be partly artefactual | LMS/training records, attendance sheets, coach registers, teacher confirmation | Whether Rural needs a training push, or a reporting fix |
+| 3 | LP *implementation* quality vs LP *completion* | Urban completion is compliance-driven | Classroom observation notes, teacher work samples, coach spot-checks | Whether Urban's 76% means anything |
+| 4 | Coach-visit dosage per school (last 8 weeks), reconciled against the closure and access calendar | Rural's own evidence says consistency drives practice; also separates non-delivery from non-recording | Coach schedules and visit logs, school registers, AEO records, rain-affected route notes | Where to concentrate scarce coach time, and the AEO action plan |
+| 5 | Student assessment composition (baseline grade level by school) | Overall pass rates are not comparable across different mixes | Assessment data, school baseline records | Whether "Urban is better" survives |
+| 6 | Baseline→endline growth per student, not point-in-time pass rate | Value-added is the only fair cross-region measure | Assessment system, prior-cycle records | The entire performance narrative |
+| 7 | FICO sub-component scores | A flat composite hides which practices moved | Observation instrument, FICO rubric records | Which specific practice the 90 days targets |
+| 8 | Connectivity/device status by school | Separates *won't use* from *can't use* | Field audit, device logs, platform attempt/completion data | Whether Rural needs an offline model or a demand fix |
+| 9 | Actual coach time-on-task by activity | The 115% is an estimate; the cut must be real | Coach time logs, one-week sampled time study | Which activity to cut in Q4 |
+| 10 | Teacher workload/burden perception | Urban teachers privately report overwhelm | Short pulse survey, coach conversations, headteacher input | Whether to add or remove activities |
+
+**Equally defensible alternates.** Headteacher support, teacher confidence with the platform, and
+LP relevance to multi-grade rural classrooms are all legitimate substitutions. Do not mark down a
+different ten that is decision-linked and sourced.
 
 **Anchors.** **5** — ten genuinely decision-linked items spanning data integrity, practice, outcomes,
-capacity and access; at least one aimed at *its own* assumptions. **3** — ten sensible items with
-sources named, but several are "more data" with no decision attached. **1** — a generic list of
-reports, fewer than ten, or items that merely restate the dashboard.
+capacity and access, **each carrying all four parts including Where from**; at least one aimed at
+*its own* assumptions. **3** — ten sensible items, but several are "more data" with no decision
+attached, or the source is named only loosely. **1** — a generic list of reports, fewer than ten,
+items that merely restate the dashboard, or the four-part form largely abandoned.
 
 ### Question 2 — Can you conclude Urban is performing better? (15 points)
 
-**The benchmark answer: No — and the reason is not "the data is bad".** The defensible position is
-that the comparison as posed is **invalid**, and the case gives enough to say *why* along each of the
-six axes the question names.
+**The benchmark answer: the available evidence shows Urban performing better on some indicators, but
+it is not sufficient to conclude that Urban is performing better overall.** That distinction matters
+and evaluators should hold candidates to it: the answer is *not* a flat "Urban is not better", and it
+is *not* "the data is bad". Urban's lead on several indicators is real and must be conceded; what
+the evidence cannot support is the **overall ranking** the Programme Manager is asking for.
+
+The case gives enough to say why along each of the six axes the question names.
 
 - **Data reliability.** Faults are **directionally biased toward Rural** (offline DC observations,
   failed syncs, manual registers, closed-school visits). Rural is understated. Any Urban lead is
@@ -166,11 +199,12 @@ defensible ranking in two weeks once sync is fixed and I have growth rather than
 would not do is expand on the current numbers."* Answering the question **and** correcting its
 premise is the mark of a 5.
 
-**Anchors.** **5** — reaches "not comparable", proves it with the composition arithmetic **and** the
-broken adoption→FICO chain, names the direction of the data bias, and still hands leadership a
-decision. **3** — notes data problems and the compliance issue, treats the student data as a simple
-Urban win or hedges without resolving it, no composition insight. **1** — ranks Urban better off the
-dashboard, or refuses to answer while citing "unreliable data".
+**Anchors.** **5** — concedes Urban's genuine leads, then shows the evidence is insufficient to rank
+overall, proving it with the composition arithmetic **and** the broken adoption→FICO chain, naming
+the direction of the data bias, and still hands leadership a decision. **3** — notes data problems
+and the compliance issue, treats the student data as a simple Urban win or hedges without resolving
+it, no composition insight. **1** — ranks Urban better off the dashboard, refuses to answer while
+citing "unreliable data", or flatly asserts Rural is better without the subgroup evidence.
 
 ### Question 3 — Three root causes of low Rural adoption + how to test (10 points)
 
@@ -186,8 +220,29 @@ plan attached instead of a test scores 3 at best.
 Other defensible candidates: teacher confidence/training depth, LP relevance to multi-grade rural
 classrooms, headteacher support. Any is fine **if paired with a real test**.
 
-**Excellence marker:** ordering the tests by cost and speed, and noting that the third test
-**quantifies the error in every other number in the case** — so it should run first.
+### From evidence to intervention — the decision rule
+
+Testing is only half the question. The benchmark expects the candidate to say **how they would
+compare the results and choose what to do**, because all three causes may be true at once and they
+carry very different remedies. A complete answer sets out something like this:
+
+| If the test shows | It means | The intervention is |
+|---|---|---|
+| High attempts, low completions; devices/connectivity failing | **Infrastructure** is binding | Offline-first workflow, sync fixes, scheduled low-bandwidth windows. **Do not** run a teacher-motivation campaign |
+| Adoption tracks visit frequency; verified visits well below plan | **Dosage/access** is binding | Redistribute coach time, alternative coverage for unreachable routes, AEO-supported access |
+| Direct observation shows use, dashboard does not | **Measurement** is binding | Fix recording at source. **No field intervention at all** — the "problem" is partly an artefact |
+| Attempts low *and* visits adequate *and* recording accurate | A genuine **demand/capability** gap | Targeted training, confidence-building, LP relevance work |
+
+**How to compare and sequence.** Run the measurement test **first**, because until the size of the
+reporting error is known every other comparison is unreliable — and it is the cheapest of the three.
+Then size the remaining two against each other: express each as *how much of the Rural adoption gap
+it explains*, and act on the largest explained share first. Where two causes are close, prefer the
+one that is cheaper and faster to reverse. State explicitly that the causes are **not mutually
+exclusive** and that the split matters more than picking a single winner.
+
+**Excellence marker:** ordering the tests by cost and speed, noting that the measurement test
+**quantifies the error in every other number in the case**, and committing to a decision rule
+*before* seeing the results rather than reasoning backwards from a preferred intervention.
 
 **Anchors.** **5** — three distinct plausible causes, each with a specific cheap falsification test,
 sampling logic sound. **3** — sensible causes, vague tests ("we would investigate"). **1** — causes
@@ -199,23 +254,34 @@ asserted as fact, or interventions proposed with no test at all.
 
 ### Question 4 — Continue → Reduce → Pause → Delegate → Redesign (15 points)
 
-**The arithmetic must close.** The table sums to 115%. The stated requirement is a 15pp cut. The
-+25% observation demand adds **≈6.25pp**, so a candidate who accepts that demand must actually find
-**≈21pp**. Three responses are defensible: fund it, refuse it with evidence, or trade it. Silently
-ignoring it is the common failure.
+**The arithmetic must close, and the +25% demand must appear inside the table.** The baseline sums to
+115%. The stated requirement is a 15pp cut. The +25% observation demand adds **≈6.25pp**, taking real
+demand to **121.25%**, so a candidate who accepts that demand must find **≥21.25pp**. Three responses
+are defensible: fund it, refuse it with evidence, or trade it. Silently ignoring it is the common
+failure.
 
-A defensible worked cut:
+**Landing exactly on 100% is not required.** What is required is that the arithmetic is shown and
+the final figure is at or below 100%. A candidate reaching 98.75% with working displayed scores as
+well as one reaching exactly 100%.
 
-| Activity | Now | Action | After | Reasoning |
+A defensible worked cut, with the observation increase carried inside the table:
+
+| Activity | Baseline | Action | After | Reasoning |
 |---|---|---|---|---|
-| HITL observations | 25% | **Continue / protect** | 25% | Very High, and the only activity with direct evidence of changing practice |
-| Teacher training | 20% | **Redesign** (cluster/peer-led) | 15% | Very High, but delivery mode is negotiable |
-| LP implementation | 15% | **Continue** | 15% | Very High; the core of the programme |
-| DC observations | 20% | **Reduce** to verified sampling, not census | 10% | High, but heavily affected by the sync fault — generating unreliable data at full cost |
-| LE experiments | 15% | **Redesign + delegate to LE team** | 5% | Solves the research contamination problem at the same time (see Q7) |
-| Student assessments | 10% | **Reduce** to a sampled cycle | 7% | High; needed for outcomes but not at census frequency in a 90-day window |
-| Reporting / data validation | 10% | **Redesign, do not cut** | 8% | 🔴 The instinct is to cut this. Cutting it deepens the problem the whole case is about. Fix sync at source so manual duplication ends and the *same* work costs less. |
-| **Total** | **115%** | | **85%** | Leaves ~15pp headroom for the observation increase and the two absent coaches |
+| HITL observations | 25% | **Continue + absorb the +25% demand** | **31.25%** | Very High, and the only activity with direct evidence of changing practice. This is where the +6.25pp lands |
+| Teacher training | 20% | **Continue, redesign delivery** (cluster/peer-led) | 17.5% | Very High, so it is never paused. Only the *delivery mode* is negotiable, and coverage is preserved |
+| LP implementation | 15% | **Continue** | 15% | Very High; the core of the programme. Untouched |
+| DC observations | 20% | **Reduce** to verified sampling, not census | 12% | High, but heavily affected by the sync fault — generating unreliable data at full cost |
+| LE experiments | 15% | **Redesign + delegate to LE team** | 5% | Medium/High. Solves the research contamination problem at the same time (see Q7) |
+| Student assessments | 10% | **Reduce** to a sampled cycle | 8% | High; needed for outcomes but not at census frequency in a 90-day window |
+| Reporting / data validation | 10% | **Protect, redesign at source** | 10% | 🔴 The instinct is to cut this. Cutting it deepens the problem the whole case is about. Fix sync so manual duplication ends — but bank no saving yet |
+| **Total** | **115% + 6.25 = 121.25% demand** | **−22.5pp** | **98.75%** | Closes below 100% with ~1.25pp of slack against the two absent coaches |
+
+**🔴 Very High activities are never paused or dropped.** HITL observations, teacher training and LP
+implementation are all marked Very High in the case, and a defensible answer continues all three.
+They may be **redesigned** to cost less capacity, but the activity and its coverage must survive.
+A submission that pauses or deletes a Very High activity to make its arithmetic work has solved the
+wrong problem, and this should be marked down even if the total lands neatly on 100%.
 
 **The discriminator: reporting/data validation.** It looks like pure overhead and is the cheapest
 thing to cut. Cutting it is **wrong** — every other decision in the case depends on data that is
@@ -223,11 +289,13 @@ already failing, and coaches are duplicating records manually *because* the syst
 the cause removes the cost. Candidates who cut it to hit their number have optimised the arithmetic
 and damaged the programme; say so.
 
-**Anchors.** **5** — arithmetic closes and is shown; every line justified against strategic
-importance; prices the +25% demand; protects data validation with a stated reason; uses all five
-verbs meaningfully rather than relabelling cuts. **3** — reaches ≥15pp with reasonable choices but
-does not price the observation increase, or cuts reporting without noticing the consequence. **1** —
-no arithmetic, percentages that do not sum, or "work more efficiently" as the mechanism.
+**Anchors.** **5** — arithmetic shown and closing at ≤100% with the +6.25pp demand carried inside the
+table; **all three Very High activities continued**; every line justified against strategic
+importance; protects data validation with a stated reason; uses all five verbs meaningfully rather
+than relabelling cuts. **3** — reaches ≥15pp with reasonable choices but does not price the
+observation increase, or cuts reporting without noticing the consequence. **1** — no arithmetic,
+percentages that do not sum, a Very High activity paused or dropped to force the total, or "work
+more efficiently" as the mechanism.
 
 ### Question 5 — Responding to "everything is a priority" (10 points)
 
@@ -344,9 +412,13 @@ experiment outright on capacity grounds without engaging its strategic approval.
 
 ### Question 8 — Stakeholder management plan (10 points)
 
-Five columns required per stakeholder: **what they need from you · what you need from them · what you
-share · what you negotiate · what you escalate**. The reciprocity column ("what you need from them")
-is the one weak answers omit, and it is the one that distinguishes management from service.
+🔴 **All five columns are required by the question** — **what they need from you · what you need from
+them · what information you will share · what you will negotiate · what you will escalate** — for
+each of the four stakeholders. That is 20 cells, and evaluators should tick them individually.
+"What information you will share" is easy to lose when a grid is compressed; a plan missing it is
+incomplete against the marking criteria, not merely thin. The reciprocity column ("what you need
+from them") is the one weak answers omit by choice, and it is the one that distinguishes management
+from service.
 
 | Stakeholder | They need | **You need from them** | You share | You negotiate | You escalate |
 |---|---|---|---|---|---|
@@ -481,7 +553,22 @@ Convert each question's 1–5 anchor to its point value pro-rata (5 → full, 3 
 **The bar:** the announcement told staff that "submissions that meet the **70% benchmark** will move
 forward." 70/100 is therefore a **published commitment** and should be applied as written.
 
-### 🔴 Open issues for Ayesha's QA
+### Resolved in Revision 2 (QA round 1, 2026-09-02)
+
+- **Q1 — "Where from" restored.** The published PDF and web versions had dropped the source column
+  when the table was compressed, leaving the benchmark incomplete against its own criteria. Fixed in
+  every format, with a training-records item added and a worked four-part example included.
+- **Q2 — verdict reframed.** Now "Urban leads on some indicators but the evidence is insufficient to
+  rank overall", not a flat "no".
+- **Q3 — decision rule added.** An explicit evidence → intervention mapping, plus how to sequence
+  and compare the three tests.
+- **Q4 — arithmetic corrected.** The previous table cut 30pp for a 21.25pp problem and kept the
+  +6.25pp demand outside the table. It now carries the demand inside and closes at 98.75%.
+  Added: Very High activities are never paused, and landing exactly on 100% is not required.
+- **Q8 — fifth column restored** ("what information you will share"), same compression loss as Q1.
+- **Q5, Q6, Q7, Q9, Q10** — reviewed, no changes requested.
+
+### 🔴 Open issues still needing a decision
 
 1. **Q10 carries no point value in the case document**, yet it is the Final Executive Challenge and
    the brief separately requires an executive summary. Q1–Q9 already total exactly 100.
