@@ -64,7 +64,7 @@ Emotionally intelligent warm bench feedback email for Hajra Sajjad (CPD Coach ca
 
 - **Opening:** Bridging Gaps principal story with specific evidence
 - **"What Stayed With Us":** Lesson plan change + curriculum mapping + GWC coaching mindset + scenario handling
-- **"Here's the Honest Part":** Acknowledges strength, explains decision as situational
+- **"Where We Found Questions":** Acknowledges strength, explains decision as situational
 - **"Where We Want to Leave This":** Genuine connection offer, no prescriptive advice
 - **P.S.:** Ties back to subject line's story
 

@@ -41,7 +41,7 @@ There's a moment from your values interview that has stayed with us ever since t
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -53,7 +53,7 @@ Later in the interview, when we asked about your experience managing teams in de
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -61,7 +61,7 @@ The challenge we're facing in this particular role right now is different from w
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -94,7 +94,7 @@ There's a specific moment from your values interview that has stayed with the en
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -106,7 +106,7 @@ When we asked about your learning journey, you described how you shifted from ro
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -114,7 +114,7 @@ Here's what we're facing with this particular role: We've been building a resear
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -145,7 +145,7 @@ About 18 minutes into your interview, we asked you about your Masters research. 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -157,7 +157,7 @@ Later, when we asked about how you approach mentoring junior researchers, you de
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -165,7 +165,7 @@ In our technical interview and the case study we presented, we found <span style
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -200,7 +200,7 @@ But there's another moment that stuck with us even more. Around 25 minutes into 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -212,7 +212,7 @@ When we asked about your technical interests, you talked about bioinformatics an
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -220,7 +220,7 @@ You are genuinely an excellent data scientist. Your technical competence is real
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">

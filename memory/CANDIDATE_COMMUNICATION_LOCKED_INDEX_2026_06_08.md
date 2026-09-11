@@ -21,7 +21,7 @@ metadata:
 
 **Key requirements:**
 - Opening: "This is not a yes for now"
-- Sections: "What Stayed With Us" → "Here's the Honest Part" → "Where We Want to Leave This"
+- Sections: "What Stayed With Us" → "Where We Found Questions" → "Where We Want to Leave This"
 - P.S. with premium styling (see below)
 - Haroon Yasin balance rule
 - Frame as "circumstances mismatch" not "commitment judgment"
@@ -44,7 +44,7 @@ metadata:
 
 **Key requirements:**
 - Opening: "This is not a yes for now"
-- Sections: "What Stayed With Us" → "Here's the Honest Part" → "Where We Want to Leave This"
+- Sections: "What Stayed With Us" → "Where We Found Questions" → "Where We Want to Leave This"
 - No interviewer names
 - No internal jargon (GWC, values, scorecard)
 - Poetic subject line (tied to specific interview moment)

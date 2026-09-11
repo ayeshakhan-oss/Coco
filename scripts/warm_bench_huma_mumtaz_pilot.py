@@ -171,7 +171,7 @@ And the financial modelling course. You identified a gap in your own skillset. N
 The panel discussed all of this afterward. What showed up was someone who sees problems clearly, cares about people inside the resistance, and doesn't let discomfort be an excuse to stop.
       </p>
 
-      <div class="section-heading">Here's the Honest Part</div>
+      <div class="section-heading">Where We Found Questions</div>
 
       <p class="body-text">
 Your interview created genuine discussion. There was real appreciation for how you show up: for your integrity, for the way you care about the people you work with, for your willingness to learn things that scare you. The panel also saw your self-awareness, your clarity about what you know and what you're still learning, and the way you carry responsibility. None of that is ambiguous. The panel saw it.

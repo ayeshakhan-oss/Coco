@@ -142,7 +142,7 @@ HTML_BODY = """
         <p class="body-text">The panel could feel that foundation.</p>
 
         <!-- Section 2 -->
-        <div class="section-heading">Here's the Honest Part</div>
+        <div class="section-heading">Where We Found Questions</div>
 
         <p class="body-text">You came into the interview as someone who has genuinely done this work across three organizations. You understand the role. You grasped the scope, the challenges, the responsibilities. You understood what we were asking of you. That clarity came through.</p>
 

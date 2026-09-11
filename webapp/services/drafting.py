@@ -323,7 +323,7 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             candidate_name=first_name, role=role,
         )
 
-        best = {
+        candidate = {
             "content": content,
             "body_html": body_html,
             "title_line": title_line,
@@ -332,6 +332,14 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             "attempts": attempt + 1,
             "drafter_used": drafter_name,
         }
+        # Keep the LEAST-BAD attempt, not merely the last one. Attempt 3 can be
+        # worse than attempt 2: fixing one violation regularly introduces
+        # another (a draft cut to satisfy a tone rule falls under 800 words).
+        def _hard_count(r):
+            return sum(1 for v in r["violations"] if v["severity"] == "HARD_BLOCK")
+
+        if best is None or _hard_count(result) < _hard_count(best["eval"]):
+            best = candidate
         # An empty scaffold can never satisfy the 800-word rule; retrying would
         # just burn two more failing calls. Stop and let the human write it.
         if drafter_name.startswith("unavailable"):
@@ -340,5 +348,14 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
         if not hard:
             break
         prior = hard  # feed the hard blocks back for the next attempt
+
+    # Say so when every attempt failed. Handing back a broken draft with no
+    # signal reads as "here is your letter" when it means "I could not write one".
+    if best and _hard_count(best["eval"]) > 0:
+        best["retries_exhausted"] = True
+        log.warning(
+            "Drafting %s: %d attempts, still %d hard block(s); returning the least-bad.",
+            email_type, best["attempts"], _hard_count(best["eval"]),
+        )
 
     return best

@@ -56,14 +56,14 @@ But we need to tell you something about what we saw in your interview...
 ### 4. HEADING STRUCTURE (EXACT)
 ```
 What Stayed With Us
-Here's the Honest Part
+Where We Found Questions
 Where We Want to Leave This
 ```
 
 **Never use:**
-- ❌ "What Genuinely Impressed Us"
-- ❌ "Here's the Part We Need to Be Honest About"
-- ❌ "Here's Where We Want to Leave Things"
+- ❌ "What Stayed With Us"
+- ❌ "Where We Found Questions"
+- ❌ "Where We Want to Leave This"
 
 **Why:** Consistency + brevity. Use these three headings exactly.
 
@@ -116,7 +116,7 @@ and doesn't let discomfort be an excuse to stop."
 - Affirm character, not just competence
 - Example: "You didn't just solve the problem. You cared about the people impacted."
 
-**Section 2: Here's the Honest Part**
+**Section 2: Where We Found Questions**
 - Acknowledge the interview was strong
 - Explain the decision was narrow/situational
 - Don't apologize; be matter-of-fact
@@ -189,7 +189,7 @@ willingness to learn things that scare you. None of that is ambiguous. The panel
 Read this email in full whenever drafting a new warm bench email. It is the gold standard:
 - Opening: "This isn't a yes for now."
 - What Stayed With Us: 4 specific moments (coaching scenario, closing questions, notice period honesty)
-- Here's the Honest Part: Warm + clear about decision being situational
+- Where We Found Questions: Warm + clear about decision being situational
 - Where We Want to Leave This: "We'd genuinely like to stay connected"
 - P.S.: Ties back to "That coach you described from your TFP fellowship..."
 

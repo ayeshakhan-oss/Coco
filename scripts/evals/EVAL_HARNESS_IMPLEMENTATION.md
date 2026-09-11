@@ -241,7 +241,7 @@ This balance prevents over-blocking while catching critical compliance failures.
 
 The Haroon Yasin balance rule requires comparing praise and decision section specificity. A perfect implementation would count evidence points semantically. Instead, we use a simple paragraph-count heuristic:
 - Count paragraphs >50 chars in "What Stayed With Us" section
-- Count paragraphs >50 chars in "Here's the Honest Part" section
+- Count paragraphs >50 chars in "Where We Found Questions" section
 - Flag if ratio > 2:1 (e.g., 4 praise vs 1 decision)
 
 **Reasoning:** This catches the obvious imbalances (lots of praise, minimal gap explanation) while allowing human judgment for edge cases. The human review (Ayesha approval) catches false positives.

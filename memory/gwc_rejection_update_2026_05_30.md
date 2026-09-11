@@ -65,7 +65,7 @@ something important about who you are and how you approach your work.
 
 ### Headings (4 sections + P.S.)
 1. "What Stayed With Us"
-2. "Here's the Honest Part"
+2. "Where We Found Questions"
 3. "Where We Want to Leave This"
 4. P.S.
 
@@ -99,7 +99,7 @@ about trade-offs and constraints.
 | **Word Count** | 400-770 (lower OK) | 800+ MANDATORY |
 | **Opening** | "We will not move forward" | "This is not a yes for now" |
 | **Heading 1** | "What We Liked Most" | "What Stayed With Us" |
-| **Heading 2** | "Where We Found Questions" | "Here's the Honest Part" |
+| **Heading 2** | "Where We Found Questions" | "Where We Found Questions" |
 | **Heading 3** | "The Gap" | (combined into #2) |
 | **Heading 4** | "What Matters Next" | "Where We Want to Leave This" |
 | **P.S.** | Optional | REQUIRED |
@@ -157,7 +157,7 @@ about trade-offs and constraints.
 
 ✅ Use GWC scorecard data ONLY (no fabrication)
 ✅ 2-3 scorecard strengths (What Stayed With Us)
-✅ 2-3 scorecard gaps (Here's the Honest Part)
+✅ 2-3 scorecard gaps (Where We Found Questions)
 ✅ Actionable guidance (Where We Want to Leave This)
 ✅ Warm, mentoring tone
 ✅ "We" voice

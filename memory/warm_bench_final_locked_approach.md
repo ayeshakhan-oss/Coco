@@ -23,7 +23,7 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 1. **Logo + Header** - Taleemabad logo embedded (cid:logo_taleemabad), title, subtitle
 2. **Opening** - Lead with specific interview moment, show company vulnerability
 3. **"What Stayed With Us"** (Blue #1565C0 heading) — Updated May 15, 2026
-4. **"Here's the Honest Part"** (Blue heading) — Updated May 15, 2026
+4. **"Where We Found Questions"** (Blue heading) — Updated May 15, 2026
 5. **"Where We Want to Leave This"** (Blue heading) — Updated May 15, 2026
 6. **P.S.** (before signature) - Memorable moment, reinforcement
 
@@ -117,7 +117,7 @@ something important about who you are."
 - Not just what they did, but why it's rare/valuable
 - Use: "the panel kept discussing this afterward"
 
-### Section 3: "Here's the Honest Part"
+### Section 3: "Where We Found Questions"
 - Acknowledge what the panel saw (warmly integrate scorecard observations)
 - Include positive observations from interview + scorecard (NOT quoted directly)
 - Explain the decision was narrow/situational
@@ -199,12 +199,12 @@ Warm regards,<br />
 
 ## Self-QA Checklist (Before Sending)
 - [ ] Word count 800-1100
-- [ ] All 4 section headings present and blue (exact wording: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This")
+- [ ] All 4 section headings present and blue (exact wording: "What Stayed With Us" / "Where We Found Questions" / "Where We Want to Leave This")
 - [ ] Opening has "This is not a yes for now" (exact)
 - [ ] No interviewer names mentioned
 - [ ] No internal jargon (GWC, values, scorecard, case study, warm bench)
 - [ ] "What Stayed With Us" has 2-3 specific moments
-- [ ] "Here's the Honest Part" includes scorecard warmly integrated (not quoted)
+- [ ] "Where We Found Questions" includes scorecard warmly integrated (not quoted)
 - [ ] "Where We Want to Leave This" does NOT prescribe ("you should...")
 - [ ] No comparative language ("another candidate", "tighter fit")
 - [ ] No recruiting abstractions ("good candidate", "strong profile", "excellent fit")
@@ -230,13 +230,13 @@ Warm regards,<br />
 
 **Opening**: "This isn't a yes for now... [specific story about helping colleague, timestamp, company vulnerability]"
 
-**Section 2 heading**: "What Genuinely Impressed Us" (blue)
+**Section 2 heading**: "What Stayed With Us" (blue)
 Content: [Additional interview moment with deep analysis of why it matters]
 
-**Section 3 heading**: "Here's the Part We Need to Be Honest About" (blue)
+**Section 3 heading**: "Where We Found Questions" (blue)
 Content: [Names the gap, frames as role-specific, shows we see potential]
 
-**Section 4 heading**: "Here's Where We Want to Leave Things" (blue)
+**Section 4 heading**: "Where We Want to Leave This" (blue)
 Content: [Simple: stay connected if opportunity aligns - NO advice]
 
 **P.S.**: [The memorable moment from interview that encapsulates who they are]

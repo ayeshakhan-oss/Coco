@@ -31,7 +31,7 @@ metadata:
 **Structure (locked):**
 - **Opening:** Lead with specific moment, show company vulnerability
 - **Section 1:** "What Stayed With Us" (Blue #1565C0 heading) — Specific strengths from interview
-- **Section 2:** "Here's the Honest Part" (Blue heading) — Specific gaps, evidence-based
+- **Section 2:** "Where We Found Questions" (Blue heading) — Specific gaps, evidence-based
 - **Section 3:** "Where We Want to Leave This" (Blue heading) — Path forward, not prescriptive
 - **P.S.:** Memorable moment, reinforcement
 - **Word count:** 800-1100 words minimum (mandatory)

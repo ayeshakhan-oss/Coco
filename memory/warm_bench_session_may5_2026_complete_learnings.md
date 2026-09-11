@@ -115,15 +115,15 @@ something important about who you are.
 
 All three are MANDATORY:
 
-**Heading 1:** "What Genuinely Impressed Us"
+**Heading 1:** "What Stayed With Us"
 - Color: #1565C0 (blue)
 - Bold weight
 
-**Heading 2:** "Here's the Part We Need to Be Honest About"
+**Heading 2:** "Where We Found Questions"
 - Color: #1565C0 (blue)
 - Bold weight
 
-**Heading 3:** "Here's Where We Want to Leave Things"
+**Heading 3:** "Where We Want to Leave This"
 - Color: #1565C0 (blue)
 - Bold weight
 
@@ -137,20 +137,20 @@ All three are MANDATORY:
    - Specific interview moment with timestamp
    - Analysis: Why this moment matters to us
 
-2. **"What Genuinely Impressed Us" Section**
+2. **"What Stayed With Us" Section**
    - 1-2 ADDITIONAL interview moments (different from opening)
    - Each with SPECIFIC timestamp
    - Deep analysis: "Why does this rare? What does it reveal about their character?"
    - Not just "what they did" but "why it matters"
 
-3. **"Here's the Part We Need to Be Honest About" Section**
+3. **"Where We Found Questions" Section**
    - Name the gap directly
    - Frame as ROLE-SPECIFIC, not personal failing
    - Show we understand their potential
    - NOT: "You lack X" 
    - YES: "In our technical interview, we found... For this role, at this moment, that gap matters because..."
 
-4. **"Here's Where We Want to Leave Things" Section**
+4. **"Where We Want to Leave This" Section**
    - **CRITICAL:** Do NOT suggest what they should do
    - ❌ "You should study X"
    - ❌ "We recommend taking courses in Y"

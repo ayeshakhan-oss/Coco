@@ -56,9 +56,9 @@ that the panel kept discussing afterward...
 
 ### 2. HEADING STRUCTURE (EXACT)
 - "What Stayed With Us"
-- "Here's the Honest Part"
+- "Where We Found Questions"
 - "Where We Want to Leave This"
-- NEVER use old headings ("What Genuinely Impressed Us", "Here's the Part We Need to Be Honest About")
+- NEVER use old headings ("What Stayed With Us", "Where We Found Questions")
 
 ### 3. NO EM DASHES (—) — ABSOLUTELY FORBIDDEN
 - Replace ALL em dashes with:
@@ -116,7 +116,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 - Deep analysis of why it matters
 - Affirm character, not just competence
 
-**Section 2: Here's the Honest Part**
+**Section 2: Where We Found Questions**
 - Acknowledge what panel saw (warmly)
 - Include positive scorecard observations (integrated, not quoted)
 - Explain decision was narrow/situational
@@ -208,14 +208,14 @@ Change to `False` after approval for live send.
 ## WHAT CHANGED IN 2026-05-30 UPDATE
 
 **Previous errors (now fixed):**
-- ❌ Old headings: "What Genuinely Impressed Us"
+- ❌ Old headings: "What Stayed With Us"
 - ❌ EM DASHES throughout email
 - ❌ Logo from external URL (didn't display)
 - ❌ No signature format locked in
 - ❌ Generic language in places
 
 **Current locked version:**
-- ✅ New headings: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This"
+- ✅ New headings: "What Stayed With Us" / "Where We Found Questions" / "Where We Want to Leave This"
 - ✅ NO EM DASHES (all replaced with periods/commas/colons)
 - ✅ Logo embedded (cid:) + centered + 48x48px
 - ✅ Signature format exact and locked

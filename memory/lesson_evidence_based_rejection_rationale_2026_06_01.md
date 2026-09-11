@@ -14,7 +14,7 @@ When explaining why a candidate was not selected, the evidence supporting the de
 
 ## The Balance Rule
 
-**For every specific praise example in "What Stayed With Us," there must be a correspondingly specific decision example in "Here's the Honest Part."**
+**For every specific praise example in "What Stayed With Us," there must be a correspondingly specific decision example in "Where We Found Questions."**
 
 Examples of BALANCE:
 - Praise: "In the case study, when you encountered a technical blocker, you immediately sketched three approaches on the whiteboard and explained trade-offs" (specific, observable)
@@ -26,7 +26,7 @@ Examples of IMBALANCE (❌):
 
 ## The "Can You Show Me?" Test
 
-For every point in "Here's the Honest Part," ask: **"Can the candidate show me exactly what I did that led to this conclusion?"**
+For every point in "Where We Found Questions," ask: **"Can the candidate show me exactly what I did that led to this conclusion?"**
 
 If the answer is no — if you can't point to a specific quote, moment, or observable behavior — the rejection rationale is too abstract. Rewrite it with concrete details.
 
@@ -58,7 +58,7 @@ Example:
 - Show *what they did and said* that impressed the panel
 - Make it detailed enough that they recognize themselves in it
 
-**"Here's the Honest Part" section:**
+**"Where We Found Questions" section:**
 - 2-3 specific gaps, equally detailed
 - Frame each as: "When [observable situation], you [observable action/statement]. For this role, we need [concrete alternative]."
 - Never abstract to personal qualities
@@ -82,7 +82,7 @@ Example:
 Before sending any warm bench or GWC rejection email:
 
 - [ ] Count the specific moments/paragraphs in "What Stayed With Us" (aim for 2-3)
-- [ ] Count the specific moments/paragraphs in "Here's the Honest Part" (should be ≈ same count)
+- [ ] Count the specific moments/paragraphs in "Where We Found Questions" (should be ≈ same count)
 - [ ] For each praise example, can you answer: "What exactly did they do or say?"
 - [ ] For each gap example, can you answer: "What exactly did they do or say that showed this gap?"
 - [ ] Is the gap framed as role-specific, not a personal failing?

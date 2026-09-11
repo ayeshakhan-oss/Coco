@@ -21,7 +21,7 @@ There's a moment from your values interview that has stayed with us ever since t
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -33,7 +33,7 @@ Later in the interview, when we asked about your experience managing teams in de
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -41,7 +41,7 @@ The challenge we're facing in this particular role right now is different from w
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -67,7 +67,7 @@ There's a specific moment from your values interview that has stayed with the en
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -79,7 +79,7 @@ When we asked about your learning journey, you described how you shifted from ro
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -87,7 +87,7 @@ Here's what we're facing with this particular role: We've been building a resear
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -113,7 +113,7 @@ There's a specific moment from your values interview that stayed with us. About 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -125,7 +125,7 @@ When we asked about your approach to research, you explained how you've learned 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -133,7 +133,7 @@ In our technical interview, we found that while your approach to learning is sol
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -159,7 +159,7 @@ There's a moment about 28 minutes into your values interview that we've discusse
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-What Genuinely Impressed Us
+What Stayed With Us
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -171,7 +171,7 @@ When we asked about your role in a collaborative research project, you described
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's the Part We Need to Be Honest About
+Where We Found Questions
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -179,7 +179,7 @@ In our technical interview, we found that your technical foundation is solid, bu
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Here's Where We Want to Leave Things
+Where We Want to Leave This
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">

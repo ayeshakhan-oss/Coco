@@ -22,7 +22,7 @@ This is NOT a traditional GWC rejection. It's a warm rejection-keep-warm email u
 
 **Template:** `templates/warm_bench_email.html` (locked)
 **SOP:** `.claude/skills/01_candidate-communication/04_gwc-rejection-emails.md`
-**Structure:** Opening → "What Stayed With Us" → "Here's the Honest Part" → "Where We Want to Leave This" → P.S.
+**Structure:** Opening → "What Stayed With Us" → "Where We Found Questions" → "Where We Want to Leave This" → P.S.
 **Length:** 800+ words MANDATORY
 
 ---
@@ -48,7 +48,7 @@ Never deviate. This is warm bench language, and it works for GWC rejections too.
 - Specific interview moments
 - Affirm character + capability
 
-**"Here's the Honest Part"**
+**"Where We Found Questions"**
 - Start with capability clarity: "This decision wasn't driven by concerns about your ability to do the work."
 - State the decision driver (e.g., contract/situation mismatch, role requirements)
 - Frame as "realities misaligned" NOT "you won't be committed"
@@ -275,7 +275,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 | "You won't be committed" judgment tone | Reframe as circumstances: "Realities are misaligned" |
 | Raw UTF-8 bullet character (•) | Use `&bull;` HTML entity |
 | Raw UTF-8 ampersand (&) | Use `&amp;` HTML entity |
-| Missing capability clarity | Start "Here's the Honest Part" with "This decision wasn't driven by concerns about your ability" |
+| Missing capability clarity | Start "Where We Found Questions" with "This decision wasn't driven by concerns about your ability" |
 | Vague decision rationale | Ground in specific scorecard data + observable behaviors |
 | No Haroon Yasin balance | Count praise moments, count decision moments, balance specificity |
 | Intent inference words | Scan for assumed/believed/thought/preferred, replace with observations |

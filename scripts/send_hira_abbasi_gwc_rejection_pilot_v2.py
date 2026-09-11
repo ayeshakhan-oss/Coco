@@ -139,8 +139,8 @@ HTML_BODY = """
 
         <p class="body-text">That kind of pedagogical thoughtfulness, combined with the capacity to actually execute on it, is rare. Your understanding of what makes teachers grow, and your experience building that kind of growth in real situations, is exactly what this role is supposed to be.</p>
 
-        <!-- Section 2: Here's the Honest Part -->
-        <div class="section-heading">Here's the Honest Part</div>
+        <!-- Section 2: Where We Found Questions -->
+        <div class="section-heading">Where We Found Questions</div>
 
         <p class="body-text">You came into the interview as someone who has genuinely done this work with teachers. You understand the role. You grasped the scope, the challenges, the responsibilities. That clarity came through.</p>
 

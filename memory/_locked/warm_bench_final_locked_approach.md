@@ -21,9 +21,9 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 
 ### Structure (5 Parts)
 1. **Opening** - Lead with specific interview moment, show company vulnerability
-2. **"What Genuinely Impressed Us"** (Blue #1565C0 heading)
-3. **"Here's the Part We Need to Be Honest About"** (Blue heading)
-4. **"Here's Where We Want to Leave Things"** (Blue heading)
+2. **"What Stayed With Us"** (Blue #1565C0 heading)
+3. **"Where We Found Questions"** (Blue heading)
+4. **"Where We Want to Leave This"** (Blue heading)
 5. **P.S.** (before signature) - Memorable moment, reinforcement
 
 ### Tone
@@ -68,19 +68,19 @@ something important about who you are."
 [Specific interview story with timestamp + company vulnerability]
 ```
 
-### Section 2: "What Genuinely Impressed Us"
+### Section 2: "What Stayed With Us"
 - 1-2 additional moments from interview (different from opening)
 - Each with specific timestamp
 - Deep analysis: "Why does this matter? What does it reveal about their character?"
 - Not just what they did, but why it's rare/valuable
 
-### Section 3: "Here's the Part We Need to Be Honest About"
+### Section 3: "Where We Found Questions"
 - Name the gap directly: "In our technical interview, we found..."
 - Frame as role-specific: "For this role, at this moment, that gap matters"
 - NOT a personal failing ("you lack X")
 - Show we understand the potential
 
-### Section 4: "Here's Where We Want to Leave Things"
+### Section 4: "Where We Want to Leave This"
 ⚠️ **CRITICAL**: Do NOT suggest what they should do
 - ❌ "You should go study X"
 - ❌ "We recommend taking courses in Y"
@@ -128,9 +128,9 @@ Sent on behalf of Talent Acquisition Team by Coco
 - [ ] Word count 800+
 - [ ] All 4 section headings present and blue
 - [ ] Opening has specific timestamp + company vulnerability
-- [ ] "What Genuinely Impressed Us" has 1-2 new moments
-- [ ] "Here's the Part We Need to Be Honest About" names the gap
-- [ ] "Here's Where We Want to Leave Things" does NOT prescribe
+- [ ] "What Stayed With Us" has 1-2 new moments
+- [ ] "Where We Found Questions" names the gap
+- [ ] "Where We Want to Leave This" does NOT prescribe
 - [ ] P.S. is memorable and tied to subject
 - [ ] Subject is poetic & story-based (NOT generic)
 - [ ] No "GWC", "KCD", "I" voice
@@ -153,13 +153,13 @@ Sent on behalf of Talent Acquisition Team by Coco
 
 **Opening**: "This isn't a yes for now... [specific story about helping colleague, timestamp, company vulnerability]"
 
-**Section 2 heading**: "What Genuinely Impressed Us" (blue)
+**Section 2 heading**: "What Stayed With Us" (blue)
 Content: [Additional interview moment with deep analysis of why it matters]
 
-**Section 3 heading**: "Here's the Part We Need to Be Honest About" (blue)
+**Section 3 heading**: "Where We Found Questions" (blue)
 Content: [Names the gap, frames as role-specific, shows we see potential]
 
-**Section 4 heading**: "Here's Where We Want to Leave Things" (blue)
+**Section 4 heading**: "Where We Want to Leave This" (blue)
 Content: [Simple: stay connected if opportunity aligns - NO advice]
 
 **P.S.**: [The memorable moment from interview that encapsulates who they are]

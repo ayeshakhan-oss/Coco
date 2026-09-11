@@ -165,7 +165,7 @@ logs/email_audit.log:
 **4. Type-Aware Validation (New)**
 The eval engine knows the structure of each email type:
 - **Values feedback:** Checks for "What We Liked Most About You" + "Where We Found Ourselves Sitting With Questions" + "What We Think You Should Do Next"
-- **Warm bench:** Checks for "What Stayed With Us" + "Here's the Honest Part" + "Where We Want to Leave This"
+- **Warm bench:** Checks for "What Stayed With Us" + "Where We Found Questions" + "Where We Want to Leave This"
 - **GWC rejection:** Same as warm bench
 - **CV rejection:** Different heading structure
 

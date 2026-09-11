@@ -75,7 +75,7 @@ Outputs formatted violation report with context snippets. Exit code 0 (pass/warn
 
 ### GWC Rejections
 - ✅ All 7 HARD BLOCKs apply
-- ✅ Type-specific section check: "What Stayed With Us" + "Here's the Honest Part" + "Where We Want to Leave This"
+- ✅ Type-specific section check: "What Stayed With Us" + "Where We Found Questions" + "Where We Want to Leave This"
 - ✅ Memory auto-inject: type "gwc rejection" → loads intent-inference + balance + warm bench rules
 - ✅ Pre-send hook: active
 
@@ -87,7 +87,7 @@ Outputs formatted violation report with context snippets. Exit code 0 (pass/warn
 
 ### Warm Bench Emails
 - ✅ All 10 checks apply (including generic subject WARNING)
-- ✅ Type-specific section check: "What Stayed With Us" + "Here's the Honest Part" + "Where We Want to Leave This"
+- ✅ Type-specific section check: "What Stayed With Us" + "Where We Found Questions" + "Where We Want to Leave This"
 - ✅ Memory auto-inject: type "warm bench email" → loads warm bench locked + subject lines
 - ✅ Pre-send hook: active
 

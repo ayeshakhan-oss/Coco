@@ -56,7 +56,7 @@ originSessionId: d4a807e5-380e-4bc6-ac7a-c252d64a81bd
 **When to use:** Candidates who cleared values but weren't selected (rejection-keep-warm)  
 **Design:** 🔒 v8 layout — `scripts/utils/v8_template.py`, spec [v8_candidate_comms_layout_LOCKED.md](v8_candidate_comms_layout_LOCKED.md). (NOT the 775px invite template.)  
 **Length:** 800–1100 words MANDATORY  
-**Structure:** Opening + "What Genuinely Impressed Us" + "Here's the Part We Need to Be Honest About" + "Here's Where We Want to Leave Things" + P.S.  
+**Structure:** Opening + "What Stayed With Us" + "Where We Found Questions" + "Where We Want to Leave This" + P.S.  
 **Tone:** Warm, observational, specific timestamps, poetic subjects, no prescriptive advice  
 **Script:** `scripts/warm_bench_locked.py`  
 **Self-QA:** 8-item checklist included  

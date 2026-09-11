@@ -140,7 +140,7 @@ HTML_BODY = """
         <p class="body-text">And there's the foundation underneath all of this: you took what you learned in school debate competitions, what teachers criticized you for spending time on, and built it into your professional toolkit. Public speaking. Tone calibration. Jargon selection. Relationship-building at pitch meetings. Philosophy: learning is only real when it's implemented, tested with failure, refined through attempts. That's not someone coasting on past success. That's someone practicing your craft.</p>
 
         <!-- Section 2 -->
-        <div class="section-heading">Here's the Honest Part</div>
+        <div class="section-heading">Where We Found Questions</div>
 
         <p class="body-text">Here's what we also saw, and it shifted the conversation for the panel. The case study became important in the discussion because it was one of the few opportunities we had to see how you engage with a problem before a conversation begins. You hadn't arrived with a fully formed perspective. Instead, you worked through many of the questions in real time with us. Your communication skills carried the moment forward productively. What the panel left wanting was clearer evidence of how you think when given time to prepare, sit with a problem, form your own view, and test assumptions independently before entering the room.</p>
 

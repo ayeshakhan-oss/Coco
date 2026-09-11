@@ -41,8 +41,8 @@ BODY_CONTENT = """
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; text-align:justify; line-height:1.75; margin:0 0 20px 0;">During our discussion, you shared a specific example of working with a teacher who was struggling. The way you described it—the listening, the diagnostic work, the way you adapted your approach based on what you were hearing—revealed something important about how you think. That kind of pedagogical thoughtfulness combined with your capacity to execute on it is rare. It's exactly what this role is supposed to be.</p>
 
-<!-- Section 2: Here's the Honest Part -->
-<p style="font-family:Georgia,serif; font-size:18px; color:#1565C0; font-weight:bold; margin:30px 0 15px 0; padding-top:20px;">Here's the Honest Part</p>
+<!-- Section 2: Where We Found Questions -->
+<p style="font-family:Georgia,serif; font-size:18px; color:#1565C0; font-weight:bold; margin:30px 0 15px 0; padding-top:20px;">Where We Found Questions</p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; text-align:justify; line-height:1.75; margin:0 0 20px 0;">To be clear, this decision wasn't driven by concerns about your ability to do the work. If anything, it came from the opposite conclusion. We saw strong evidence that you could.</p>
 

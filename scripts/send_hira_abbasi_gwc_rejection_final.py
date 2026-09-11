@@ -136,8 +136,8 @@ HTML_BODY = """
 
         <p class="body-text">During our discussion, you shared a specific example of working with a teacher who was struggling. The way you described it—the listening, the diagnostic work, the way you adapted your approach based on what you were hearing—revealed something important about how you think. That kind of pedagogical thoughtfulness combined with your capacity to execute on it is rare. It's exactly what this role is supposed to be.</p>
 
-        <!-- Section 2: Here's the Honest Part -->
-        <div class="section-heading">Here's the Honest Part</div>
+        <!-- Section 2: Where We Found Questions -->
+        <div class="section-heading">Where We Found Questions</div>
 
         <p class="body-text">To be clear, this decision wasn't driven by concerns about your ability to do the work. If anything, it came from the opposite conclusion. We saw strong evidence that you could.</p>
 

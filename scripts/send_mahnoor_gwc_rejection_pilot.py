@@ -46,7 +46,7 @@ BODY_CONTENT = """
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; text-align:justify; line-height:1.75; margin:0 0 20px 0;">You're also genuinely motivated about the education sector. That wasn't performance in the room. You've thought about why this work matters to you. You've articulated what transformation in education looks like to you. Motivation of that kind—rooted in something concrete rather than abstract aspiration—is rare.</p>
 
-<p style="font-family:Georgia,serif; font-size:18px; color:#1565C0; font-weight:bold; margin:30px 0 15px 0; padding-top:20px;">Here's the Honest Part</p>
+<p style="font-family:Georgia,serif; font-size:18px; color:#1565C0; font-weight:bold; margin:30px 0 15px 0; padding-top:20px;">Where We Found Questions</p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; text-align:justify; line-height:1.75; margin:0 0 20px 0;">This decision wasn't driven by concerns about your ability to learn or your capacity to commit. You've proven both of those.</p>
 

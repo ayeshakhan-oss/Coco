@@ -63,7 +63,7 @@ All these SOPs fall under this skill:
 
 3. **Warm Bench Feedback** — `SOPs/01_Candidate_Communication/warm_bench_feedback_email.md` / `memory/warm_bench_locked_rules_2026_05_30.md`
    - 800-1100 words MANDATORY (Haroon Yasin framework)
-   - 4 sections + P.S.: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This"
+   - 4 sections + P.S.: "What Stayed With Us" / "Where We Found Questions" / "Where We Want to Leave This"
    - Poetic subject line tied to specific interview moment
    - NO interviewer names, NO internal jargon (GWC/values/scorecard), NO comparative language
    - Avoid recruiting abstractions (see memory/candidate_communication_avoid_recruiting_abstractions_2026_05_30.md)
@@ -174,7 +174,7 @@ Never deviate from this opening.
 ### 3. HEADING STRUCTURE (EXACT — UPDATED May 15, 2026)
 ```
 What Stayed With Us
-Here's the Honest Part
+Where We Found Questions
 Where We Want to Leave This
 ```
 Use these three headings exactly. No variations.
@@ -257,7 +257,7 @@ hiring@taleemabad.com | www.taleemabad.com
 - Use "the panel kept discussing this afterward"
 - Affirm character, not just competence
 
-**Section 2: Here's the Honest Part**
+**Section 2: Where We Found Questions**
 - Acknowledge the interview was strong
 - Include positive observations from scorecard (warmly integrated, not quoted)
 - Explain the decision was narrow/situational

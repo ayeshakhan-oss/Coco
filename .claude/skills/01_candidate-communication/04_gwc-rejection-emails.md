@@ -76,7 +76,7 @@ that the panel kept discussing afterward...
 **Email Structure (5 Sections Required — WARM BENCH HEADINGS):**
 0. **Greeting** — "Hi [Candidate First Name]," (warm, personal)
 1. **What Stayed With Us** — 2-3 scorecard strengths with specific evidence (concrete, earned)
-2. **Here's the Honest Part** — 2-3 scorecard gaps, framed warmly (observable behaviors, not abstractions)
+2. **Where We Found Questions** — 2-3 scorecard gaps, framed warmly (observable behaviors, not abstractions)
 3. **Where We Want to Leave This** — Actionable guidance, affirm potential, concrete fit patterns
 4. **P.S.** — Tie back to powerful moment from interview (emotional anchor)
 
@@ -91,7 +91,7 @@ that the panel kept discussing afterward...
 - Character-focused (integrity, courage, learning mindset) NOT profile-focused
 
 **CRITICAL: Haroon Yasin Balance Rule (2026-06-01)** 🔴
-- Praise examples in "What Stayed With Us" MUST equal decision examples in "Here's the Honest Part" in specificity + concreteness
+- Praise examples in "What Stayed With Us" MUST equal decision examples in "Where We Found Questions" in specificity + concreteness
 - If 3 concrete praise moments → Need 3 equally concrete decision moments
 - **Test:** Can candidate answer "What exactly did I do or say that led to this decision?" If no → rejection rationale is too abstract, rewrite
 - **Purpose:** Prevents paradox "If you valued all this, why wasn't I selected?"
@@ -130,7 +130,7 @@ that the panel kept discussing afterward...
 **Step 2: Draft with Evidence-Based Methodology**
 - **Greeting:** "Hi [First Name]," (warm, personal)
 - **What Stayed With Us:** 2-3 concrete strengths (earned from scorecard, not generic praise)
-- **Here's the Honest Part:** 2-3 concrete gaps (observable behaviors from scorecard, not abstract impressions)
+- **Where We Found Questions:** 2-3 concrete gaps (observable behaviors from scorecard, not abstract impressions)
   - Apply Haroon Yasin balance rule: praise examples ≈ decision examples in specificity
   - Replace abstractions with observable behaviors
   - Frame as skill-set mismatch, not capability judgment
@@ -166,7 +166,7 @@ that the panel kept discussing afterward...
 **STEP 3: Draft with Updated Methodology**
 - Apply Haroon Yasin balance rule from Step 1
 - Write "What Stayed With Us" (concrete strengths)
-- Write "Here's the Honest Part" (observable behaviors, not abstractions)
+- Write "Where We Found Questions" (observable behaviors, not abstractions)
 - Write "Where We Want to Leave This" (concrete fit patterns)
 - Write P.S. (powerful moment)
 - Verify 800+ words
@@ -237,7 +237,7 @@ that the panel kept discussing afterward...
 - [ ] Greeting: "Hi [First Name]," (warm, personal)
 - [ ] Opening: "This is not a yes for now." + specific moment
 - [ ] "What Stayed With Us": 2-3 strengths with scorecard evidence
-- [ ] "Here's the Honest Part": 2-3 gaps, warmly framed, includes positive observations
+- [ ] "Where We Found Questions": 2-3 gaps, warmly framed, includes positive observations
 - [ ] Where We Want to Leave This": Actionable guidance, affirm potential
 - [ ] P.S.: Ties back to powerful moment from interview
 - [ ] **HAROON YASIN BALANCE: Praise examples = Decision examples (count them)**

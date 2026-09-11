@@ -165,12 +165,43 @@ KNOWN_INTERVIEWERS = [
     'Khan', 'Yasin', 'Mujtaba', 'Hassan', 'Fatima', 'Bilal',
 ]
 
+# Minimum word count by email type (Ayesha 2026-09-11).
+#
+# A FEEDBACK email carries a decision plus the reasoning behind it, and that is
+# what takes 800 words. All five types the webapp handles are feedback emails:
+# a CV rejection, values feedback, warm bench, a GWC rejection, and a case study
+# outcome (an evaluation of their submission, so feedback first).
+#
+# The two SHORT types are short because they carry NO feedback: the Case Study
+# UPDATE (debrief pending, 120-250) and the Internal Announcement (staff, not a
+# candidate, 150-400). Do not confuse the case study UPDATE with the case study
+# OUTCOME. Neither short type is drafted by the webapp today; they live in their
+# own send scripts. They are listed here so that adding one never silently
+# inherits the 800-word rule.
+WORD_MINIMUMS = {
+    'cv_rejection': 800,
+    'values_feedback': 800,
+    'warm_bench': 800,
+    'gwc_rejection': 800,
+    'case_study_outcome': 800,
+    # not feedback -> not 800
+    'case_study_update': 120,
+    'internal_announcement': 150,
+}
+DEFAULT_WORD_MINIMUM = 800
+
+
 # Section headings by email type
 SECTION_HEADINGS = {
+    # "Where We Found Questions" was renamed 2026-09-11: it contained the
+    # hard-blocked phrase "the honest part", so every warm-bench and GWC letter
+    # was blocked on a heading the renderer itself printed. The replacement
+    # matches the wording cv_rejection and values_feedback already use, so the
+    # three decision types now read in one voice.
     'warm_bench': {
         'required': [
             'What Stayed With Us',
-            "Here's the Honest Part",
+            'Where We Found Questions',
             'Where We Want to Leave This',
         ]
     },
@@ -184,7 +215,7 @@ SECTION_HEADINGS = {
     'gwc_rejection': {
         'required': [
             'What Stayed With Us',
-            "Here's the Honest Part",
+            'Where We Found Questions',
             'Where We Want to Leave This',
         ]
     },
@@ -399,9 +430,14 @@ def check_jargon(text: str, email_type: str = "") -> Tuple[bool, Optional[str]]:
     return True, None
 
 
-def check_harsh_language(text: str) -> Tuple[bool, Optional[str]]:
+def check_harsh_language(text: str, email_type: Optional[str] = None) -> Tuple[bool, Optional[str]]:
     """
     Adversarial or judgmental register (Ayesha 2026-09-08). Returns (passed, detail).
+
+    Scans the WHOLE letter, headings included. No carve-outs (Ayesha 2026-09-11:
+    a hard-blocked phrase must never appear in any candidate communication). The
+    section heading that used to collide with this list was renamed instead —
+    see SECTION_HEADINGS.
     """
     clean = strip_html(text)
     for pattern in HARSH_LANGUAGE:
@@ -842,14 +878,14 @@ def check_haroon_balance(body: str, email_type: str) -> Tuple[bool, Optional[str
     clean = strip_html(body)
 
     # Heuristic: count blue heading blocks
-    # "What Stayed With Us" section vs "Here's the Honest Part" section
+    # "What Stayed With Us" section vs "Where We Found Questions" section
     stayed_section = re.search(
-        r"What Stayed With Us.*?(?=Here's the Honest Part|$)",
+        r"What Stayed With Us.*?(?=Where We Found Questions|$)",
         clean,
         re.IGNORECASE | re.DOTALL
     )
     honest_section = re.search(
-        r"Here's the Honest Part.*?(?=Where We Want to Leave|$)",
+        r"Where We Found Questions.*?(?=Where We Want to Leave|$)",
         clean,
         re.IGNORECASE | re.DOTALL
     )
@@ -997,10 +1033,11 @@ def evaluate_email(
     # HARD BLOCK checks
 
     # 1. Word count
-    passed, actual, detail = check_word_count(html_body, min_count=800)
+    minimum = WORD_MINIMUMS.get(email_type, DEFAULT_WORD_MINIMUM)
+    passed, actual, detail = check_word_count(html_body, min_count=minimum)
     if not passed:
         violations.append({
-            'rule': 'Word count minimum (800)',
+            'rule': f'Word count minimum ({minimum})',
             'severity': 'HARD_BLOCK',
             'detail': detail,
         })
@@ -1051,7 +1088,7 @@ def evaluate_email(
         })
 
     # 5c. Tone: adversarial register and corporate boilerplate (Ayesha 2026-09-08)
-    passed, detail = check_harsh_language(html_body)
+    passed, detail = check_harsh_language(html_body, email_type)
     if not passed:
         violations.append({
             'rule': 'No harsh or adversarial language (tone standard 2026-09-08)',
@@ -1193,7 +1230,7 @@ if __name__ == '__main__':
     test_html = """
     <h2>What Stayed With Us</h2>
     <p>This is a test paragraph with good observation.</p>
-    <h2>Here's the Honest Part</h2>
+    <h2>Where We Found Questions</h2>
     <p>This is where we discuss the gap.</p>
     <h2>Where We Want to Leave This</h2>
     <p>Final thoughts.</p>

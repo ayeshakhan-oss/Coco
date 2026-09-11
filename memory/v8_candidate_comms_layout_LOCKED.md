@@ -134,5 +134,5 @@ module, so what gets injected at draft time == what gets sent.
 - Layout is 100% v8; only `[PLACEHOLDERS]` change per email.
 - Section headings differ per type (enforced by `scripts/evals/candidate_communication_eval.py`):
   - values_feedback: What We Liked Most About You / Where We Found Ourselves Sitting With Questions / What We Think You Should Do Next
-  - warm_bench + gwc_rejection: What Stayed With Us / Here's the Honest Part / Where We Want to Leave This
+  - warm_bench + gwc_rejection: What Stayed With Us / Where We Found Questions / Where We Want to Leave This
   - cv_rejection: What we appreciated / Where we found questions / What we think you should do next

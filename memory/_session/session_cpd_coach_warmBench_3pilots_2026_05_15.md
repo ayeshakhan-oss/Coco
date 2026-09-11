@@ -72,7 +72,7 @@ All 3 emails followed identical locked structure:
    - Fourth moment: Intellectual curiosity, mission alignment, or career intentionality
    - Panel's emotional response
 
-3. **"Here's the Honest Part" (Blue heading + 2 paragraphs)**
+3. **"Where We Found Questions" (Blue heading + 2 paragraphs)**
    - Acknowledge strength across values/GWC
    - Explain decision as situational, not about fit
    - Maintain dignity + hope
@@ -94,7 +94,7 @@ All 3 emails followed identical locked structure:
 ✅ **Justified text:** text-align:justify on all body paragraphs (except signature)
 ✅ **No em dashes:** Replace with hyphens or remove entirely
 ✅ **Simple HTML signature:** <p> tags only (NO border-top divs that trigger Gmail "..." menus)
-✅ **Blue headings:** #1565C0 color, bold, 3 per email (What Stayed With Us, Here's the Honest Part, Where We Want to Leave This)
+✅ **Blue headings:** #1565C0 color, bold, 3 per email (What Stayed With Us, Where We Found Questions, Where We Want to Leave This)
 ✅ **Blue divider:** 2px solid #1565C0 between name/position header and body
 
 ---

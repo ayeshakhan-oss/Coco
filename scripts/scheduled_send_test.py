@@ -18,7 +18,7 @@ At about 18 minutes in, when we asked about a time you'd helped a colleague, you
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
-<span style="font-weight:bold; color:#1565C0;">What Genuinely Impressed Us</span>
+<span style="font-weight:bold; color:#1565C0;">What Stayed With Us</span>
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
@@ -26,7 +26,7 @@ About 35 minutes in, when we asked about a time you'd pushed back on a team deci
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
-<span style="font-weight:bold; color:#1565C0;">Here's the Part We Need to Be Honest About</span>
+<span style="font-weight:bold; color:#1565C0;">Where We Found Questions</span>
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
@@ -34,7 +34,7 @@ In our technical interview, we found that your background was strong in project 
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
-<span style="font-weight:bold; color:#1565C0;">Here's Where We Want to Leave Things</span>
+<span style="font-weight:bold; color:#1565C0;">Where We Want to Leave This</span>
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
