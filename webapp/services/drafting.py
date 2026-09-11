@@ -30,7 +30,7 @@ import re
 from typing import Optional
 
 from ..config import get_settings
-from ..prompts.draft_prompt import build_user_prompt
+from ..prompts.draft_prompt import MissingEvidence, build_user_prompt
 from ..prompts.tone_rules import system_prompt
 from ..reuse import SECTION_HEADINGS, evaluate_email
 from . import rendering
@@ -255,11 +255,32 @@ def get_drafter():
     )
 
 
-def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app_id, email_type: str) -> dict:
+
+def _corpus_from_evidence(ev: Optional[dict]) -> Optional[str]:
+    """The candidate's own words, for the CV-grounding gate. None when there is
+    no CV evidence (non-CV types), which stands the gate down."""
+    if not ev:
+        return None
+    parts = [ev.get("cv_text") or "", ev.get("cover_letter") or ""]
+    for key in ("custom_answers", "canned_answers"):
+        value = ev.get(key)
+        if value:
+            parts.append(value if isinstance(value, str) else json.dumps(value))
+    corpus = "\n".join(p for p in parts if p).strip()
+    return corpus or None
+
+
+def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app_id,
+                   email_type: str, cv_evidence: Optional[dict] = None) -> dict:
     """Generate + self-correct a draft. Returns a dict with the rendered body,
-    title, full HTML, eval result, attempts, and which drafter was used."""
+    title, full HTML, eval result, attempts, and which drafter was used.
+
+    Raises MissingEvidence (propagated from build_user_prompt) when this email
+    type has no evidence to stand on. The caller must surface that, never draft.
+    """
     system = system_prompt(email_type)
-    user = build_user_prompt(scorecard=scorecard, first_name=first_name, role=role, email_type=email_type)
+    user = build_user_prompt(scorecard=scorecard, first_name=first_name, role=role,
+                             email_type=email_type, cv_evidence=cv_evidence)
 
     drafter = get_drafter()
     prior: Optional[list[dict]] = None
@@ -272,21 +293,18 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
                 first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
             )
         except Exception as exc:
-            # In production, NEVER substitute invented prose for a failed call —
-            # the stub reads like a real letter and can pass the eval. Hand back an
-            # empty scaffold (still editable by hand) and record the reason.
-            if get_settings().is_production:
-                log.error("Drafter %s failed (%s); returning an empty scaffold.", drafter.name, exc)
-                content = _blank_content(email_type, first_name)
-                drafter_name = f"unavailable ({type(exc).__name__})"
-            else:
-                log.warning("Drafter %s failed (%s); falling back to StubDrafter.", drafter.name, exc)
-                drafter = StubDrafter()
-                drafter_name = drafter.name
-                content = drafter.draft(
-                    system=system, user=user, email_type=email_type,
-                    first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
-                )
+            # NEVER substitute invented prose for a failed call, in ANY
+            # environment. The stub's filler reads like a real letter ("Across
+            # the conversation about the ... work, we returned to the specifics
+            # of what you described") and can pass the eval for every type that
+            # has no grounding check. This used to be gated on is_production,
+            # which reads app_env and DEFAULTS TO "development" — so a Railway
+            # service missing APP_ENV=production would have silently served stub
+            # letters. Hand back an empty scaffold instead: visibly empty, still
+            # editable by hand, impossible to mistake for a drafted letter.
+            log.error("Drafter %s failed (%s); returning an empty scaffold.", drafter.name, exc)
+            content = _blank_content(email_type, first_name)
+            drafter_name = f"unavailable ({type(exc).__name__})"
         else:
             drafter_name = drafter.name
 
@@ -299,7 +317,11 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
         )
         title_line = rendering.title_for(content, email_type)
         full_html = rendering.wrap_full(body_html, title_line=title_line, role=role, email_type=email_type)
-        result = evaluate_email(full_html, title_line, email_type, pilot_mode=True)
+        result = evaluate_email(
+            full_html, title_line, email_type, pilot_mode=True,
+            cv_corpus=_corpus_from_evidence(cv_evidence),
+            candidate_name=first_name, role=role,
+        )
 
         best = {
             "content": content,

@@ -28,6 +28,7 @@ Returns: {passed, violations[], word_count}
 """
 
 import re
+import unicodedata
 import html
 from typing import Optional, Dict, List, Tuple
 
@@ -480,6 +481,335 @@ _CV_INTERACTION_PHRASES = (
 )
 
 
+# ---------------------------------------------------------------------------
+# CV-STAGE GROUNDING (Skill 01, 01_candidate-rejections.md)
+#
+# Enforces, mechanically, three lines the SOP has always required but nothing
+# ever checked:
+#   Step 2  "Only use observations from actual CV text."
+#   Rule 5  "every strength and gap must be tied to actual CV text ...
+#            Never make up observations."
+#   Rule 7  "Never assume data - if not in CV, state 'Not mentioned in your CV'
+#            rather than filling in gaps."
+#
+# Why this exists: 27 CV rejections were sent live (2026-06-30 -> 2026-07-09)
+# whose drafter had only the candidate's first name and the role title. One
+# praised a candidate's "familiarity with the Lahore market"; his CV, unread in
+# the database, contains neither "Lahore" nor "retention". Every one of those
+# letters passed this harness, because the harness checked how a letter SOUNDS
+# and never whether anything in it was TRUE.
+#
+# The check is deliberately narrow and mechanical. It cannot judge paraphrase.
+# It catches the class of error that actually happened: concrete particulars -
+# place names, employers, tools, figures - asserted about a person when they
+# appear nowhere in their own application.
+# ---------------------------------------------------------------------------
+
+# Words a letter may capitalise without making a claim about the candidate: our
+# own identity, the letter's furniture, calendar words, and the ordinary English
+# that opens a clause. Anything outside this set must come from their material.
+_GROUNDING_ALLOWLIST = {
+    "taleemabad", "coco", "people", "culture", "team", "talent", "acquisition",
+    "hiring", "careers", "warm", "regards", "dear", "thank", "thanks", "sincerely",
+    "your", "you", "we", "our", "us", "the", "a", "an", "and", "but", "if", "it",
+    "this", "that", "there", "these", "those", "they", "them", "their",
+    "what", "where", "when", "how", "why", "who", "which", "while", "since",
+    "here", "here's", "there's", "did", "does", "do", "yes", "no", "not", "for",
+    "from", "with", "without", "about", "after", "before", "because", "both",
+    "each", "every", "some", "many", "most", "much", "more", "less", "few",
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+    "first", "second", "third", "next", "last", "then", "now", "still", "also",
+    "at", "in", "on", "of", "to", "by", "as", "is", "are", "was", "were", "be",
+    "been", "being", "has", "have", "had", "will", "would", "can", "could",
+    "should", "may", "might", "must", "so", "too", "very", "just", "only",
+    "role", "application", "applications", "applicant", "candidate", "cv",
+    "resume", "feedback", "note", "update", "interview", "stage", "process",
+    "position", "job", "work", "experience", "skills", "background",
+    "january", "february", "march", "april", "may", "june", "july", "august",
+    "september", "october", "november", "december",
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+    "pakistan", "pakistani",  # our own operating country, not a claim about them
+    "english", "urdu",
+}
+
+# Tokens too common to count as evidence that a letter engaged with a CV.
+_GROUNDING_STOPWORDS = _GROUNDING_ALLOWLIST | {
+    "able", "across", "again", "against", "all", "along", "already", "always",
+    "another", "any", "anything", "around", "away", "back", "best", "better",
+    "between", "beyond", "build", "building", "built", "came", "come", "coming",
+    "given", "give", "gives", "going", "good", "great", "help", "helped", "into",
+    "keep", "kind", "know", "known", "like", "look", "looked", "looking", "made",
+    "make", "makes", "making", "mean", "means", "move", "moving", "need", "needs",
+    "new", "often", "other", "others", "over", "own", "part", "place", "put",
+    "read", "real", "really", "right", "said", "same", "saw", "say", "see", "seen",
+    "sense", "set", "show", "showed", "shows", "side", "something", "sort",
+    "take", "taken", "tell", "than", "thing", "things", "think", "thought",
+    "through", "time", "times", "under", "until", "upon", "used", "using", "want",
+    "wanted", "way", "ways", "well", "went", "were", "whether", "within", "years",
+    "year", "your", "yours",
+}
+
+
+# Ordinary English that is routinely capitalised mid-sentence: job titles we use
+# ("second chair to our Head of Growth"), nouns opening a clause after a colon,
+# and words inside our own headings. Flagging these produced an 89% false-block
+# rate against the 103 Job-42 letters. A term is only reported as a possible
+# fabrication when it is NOT ordinary English — which is what an invented tool,
+# employer or place actually looks like (ChurnZero, Totango, Lahore).
+_COMMON_WORDS = {
+    "head", "heads", "lead", "leads", "leader", "leadership", "growth", "manager",
+    "management", "director", "officer", "chief", "senior", "junior", "associate",
+    "partner", "partners", "partnership", "partnerships", "state", "states",
+    "united", "north", "south", "east", "west", "central", "region", "regional",
+    "market", "markets", "sector", "industry", "business", "company", "companies",
+    "organisation", "organization", "product", "products", "project", "projects",
+    "programme", "program", "service", "services", "customer", "customers",
+    "client", "clients", "student", "students", "school", "schools", "education",
+    "teacher", "teachers", "learning", "training", "development", "operations",
+    "sales", "marketing", "finance", "revenue", "budget", "strategy", "strategic",
+    "data", "research", "design", "content", "brand", "digital", "technology",
+    "engineering", "quality", "delivery", "support", "success", "impact", "scale",
+    "team", "teams", "people", "culture", "values", "mission", "vision", "goal",
+    "goals", "target", "targets", "metric", "metrics", "number", "numbers",
+    "result", "results", "report", "reports", "review", "reviews", "meeting",
+    "meetings", "call", "calls", "email", "story", "stories", "question",
+    "questions", "answer", "answers", "example", "examples", "evidence", "detail",
+    "details", "specific", "specifics", "clarity", "context", "scope", "stage",
+    "stages", "step", "steps", "level", "levels", "scale", "size", "range",
+    "era", "world", "future", "past", "present", "today", "tomorrow", "chapter",
+    "door", "path", "journey", "career", "careers", "roles", "work", "working",
+    "note", "notes", "line", "lines", "point", "points", "case", "cases",
+    "trust", "care", "honest", "honesty", "respect", "courage", "joy",
+    "craft", "hard", "things", "one", "all", "not", "yes", "no", "we", "our",
+}
+
+
+def _fold(text: str) -> str:
+    """Normalise a side of the comparison. Applied IDENTICALLY to the letter and
+    the corpus — an asymmetry here is a false block (e.g. '&' stripped on one
+    side but kept on the other turned a verbatim 'M&E' into a fabrication)."""
+    text = strip_html(text or "")
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    text = text.replace("’", "'").replace("‘", "'")
+    text = text.lower().replace("&", " and ")
+    return re.sub(r"[^a-z0-9'\s]", " ", text)
+
+
+def _stem(word: str) -> str:
+    """Crude suffix strip so 'partnerships' matches 'partnership'. Deliberately
+    conservative: over-stemming grounds words the CV never contained."""
+    for suffix in ("'s", "ing", "ers", "er", "ed", "es", "s"):
+        if word.endswith(suffix) and len(word) - len(suffix) >= 4:
+            return word[: -len(suffix)]
+    return word
+
+
+def _token_set(text: str) -> set:
+    tokens = set()
+    for word in _fold(text).split():
+        word = word.strip("'")
+        if word:
+            tokens.add(word)
+            tokens.add(_stem(word))
+    return tokens
+
+
+def _ungrounded_particulars(
+    text: str,
+    email_type: str,
+    cv_corpus: Optional[str],
+    *,
+    candidate_name: str = "",
+    role: str = "",
+    subject: str = "",
+) -> List[str]:
+    """Names, figures and quoted phrases in the letter that are absent from the
+    candidate's own material. Shared by the hard block and the warning."""
+    if email_type != "cv_rejection" or cv_corpus is None:
+        return []
+
+    corpus_tokens = _token_set(cv_corpus)
+    corpus_flat = " " + " ".join(_fold(cv_corpus).split()) + " "
+    letter = strip_html(text)
+
+    # The candidate's name, the role title and our own subject line are ours or
+    # theirs by definition, never invented claims about them.
+    allow = set(_GROUNDING_ALLOWLIST)
+    for source in (candidate_name, role, subject):
+        for token in _fold(source).split():
+            allow.add(token)
+            allow.add(_stem(token))
+
+    def _grounded(word: str) -> bool:
+        return word in allow or word in corpus_tokens or _stem(word) in corpus_tokens
+
+    ungrounded_terms: List[str] = []
+    seen = set()
+    blocks = [b for b in re.split(r"[\r\n]+", letter) if b.strip()]
+    sentences = []
+    for block in blocks:
+        flat = re.sub(r"\s+", " ", block).strip()
+        sentences.extend(re.split(r"(?<=[.!?:])\s+", flat))
+    for sentence in sentences:
+        # Skip the opening word: a sentence-initial capital carries no signal.
+        for term in re.findall(r"[A-Za-z0-9&.'-]+", sentence)[1:]:
+            if not term[:1].isupper():
+                continue
+            # A hyphenated or ampersand compound ("AI-era", "M&E") folds to
+            # several words; judge each part, or the whole compound reads as
+            # ungrounded merely because the CV spells it as separate words.
+            parts = [p for p in _fold(term).split() if len(p) >= 3]
+            if not parts:
+                continue
+            key = " ".join(parts)
+            if key in seen:
+                continue
+            seen.add(key)
+            # Only when EVERY part is absent from their material. If any part is
+            # grounded the compound is theirs, spelled differently
+            # ("ServiceNow-literate" against a CV that says "ServiceNow").
+            if any(_grounded(p) for p in parts):
+                continue
+            invented = [p for p in parts if p not in _COMMON_WORDS]
+            if len(invented) == len(parts):
+                ungrounded_terms.extend(invented)
+
+    ungrounded_numbers: List[str] = []
+    for match in re.finditer(r"(\d[\d,]*(?:\.\d+)?)\s*(%|percent|years?|months?|people|person)", letter):
+        raw = match.group(1).replace(",", "")
+        if raw in seen:
+            continue
+        seen.add(raw)
+        # Word-boundary containment: '8' must not be grounded by '2018'.
+        if not re.search(r"(?<![\d.])" + re.escape(raw) + r"(?![\d])", corpus_flat):
+            ungrounded_numbers.append(f"{raw}{match.group(2)}")
+
+    ungrounded_quotes: List[str] = []
+    # Double quotes only. A single quote in English prose is far more often a
+    # possessive than a quotation: including it read "Taleemabad's work in
+    # Pakistan's schools" as a quoted span and blocked a correct letter.
+    for match in re.finditer(r"[\"“]([^\"“”]{8,200})[\"”]", letter):
+        phrase = " ".join(_fold(match.group(1)).split())
+        if phrase and phrase not in corpus_flat:
+            ungrounded_quotes.append(match.group(1)[:80])
+
+
+    items = []
+    if ungrounded_terms:
+        items.append("names/places/tools: " + ", ".join(repr(t) for t in ungrounded_terms[:8]))
+    if ungrounded_numbers:
+        items.append("figures: " + ", ".join(repr(n) for n in ungrounded_numbers[:6]))
+    if ungrounded_quotes:
+        items.append("quoted text that is not verbatim: "
+                     + ", ".join(repr(q) for q in ungrounded_quotes[:4]))
+    return items
+
+
+def check_cv_grounding(
+    text: str,
+    email_type: str,
+    cv_corpus: Optional[str],
+    *,
+    candidate_name: str = "",
+    role: str = "",
+    subject: str = "",
+    # Calibrated 2026-09-11 on two real sets: the 103 Job-42 letters written by
+    # the careful CLI path (min observed 26) and the 27 letters sent live from
+    # the no-CV bug (median 21, p90 36). 25 sits just under the floor of the good
+    # set: 0 of 98 correct letters blocked, 56% of the ungrounded ones caught.
+    # Re-measure with scripts/evals/calibrate_cv_grounding.py before changing it.
+    min_anchors: int = 25,
+) -> Tuple[bool, Optional[str]]:
+    """A CV-stage rejection must actually be built out of THIS candidate's CV.
+
+    HARD BLOCK, and deliberately a POSITIVE requirement rather than a hunt for
+    invented particulars. The 27 letters sent live on 2026-06-30..07-09 had no
+    fabricated proper nouns to catch: they were fluent generic prose about people
+    whose CVs were never opened, because the drafter was handed only a first name
+    and a role title. A gate that only looks for inventions is silent on exactly
+    that failure. So the letter must share at least `min_anchors` distinct
+    content words with the candidate's application.
+
+    Measured on the 103 Job-42 letters written by the careful CLI path: 3 blocked.
+    The invented-particulars scan is a WARNING instead — see check_cv_particulars
+    for why a hard block there was unusable.
+
+    cv_rejection ONLY. Returns (True, None) when `cv_corpus` is None so callers
+    with no corpus (a hand-written letter from the CLI) are not blocked by an
+    absence; generation refuses separately when there is no evidence.
+    """
+    if email_type != "cv_rejection" or cv_corpus is None:
+        return True, None
+
+    corpus_tokens = _token_set(cv_corpus)
+    letter = strip_html(text)
+
+    # POSITIVE: does this letter reference their material at all?
+    # An anchor is a content word the letter and the CV share. Ordinary English
+    # and ordinary domain vocabulary are excluded, as are the candidate's name
+    # and the role title, which both sides carry by definition.
+    letter_tokens = _token_set(letter)
+    generic = _GROUNDING_STOPWORDS | _COMMON_WORDS
+    for source in (candidate_name, role, subject):
+        for token in _fold(source).split():
+            generic.add(token)
+            generic.add(_stem(token))
+    anchors = {
+        t for t in (letter_tokens & corpus_tokens)
+        if len(t) >= 5 and t not in generic and not t.isdigit()
+    }
+
+    if len(anchors) < min_anchors:
+        return False, (
+            f"This letter references the candidate's application only {len(anchors)} "
+            f"time(s) ({min_anchors}+ expected), so it reads as generic prose that "
+            "would fit any candidate. Skill 01 Rule 5: every strength and gap must be "
+            "tied to actual CV text. Name what THIS CV actually shows."
+        )
+    return True, None
+
+
+def check_cv_particulars(
+    text: str,
+    email_type: str,
+    cv_corpus: Optional[str],
+    *,
+    candidate_name: str = "",
+    role: str = "",
+    subject: str = "",
+) -> Tuple[bool, Optional[str]]:
+    """Names, figures and quotes in a CV-stage rejection that do not appear in
+    the candidate's application. WARNING, not a hard block — read on.
+
+    Measured against the 103 Job-42 letters (written by the careful CLI path,
+    each grounded in a CV that was read), a hard block on this flagged ~3 in 4.
+    Most were legitimate: generic industry vocabulary ("CRM"), our own job titles
+    ("Head of Growth"), and abbreviations expanded from the CV ("U.S." written as
+    "United States"). A lexical test cannot separate those from an invention, and
+    every relaxation that fixed them also blinded it to real ones.
+
+    It is still worth surfacing, because it found a real fabrication in that
+    supposedly-gold corpus: letter 3874 lists the candidate's toolkit as "HubSpot
+    and Dynamics 365 to Totango, ChurnZero and Mixpanel" when their CV contains
+    HubSpot, Dynamics, Totango and Mixpanel, and no ChurnZero. Four real tools and
+    an invented fifth. So: show the operator the terms to check, block on the
+    positive requirement (check_cv_grounding), and let a person judge these.
+    """
+    items = _ungrounded_particulars(
+        text, email_type, cv_corpus,
+        candidate_name=candidate_name, role=role, subject=subject,
+    )
+    if not items:
+        return True, None
+    return False, (
+        "Check these against the CV before sending. They appear in the letter but "
+        "not in the candidate's application, so each is either an invention or a "
+        "wording the CV spells differently: " + "; ".join(items)
+        + ". Skill 01 Rule 7: if it is not in the CV, do not fill the gap."
+    )
+
+
 def check_cv_no_interaction(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
     """A CV/application-stage rejection must not imply an interview / call /
     conversation that never happened. Applies to cv_rejection ONLY — everything
@@ -639,6 +969,9 @@ def evaluate_email(
     subject: str,
     email_type: str,
     pilot_mode: bool = True,
+    cv_corpus: Optional[str] = None,
+    candidate_name: str = "",
+    role: str = "",
 ) -> Dict:
     """
     Run all checks on an email draft.
@@ -767,6 +1100,34 @@ def evaluate_email(
         violations.append({
             'rule': 'CV rejection: no fabricated interview/conversation',
             'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 7d. CV-stage rejection must be grounded in the candidate's own material
+    #     (Skill 01 Rule 5 / Rule 7). Only runs when a corpus is supplied.
+    passed, detail = check_cv_grounding(
+        html_body, email_type, cv_corpus,
+        candidate_name=candidate_name, role=role, subject=subject,
+    )
+    if not passed:
+        violations.append({
+            'rule': 'CV rejection: the letter must be built from their application',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 7e. Names/figures/quotes absent from their application. WARNING: a hard
+    #     block here flagged ~3 in 4 correctly-grounded letters (generic industry
+    #     vocabulary, our own job titles, abbreviations the CV writes short), and
+    #     no relaxation separated those from real inventions. Surfaced for a human.
+    passed, detail = check_cv_particulars(
+        html_body, email_type, cv_corpus,
+        candidate_name=candidate_name, role=role, subject=subject,
+    )
+    if not passed:
+        violations.append({
+            'rule': 'CV rejection: check these terms against the CV',
+            'severity': 'WARNING',
             'detail': detail,
         })
 

@@ -83,6 +83,26 @@ def main():
         help='Email type'
     )
     parser.add_argument(
+        '--cv',
+        type=str,
+        help=("Path to a text file holding the candidate's own application "
+              "material (CV text, cover letter, application answers). REQUIRED "
+              "to exercise the CV-grounding checks on a cv_rejection: without "
+              "it they stand down and the draft is judged on tone alone.")
+    )
+    parser.add_argument(
+        '--candidate-name',
+        type=str,
+        default='',
+        help="Candidate's name, so it is not read as an ungrounded claim"
+    )
+    parser.add_argument(
+        '--role',
+        type=str,
+        default='',
+        help='Role title, so its words are not read as ungrounded claims'
+    )
+    parser.add_argument(
         '--subject',
         type=str,
         default='Draft Email',
@@ -120,11 +140,23 @@ def main():
     pilot_mode = not args.live_mode
 
     # Run evaluation
+    cv_corpus = None
+    if args.cv:
+        with open(args.cv, encoding='utf-8', errors='ignore') as fh:
+            cv_corpus = fh.read()
+    elif args.type == 'cv_rejection':
+        print("NOTE: no --cv given, so the grounding checks did not run. This "
+              "draft was judged on tone only, not on whether anything in it is "
+              "true. Pass --cv <file> with the candidate's CV text.\n")
+
     result = evaluate_email(
         html_body=html_body,
         subject=args.subject,
         email_type=args.type,
         pilot_mode=pilot_mode,
+        cv_corpus=cv_corpus,
+        candidate_name=args.candidate_name,
+        role=args.role,
     )
 
     # Print and return

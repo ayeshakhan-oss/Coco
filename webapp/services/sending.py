@@ -232,6 +232,7 @@ def send_communication(
     first_name: str,
     candidate_email: Optional[str],
     hiring_manager_email: Optional[str] = None,
+    cv_corpus: Optional[str] = None,
     transport: Optional[Transport] = None,
 ) -> dict:
     """Gate + build + send. Returns the resolved recipients / subject / message_id
@@ -245,8 +246,14 @@ def send_communication(
     subject = build_subject(mode, comm.title_line or "", first_name)
     pilot = mode == "pilot"
 
-    # Authoritative gate.
-    result = evaluate_email(full_html, subject, comm.email_type, pilot_mode=pilot)
+    # Authoritative gate. For a CV-stage rejection this also checks that every
+    # concrete particular in the letter comes from the candidate's own
+    # application (Skill 01 Rule 5/7) — the check that was missing when 27 of
+    # these went out written from the candidate's first name and the role title.
+    result = evaluate_email(
+        full_html, subject, comm.email_type, pilot_mode=pilot,
+        cv_corpus=cv_corpus, candidate_name=first_name, role=role,
+    )
     if any(v["severity"] == "HARD_BLOCK" for v in result["violations"]):
         raise SendBlocked(result["violations"])
 

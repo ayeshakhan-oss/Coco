@@ -43,7 +43,10 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     let text = ''
     try {
       detail = await res.json()
-      text = typeof detail === 'object' && detail && 'detail' in detail ? JSON.stringify((detail as { detail: unknown }).detail) : JSON.stringify(detail)
+      const inner = typeof detail === 'object' && detail && 'detail' in detail ? (detail as { detail: unknown }).detail : detail
+      // A plain-string detail is a message written for the user (e.g. "no
+      // evidence exists for this email type"). Show it as prose, not as JSON.
+      text = typeof inner === 'string' ? inner : JSON.stringify(inner)
     } catch {
       text = await res.text().catch(() => '')
     }

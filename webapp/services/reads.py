@@ -23,11 +23,15 @@ app-sent comm, a Gmail `found` match, or a manual override; never Markaz alone.
 
 from __future__ import annotations
 
+import json
+
 from typing import Optional
 
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlalchemy.orm import Session
+
+from . import cv_text
 
 
 def _ensure_app_tables(db: Session) -> None:
@@ -459,3 +463,124 @@ def list_jobs(db: Session, active_only: bool = True) -> list[dict]:
     """.format(where="WHERE j.job_status = 'Active'" if active_only else "")
     rows = db.execute(text(sql)).mappings().all()
     return [dict(r) for r in rows]
+
+
+def get_cv_evidence(db: Session, application_id: int) -> dict:
+    """The candidate's own application material, for CV-stage drafting.
+
+    A CV rejection must be grounded in what the candidate actually wrote (Skill
+    01: "every statement traceable to CV text"), so this returns the raw source
+    and says plainly when a piece is missing. `cv_error` is set, and `cv_text`
+    left None, when a resume exists but yields no readable text — the caller
+    must refuse to draft rather than write around the hole.
+
+    Deliberately EXCLUDES the `ai_*` screening columns: those are a model's
+    inferences about the candidate, not the candidate's own words, and grounding
+    a letter in them would just launder one model's guesses through another.
+    """
+    sql = """
+    SELECT c.resume_data, c.resume_file_name, c.resume_mime_type,
+           c.linkedin_url, c.portfolio_url,
+           a.cover_letter, a.custom_answers, a.canned_answers
+    FROM applications a
+    JOIN candidates c ON c.id = a.candidate_id
+    WHERE a.id = :app_id
+    """
+    row = db.execute(text(sql), {"app_id": application_id}).mappings().first()
+    if not row:
+        return {"cv_text": None, "cv_error": "application not found",
+                "cv_file_name": None, "cover_letter": None,
+                "custom_answers": None, "canned_answers": None,
+                "linkedin_url": None, "portfolio_url": None}
+
+    cv_text_value: Optional[str] = None
+    cv_error: Optional[str] = None
+    try:
+        cv_text_value = cv_text.extract(
+            row["resume_data"],
+            mime_type=row["resume_mime_type"],
+            file_name=row["resume_file_name"],
+        )
+    except cv_text.CVUnreadable as exc:
+        cv_error = str(exc)
+
+    return {
+        "cv_text": cv_text_value,
+        "cv_error": cv_error,
+        "cv_file_name": row["resume_file_name"],
+        "cover_letter": row["cover_letter"],
+        "custom_answers": row["custom_answers"],
+        "canned_answers": row["canned_answers"],
+        "linkedin_url": row["linkedin_url"],
+        "portfolio_url": row["portfolio_url"],
+    }
+
+
+def cv_corpus_for(
+    db: Session, application_id: Optional[int], email_type: Optional[str] = None
+) -> Optional[str]:
+    """The candidate's own words as one blob, for the CV-grounding gate.
+
+    Returns None when there is nothing to check against — the gate then stands
+    down rather than blocking on an absence. Generation already refuses in that
+    case (draft_prompt.MissingEvidence), so a None here means an older draft or
+    a hand-written one, not a silently ungrounded new letter.
+
+    `email_type` short-circuits for the types that never use it: only
+    cv_rejection is grounded this way, and decoding + PDF-parsing a resume on
+    every save, re-eval, submit, approve and send of a values letter is pure
+    waste.
+    """
+    if not application_id:
+        return None
+    if email_type is not None and email_type != "cv_rejection":
+        return None
+    ev = get_cv_evidence(db, application_id)
+    parts = [ev.get("cv_text") or "", ev.get("cover_letter") or ""]
+    for key in ("custom_answers", "canned_answers"):
+        parts.extend(answer_texts(ev.get(key)))
+    corpus = "\n".join(p for p in parts if p).strip()
+    return corpus or None
+
+
+def answer_texts(raw) -> list[str]:
+    """Just the candidate's ANSWERS out of a Markaz answers blob.
+
+    Never json.dumps() the whole thing: Markaz stores
+    {"<epoch id>": {"question": "...", "answer": "..."}}, so dumping it puts OUR
+    question text and the JSON keys into the corpus. The grounding gate then
+    treats a term as coming from the candidate when it only ever appeared in the
+    question we asked them.
+    """
+    if not raw:
+        return []
+    data = raw
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+        except ValueError:
+            return [data]
+    out: list[str] = []
+
+    def _add(value):
+        if isinstance(value, str) and value.strip():
+            out.append(value.strip())
+        elif isinstance(value, (int, float)):
+            out.append(str(value))
+        elif isinstance(value, list):
+            for item in value:
+                _add(item)
+
+    if isinstance(data, dict):
+        for value in data.values():
+            if isinstance(value, dict):
+                _add(value.get("answer", value.get("value")))
+            else:
+                _add(value)
+    elif isinstance(data, list):
+        for item in data:
+            if isinstance(item, dict):
+                _add(item.get("answer", item.get("value")))
+            else:
+                _add(item)
+    return out

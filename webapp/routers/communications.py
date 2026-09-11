@@ -32,9 +32,17 @@ router = APIRouter(prefix="/api/communications", tags=["communications"])
 
 
 def _scorecard_for(raw: dict, email_type: str) -> Optional[dict]:
+    """Scorecard evidence for the INTERVIEW-stage types only.
+
+    cv_rejection deliberately gets None: that candidate was screened on their
+    written application and never assessed on values, so a values scorecard is
+    not evidence about them. It is grounded in reads.get_cv_evidence() instead.
+    """
+    if email_type == "cv_rejection":
+        return None
     if email_type == "gwc_rejection":
         return normalize_gwc_scorecard(raw.get("gwc_scorecard"))
-    # values_feedback / warm_bench / cv_rejection lean on the values scorecard
+    # values_feedback / warm_bench lean on the values scorecard
     return normalize_values_scorecard(raw.get("values_scorecard"))
 
 
@@ -53,6 +61,11 @@ def generate(
 
     raw = reads.get_scorecards_raw(db, body.application_id) or {}
     scorecard = _scorecard_for(raw, body.email_type)
+    cv_evidence = (
+        reads.get_cv_evidence(db, body.application_id)
+        if body.email_type == "cv_rejection"
+        else None
+    )
 
     # Candidate name from the candidates table — NEVER scorecard.candidateName.
     first_name = (app_row.get("first_name") or "there").strip()
@@ -65,7 +78,12 @@ def generate(
             role=role,
             app_id=body.application_id,
             email_type=body.email_type,
+            cv_evidence=cv_evidence,
         )
+    except drafting.MissingEvidence as exc:
+        # No evidence for this type. Say so and write nothing — a letter built on
+        # an empty scorecard is fabrication, however good it reads (app 3867).
+        raise HTTPException(422, str(exc)) from exc
     except drafting.DraftingUnavailable as exc:
         # No credential at all. Say so plainly rather than persisting a draft the
         # model never wrote — a silent placeholder is worse than a visible error.
@@ -148,7 +166,11 @@ def update_comm(
     full_html = rendering.wrap_full(
         body_html, title_line=body.title_line, role=role, email_type=comm.email_type
     )
-    result = evaluate_email(full_html, body.title_line, comm.email_type, pilot_mode=True)
+    result = evaluate_email(
+        full_html, body.title_line, comm.email_type, pilot_mode=True,
+        cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        candidate_name=first_name, role=role,
+    )
     comm = comm_svc.update_content(
         db, comm,
         body_html=body_html,
@@ -176,7 +198,11 @@ def reeval(
         comm.body_html or "", title_line=comm.title_line or "", role=comm.role_title or "the role",
         email_type=comm.email_type,
     )
-    return evaluate_email(full_html, comm.title_line or "", comm.email_type, pilot_mode=(mode != "live"))
+    return evaluate_email(
+        full_html, comm.title_line or "", comm.email_type, pilot_mode=(mode != "live"),
+        cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        candidate_name=_first_name_for(db, comm), role=comm.role_title or "",
+    )
 
 
 @router.get("/{comm_id}/preview", response_class=HTMLResponse)
@@ -191,13 +217,28 @@ def preview(comm_id: str, db: Session = Depends(get_db), _user: dict = Depends(g
     return HTMLResponse(rendering.preview_html(full_html))
 
 
-def _gate_or_422(comm) -> dict:
+
+def _first_name_for(db: Session, comm) -> str:
+    """The candidate's first name, for the grounding allowlist. Every gate must
+    be handed the SAME inputs, or a letter passes at one stage and blocks at the
+    next purely because its allowlist changed."""
+    if not comm.application_id:
+        return ""
+    row = reads.get_application(db, comm.application_id) or {}
+    return (row.get("first_name") or "").strip()
+
+
+def _gate_or_422(db: Session, comm, candidate_name: str = "") -> dict:
     """Re-render stored content and refuse if any HARD-BLOCK is present."""
     full_html = rendering.wrap_full(
         comm.body_html or "", title_line=comm.title_line or "",
         role=comm.role_title or "the role", email_type=comm.email_type,
     )
-    result = evaluate_email(full_html, comm.title_line or "", comm.email_type, pilot_mode=True)
+    result = evaluate_email(
+        full_html, comm.title_line or "", comm.email_type, pilot_mode=True,
+        cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        candidate_name=candidate_name, role=comm.role_title or "",
+    )
     hard = [v for v in result["violations"] if v["severity"] == "HARD_BLOCK"]
     if hard:
         raise HTTPException(422, detail={"message": "Resolve hard blocks first", "violations": hard})
@@ -211,7 +252,7 @@ def submit_for_review(comm_id: str, db: Session = Depends(get_db), _user: dict =
         raise HTTPException(404, "Communication not found")
     if comm.status != "draft":
         raise HTTPException(409, f"Only a draft can be submitted (status={comm.status})")
-    _gate_or_422(comm)
+    _gate_or_422(db, comm, _first_name_for(db, comm))
     return comm_svc.submit(db, comm)
 
 
@@ -222,7 +263,7 @@ def approve(comm_id: str, db: Session = Depends(get_db), user: dict = Depends(re
         raise HTTPException(404, "Communication not found")
     if comm.status != "in_review":
         raise HTTPException(409, f"Only an in-review draft can be approved (status={comm.status})")
-    _gate_or_422(comm)  # re-evaluate server-side; never trust a stale pass
+    _gate_or_422(db, comm, _first_name_for(db, comm))  # re-evaluate server-side; never trust a stale pass
     return comm_svc.approve(db, comm, user.get("id"))
 
 
@@ -266,6 +307,7 @@ def send(
         result = sending.send_communication(
             comm, mode=mode, first_name=first_name, candidate_email=candidate_email,
             hiring_manager_email=hm_email,
+            cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
         )
     except sending.SendBlocked as e:
         raise HTTPException(422, detail={"message": "Blocked by validation", "violations": e.violations})
