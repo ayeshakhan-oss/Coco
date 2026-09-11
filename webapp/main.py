@@ -122,8 +122,21 @@ app.add_middleware(
 
 @app.get("/healthz", tags=["health"])
 def healthz() -> dict:
-    """Liveness probe — no external dependencies (used by Railway healthcheck)."""
-    return {"status": "ok", "service": "coco-backend", "env": settings.app_env}
+    """Liveness probe — no external dependencies (used by Railway healthcheck).
+
+    Reports the commit it is serving. Railway injects RAILWAY_GIT_COMMIT_SHA at
+    runtime, and without it there is no way to tell from outside whether a push
+    actually reached production: /healthz looks identical on every build, and
+    the frontend asset hashes are not reproducible across build environments.
+    "unknown" means the variable is absent, not that the deploy failed.
+    """
+    sha = os.getenv("RAILWAY_GIT_COMMIT_SHA") or os.getenv("GIT_COMMIT_SHA") or ""
+    return {
+        "status": "ok",
+        "service": "coco-backend",
+        "env": settings.app_env,
+        "commit": sha[:8] if sha else "unknown",
+    }
 
 
 @app.get("/readyz", tags=["health"])
