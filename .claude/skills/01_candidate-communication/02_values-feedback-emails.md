@@ -70,7 +70,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 **Structure (3 Required Sections):**
 1. What We Liked Most About You (2-3 specific strengths from interview)
 2. Where We Found Ourselves Sitting With Questions (2-3 values gaps, with evidence)
-3. What We Think You Should Do Next (actionable advice)
+3. A final note (actionable advice)
 
 **Tone & Voice:**
 - "We" voice (never "I")
@@ -109,7 +109,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 1. Opening: Thank candidate by name, warm rejection + context
 2. Section 1 "What We Liked Most About You" (2-3 strengths with specific interview evidence, 100-150 words)
 3. Section 2 "Where We Found Ourselves Sitting With Questions" (2-3 gaps with interview evidence, 100-150 words)
-4. Section 3 "What We Think You Should Do Next" (actionable advice, not prescriptive, 100-150 words)
+4. Section 3 "A final note" (actionable advice, not prescriptive, 100-150 words)
 5. P.S. box: encouraging sign-off (specific to candidate)
 6. No em dashes (replace all " — " with period, comma, or colon)
 7. "We" voice throughout (never "I"), they/them pronouns (never gendered)

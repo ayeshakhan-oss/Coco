@@ -113,11 +113,55 @@ with them. You have ONLY their written application / CV.
 - Ground EVERYTHING only in what a written application can show: "your
   application", "your CV", "the experience you described", "your materials".
 - "What we appreciated" = specific genuine strengths visible in the written
-  application. "Where we found questions" = specific gaps/uncertainties in the
-  application relative to the role. Honest and concrete, never invented.
+  application, stated briefly. "What we were looking for" = what THIS role
+  required and what the application did not make visible. Honest and concrete,
+  never invented.
 - You MAY refer to the interview stage they did not reach (e.g. "we've decided
   not to move forward to the interview stage") — that is about a stage, not a
   conversation that occurred.
+
+========================================================================
+"""
+
+
+_FEEDBACK_TONE_NOTE = """
+========================================================================
+REPORT WHAT WE COULD SEE. DO NOT COACH THEIR CAREER. (Ayesha 2026-09-14)
+========================================================================
+Applies to ALL FOUR feedback letters: CV rejection, values feedback, warm bench
+and GWC rejection. The whole letter answers one question: what were we able, and
+unable, to see? It is not a development plan.
+
+- Describe the EVIDENCE, never the person's capability. Write "we could not
+  clearly see X", never "you need to develop X" and never "you lack X". The
+  limit is what we could see, not what they can do. Say so explicitly: there may
+  well be experience behind this that shows it more strongly, we simply could
+  not see enough of it here.
+- The strengths section is specific and SHORT. Name what is genuinely there and
+  stop. Do not interpret every strength back at them or explain why each one
+  matters; that lecture is what makes a rejection read as condescending.
+- The middle section is what WE were looking for and needed to see more clearly,
+  framed as our requirement for this role, not as their deficiency.
+- The closing section is a warm note, NOT advice. Restate plainly what the role
+  needed, acknowledge the breadth they do bring, and leave the door open in
+  general terms. Do NOT prescribe what to do next, what to document, what to
+  build, or what to look for in a next job.
+- NEVER suggest specific alternative job titles for them (e.g. "a coordinator or
+  trainer role might suit you"). However kindly meant, it reads as "you are not
+  senior enough".
+- An unanswered question is raised with CURIOSITY, never as a disciplinary
+  signal. Never quote a non-answer back at them or call it a signal. Write: "the
+  reflection question on X wasn't answered, and we would have liked to hear your
+  perspective there, it would have helped us understand how you approach those
+  situations."
+- Keep the P.S. personal and specific to something real in their material. No
+  advice in it, and no role suggestions.
+
+REACHING 800 WORDS WITHOUT COACHING (Ayesha 2026-09-14): the length now has to
+come from BEING MORE SPECIFIC ABOUT THEIR OWN MATERIAL, not from advice. Go
+deeper on what their material actually showed and on exactly what this role
+needed and why. More detail about THEM, never more instruction FOR them. If you
+find yourself short, add evidence, not guidance.
 ========================================================================
 """
 
@@ -167,6 +211,12 @@ def system_prompt(email_type: str) -> str:
     headings = "\n".join(f"    {i + 1}. {h}" for i, h in enumerate(canonical))
     contract = _OUTPUT_CONTRACT.replace("{headings}", headings or "    (none)")
     prompt = _tone_master() + "\n\n" + contract
+    # The four FEEDBACK letters share one tone: report the evidence, never coach
+    # the career. case_study_outcome is deliberately excluded — its guidance is
+    # about the submitted WORK, not the person's career, and its order is locked
+    # separately (CLAUDE.md Rule 25).
+    if email_type in ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection"):
+        prompt += "\n" + _FEEDBACK_TONE_NOTE
     if email_type == "cv_rejection":
         prompt += "\n" + _CV_STAGE_NOTE
     if email_type == "case_study_outcome":

@@ -91,8 +91,8 @@ WORD COUNT: 800-1100 mandatory.""",
         "eyebrow": EYEBROW["cv_rejection"],
         "headings": [
             "What we appreciated",
-            "Where we found questions",
-            "What we think you should do next",
+            "What we were looking for",
+            "A final note",
         ],
         "sub": None,
         "rules": """CV REJECTION RULES:
@@ -115,9 +115,9 @@ def build(cfg):
         + P("This is not a yes for now.")
         + P("[OPENING_PARAGRAPH: state the decision clearly + promise an honest, specific account. 'We have completed our evaluation of your ... We will not be moving you forward at this time...' Pair this with candidate-initiated reapplication language later, never a promise of proactive outreach.]")
         + H(h[0]) + P("[SECTION_1_CONTENT: 2-3 specific strengths, each tied to evidence from the source. Observable behaviors, not generic labels.]")
-        + sec2 + P("[SECTION_2_CONTENT: 2-3 honest gaps, evidence-based. Frame as 'what we found ourselves wanting...' / 'the role required...' — never intent inference or personal shortcoming.]")
-        + H(h[2]) + P("[SECTION_3_CONTENT: gentle, specific guidance. Door-open close where appropriate. Careers page link.]")
-        + PS("<strong>P.S.</strong> [PS_CONTENT: one memorable, character-affirming line tied to a specific moment.]")
+        + sec2 + P("[SECTION_2_CONTENT: what THIS role required and what the application did not make visible. 'We could not clearly see X in the application' - never 'you need to develop X'. Say there may well be experience behind the application showing this more strongly.]")
+        + H(h[2]) + P("[SECTION_3_CONTENT: a warm close, NOT advice. Restate what the role needed, acknowledge the breadth they bring, leave the door open in general terms. No career prescriptions, no suggested job titles.]")
+        + PS("<strong>P.S.</strong> [PS_CONTENT: one warm, specific line about something real in their application. No advice, no role suggestions.]")
         + FOOTER
         + WIDGET_NOTE
     )

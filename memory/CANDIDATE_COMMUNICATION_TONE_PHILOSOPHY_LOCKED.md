@@ -28,6 +28,31 @@ metadata:
 
 **Core principle:** Personalized rejection-keep-warm emails that leave dignity intact.
 
+**Rule 14 — REPORT THE EVIDENCE, DO NOT COACH THE CAREER (Ayesha 2026-09-14).**
+Applies to all four feedback letters: CV rejection, values feedback, warm bench,
+GWC rejection. The letter answers one question: what were we able, and unable, to
+see? It is not a development plan.
+- Evidence language, never capability language: "we could not clearly see X",
+  never "you need to develop X" and never "you lack X". State plainly that there
+  may be experience behind the application that shows this more strongly; we
+  simply could not see enough of it here.
+- The strengths section is specific and SHORT. Do not interpret every strength
+  back at them; that lecture is what makes a rejection read as condescending.
+- The prescriptive closing section is RETIRED. No telling them what to develop,
+  document, build or look for next. No advice in the P.S.
+- NEVER suggest alternative job titles ("a Trainer or Coordinator role"). However
+  kindly meant, it reads as *you are not senior enough*.
+- An unanswered question is raised with curiosity, never as a disciplinary
+  signal. Never quote a non-answer back or call it "an important signal".
+- 800 words still stands. The length comes from being MORE SPECIFIC ABOUT THEIR
+  OWN MATERIAL, not from advice. If a letter runs short, add evidence, not guidance.
+- Section names: cv_rejection is now *What we appreciated / What we were looking
+  for / A final note*. values_feedback closes on *A final note*. warm_bench and
+  gwc_rejection already close on *Where We Want to Leave This*, which is a warm
+  note rather than advice, and are unchanged.
+- NOT applied to case_study_outcome: its guidance is about the submitted WORK,
+  not the person's career, and its order is locked separately (Rule 25).
+
 **Structure (locked):**
 - **Opening:** Lead with specific moment, show company vulnerability
 - **Section 1:** "What Stayed With Us" (Blue #1565C0 heading) — Specific strengths from interview

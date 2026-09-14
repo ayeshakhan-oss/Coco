@@ -135,4 +135,4 @@ module, so what gets injected at draft time == what gets sent.
 - Section headings differ per type (enforced by `scripts/evals/candidate_communication_eval.py`):
   - values_feedback: What We Liked Most About You / Where We Found Ourselves Sitting With Questions / What We Think You Should Do Next
   - warm_bench + gwc_rejection: What Stayed With Us / Where We Found Questions / Where We Want to Leave This
-  - cv_rejection: What we appreciated / Where we found questions / What we think you should do next
+  - cv_rejection: What we appreciated / What we were looking for / A final note  (retoned 2026-09-14)

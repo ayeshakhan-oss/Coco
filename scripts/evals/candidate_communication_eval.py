@@ -99,6 +99,32 @@ HARSH_LANGUAGE = [
     r"selecting assumptions",
 ]
 
+# Career-coaching register in a CV-stage rejection — WARNING (Ayesha 2026-09-14).
+#
+# A CV rejection reports what we could and could not see in the application. It
+# is not a development plan, and it must not tell someone what to do with their
+# career. Two failure modes, both from a real letter:
+#   "here is what we would encourage you to develop and document"  -> a syllabus
+#   "look for a Trainer or Coordinator role"  -> reads as "you are not senior enough"
+# Say instead: "we could not clearly see X in the application; there may well be
+# experience behind it that shows this more strongly."
+#
+# WARNING, not a hard block: the phrasing is judgement-dependent and a block here
+# would stop letters that are merely warm.
+COACHING_REGISTER = [
+    r'you (should|need to|must) (develop|build|document|work on|focus on|gain)',
+    r'what (you need|we would encourage you) to develop',
+    r'we would encourage you to (develop|document|build|seek|look|spend)',
+    r'here is what (you should|we would encourage)',
+    r'\bspend some time (writing|documenting|building)',
+    r'look for a (next )?role (where|that)',
+    r'(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)',
+    r'roles? (such as|like) (a )?\w+',
+    r'that will make you (stronger|unstoppable)',
+    r'lean into that',
+]
+
+
 # Corporate rejection boilerplate — HARD BLOCK. The opposite of a human letter.
 CORPORATE_BOILERPLATE = [
     r"we regret to inform",
@@ -205,11 +231,16 @@ SECTION_HEADINGS = {
             'Where We Want to Leave This',
         ]
     },
+    # Retoned 2026-09-14 (Ayesha): the prescriptive third section is retired
+    # across the feedback letters. A rejection reports what we could and could
+    # not see; it does not prescribe a career. warm_bench and gwc_rejection
+    # already close on "Where We Want to Leave This", which is a warm note
+    # rather than advice, so only this type needed the section replaced.
     'values_feedback': {
         'required': [
             'What We Liked Most About You',
             "Where We Found Ourselves Sitting With Questions",
-            'What We Think You Should Do Next',
+            ['A final note', 'Where We Want to Leave This'],
         ]
     },
     'gwc_rejection': {
@@ -219,11 +250,16 @@ SECTION_HEADINGS = {
             'Where We Want to Leave This',
         ]
     },
+    # Retoned 2026-09-14 (Ayesha). A CV rejection reports what we could and could
+    # not SEE IN THE APPLICATION; it is not career coaching. "Where we found
+    # questions" read as a verdict on the person, and "What we think you should
+    # do next" turned the letter into a development plan. The closing section is
+    # now a warm note that keeps the door open without prescribing a career.
     'cv_rejection': {
         'required': [
             'What we appreciated',
-            'Where we found questions',
-            'What we think you should do next',
+            ['What we were looking for', 'What we needed to see more clearly'],
+            'A final note',
         ]
     },
     # Skill 01 type #8 (2026-09-08). Submitted a case study, below the 70% benchmark.
@@ -445,6 +481,30 @@ def check_harsh_language(text: str, email_type: Optional[str] = None) -> Tuple[b
         if m:
             ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
             return False, f'Harsh/adversarial language "{m.group()}" in context: ...{ctx}...'
+    return True, None
+
+
+# case_study_outcome is deliberately absent: its guidance is about the submitted
+# WORK ("what would strengthen the approach"), not the person's career, and its
+# order is locked separately (CLAUDE.md Rule 25).
+_COACHING_CHECKED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
+
+
+def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Career-coaching language in a feedback letter (Ayesha 2026-09-14)."""
+    if email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    clean = strip_html(text)
+    for pattern in COACHING_REGISTER:
+        m = re.search(pattern, clean, re.IGNORECASE)
+        if m:
+            ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
+            return False, (
+                f'Career-coaching register "{m.group()}". A feedback letter reports what we '
+                f'could and could not SEE; it does not prescribe a '
+                f'career or suggest other job titles. Rewrite as "we could not clearly '
+                f'see X in the application". Context: ...{ctx}...'
+            )
     return True, None
 
 
@@ -1164,6 +1224,15 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'CV rejection: check these terms against the CV',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # W. Career-coaching register (the four feedback letters, Ayesha 2026-09-14)
+    passed, detail = check_coaching_register(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Report the evidence, do not coach their career',
             'severity': 'WARNING',
             'detail': detail,
         })
