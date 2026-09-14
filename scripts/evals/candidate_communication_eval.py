@@ -218,6 +218,14 @@ COACHING_CATEGORIES = {
         r"\bthat.s rare\b",
         r'\bwill take you far\b',
         r'\bthe kind of (maturity|self.awareness|wisdom|humility) (that|you)\b',
+        # Certifying the person through OUR OWN observation. The noun list
+        # above is a spelling list, and a letter simply used a noun that was
+        # not on it: "that's the kind of clarity about what actually matters
+        # that we saw in you" (comm-b0e84207, Muneeb). Match the STRUCTURE.
+        # Calibrated: fires on 0 of the 103 sent letters. "the kind of
+        # grounding this role requires" stays clean - it describes the ROLE.
+        r'\bthe kind of\b[^.]{0,80}\bwe saw in you\b',
+        r'\bthe kind of\b[^.]{0,80}\bthat (will|would) (take|carry|serve) you\b',
         r'\bgo far in (your career|this field|life)\b',
         r"\byou.re going to do (great|well|big things)\b",
     ],
