@@ -74,3 +74,6 @@ scripts/send_assessment_center_cpd_coach_batch.py
 
 # HR contract documents (PII — never track)
 Contracts/
+
+# Stamped by scripts/deploy_webapp.sh so /healthz can report the live commit.
+webapp/BUILD_SHA

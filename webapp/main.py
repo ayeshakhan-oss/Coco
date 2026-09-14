@@ -131,6 +131,17 @@ def healthz() -> dict:
     "unknown" means the variable is absent, not that the deploy failed.
     """
     sha = os.getenv("RAILWAY_GIT_COMMIT_SHA") or os.getenv("GIT_COMMIT_SHA") or ""
+    if not sha:
+        # `railway up` (CLI deploy) sets no git env vars, so the deploy script
+        # stamps the SHA into this file first. Without it there is no way to tell
+        # one CLI deploy from another: /healthz is byte-identical across builds
+        # and the frontend asset hashes are not reproducible across build
+        # environments. Three separate "is it live?" questions turned on this.
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "BUILD_SHA"), encoding="utf-8") as f:
+                sha = f.read().strip()
+        except OSError:
+            sha = ""
     return {
         "status": "ok",
         "service": "coco-backend",
