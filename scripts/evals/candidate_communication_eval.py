@@ -85,7 +85,15 @@ FORBIDDEN_JARGON = [
 # stronger", "one area that affected the conclusions", "what we would encourage you to look
 # at differently".
 HARSH_LANGUAGE = [
-    r"\bfailure\b",
+    # "failure" ONLY when it is aimed at the person or their work. A bare
+    # failure hard-blocked a warm-bench letter on "a total electricity
+    # failure" - the candidate's OWN story about a power cut during a bake
+    # sale, which is the kind of specific detail these letters are supposed
+    # to carry. "their failure modes" is a technical term and is spared too.
+    # 0/103 false positives on the sent corpus.
+    r"\b(your|his|her|their) failure\b(?! modes?\b)",
+    r"\bfailure to (demonstrate|show|deliver|meet|provide|answer|engage|address|complete)\b",
+    r"\b(was|is|were|are|as) an? (complete |total |clear |real )?failure\b",
     r"\bwrong\b",
     # "the honest part" was REMOVED 2026-09-14 (Ayesha). It is the locked
     # warm-bench/GWC section heading ("Here's the Honest Part"), which
