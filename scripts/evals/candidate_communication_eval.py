@@ -179,7 +179,11 @@ CORPORATE_BOILERPLATE = [
     r"after careful consideration",
     r"impressive (candidate )?pool",
     r"strong field of candidates",
-    r"we wish you (all the best|the best|well)\b",
+    # Narrowed 2026-09-14: broadening this to a bare "well" blocked "We wish you
+    # well in your career", which is warmth, not boilerplate. The cliche is the
+    # future-endeavours form.
+    r"we wish you (all the best|every success)\b",
+    r"wish you (all the best|the best|well) (in|for) your (future|next|continued)\b",
 ]
 
 # Recruiting abstractions (case-insensitive, whole-word match)
@@ -558,15 +562,31 @@ _COACHING_CHECKED_TYPES = ("cv_rejection", "values_feedback", "warm_bench",
 # response. Ask whether the candidate needs that detail to understand the
 # decision; if not, leave it out.
 APPLICATION_REPLAY = [
-    r'you (were asked|answered|responded|wrote|said)\b',
-    r'(the|your) application asked',
-    r'your (response|answer) (was|to)',
-    r'in (response|answer) to (that|this|the) question',
-    r'(that|this) question (was|went) unanswered',
-    r"(wasn't|was not|you did ?n.t) answer(ed)?\b",
-    r'you left (that|this|it) (blank|empty|unanswered)',
-    r'(question|prompt) \d+',
-    r'when asked (about|how|why|what)',
+    # --- quoting or attributing an answer ---
+    r'\byou (were asked|answered|responded|wrote|said|stated|put)\b',
+    r'\byour (response|answer|reply) (was|to|read|said)\b',
+    r'\bin (response|answer) to (that|this|the)\b',
+    r'\bmarked as\b',
+    r'\bsimply (put|wrote|said|answered)\b',
+    # --- naming a question at all ---
+    r'\b(the|that|this|a) (reflection|application|screening|written|core) question\b',
+    r'\b(the|that|this) question (asking|about|on|regarding|that asked)\b',
+    r'\bthe application (asked|invited|prompted|required)\b',
+    r'\b(question|prompt) \d+\b',
+    r'\bwhen asked (about|how|why|what|to)\b',
+    r'\bwe asked you (to|about|how|why|what)\b',
+    r'\basking you to (share|describe|explain|tell)\b',
+    # --- flagging that something was not answered. The 2026-09-14 escape:
+    #     "was left unanswered (marked as 'NAAAAA')" slipped past patterns that
+    #     required "question was unanswered" adjacent. Match the CONCEPT.
+    r'\bunanswered\b',
+    r'\bleft\b[^.]{0,24}\b(blank|empty|incomplete|unfilled|unanswered)\b',
+    r'\b(no|without a|missing|absent) (response|answer|reply)\b',
+    r"\b(was|were|you) (not|n't) (answer|complet|fill|respond)\w*\b",
+    r'\b(did ?n.t|didn.t|not) (answer|respond|complete|fill)\b',
+    r'\bskipped (that|this|the) (question|section|prompt)\b',
+    r'\bincomplete (submission|response|answer|application)\b',
+    r'\btechnical error\b',
 ]
 
 
