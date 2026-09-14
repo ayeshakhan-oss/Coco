@@ -163,3 +163,37 @@ def test_a_letter_that_engages_with_the_cv_passes():
 def test_the_positive_check_does_not_apply_to_other_types():
     passed, _ = check_cv_grounding(GENERIC, "warm_bench", CV, min_anchors=SCALED)
     assert passed is True
+
+
+# --- the scorecard is internal shorthand (Ayesha 2026-09-14) ------------------
+#
+# Hiring managers write scorecards fast, for colleagues, in blunt language. They
+# are not writing to the candidate. The letter IS candidate-facing and may be
+# forwarded or posted publicly, so that wording must be translated, never lifted.
+
+from scripts.evals.candidate_communication_eval import check_scorecard_leakage
+
+SCORECARD = (
+    "Purely corporate background, no direct government experience. Motivation "
+    "reads circumstantial, wants out of a remote night-shift job, more than "
+    "mission-driven. Enthusiastic and coachable but unproven on the core skill."
+)
+
+
+def test_scorecard_wording_lifted_into_the_letter_blocks():
+    body = "<p>You have a purely corporate background, no direct government experience.</p>"
+    passed, detail = check_scorecard_leakage(body, "warm_bench", SCORECARD)
+    assert passed is False
+    assert "internal shorthand" in detail
+
+
+def test_a_translation_of_the_same_point_passes():
+    body = ("<p>For this role we needed direct experience moving work through "
+            "public systems, and we were not able to establish that through the "
+            "process.</p>")
+    assert check_scorecard_leakage(body, "warm_bench", SCORECARD)[0] is True
+
+
+def test_no_scorecard_supplied_stands_down():
+    body = "<p>You have a purely corporate background, no direct government experience.</p>"
+    assert check_scorecard_leakage(body, "warm_bench", None)[0] is True

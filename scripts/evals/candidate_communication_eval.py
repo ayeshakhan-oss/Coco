@@ -688,6 +688,69 @@ def _without_headings(clean: str, email_type: Optional[str]) -> str:
     return clean
 
 
+# ---------------------------------------------------------------------------
+# SCORECARD LEAKAGE (Ayesha 2026-09-14)
+#
+# Hiring managers write scorecards fast, for colleagues, in blunt internal
+# shorthand. They are not writing to the candidate and do not expect the
+# candidate to read their words. The letter IS candidate-facing and may be
+# forwarded, screenshotted or posted publicly.
+#
+# So scorecard language must be TRANSLATED, never carried across. A real case:
+# the scorecard said "Motivation reads circumstantial ... wants out of a remote
+# night-shift job" and the draft told the candidate "Your motivation came
+# through as circumstantial rather than mission-driven."
+#
+# This catches the mechanical form of the failure: a distinctive run of words
+# lifted from the scorecard into the letter. It cannot catch a close paraphrase,
+# which is what the prompt rules are for.
+# ---------------------------------------------------------------------------
+_LEAK_NGRAM = 4          # consecutive content words shared = lifted, not coincidence
+_LEAK_STOP = {
+    "the", "a", "an", "and", "or", "but", "of", "to", "in", "on", "for", "with",
+    "that", "this", "it", "is", "was", "were", "be", "been", "as", "at", "by",
+    "he", "she", "they", "his", "her", "their", "you", "your", "we", "our",
+    "not", "no", "from", "had", "has", "have", "do", "did", "does", "so",
+}
+
+
+def _content_words(text: str) -> List[str]:
+    return [w for w in re.findall(r"[a-z0-9']+", _fold(text)) if w not in _LEAK_STOP]
+
+
+def check_scorecard_leakage(
+    text: str, email_type: str, scorecard_text: Optional[str]
+) -> Tuple[bool, Optional[str]]:
+    """Wording lifted from the hiring manager's scorecard into the letter.
+
+    Returns (True, None) when no scorecard text is supplied, so callers without
+    one are never blocked by an absence.
+    """
+    if not scorecard_text or email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+
+    letter_words = _content_words(strip_html(text))
+    if len(letter_words) < _LEAK_NGRAM:
+        return True, None
+    letter_grams = {
+        " ".join(letter_words[i:i + _LEAK_NGRAM])
+        for i in range(len(letter_words) - _LEAK_NGRAM + 1)
+    }
+
+    sc_words = _content_words(scorecard_text)
+    for i in range(len(sc_words) - _LEAK_NGRAM + 1):
+        gram = " ".join(sc_words[i:i + _LEAK_NGRAM])
+        if gram in letter_grams:
+            return False, (
+                f'Scorecard wording carried into the letter: "{gram}". The '
+                f'scorecard is internal shorthand written at speed for '
+                f'colleagues; the letter is candidate-facing and may be '
+                f'forwarded or posted. Say what WE could not establish, in your '
+                f'own warm words, rather than repeating the assessment.'
+            )
+    return True, None
+
+
 def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
     """Career-coaching language in a feedback letter (Ayesha 2026-09-14)."""
     if email_type not in _COACHING_CHECKED_TYPES:
@@ -1301,6 +1364,7 @@ def evaluate_email(
     cv_corpus: Optional[str] = None,
     candidate_name: str = "",
     role: str = "",
+    scorecard_text: Optional[str] = None,
 ) -> Dict:
     """
     Run all checks on an email draft.
@@ -1470,6 +1534,15 @@ def evaluate_email(
         violations.append({
             'rule': 'CV rejection: check these terms against the CV',
             'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # Scorecard wording lifted into a candidate-facing letter (Ayesha 2026-09-14)
+    passed, detail = check_scorecard_leakage(html_body, email_type, scorecard_text)
+    if not passed:
+        violations.append({
+            'rule': 'Translate the scorecard, never repeat it',
+            'severity': 'HARD_BLOCK',
             'detail': detail,
         })
 

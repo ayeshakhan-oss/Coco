@@ -584,3 +584,48 @@ def answer_texts(raw) -> list[str]:
             else:
                 _add(item)
     return out
+
+
+def scorecard_text_for(db: Session, application_id: Optional[int]) -> Optional[str]:
+    """The hiring manager's OWN free-text notes from both scorecards.
+
+    Used ONLY to check that the letter did not carry that wording across. The
+    scorecard is internal shorthand written at speed for colleagues; the letter
+    is candidate-facing and may be forwarded or posted publicly.
+
+    Deliberately narrow: only the fields a human typed an assessment into.
+    Value NAMES and question labels are excluded, or the check fires on
+    "Don't Walk Away from Hard Things" appearing in a letter, which is a
+    different concern entirely.
+    """
+    if not application_id:
+        return None
+    raw = get_scorecards_raw(db, application_id) or {}
+    parts: list[str] = []
+    for key in ("values_scorecard", "gwc_scorecard"):
+        blob = raw.get(key)
+        if not blob:
+            continue
+        if isinstance(blob, str):
+            try:
+                blob = json.loads(blob)
+            except ValueError:
+                continue
+        if not isinstance(blob, dict):
+            continue
+        # ONLY the summary fields. This is where a hiring manager editorialises
+        # ("motivation reads circumstantial", "enthusiastic but unproven"), and
+        # it is that language which must never reach the candidate.
+        #
+        # The per-value deepDive / curveBall / microCase notes are EXCLUDED on
+        # purpose: they record what the candidate actually said, and the letter
+        # is supposed to retell those moments. Including them flagged a letter
+        # for reusing the candidate's own story about a client "handing the
+        # project to someone from their personal circle", which is the opposite
+        # of the problem.
+        for field in ("finalComments", "additionalComments", "notes"):
+            value = blob.get(field)
+            if isinstance(value, str) and value.strip():
+                parts.append(value)
+    text = "\n".join(parts)
+    return text or None

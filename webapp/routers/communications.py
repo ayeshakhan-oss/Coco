@@ -180,6 +180,7 @@ def update_comm(
     result = evaluate_email(
         full_html, body.title_line, comm.email_type, pilot_mode=True,
         cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        scorecard_text=reads.scorecard_text_for(db, comm.application_id),
         candidate_name=first_name, role=role,
     )
     comm = comm_svc.update_content(
@@ -212,6 +213,7 @@ def reeval(
     return evaluate_email(
         full_html, comm.title_line or "", comm.email_type, pilot_mode=(mode != "live"),
         cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        scorecard_text=reads.scorecard_text_for(db, comm.application_id),
         candidate_name=_first_name_for(db, comm), role=comm.role_title or "",
     )
 
@@ -248,6 +250,7 @@ def _gate_or_422(db: Session, comm, candidate_name: str = "") -> dict:
     result = evaluate_email(
         full_html, comm.title_line or "", comm.email_type, pilot_mode=True,
         cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        scorecard_text=reads.scorecard_text_for(db, comm.application_id),
         candidate_name=candidate_name, role=comm.role_title or "",
     )
     hard = [v for v in result["violations"] if v["severity"] == "HARD_BLOCK"]
@@ -319,6 +322,7 @@ def send(
             comm, mode=mode, first_name=first_name, candidate_email=candidate_email,
             hiring_manager_email=hm_email,
             cv_corpus=reads.cv_corpus_for(db, comm.application_id, comm.email_type),
+        scorecard_text=reads.scorecard_text_for(db, comm.application_id),
         )
     except sending.SendBlocked as e:
         raise HTTPException(422, detail={"message": "Blocked by validation", "violations": e.violations})
