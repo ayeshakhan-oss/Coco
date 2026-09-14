@@ -225,12 +225,22 @@ COACHING_CATEGORIES = {
         # Calibrated: fires on 0 of the 103 sent letters. "the kind of
         # grounding this role requires" stays clean - it describes the ROLE.
         r'\bthe kind of\b[^.]{0,80}\bwe saw in you\b',
+        # Three more certifying shapes, all from ONE drafted letter
+        # (comm-fce8f63f) in which the harness reported only "most people
+        # would" and missed these. Calibrated: 0 hits on the 103 sent letters.
+        r'\bthe kind of (person|professional|leader|someone) who\b',
+        r"\bthat.s someone who\b",
+        r"\byou.?ve proven\b|\byou have proven\b",
         r'\bthe kind of\b[^.]{0,80}\bthat (will|would) (take|carry|serve) you\b',
         r'\bgo far in (your career|this field|life)\b',
         r"\byou.re going to do (great|well|big things)\b",
     ],
     # A conditional door - welcoming them back only once they have fixed the gap
     'CONDITIONAL_DOOR': [
+        # Naming the functions a candidate belongs in, dressed as an open
+        # door: "if an opportunity comes up ... whether that's growth,
+        # strategy, or relationship building". Still career direction.
+        r"\b(role|opportunity|position|opening)\b[^.]{0,80}\bwhether that.s\b",
         r'\b(welcome|glad to hear from|hear from) (you|your \w+) again,? (if|once|when|after) you\b',
         r'\bif you (take on|gain|build|get|develop|acquire)\b.{0,90}\b(experience|exposure|background|track record)\b',
         r'\b(once|after|when) you (have|had|gain|build|develop)\b.{0,40}\b(come back|apply again|reapply|reach out)\b',
