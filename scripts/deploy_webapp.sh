@@ -42,6 +42,17 @@ for i in $(seq 1 40); do
   sleep 15
 done
 
-echo "TIMED OUT after 10 minutes. Still serving: ${served:-<no commit field>}"
-echo "The old build is still live. Check the Railway dashboard."
+# Distinguish "my deploy never landed" from "a newer deploy overtook mine".
+# Equality alone reported a SUPERSEDED deploy as "the old build is still live",
+# which is the opposite of what happened and sends you to the dashboard for
+# nothing.
+if [ -n "${served:-}" ] && [ "$served" != "unknown" ] \
+   && ! git merge-base --is-ancestor "$(git rev-parse "${served%%+*}" 2>/dev/null || echo HEAD)" HEAD 2>/dev/null; then
+  echo "SUPERSEDED: $served is live and is NOT an ancestor of $SHA, so a newer"
+  echo "deploy landed while this one was building. Nothing to fix."
+  exit 0
+fi
+
+echo "TIMED OUT after 10 minutes. Deployed $SHA$DIRTY, still serving: ${served:-<no commit field>}"
+echo "This build did not land. Check the Railway dashboard."
 exit 1
