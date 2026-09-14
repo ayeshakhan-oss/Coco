@@ -121,38 +121,55 @@ HARSH_LANGUAGE = [
 # "passes checks" has to mean the letter is sendable. Patterns are specific
 # phrases, not judgement calls.
 COACHING_REGISTER = [
-    r'you (should|need to|must) (develop|build|document|work on|focus on|gain)',
-    r'what (you need|we would encourage you) to develop',
-    r'we would encourage you to (develop|document|build|seek|look|spend)',
-    r'here is what (you should|we would encourage)',
-    r'\bspend some time (writing|documenting|building)',
-    r'look for a (next )?role (where|that)',
-    r'(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)',
-    r'that will make you (stronger|unstoppable)',
-    r'lean into that',
-    # Claims about the PERSON rather than about the evidence (Ayesha's "avoid"
-    # list, 2026-09-14). Each asserts something about their actual capability or
-    # career that we cannot know from an application.
-    r"you (don't|do not) have\b",
-    r'you should have\b',
-    r"you (aren't|are not|re not) ready\b",
-    r'you are more suited\b',
-    r'you have not (led|owned|run|managed)\b',
-    r'(seek|pursue) (out )?(a )?(leadership|senior|bigger) (role|opportunit)',
-    r'your next step',
-    r'reflect on your career',
-    # Defining the candidate's lane for them. "a role more closely aligned with
-    # your teaching and training expertise" is still coaching: it tells them
-    # which career they belong in. Leave the door open without naming a lane.
-    r'(role|position|opportunit\w+) (more )?(closely )?aligned with your \w+',
-    r'better (suited|suit|fit) (to|for) your',
-    # "Readiness" is a verdict on the person. We are deciding whether there was
-    # enough evidence FOR THIS ROLE, not whether they are generally ready for
-    # seniority. "confidence in your readiness" reads as the latter.
-    r'your readiness',
-    r'readiness for (this|the|a)\b',
-    r'ready for (this|the|a) (role|level|step|seniority|position)',
-    r'leadership philosophy',
+    # --- telling them what to do / work on / develop ---
+    r'\byou (should|need to|needs to|ought to|must|have to|will need to)\b',
+    r"\byou'(ll|d) (need|want|have) to\b",
+    r'\byou could (work on|develop|build|focus|strengthen|improve)\b',
+    r'\bwe (would )?(encourage|recommend|suggest|advise) (you|that you)\b',
+    r'\bwe would encourage you to\b',
+    r'\bhere is what (you should|we would encourage|we would suggest)\b',
+    r'\bwhat (you need|we would encourage you) to develop\b',
+    r'\bspend (some )?time (writing|documenting|building|developing)\b',
+    # --- next time / if you apply again / homework ---
+    r'\bnext time,? (bring|share|try|make sure|focus|consider)\b',
+    r'\bin (future|your next) (interviews?|applications?|conversations?)\b',
+    r'\bif you apply again,? (make sure|try|bring|consider)\b',
+    r'\bwhen you (apply|interview) again\b',
+    r'\b(bring|share) (forward )?(more )?examples? of\b',
+    r'\bwhat (you|we would) (should|want to) demonstrate\b',
+    r'\breflect on your (career|experience|approach|journey)\b',
+    # --- career direction / lane ---
+    r'\bbetter (suited|suit|fit) (to|for)\b',
+    r'\byou (are|may be|might be|would be) (better )?suited\b',
+    r'(role|position|opportunit\w+|path) (more )?(closely )?aligned with your \w+',
+    r'\blook for a (next )?role (where|that)\b',
+    r'\b(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)\b',
+    r'\b(seek|pursue|build) (out )?(a |more )?(leadership|senior|bigger|management) (role|experience|opportunit)',
+    r'\byour next step\b',
+    r'\bbefore applying (for|to)\b',
+    r'\bleadership philosophy\b',
+    # --- verdicts on the person: readiness, maturity, level ---
+    r'\byour readiness\b',
+    r'\breadiness for (this|the|a)\b',
+    r'\bready for (this|the|a) (role|level|step|seniority|position)\b',
+    r"\byou (aren't|are not|re not) ready\b",
+    r'\bnot (quite )?there yet\b',
+    r'\b(take|taking) the next step\b',
+    r'\bgrow into\b',
+    r'\b(professional|leadership) maturity\b',
+    r'\byou need more experience\b',
+    r"\byou (don't|do not) have\b",
+    r'\byou should have\b',
+    r"\byou (haven't|have not) (developed|led|owned|run|managed|built)\b",
+    # --- grading / replaying their answers ---
+    r'\byour (reasoning|answer|response|thinking) (stayed|remained|was|felt) \w+',
+    r'\bwe (expected|were expecting|were looking for) (you to|a)\b',
+    r'\bbut we expected\b',
+    r'\bat (a )?surface level\b',
+    r'\blacked depth\b',
+    # --- misc coaching register ---
+    r'\bthat will make you (stronger|unstoppable|a better)\b',
+    r'\blean into (that|this)\b',
 ]
 
 
@@ -162,7 +179,7 @@ CORPORATE_BOILERPLATE = [
     r"after careful consideration",
     r"impressive (candidate )?pool",
     r"strong field of candidates",
-    r"we wish you (all the best|the best|well)",
+    r"we wish you (all the best|the best|well)\b",
 ]
 
 # Recruiting abstractions (case-insensitive, whole-word match)
@@ -519,10 +536,12 @@ def check_harsh_language(text: str, email_type: Optional[str] = None) -> Tuple[b
     return True, None
 
 
-# case_study_outcome is deliberately absent: its guidance is about the submitted
-# WORK ("what would strengthen the approach"), not the person's career, and its
-# order is locked separately (CLAUDE.md Rule 25).
-_COACHING_CHECKED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
+# EVERY template (Ayesha 2026-09-14: "ABOUT THE TONE FOR ALL TEMPLATE ... WE'RE
+# NOT COACHING"). case_study_outcome is included now; it was exempt on my own
+# reasoning that its guidance is about the submitted WORK, and that exemption was
+# not asked for.
+_COACHING_CHECKED_TYPES = ("cv_rejection", "values_feedback", "warm_bench",
+                           "gwc_rejection", "case_study_outcome")
 
 
 # Replaying the application back at the candidate — WARNING (Ayesha 2026-09-14).
@@ -569,11 +588,34 @@ def check_application_replay(text: str, email_type: str) -> Tuple[bool, Optional
     return True, None
 
 
+def _without_headings(clean: str, email_type: Optional[str]) -> str:
+    """Drop the section headings the RENDERER prints, before a tone scan.
+
+    Necessary for exactly one reason: the locked closing heading is "What we
+    think you should do next", which contains "you should" - the single most
+    important phrase in COACHING_REGISTER. Scanning the rendered letter flagged
+    103/103 of the Job-42 letters and 98/100 webapp CV rejections on our own
+    template furniture, which would have made the check useless.
+
+    Only the exact canonical heading text is removed. The BODY is still scanned
+    in full, so a paragraph saying "you should bring more examples" is caught.
+    """
+    if not email_type:
+        return clean
+    spec = SECTION_HEADINGS.get(email_type, {})
+    headings = []
+    for slot in list(spec.get("required", [])) + list(spec.get("optional", [])):
+        headings.extend(slot if isinstance(slot, (list, tuple)) else [slot])
+    for heading in headings:
+        clean = re.sub(re.escape(heading), " ", clean, flags=re.IGNORECASE)
+    return clean
+
+
 def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
     """Career-coaching language in a feedback letter (Ayesha 2026-09-14)."""
     if email_type not in _COACHING_CHECKED_TYPES:
         return True, None
-    clean = strip_html(text)
+    clean = _without_headings(strip_html(text), email_type)
     for pattern in COACHING_REGISTER:
         m = re.search(pattern, clean, re.IGNORECASE)
         if m:
