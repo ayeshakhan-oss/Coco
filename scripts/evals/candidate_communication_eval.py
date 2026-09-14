@@ -230,7 +230,13 @@ COACHING_CATEGORIES = {
         # Three more certifying shapes, all from ONE drafted letter
         # (comm-fce8f63f) in which the harness reported only "most people
         # would" and missed these. Calibrated: 0 hits on the 103 sent letters.
-        r'\bthe kind of (person|professional|leader|someone) who\b',
+        # Widened from "...who" after a letter wrote "you're exactly the kind
+        # of person WE WANT to build with". Chasing each instance is how this
+        # list grew all night; match the construction. 0/103 false positives,
+        # and the approved benchmark letter still passes.
+        r'\bthe kind of (person|professional|leader|someone)\b',
+        r'\btells us (that )?you (have|are|can|could|would|will)\b',
+        r'\byou have (the |a |genuine |real )?(genuine |real )?capacity\b',
         r"\bthat.s someone who\b",
         r"\byou.?ve proven\b|\byou have proven\b",
         r'\bthe kind of\b[^.]{0,80}\bthat (will|would) (take|carry|serve) you\b',
@@ -305,6 +311,9 @@ RECRUITING_ABSTRACTIONS = [
 # Safe (NOT flagged): "we'd welcome", "we'd be glad to hear from you",
 #   "we hope you'll come back", "stay connected".
 FUTURE_PROMISE_PHRASES = [
+    # An offered meeting is a promise we then have to keep. A letter said
+    # "we'd be happy to have a conversation with you and our leadership".
+    r"(we.d|we would|we.re|we are) (be )?(happy|glad|keen) to (have|set up|arrange|schedule) (a|another) (conversation|call|chat|discussion|meeting)",
     r'we will reach out',
     r"we'll reach out",
     r'we will be in touch',

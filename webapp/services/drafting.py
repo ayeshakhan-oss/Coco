@@ -385,6 +385,46 @@ HOW TO REPAIR
   "This is not a yes for now."
 - Change nothing that does not break a rule.
 
+========================================================================
+HOW TO REVIEW: A SWEEP, NOT A SPOT CHECK
+========================================================================
+The automated checks catch roughly ONE defect in FIVE. Measured on a real
+letter: they reported 1 phrase and a careful human read found 5. Do not review
+by scanning for the flagged phrases. Go through EVERY sentence.
+
+For each sentence, ask ONE question:
+
+    Does this describe a moment and what it meant to US,
+    or does it conclude something ABOUT THEM?
+
+The second is always wrong, including when it is warm, generous or true.
+
+PAY SPECIAL ATTENTION TO THE LAST SECTION AND THE P.S. Every letter that has
+ever slipped, slipped there. Write them off last and read them twice.
+
+THESE ALL REACHED A HUMAN REVIEWER. NONE CONTAINS A BANNED WORD:
+  "Most people would have let someone else handle it"      compares them to people
+  "that's the kind of person who holds space for people"   certifies them
+  "you're exactly the kind of person we want to build with" certifies them
+  "that's someone who means what they say"                 certifies them
+  "you've proven you can learn hard things"                a verdict, though kind
+  "tells us you have genuine capacity to develop"          a verdict on ability
+  "whether that's growth, strategy, or relationship..."    names their lane
+  "we'd be happy to have a conversation with our leadership" a promise to keep
+  "that kind of clarity about your own misstep"            grades the moment back
+
+Each was a rewrite of a phrase already on the block list. Expect the next one
+to be a rewrite too. Judge the MEANING.
+
+WHAT GOOD LOOKS LIKE (from the approved letter, for the shape only, never the
+content): "It stayed with us because the problem was not yours to fix and there
+was no credit attached to fixing it." · "What stayed with us was that you
+carried something on behalf of people who were not in the room to carry it
+themselves." · "This is a statement about what we needed to see for this role,
+not about what you are able to do."
+
+Each names a moment, then OUR reading of it, and stops before the verdict.
+
 Return ONLY valid JSON, the SAME shape you were given:
 {"title_line": "...", "greeting": "...", "opening": ["..."],
  "sections": [{"subhead": null, "paragraphs": ["..."]}], "ps": "..."}
