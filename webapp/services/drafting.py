@@ -379,6 +379,145 @@ def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
         return content, f"failed: {type(exc).__name__}"
 
 
+_TRANSLATOR_SYSTEM = """You translate a hiring manager's PRIVATE interview note
+into neutral decision rationale that is safe to build a candidate letter on.
+
+WHY THIS EXISTS
+Hiring managers write these notes fast, for colleagues, in blunt shorthand. They
+are not writing to the candidate. The letter we build may be forwarded,
+screenshotted or posted publicly. Your job is to carry the SUBSTANCE across and
+leave the WORDING behind.
+
+THE HARD RULE
+Use completely different words. Never reuse a distinctive phrase, label or image
+from the note. If the note says "wants out of a remote night-shift job", you do
+NOT write "night shift", "remote role" or "wants out"; you write that we were not
+able to understand what was drawing them toward this particular mission. If the
+note says "his one government-adjacent example doesn't translate", you do NOT
+write "government-adjacent" or "translate"; you write that we needed direct
+experience inside education and government systems and could not establish
+enough of it.
+
+WHAT TO KEEP
+- What the role required and where the evidence fell short, stated as OUR
+  limitation: "we needed X", "we were not able to establish Y".
+- What was genuinely strong, in warm plain terms.
+
+WHAT TO DROP ENTIRELY
+- Pass/fail verdicts, scores, symbols, counts (PASS, 5(+), 1(+/-), marks).
+- Internal vocabulary: GWC, Get It / Want It / Capacity, warm bench, right seat,
+  values scorecard, KCD, probe, role-play, curve ball, micro-case.
+- Judgements of the person: motivation, character, readiness, coachability.
+- Anything about their current employer or personal circumstances.
+- Any moment that serves nothing the candidate can use ("misread my question",
+  "struggled to track the conversation", "bad connection").
+- Colleague-to-colleague instructions ("probe at debrief", "confirm on travel").
+
+Write 3 to 6 plain sentences. Collective "we". No em dashes. No headings.
+
+Return ONLY valid JSON: {"rationale": "..."}
+"""
+
+
+def _leaks_from(candidate_text: str, raw_note: str) -> bool:
+    """True when candidate_text still shares a 4-content-word run with the note.
+    The same measure the send gate uses, so the translation is verified against
+    the rule it exists to satisfy."""
+    from scripts.evals.candidate_communication_eval import _content_words, _LEAK_NGRAM
+
+    a, b = _content_words(candidate_text), _content_words(raw_note)
+    if len(a) < _LEAK_NGRAM or len(b) < _LEAK_NGRAM:
+        return False
+    grams = {" ".join(b[i:i + _LEAK_NGRAM]) for i in range(len(b) - _LEAK_NGRAM + 1)}
+    return any(" ".join(a[i:i + _LEAK_NGRAM]) in grams
+               for i in range(len(a) - _LEAK_NGRAM + 1))
+
+
+def _translate_note(drafter, raw: str, *, role: str) -> Optional[str]:
+    """One manager note -> neutral rationale, verified not to echo the original.
+
+    Returns None if the model is unreachable or will not stop echoing, and the
+    caller then keeps the raw note (today's behaviour) rather than losing the
+    decision rationale altogether.
+    """
+    if not raw or not raw.strip():
+        return None
+    for attempt in range(2):
+        try:
+            user = (
+                f"Role: {role}\n\n"
+                f"The hiring manager's private note:\n{raw}"
+            )
+            if attempt:
+                user += (
+                    "\n\nYour previous attempt reused wording from the note. "
+                    "Rewrite it again using entirely different words."
+                )
+            out = drafter.draft(
+                system=_TRANSLATOR_SYSTEM, user=user, email_type="translation",
+                first_name="", role=role, prior_violations=None, attempt=attempt,
+            )
+            text = (out or {}).get("rationale", "").strip()
+            if not text:
+                continue
+            if _leaks_from(text, raw):
+                log.warning("Note translation still echoed the note (attempt %d).", attempt + 1)
+                continue
+            return text
+        except Exception as exc:  # noqa: BLE001 - never lose a draft to this
+            log.warning("Note translation failed (%s).", exc)
+            return None
+    return None
+
+
+_MANAGER_NOTE_FIELDS = ("final_comments", "additional_comments")
+
+
+def _soften_manager_notes(drafter, scorecard: Optional[dict], *, role: str) -> Optional[dict]:
+    """Replace the hiring manager's raw editorial with a translated version
+    BEFORE the drafter ever sees it.
+
+    This is the structural fix for a loop that could not converge. The drafter
+    was handed the manager's blunt note verbatim as its evidence and then
+    forbidden by the send gate from reusing any four consecutive content words
+    of it. Each retry produced a WHOLE NEW LETTER that avoided the one phrase it
+    had been told about and echoed somewhere else instead: three attempts,
+    three different leaks, three hard blocks in front of a human
+    ("one government-adjacent example", then "remote night shift job").
+
+    A model cannot reliably avoid echoing a text it is reading. So it no longer
+    reads it. The per-value deep dive / curve ball / micro-case notes are left
+    UNTOUCHED: those record the candidate's own stories and quoted words, which
+    are what make the letter personal, and the leakage gate never covered them.
+
+    Returns (scorecard, warnings). If a note cannot be translated the field is
+    DROPPED, never passed through raw: falling back to the raw note would
+    reinstate exactly the failure this function exists to remove, and a letter
+    that is slightly less specific beats a letter that quotes the hiring
+    manager at the candidate. The drop is reported so nobody mistakes a thinner
+    letter for the model's own judgement.
+    """
+    warnings: list[str] = []
+    if not scorecard:
+        return scorecard, warnings
+    out = dict(scorecard)
+    if out.get("kind") == "values_and_gwc":
+        out["values"], w1 = _soften_manager_notes(drafter, out.get("values"), role=role)
+        out["gwc"], w2 = _soften_manager_notes(drafter, out.get("gwc"), role=role)
+        return out, w1 + w2
+    for field in _MANAGER_NOTE_FIELDS:
+        raw = out.get(field)
+        if isinstance(raw, str) and raw.strip():
+            translated = _translate_note(drafter, raw, role=role)
+            if translated:
+                out[field] = translated
+            else:
+                out.pop(field, None)
+                log.warning("Dropped the raw manager note (%s); translation unavailable.", field)
+                warnings.append(field)
+    return out, warnings
+
+
 def _corpus_from_evidence(ev: Optional[dict]) -> Optional[str]:
     """The candidate's own words, for the CV-grounding gate. None when there is
     no CV evidence (non-CV types), which stands the gate down."""
@@ -411,11 +550,18 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
     EVERY gate must be handed the SAME inputs; see _first_name_for() in the
     router for the same lesson learned on a different argument.
     """
+    drafter = get_drafter()
+
+    # Translate the hiring manager's blunt internal note BEFORE the drafter sees
+    # it. Handing over the raw note and then forbidding any four-word echo of it
+    # is an instruction that cannot converge: each retry wrote a fresh letter
+    # that dodged the one flagged phrase and echoed a different one.
+    scorecard, untranslated = _soften_manager_notes(drafter, scorecard, role=role)
+
     system = system_prompt(email_type)
     user = build_user_prompt(scorecard=scorecard, first_name=first_name, role=role,
                              email_type=email_type, cv_evidence=cv_evidence)
 
-    drafter = get_drafter()
     prior: Optional[list[dict]] = None
     best = None
 
@@ -528,6 +674,19 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
 
     # Say so when every attempt failed. Handing back a broken draft with no
     # signal reads as "here is your letter" when it means "I could not write one".
+    if best and untranslated:
+        best["eval"]["violations"].append({
+            "rule": "Hiring manager's summary was left out",
+            "severity": "WARNING",
+            "detail": (
+                "The manager's own summary note could not be translated into "
+                "candidate-safe wording, so it was withheld from the writer "
+                "rather than passed through raw. This letter was written from "
+                "the interview observations alone and may be less specific "
+                "about the decision. Read it before sending."
+            ),
+        })
+
     if best and _hard_count(best["eval"]) > 0:
         best["retries_exhausted"] = True
         log.warning(

@@ -766,34 +766,73 @@ def _content_words(text: str) -> List[str]:
 def check_scorecard_leakage(
     text: str, email_type: str, scorecard_text: Optional[str]
 ) -> Tuple[bool, Optional[str]]:
-    """Wording lifted from the hiring manager's scorecard into the letter.
+    """EVERY phrase lifted from the hiring manager's scorecard into the letter.
 
     Returns (True, None) when no scorecard text is supplied, so callers without
     one are never blocked by an absence.
+
+    ALL matches, never the first. Reporting one leak at a time made the retry
+    loop diverge instead of converge: the drafter was told about
+    "one government adjacent example", rewrote that one sentence, and attempt 2
+    came back leaking "remote night shift job" instead. Three attempts, three
+    different phrases, three hard blocks in front of Ayesha. A letter drafted
+    FROM the scorecard echoes it in several places at once, so the drafter and
+    the review pass have to see the whole set or they play whack-a-mole. This is
+    the same mistake check_tone_categories already fixed by listing every match.
+
+    Overlapping n-grams are merged into the longest contiguous span, so the
+    report reads as the phrase a human would recognise rather than as sliding
+    four-word windows of the same sentence.
     """
     if not scorecard_text or email_type not in _COACHING_CHECKED_TYPES:
         return True, None
 
-    letter_words = _content_words(strip_html(text))
+    letter_words = _content_words(_letter_prose(text, email_type))
     if len(letter_words) < _LEAK_NGRAM:
         return True, None
-    letter_grams = {
-        " ".join(letter_words[i:i + _LEAK_NGRAM])
-        for i in range(len(letter_words) - _LEAK_NGRAM + 1)
-    }
 
     sc_words = _content_words(scorecard_text)
-    for i in range(len(sc_words) - _LEAK_NGRAM + 1):
-        gram = " ".join(sc_words[i:i + _LEAK_NGRAM])
-        if gram in letter_grams:
-            return False, (
-                f'Scorecard wording carried into the letter: "{gram}". The '
-                f'scorecard is internal shorthand written at speed for '
-                f'colleagues; the letter is candidate-facing and may be '
-                f'forwarded or posted. Say what WE could not establish, in your '
-                f'own warm words, rather than repeating the assessment.'
-            )
-    return True, None
+    sc_grams = {
+        " ".join(sc_words[i:i + _LEAK_NGRAM])
+        for i in range(len(sc_words) - _LEAK_NGRAM + 1)
+    }
+    if not sc_grams:
+        return True, None
+
+    # Mark every letter position covered by a lifted n-gram, then read off the
+    # maximal runs. Marking by POSITION (not by gram) is what merges the
+    # overlaps: a seven-word lift marks one run of seven, not four separate hits.
+    n = len(letter_words)
+    lifted = [False] * n
+    for i in range(n - _LEAK_NGRAM + 1):
+        if " ".join(letter_words[i:i + _LEAK_NGRAM]) in sc_grams:
+            for j in range(i, i + _LEAK_NGRAM):
+                lifted[j] = True
+
+    spans: List[str] = []
+    i = 0
+    while i < n:
+        if lifted[i]:
+            j = i
+            while j < n and lifted[j]:
+                j += 1
+            spans.append(" ".join(letter_words[i:j]))
+            i = j
+        else:
+            i += 1
+
+    if not spans:
+        return True, None
+
+    quoted = ", ".join(f'"{p}"' for p in spans)
+    plural = "phrases" if len(spans) > 1 else "phrase"
+    return False, (
+        f'Scorecard wording carried into the letter ({len(spans)} {plural}): '
+        f'{quoted}. The scorecard is internal shorthand written at speed for '
+        f'colleagues; the letter is candidate-facing and may be forwarded or '
+        f'posted. Rewrite EVERY one of these in your own warm words: say what '
+        f'WE needed and could not establish, never the assessment itself.'
+    )
 
 
 def _letter_prose(text: str, email_type: Optional[str] = None) -> str:
