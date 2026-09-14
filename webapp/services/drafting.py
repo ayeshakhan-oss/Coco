@@ -428,6 +428,25 @@ The second is always wrong, including when it is warm, generous or true.
 PAY SPECIAL ATTENTION TO THE LAST SECTION AND THE P.S. Every letter that has
 ever slipped, slipped there. Write them off last and read them twice.
 
+ALSO CUT, NOT ONLY REWRITE. Three things earn an edit that simply DELETES:
+
+ - MATERIAL THAT IS ONLY THERE BECAUSE IT CAME UP. Personalisation is
+   selective, not exhaustive. A story belongs if it explains what stayed with
+   us or why we decided as we did. A letter that works through every item in
+   the scorecard reads as a transcript, and these letters must not exceed 800
+   words. Cut breadth before depth.
+
+ - A SECOND REASON. If the decision turned on one role-fit gap, that one gap
+   is the letter. Secondary concerns stacked beside it read as a case being
+   built against the candidate. Remove them unless they changed the answer.
+
+ - INTIMATE DETAIL IN A SENSITIVE STORY. Grief, illness, violence, family
+   crisis. Keep what the moment MEANT and cut the particulars: clinical
+   detail, sums of money, how someone died. One letter opened on a father's
+   25 days in intensive care, the coma-scale readings, and the outcome named
+   as "0". Replace such a passage with its meaning, in one sentence.
+   If the SUBJECT LINE draws on it, that is the most urgent edit in the letter.
+
 THESE ALL REACHED A HUMAN REVIEWER. NONE CONTAINS A BANNED WORD:
   "Most people would have let someone else handle it"      compares them to people
   "that's the kind of person who holds space for people"   certifies them
@@ -472,9 +491,13 @@ RULES FOR "find":
   a few surrounding words to make it unique.
 
 RULES FOR "replace":
-- Same length or longer. NEVER shorter: a letter must not lose substance to
-  gain safety. If cutting a verdict leaves the paragraph thin, use the space to
-  say what the role required and why.
+- Rewriting a VERDICT: same length or longer. A letter must not lose substance
+  to gain safety. If cutting a verdict leaves the paragraph thin, use the space
+  to say what the role required and why.
+- CUTTING under the three headings above (material that is only there because
+  it came up, a second reason, intimate detail): shorter is the whole point,
+  and "replace" may be a single sentence or an empty string. These letters must
+  not exceed 800 words.
 - Keep the candidate's quoted words untouched. Keep the collective "we".
   No em dashes.
 

@@ -80,14 +80,31 @@ NEVER:
  6. Reuse the hiring manager's wording.                          (private notes)
  7. Promise to contact them or offer them a meeting.             (a promise we must keep)
 
+SELECTIVE, NOT EXHAUSTIVE. A story earns its place because it explains what
+stayed with us or why the decision landed where it did. Not because it came up
+in the interview. You are not required to use everything you were given, and a
+letter that works through the whole scorecard reads as a transcript.
+
+ONE GAP. If the decision turned on a single role-fit gap, say that one thing
+and stop. Do not stack secondary concerns beside it unless they genuinely
+changed the answer. Two reasons read as a case being built against them.
+
+SENSITIVE MATERIAL. Grief, illness, violence, family crisis. A candidate told
+us in confidence in an interview; that is not permission to narrate it back.
+Keep what it MEANT, drop the intimate particulars: no clinical detail, no sums
+of money, no account of how someone died. NEVER put it in the subject line.
+  X "sitting at your father's bedside in the ICU for 25 days, watching the
+     coma scale, 6, 7, 8. When he passed you named the outcome as '0'."
+  OK "you stayed with something that had no good ending, and did not look away."
+
 ALWAYS:
  - Anchor every strength to ONE moment, in their own quoted words.
  - Make US the subject: "what stayed with us was...".
  - Name what the role required BEFORE what was missing.
  - Spend your longest paragraph explaining why that requirement
    matters to THIS role. That is where length belongs.
- - At least 800 words. If short, add evidence about THEM, never advice.
-   NEVER shorten a letter to make it warmer.
+ - 700 to 800 words. NEVER more than 800. If short, add evidence about
+   THEM, never advice. Cut breadth before you cut depth.
  - Close on a moment. The P.S. gives no advice at all.
 
 Write the final section and the P.S. LAST, then read them again.
@@ -592,12 +609,12 @@ def system_prompt(email_type: str) -> str:
     # separately (CLAUDE.md Rule 25).
     if email_type in ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection"):
         length_rule = (
-            "At least 800 words. With coaching and any replay of the application "
-            "both forbidden, the length must come from BEING MORE SPECIFIC ABOUT "
-            "THE CANDIDATE'S OWN EXPERIENCE and about exactly what this role "
-            "needed and why. More detail about THEM, never more instruction FOR "
-            "them, and never a walk through their answers. If you find yourself "
-            "short, add evidence, not guidance."
+            "AIM FOR 700 TO 800 WORDS, AND DO NOT EXCEED 800. Length is earned "
+            "by being specific about what actually shaped the decision, never by "
+            "working through everything in the scorecard. If you are short, add "
+            "evidence about THEM, never guidance FOR them. If you are long, cut "
+            "the material that is in the letter only because it came up, not "
+            "because it explains what stayed with us or why we decided as we did."
         )
         prompt += "\n" + _FEEDBACK_TONE_NOTE.replace("{length_rule}", length_rule)
         # The approved letter, as the standard to write to. Placed AFTER the

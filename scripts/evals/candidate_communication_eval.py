@@ -86,7 +86,7 @@ FORBIDDEN_JARGON = [
 # at differently".
 HARSH_LANGUAGE = [
     # "failure" ONLY when it is aimed at the person or their work. A bare
-    # failure hard-blocked a warm-bench letter on "a total electricity
+    # \bfailure\b hard-blocked a warm-bench letter on "a total electricity
     # failure" - the candidate's OWN story about a power cut during a bake
     # sale, which is the kind of specific detail these letters are supposed
     # to carry. "their failure modes" is a technical term and is spared too.
@@ -373,16 +373,32 @@ KNOWN_INTERVIEWERS = [
 # OUTCOME. Neither short type is drafted by the webapp today; they live in their
 # own send scripts. They are listed here so that adding one never silently
 # inherits the 800-word rule.
+WORD_MAXIMUMS = {
+    # Ayesha 2026-09-15: "I think don't add more than 800 words." Selective, not
+    # exhaustive. Reported as a WARNING, so a letter already approved at a higher
+    # count is never stranded by the rule arriving after it.
+    'cv_rejection': 800,
+    'values_feedback': 800,
+    'warm_bench': 800,
+    'gwc_rejection': 800,
+}
+
 WORD_MINIMUMS = {
     # 800 for EVERY feedback letter, cv_rejection included (Ayesha 2026-09-14,
     # confirmed after briefly trialling 350-550). With career coaching and
     # application replay both hard-blocked, the length has to come from being
     # more specific about the candidate's OWN experience and about exactly what
     # this role needed. If a letter runs short, add evidence, never guidance.
-    'cv_rejection': 800,
-    'values_feedback': 800,
-    'warm_bench': 800,
-    'gwc_rejection': 800,
+    # 2026-09-15 (Ayesha): 800 became the CEILING, not the floor. Letters were
+    # running 993-1144 words by listing everything in the scorecard, and
+    # "personalization is selective, not exhaustive". The floor drops so a
+    # disciplined 700-word letter is not forced to pad; the cap below is what
+    # bites now.
+    'cv_rejection': 650,
+    'values_feedback': 650,
+    'warm_bench': 650,
+    'gwc_rejection': 650,
+    # case_study_outcome keeps its own locked 800 (CLAUDE.md Rule 25).
     'case_study_outcome': 800,
     # not feedback -> not 800
     'case_study_update': 120,
@@ -899,6 +915,74 @@ def _proper_nouns(text: str) -> set:
             if tok[:1].isupper():
                 out.add(_fold(tok).strip("'-"))
     return out
+
+
+# Grief, illness, violence, family crisis. A candidate may tell us these things
+# in an interview; that is not permission to retell them back. Ayesha
+# 2026-09-15: "preserve the meaning without replaying unnecessary intimate
+# details." A warm-bench letter had opened on a father's 25 days in ICU, the
+# coma-scale readings, and the outcome named as "0" - and had put it in the
+# SUBJECT LINE.
+_SENSITIVE_TERMS = [
+    r"\bI ?C ?U\b", r"\bintensive care\b", r"\bcoma\b", r"\bh(a)?emorrhage\b",
+    r"\bbrain h(a)?emorrhage\b", r"\bterminal\b", r"\bcancer\b", r"\bchemo\w*",
+    r"\bpassed away\b", r"\bdeath\b", r"\bdied\b", r"\bdying\b", r"\bfuneral\b",
+    r"\bburial\b", r"\bwidow(er)?\b", r"\borphan\w*", r"\bshot and killed\b",
+    r"\bmurder\w*", r"\bkilled\b", r"\bsuicide\b", r"\bmiscarriage\b",
+    r"\bdivorce\b", r"\bbereave\w*", r"\bgrief\b", r"\bgrieving\b",
+    r"\bhospitali[sz]ed\b", r"\blife support\b", r"\bdeathbed\b", r"\bbedside\b",
+]
+
+
+def _sensitive_hits(text: str) -> List[str]:
+    found = []
+    for pat in _SENSITIVE_TERMS:
+        for m in re.finditer(pat, text, re.IGNORECASE):
+            phrase = m.group(0).lower()
+            if phrase not in found:
+                found.append(phrase)
+    return found
+
+
+def check_sensitive_subject(subject: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """A bereavement, illness or act of violence must NEVER be the subject line.
+
+    The subject is what shows in an inbox, on a phone lock screen, in a
+    forwarded thread. "The 25 Days That Teach You What Matters" was drawn from
+    a candidate's father dying in intensive care. Whatever the intent, it turns
+    someone's grief into a headline about our hiring process.
+    """
+    if not subject or email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    hits = _sensitive_hits(subject)
+    if not hits:
+        return True, None
+    return False, (
+        f'The subject line draws on something sensitive: {", ".join(hits)}. '
+        f'A bereavement, illness, act of violence or family crisis must never be '
+        f'the headline of a rejection email: it is what shows on a lock screen '
+        f'and in a forwarded thread. Choose a subject from their WORK.'
+    )
+
+
+def check_sensitive_detail(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Sensitive personal material in the body: keep the meaning, drop the detail.
+
+    A WARNING, never a block. Sometimes the moment genuinely belongs in the
+    letter, and only a human can judge whether it is being honoured or replayed.
+    """
+    if email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    hits = _sensitive_hits(_letter_prose(text, email_type))
+    if not hits:
+        return True, None
+    return False, (
+        f'This letter retells something sensitive: {", ".join(hits[:8])}. Keep '
+        f'what it MEANT (that they did not step away from something hard) and cut '
+        f'the intimate particulars: clinical detail, sums of money, how someone '
+        f'died. They told us in confidence in an interview; that is not permission '
+        f'to narrate it back to them.'
+    )
 
 
 def check_scorecard_leakage(
@@ -1671,6 +1755,41 @@ def evaluate_email(
         violations.append({
             'rule': f'Word count minimum ({minimum})',
             'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 1b. Word count CEILING (Ayesha 2026-09-15). A letter earns its length by
+    # being specific about what mattered to the DECISION, not by retelling every
+    # story in the scorecard. WARNING rather than HARD_BLOCK so an already
+    # approved letter is never stranded; the drafting prompt targets 700-800.
+    maximum = WORD_MAXIMUMS.get(email_type)
+    if maximum and actual > maximum:
+        violations.append({
+            'rule': f'Over the {maximum}-word ceiling',
+            'severity': 'WARNING',
+            'detail': (
+                f'{actual} words against a {maximum}-word ceiling. Personalisation '
+                f'is selective, not exhaustive: keep the evidence that explains what '
+                f'stayed with us or why the decision landed where it did, and cut '
+                f'what is in the letter only because it came up in the interview. '
+                f'If the decision turned on ONE role-fit gap, do not carry secondary '
+                f'concerns alongside it.'
+            ),
+        })
+
+    # 1c. Sensitive personal material (Ayesha 2026-09-15).
+    passed, detail = check_sensitive_subject(subject, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Never headline a bereavement or crisis',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+    passed, detail = check_sensitive_detail(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Sensitive story: keep the meaning, cut the detail',
+            'severity': 'WARNING',
             'detail': detail,
         })
 
