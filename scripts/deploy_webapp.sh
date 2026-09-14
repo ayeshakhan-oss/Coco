@@ -23,7 +23,11 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "         WORKING TREE, not the commit, so what goes live will not match $SHA."
 fi
 
-echo "$SHA$DIRTY" > webapp/BUILD_SHA
+# Set the SHA as a service VARIABLE, not a file. `railway up` honours
+# .gitignore, so a generated file that is (correctly) gitignored never reaches
+# the builder - which is exactly how the first attempt at this silently failed.
+railway variables --set "GIT_COMMIT_SHA=$SHA$DIRTY" --service "$SERVICE" --skip-deploys >/dev/null
+
 echo "Deploying $SHA$DIRTY to $SERVICE ..."
 railway up --detach --service "$SERVICE"
 
