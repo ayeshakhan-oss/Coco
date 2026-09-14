@@ -196,18 +196,52 @@ class AnthropicDrafter:
                 default_headers={"anthropic-beta": "oauth-2025-04-20"},
             )
 
+    # Tried in order if the configured model name is not one this account can
+    # serve. ANTHROPIC_MODEL is set by hand on Railway, so a typo or a retired
+    # id would otherwise turn every draft into an empty scaffold with only a
+    # generic "unavailable" note - a confusing failure for the person clicking
+    # Generate, and one they cannot diagnose.
+    _FALLBACK_MODELS = ("claude-sonnet-4-5", "claude-haiku-4-5-20251001")
+
+    @staticmethod
+    def _is_unknown_model(exc: Exception) -> bool:
+        msg = str(exc).lower()
+        return "model" in msg and any(
+            k in msg for k in ("not_found", "not found", "404", "invalid_request")
+        )
+
     def draft(self, *, system, user, email_type, first_name, role, prior_violations=None, attempt=0) -> dict:
         content = user
         if prior_violations:
             content = user + _fix_instruction(prior_violations)
-        msg = self.client.messages.create(
-            model=self.model,
-            max_tokens=4096,
-            system=system,
-            messages=[{"role": "user", "content": content}],
-        )
-        text = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
-        return _parse_json(text)
+
+        tried: list[str] = []
+        for model in (self.model, *self._FALLBACK_MODELS):
+            if model in tried:
+                continue
+            tried.append(model)
+            try:
+                msg = self.client.messages.create(
+                    model=model,
+                    max_tokens=4096,
+                    system=system,
+                    messages=[{"role": "user", "content": content}],
+                )
+            except Exception as exc:  # noqa: BLE001
+                if self._is_unknown_model(exc) and model != self._FALLBACK_MODELS[-1]:
+                    log.error("Model %r was rejected (%s); falling back.", model, exc)
+                    continue
+                raise
+            if model != self.model:
+                # Stick to what works for the rest of this process, and say so
+                # loudly: a silent downgrade is how you end up writing candidate
+                # letters on a weaker model without knowing it.
+                log.error("Drafting on FALLBACK model %r; ANTHROPIC_MODEL=%r is not "
+                          "servable by this account.", model, self.model)
+                self.model = model
+            text = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
+            return _parse_json(text)
+        raise DraftingUnavailable(f"No servable model among {tried}")
 
 
 def _load_oauth_token() -> Optional[str]:

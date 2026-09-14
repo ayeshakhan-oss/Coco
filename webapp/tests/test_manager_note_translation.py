@@ -163,3 +163,65 @@ def test_the_cache_is_keyed_by_role_too():
     drafting._soften_manager_notes(fake, sc, role="Growth Manager")
     drafting._soften_manager_notes(fake, sc, role="Senior Manager Growth")
     assert fake.calls == 2, "a different role must get its own translation"
+
+
+# --- model fallback -------------------------------------------------------
+# ANTHROPIC_MODEL is set by hand on Railway. A typo or a retired id must not
+# turn every draft into an empty scaffold: it fails over and says so loudly.
+
+class _FakeMessages:
+    def __init__(self, servable):
+        self.servable = servable
+        self.asked: list[str] = []
+
+    def create(self, *, model, max_tokens, system, messages):
+        self.asked.append(model)
+        if model not in self.servable:
+            raise RuntimeError(
+                f"Error code: 404 - {{'type':'error','error':"
+                f"{{'type':'not_found_error','message':'model: {model}'}}}}"
+            )
+
+        class _Blk:
+            type = "text"
+            text = '{"rationale": "ok", "sections": [], "title_line": "t"}'
+
+        class _Msg:
+            content = [_Blk()]
+
+        return _Msg()
+
+
+def _drafter_with(servable, configured):
+    d = drafting.AnthropicDrafter.__new__(drafting.AnthropicDrafter)
+    d.model = configured
+    d.mode = "api_key"
+    d.client = type("C", (), {"messages": _FakeMessages(servable)})()
+    return d
+
+
+def test_a_good_model_is_used_as_is():
+    d = _drafter_with({"claude-sonnet-5"}, "claude-sonnet-5")
+    d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert d.client.messages.asked == ["claude-sonnet-5"]
+    assert d.model == "claude-sonnet-5"
+
+
+def test_an_unknown_model_falls_back_and_sticks():
+    d = _drafter_with({"claude-haiku-4-5-20251001"}, "claude-sonnet-5-typo")
+    d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert d.client.messages.asked[0] == "claude-sonnet-5-typo"
+    assert d.model == "claude-haiku-4-5-20251001", "should stick to what worked"
+    d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert d.client.messages.asked[-1] == "claude-haiku-4-5-20251001"
+
+
+def test_a_real_error_is_not_swallowed_as_a_model_problem():
+    """Only an unknown-model error triggers fallback. A rate limit or an outage
+    must surface, not silently downgrade the model writing candidate letters."""
+    d = _drafter_with(set(), "claude-sonnet-5")
+    d.client.messages.create = lambda **kw: (_ for _ in ()).throw(
+        RuntimeError("Error code: 429 - rate_limit_error")
+    )
+    with pytest.raises(RuntimeError, match="429"):
+        d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
