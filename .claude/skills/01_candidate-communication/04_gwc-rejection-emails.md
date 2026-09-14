@@ -194,7 +194,7 @@ that the panel kept discussing afterward...
 | No scorecard evidence | Generic feedback | Cite Get It, Want It, Capacity scores explicitly |
 | Missing reference comparison | Missed tone/structure consistency | Always find and review prior similar email |
 | Interviewer names mentioned | Breaks confidentiality | Remove all internal names |
-| No actionable guidance | Feedback feels vague | Give 1-2 specific next steps |
+| Vague, unevidenced feedback | Candidate cannot understand the decision | Name what THIS role needed and what we could not establish. Do NOT give next steps: we explain the decision, we do not coach (2026-09-14) |
 | Word count too low | Feels rushed | Expand to 400+ words minimum |
 | **Vague rejection rationale (NEW)** | **Praise is concrete, decision is abstract → "why wasn't I selected?" paradox** | **Ground decision in observable behaviors, not impressions. Use Haroon Yasin balance rule. See: [Evidence-Based Rejection Rationale](../../memory/lesson_evidence_based_rejection_rationale_2026_06_01.md)** |
 | ❌ "Lacked hunger/adaptability" | Impressionistic judgment, candidate can't respond | ✅ "Applied frameworks from elsewhere when role needed comfort with dissonance" |

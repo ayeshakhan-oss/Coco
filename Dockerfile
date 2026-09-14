@@ -39,6 +39,17 @@ COPY scripts/evals/candidate_communication_eval.py scripts/evals/candidate_commu
 # Tone master file used as the drafting system prompt.
 COPY memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md
 
+# The per-type SOPs. Until 2026-09-14 the image shipped ONLY the tone master
+# above, so the live drafter had 2,774 words of guidance and had never read the
+# other 17,366 that define how each letter is actually written: the specific
+# interview moment, company vulnerability, timestamps, the P.S., the subject
+# line. Editing a skill file changed nothing in production. Now it does.
+COPY .claude/skills/01_candidate-communication/ .claude/skills/01_candidate-communication/
+COPY memory/warm_bench_final_locked_approach.md memory/warm_bench_final_locked_approach.md
+COPY memory/gwc_rejection_locked_approach_2026_06_08.md memory/gwc_rejection_locked_approach_2026_06_08.md
+COPY memory/v8_candidate_comms_layout_LOCKED.md memory/v8_candidate_comms_layout_LOCKED.md
+COPY memory/feedback_email_rules.md memory/feedback_email_rules.md
+
 # Built SPA from stage 1.
 COPY --from=frontend /app/frontend/dist frontend/dist
 

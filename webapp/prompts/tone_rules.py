@@ -23,6 +23,73 @@ _TONE_FILE = os.path.join(
 )
 
 
+
+# --------------------------------------------------------------------------
+# Per-type SOPs (Ayesha 2026-09-14). Until today the live drafter saw ONLY the
+# tone master: 2,774 words. The 17,366 words that actually say how each letter
+# is written - lead with a specific interview moment, show company
+# vulnerability, use timestamps, the P.S., the subject line - lived in
+# .claude/skills/ and the memory masters, which the Docker image never copied.
+# Editing a skill file changed nothing in production. It does now.
+# --------------------------------------------------------------------------
+_REPO_ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+_SKILLS = os.path.join(_REPO_ROOT, ".claude", "skills", "01_candidate-communication")
+_MEM = os.path.join(_REPO_ROOT, "memory")
+
+_TYPE_SOPS = {
+    "cv_rejection": [
+        os.path.join(_SKILLS, "01_candidate-rejections.md"),
+    ],
+    "values_feedback": [
+        os.path.join(_SKILLS, "02_values-feedback-emails.md"),
+    ],
+    "warm_bench": [
+        os.path.join(_SKILLS, "03_warm-bench-feedback-email.md"),
+        os.path.join(_MEM, "warm_bench_final_locked_approach.md"),
+    ],
+    "gwc_rejection": [
+        os.path.join(_SKILLS, "04_gwc-rejection-emails.md"),
+        os.path.join(_MEM, "gwc_rejection_locked_approach_2026_06_08.md"),
+    ],
+    "case_study_outcome": [
+        os.path.join(_SKILLS, "08_case-study-outcome-email.md"),
+    ],
+}
+
+_SOP_PREAMBLE = """
+========================================================================
+THE SOP FOR THIS LETTER TYPE
+========================================================================
+Below is our internal SOP, verbatim. It is the craft guidance: what a good
+letter of this type actually does.
+
+READ IT FOR THE WRITING, NOT FOR THE OPERATIONS. Ignore anything about sending,
+recipients, pilots, scripts, safe_sendmail, approval flow or file paths: none of
+that is your job. You are returning JSON content only.
+
+Where the SOP and the tone rules above disagree, THE TONE RULES WIN. The SOPs
+predate them in places.
+========================================================================
+"""
+
+
+@lru_cache
+def _type_sops(email_type: str) -> str:
+    """The verbatim SOP text for this email type, or "" when none is available."""
+    parts = []
+    for path in _TYPE_SOPS.get(email_type, []):
+        try:
+            with open(path, encoding="utf-8") as f:
+                text = f.read().strip()
+        except OSError:
+            continue  # not shipped / not readable: the tone master still applies
+        if text:
+            parts.append("----- %s -----\n%s" % (os.path.basename(path), text))
+    if not parts:
+        return ""
+    return _SOP_PREAMBLE + "\n" + "\n\n".join(parts) + "\n"
+
+
 @lru_cache
 def _tone_master() -> str:
     try:
@@ -306,4 +373,10 @@ def system_prompt(email_type: str) -> str:
         prompt += "\n" + _CV_STAGE_NOTE
     if email_type == "case_study_outcome":
         prompt += "\n" + _CASE_STUDY_OUTCOME_NOTE
+    # The per-type SOP goes LAST, after every rule above, so the framing line
+    # "where the SOP and the tone rules disagree, the tone rules win" is read
+    # with the rules still in view.
+    sops = _type_sops(email_type)
+    if sops:
+        prompt += "\n" + sops
     return prompt

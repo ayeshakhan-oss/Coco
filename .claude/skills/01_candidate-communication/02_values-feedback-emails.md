@@ -70,7 +70,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 **Structure (3 Required Sections):**
 1. What We Liked Most About You (2-3 specific strengths from interview)
 2. Where We Found Ourselves Sitting With Questions (2-3 values gaps, with evidence)
-3. What we think you should do next (actionable advice)
+3. What we think you should do next (a warm close, NOT advice. The 2026-09-14 tone rule supersedes the older 'actionable advice' wording: we explain the hiring decision, we do not coach)
 
 **Tone & Voice:**
 - "We" voice (never "I")
@@ -97,7 +97,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 
 **Word Count & Structure:**
 - Minimum 800 words (mandatory), target 800-1100
-- 3 required sections: What We Liked / Questions / Next Steps
+- 3 required sections: What We Liked / Questions / Next Steps (the third is a warm close, not advice)
 - P.S. box included (encouraging)
 
 **Pre-Drafting:**
@@ -109,7 +109,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 1. Opening: Thank candidate by name, warm rejection + context
 2. Section 1 "What We Liked Most About You" (2-3 strengths with specific interview evidence, 100-150 words)
 3. Section 2 "Where We Found Ourselves Sitting With Questions" (2-3 gaps with interview evidence, 100-150 words)
-4. Section 3 "What we think you should do next" (actionable advice, not prescriptive, 100-150 words)
+4. Section 3 "What we think you should do next" (a warm close, NOT advice. The 2026-09-14 tone rule supersedes the older 'actionable advice' wording: we explain the hiring decision, we do not coach; 100-150 words)
 5. P.S. box: encouraging sign-off (specific to candidate)
 6. No em dashes (replace all " — " with period, comma, or colon)
 7. "We" voice throughout (never "I"), they/them pronouns (never gendered)
@@ -158,7 +158,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 - Opening thanks candidate by name, warm rejection
 - Section 1: What We Liked (2-3 strengths with specific interview evidence)
 - Section 2: Here's the Honest Part (2-3 gaps with interview evidence)
-- Section 3: What To Do Next (actionable advice)
+- Section 3: What To Do Next (a warm close, NOT advice. The 2026-09-14 tone rule supersedes the older 'actionable advice' wording: we explain the hiring decision, we do not coach)
 - P.S. box included (encouraging, specific)
 - Closing: warm sign-off
 
@@ -218,7 +218,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 - [ ] Word count ≤1100 (or justified if longer)
 - [ ] Section 1: What We Liked (2-3 strengths with specific interview evidence)
 - [ ] Section 2: Here's the Honest Part (2-3 gaps with interview evidence)
-- [ ] Section 3: What To Do Next (actionable advice)
+- [ ] Section 3: What To Do Next (a warm close, NOT advice. The 2026-09-14 tone rule supersedes the older 'actionable advice' wording: we explain the hiring decision, we do not coach)
 - [ ] P.S. box included (encouraging, specific to candidate)
 - [ ] No em dashes (searched and replaced all " — ")
 - [ ] "We" voice throughout (no "I")
