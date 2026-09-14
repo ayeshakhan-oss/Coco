@@ -27,9 +27,11 @@ WARNING violations are logged but allow sending (exit 0):
 Returns: {passed, violations[], word_count}
 """
 
+import os
 import re
 import unicodedata
 import html
+from functools import lru_cache
 from typing import Optional, Dict, List, Tuple
 
 # ============================================================================
@@ -771,6 +773,95 @@ _LEAK_STOP = {
 
 def _content_words(text: str) -> List[str]:
     return [w for w in re.findall(r"[a-z0-9']+", _fold(text)) if w not in _LEAK_STOP]
+
+
+_BENCHMARK_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    ".claude", "skills", "01_candidate-communication",
+    "00_BENCHMARK-approved-letter.md",
+)
+_BENCHMARK_NGRAM = 6
+
+
+@lru_cache(maxsize=1)
+def _benchmark_letter_words() -> Tuple[str, ...]:
+    """Content words of the APPROVED letter's prose only.
+
+    Only the section between the two markers: the surrounding commentary is
+    rules language ("we needed", "could not establish") that letters are
+    SUPPOSED to share, and scanning it would flag good writing.
+    """
+    try:
+        with open(_BENCHMARK_PATH, encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return ()
+    if "## THE LETTER, AS SENT" not in text:
+        return ()
+    body = text.split("## THE LETTER, AS SENT", 1)[1].split("## HOW THIS LETTER", 1)[0]
+    return tuple(_content_words(body))
+
+
+def check_benchmark_echo(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Passages this letter shares with the benchmark letter, which belongs to a
+    DIFFERENT candidate.
+
+    Two different failures, one measure:
+      1. FABRICATION - another person's story reused as though it were theirs.
+         The benchmark now ships inside the drafting prompt, so this is a real
+         risk that did not exist before.
+      2. FORMULA - the model's habitual sentences, identical across letters.
+         Measured the day the benchmark was created: a freshly drafted letter
+         shared 21 consecutive content words of opening with it, before the
+         benchmark was in the prompt at all. Two candidates comparing letters
+         would see the same paragraph, and our own feedback widget asks "Did it
+         feel written for you specifically?".
+
+    A WARNING, never a hard block: some shared phrasing is the house voice, and
+    a human is better placed than an n-gram to tell reuse from resemblance.
+    The mandatory opening line is exempt - it is required to be identical.
+    """
+    bw = _benchmark_letter_words()
+    if not bw or email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+
+    prose = _letter_prose(text, email_type)
+    # The opening line is mandated verbatim; it cannot be an echo.
+    prose = re.sub(re.escape(REQUIRED_OPENING_LINE), " ", prose, flags=re.IGNORECASE)
+    lw = _content_words(prose)
+    n = _BENCHMARK_NGRAM
+    if len(lw) < n:
+        return True, None
+
+    grams = {" ".join(bw[i:i + n]) for i in range(len(bw) - n + 1)}
+    lifted = [False] * len(lw)
+    for i in range(len(lw) - n + 1):
+        if " ".join(lw[i:i + n]) in grams:
+            for j in range(i, i + n):
+                lifted[j] = True
+
+    spans, i = [], 0
+    while i < len(lw):
+        if lifted[i]:
+            j = i
+            while j < len(lw) and lifted[j]:
+                j += 1
+            spans.append(" ".join(lw[i:j]))
+            i = j
+        else:
+            i += 1
+    if not spans:
+        return True, None
+
+    longest = max(len(s.split()) for s in spans)
+    quoted = "; ".join(f'"{s}"' for s in spans[:4])
+    return False, (
+        f"{len(spans)} passage(s) shared with the benchmark letter, which was "
+        f"written for a DIFFERENT candidate (longest run {longest} words): "
+        f"{quoted}. Check each one: if it is that candidate's story or detail, "
+        f"it is fabrication and must go. If it is our own habitual phrasing, "
+        f"rewrite it so this letter reads as written for this person."
+    )
 
 
 def check_scorecard_leakage(
@@ -1681,6 +1772,16 @@ def evaluate_email(
         violations.append({
             'rule': 'Translate the scorecard, never repeat it',
             'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # Passages shared with the APPROVED benchmark letter, which belongs to a
+    # different candidate. WARNING: a human tells reuse from resemblance.
+    passed, detail = check_benchmark_echo(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Shared wording with the benchmark letter',
+            'severity': 'WARNING',
             'detail': detail,
         })
 

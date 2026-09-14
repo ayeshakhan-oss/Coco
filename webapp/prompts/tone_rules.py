@@ -56,6 +56,50 @@ _TYPE_SOPS = {
     ],
 }
 
+_BENCHMARK_FILE = os.path.join(_SKILLS, "00_BENCHMARK-approved-letter.md")
+
+_BENCHMARK_PREAMBLE = """
+========================================================================
+THE BENCHMARK LETTER - THE STANDARD YOU ARE WRITING TO
+========================================================================
+Below is the ONE candidate letter Ayesha approved and sent live, together with
+the moves that made it work and the five sentences that had to be repaired by
+hand before it could go out.
+
+IT IS A TONE REFERENCE. IT IS NOT A TEMPLATE AND NOT A SOURCE OF FACTS.
+
+Every story, quotation, name, number and detail in it belongs to a DIFFERENT
+candidate. Writing any of them into the letter you are drafting now is
+fabrication, and fabrication is far worse than a weak letter.
+
+  - Copy the MOVES: how it anchors each strength to one moment in the
+    candidate's own words, how it makes US the subject rather than them, how it
+    names the requirement before the shortfall, how it refuses the checklist,
+    how it explains our bar at length, how it withholds the verdict out loud,
+    and how it closes on a moment rather than a lesson.
+  - Copy NONE of the CONTENT: not the client story, not the two managers, not
+    the padel, not the 'child idea', not the government-systems requirement,
+    not one quoted sentence.
+
+If your candidate's evidence does not support a move, drop the move. Never
+borrow the benchmark's material to fill the space.
+========================================================================
+"""
+
+
+@lru_cache
+def _benchmark() -> str:
+    """The approved letter, shipped verbatim as the tone standard."""
+    try:
+        with open(_BENCHMARK_FILE, encoding="utf-8") as f:
+            text = f.read().strip()
+    except OSError:
+        return ""  # not shipped: the tone master still carries the rules
+    if not text:
+        return ""
+    return _BENCHMARK_PREAMBLE + "\n" + text + "\n"
+
+
 _SOP_PREAMBLE = """
 ========================================================================
 THE SOP FOR THIS LETTER TYPE
@@ -494,6 +538,11 @@ def system_prompt(email_type: str) -> str:
             "short, add evidence, not guidance."
         )
         prompt += "\n" + _FEEDBACK_TONE_NOTE.replace("{length_rule}", length_rule)
+        # The approved letter, as the standard to write to. Placed AFTER the
+        # rules so the rules frame it, and carrying its own anti-copy warning:
+        # an example illustrates, it never instructs. A sample once became
+        # literal heading renames across 54 files.
+        prompt += "\n" + _benchmark()
     if email_type == "cv_rejection":
         prompt += "\n" + _CV_STAGE_NOTE
     if email_type == "case_study_outcome":
