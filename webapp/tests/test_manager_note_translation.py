@@ -251,3 +251,132 @@ def test_an_undegraded_drafter_records_nothing():
     d = _drafter_with({"claude-sonnet-5"}, "claude-sonnet-5")
     d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
     assert d.degraded_from is None
+
+
+# --- the reviewer returns edits, not the whole letter ----------------------
+# Reproducing ~1,000 words to change two sentences is a heavy load for a small
+# model, and every re-emission risks dropping or mangling something. The drafter
+# runs on Haiku whenever the Sonnet quota is out, so the reviewer reads prose and
+# returns only the sentences it wants changed.
+
+LETTER = {
+    "title_line": "T",
+    "greeting": "Dear A,",
+    "opening": ["This is not a yes for now.", "You told us about the client."],
+    "sections": [{"subhead": None, "paragraphs": [
+        "That's the kind of person who holds space for people.",
+        "We could not establish direct experience.",
+    ]}],
+    "ps": "You've proven you can learn hard things.",
+}
+
+
+def test_edits_are_applied_where_they_match():
+    edits = [
+        {"find": "That's the kind of person who holds space for people.",
+         "replace": "What stayed with us was that you carried something for people who were not in the room."},
+        {"find": "You've proven you can learn hard things.",
+         "replace": "That moment stayed with us, and we wanted to say so plainly before we close."},
+    ]
+    out, applied, skipped = drafting._apply_edits(LETTER, edits)
+    assert (applied, skipped) == (2, 0)
+    assert "kind of person" not in out["sections"][0]["paragraphs"][0]
+    assert "proven" not in out["ps"]
+    # Untouched text must survive byte for byte.
+    assert out["opening"] == LETTER["opening"]
+    assert out["sections"][0]["paragraphs"][1] == "We could not establish direct experience."
+
+
+def test_an_edit_that_does_not_match_is_discarded_not_guessed():
+    """A fuzzy match would let the reviewer rewrite a sentence it never meant to
+    touch. A visible defect beats a silent wrong edit."""
+    out, applied, skipped = drafting._apply_edits(
+        LETTER, [{"find": "a sentence that is not in the letter", "replace": "x"}])
+    assert (applied, skipped) == (0, 1)
+    assert out == LETTER
+
+
+def test_an_ambiguous_edit_is_discarded():
+    doubled = {**LETTER, "opening": ["Repeated line.", "Repeated line."],
+               "sections": [{"subhead": None, "paragraphs": ["Repeated line."]}]}
+    out, applied, skipped = drafting._apply_edits(
+        doubled, [{"find": "Repeated line.", "replace": "y"}])
+    assert (applied, skipped) == (0, 1)
+
+
+def test_the_letter_is_handed_over_as_prose_not_json():
+    text = drafting._letter_as_text(LETTER)
+    assert "Dear A," in text and "P.S. You've proven" in text
+    assert "{" not in text and '"paragraphs"' not in text
+
+
+def test_review_pass_applies_edits_end_to_end():
+    class _EditDrafter:
+        name = "fake"
+
+        def draft(self, **kw):
+            return {"edits": [{
+                "find": "That's the kind of person who holds space for people.",
+                "replace": "What stayed with us was that you carried something for others.",
+                "why": "person-level judgement"}]}
+
+    out, status = drafting._review_pass(
+        _EditDrafter(), LETTER, email_type="warm_bench", first_name="A", role="R")
+    assert status == "applied"
+    assert "kind of person" not in out["sections"][0]["paragraphs"][0]
+
+
+def test_an_empty_edit_list_is_a_real_answer_not_a_failure():
+    class _CleanDrafter:
+        name = "fake"
+
+        def draft(self, **kw):
+            return {"edits": []}
+
+    out, status = drafting._review_pass(
+        _CleanDrafter(), LETTER, email_type="warm_bench", first_name="A", role="R")
+    assert status == "skipped"
+    assert out == LETTER
+
+
+def test_the_old_whole_letter_shape_still_works():
+    """Belt and braces: a model that answers in the previous contract is honoured."""
+    class _OldDrafter:
+        name = "fake"
+
+        def draft(self, **kw):
+            return {**LETTER, "sections": [{"subhead": None, "paragraphs": ["Rewritten."]}]}
+
+    out, status = drafting._review_pass(
+        _OldDrafter(), LETTER, email_type="warm_bench", first_name="A", role="R")
+    assert status == "applied"
+    assert out["sections"][0]["paragraphs"] == ["Rewritten."]
+
+
+@pytest.fixture(autouse=True)
+def _clear_unusable_models():
+    """The unusable-model memo is process-wide by design; isolate it per test."""
+    drafting.AnthropicDrafter._unusable.clear()
+    yield
+    drafting.AnthropicDrafter._unusable.clear()
+
+
+def test_a_dead_model_is_remembered_across_requests():
+    """get_drafter() builds a fresh drafter per request. Without a process-wide
+    memo every draft re-probed the rate-limited model and paid the SDK backoff
+    again, which is how one generate ran long enough to 502."""
+    first = _drafter_with({"claude-haiku-4-5-20251001"}, "claude-sonnet-5")
+    first.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert "claude-sonnet-5" in drafting.AnthropicDrafter._unusable
+
+    second = _drafter_with({"claude-haiku-4-5-20251001"}, "claude-sonnet-5")
+    # A fresh drafter must not ask the dead model again.
+    second.model = "claude-sonnet-5"
+    if second.model in drafting.AnthropicDrafter._unusable:
+        for c in drafting.AnthropicDrafter._FALLBACK_MODELS:
+            if c not in drafting.AnthropicDrafter._unusable:
+                second.degraded_from, second.model = second.model, c
+                break
+    second.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert "claude-sonnet-5" not in second.client.messages.asked, \
+        "the second request re-probed a model already known to be dead"

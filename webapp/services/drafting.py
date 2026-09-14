@@ -182,20 +182,43 @@ class StubDrafter:
 class AnthropicDrafter:
     name = "anthropic"
 
+    # Models this process has already found unusable, remembered ACROSS
+    # requests. get_drafter() builds a fresh drafter per request, so without
+    # this every single draft re-probed the rate-limited model and paid the
+    # SDK's 429 backoff again before failing over. One generate does up to ten
+    # model calls; that is how a request runs long enough for the edge proxy to
+    # give up and return 502 with no line in the access log, because uvicorn
+    # only logs a request once it completes.
+    _unusable: set = set()
+
     def __init__(self, model: str, api_key: Optional[str] = None, auth_token: Optional[str] = None):
         from anthropic import Anthropic
 
         self.model = model
         self.degraded_from: Optional[str] = None
         self.mode = "api_key" if api_key else "oauth"
+        # Fail over fast. The default (2 retries with backoff, honouring a
+        # retry-after that can be a minute) is right for a transient blip and
+        # badly wrong for a model whose quota is gone and which we are about to
+        # abandon anyway. Our own fallback list is the retry that matters.
+        opts = {"max_retries": 1, "timeout": 90.0}
         if api_key:
-            self.client = Anthropic(api_key=api_key)
+            self.client = Anthropic(api_key=api_key, **opts)
         else:
-            # Local-dev only: reuse the Claude Code subscription token.
             self.client = Anthropic(
                 auth_token=auth_token,
                 default_headers={"anthropic-beta": "oauth-2025-04-20"},
+                **opts,
             )
+        # Skip straight past anything this process already knows is dead.
+        if model in self._unusable:
+            for candidate in self._FALLBACK_MODELS:
+                if candidate not in self._unusable:
+                    log.info("Model %r already known unusable; starting on %r.",
+                             model, candidate)
+                    self.degraded_from = model
+                    self.model = candidate
+                    break
 
     # Tried in order if the configured model name is not one this account can
     # serve. ANTHROPIC_MODEL is set by hand on Railway, so a typo or a retired
@@ -251,6 +274,9 @@ class AnthropicDrafter:
             except Exception as exc:  # noqa: BLE001
                 if self._should_fall_back(exc) and model != self._FALLBACK_MODELS[-1]:
                     log.error("Model %r unusable (%s); falling back.", model, exc)
+                    # Remember for every later request in this process, so the
+                    # next draft does not pay this probe again.
+                    type(self)._unusable.add(model)
                     continue
                 raise
             if model != self.model:
@@ -425,14 +451,107 @@ not about what you are able to do."
 
 Each names a moment, then OUR reading of it, and stops before the verdict.
 
-Return ONLY valid JSON, the SAME shape you were given:
-{"title_line": "...", "greeting": "...", "opening": ["..."],
- "sections": [{"subhead": null, "paragraphs": ["..."]}], "ps": "..."}
+========================================================================
+WHAT TO RETURN: ONLY THE SENTENCES YOU ARE CHANGING
+========================================================================
+Do NOT return the letter. Return a list of edits.
+
+{"edits": [
+   {"find": "<the offending sentence, copied EXACTLY, character for character>",
+    "replace": "<your rewrite>",
+    "why": "<which of the seven behaviours it broke>"}
+]}
+
+RULES FOR "find":
+- Copy it EXACTLY from the letter you were given. Same words, same spelling,
+  same punctuation, same capitalisation. If it does not match exactly, the edit
+  is discarded and the defect ships.
+- One sentence, or two if they only make sense together. Never a whole
+  paragraph.
+- It must appear only ONCE in the letter. If the sentence is repeated, include
+  a few surrounding words to make it unique.
+
+RULES FOR "replace":
+- Same length or longer. NEVER shorter: a letter must not lose substance to
+  gain safety. If cutting a verdict leaves the paragraph thin, use the space to
+  say what the role required and why.
+- Keep the candidate's quoted words untouched. Keep the collective "we".
+  No em dashes.
+
+Return {"edits": []} if the letter genuinely breaks none of the rules. An empty
+list is a real answer and is better than inventing a change.
 """
 
 
 _REVIEWED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection",
                    "case_study_outcome")
+
+
+def _letter_as_text(content: dict) -> str:
+    """The letter as plain prose for the reviewer to read.
+
+    Handing it raw JSON made it answer in JSON shape, reproducing all ~1,000
+    words to change two sentences. That is a heavy load for a small model and
+    every re-emission is a chance to drop or mangle something. It reads prose
+    and returns only the sentences it wants changed.
+    """
+    parts = [content.get("greeting", "")]
+    parts += [p for p in (content.get("opening") or []) if p]
+    for sec in content.get("sections") or []:
+        if not isinstance(sec, dict):
+            continue
+        if sec.get("subhead"):
+            parts.append(sec["subhead"])
+        parts += [p for p in (sec.get("paragraphs") or []) if p]
+    if content.get("ps"):
+        parts.append("P.S. " + content["ps"])
+    return "\n\n".join(parts)
+
+
+def _apply_edits(content: dict, edits: list) -> tuple:
+    """Apply find/replace edits to the letter's text fields, deterministically.
+
+    Returns (new_content, applied, skipped). An edit whose "find" does not
+    appear EXACTLY once is discarded rather than guessed at: a fuzzy match would
+    let the reviewer rewrite a sentence it did not mean to touch, and a silent
+    near-miss is worse than a defect we can still see.
+    """
+    import copy
+
+    out = copy.deepcopy(content)
+    applied = skipped = 0
+
+    def _fields():
+        """Every editable string, as (get, set) pairs."""
+        for i, p in enumerate(out.get("opening") or []):
+            if isinstance(p, str):
+                yield p, lambda v, i=i: out["opening"].__setitem__(i, v)
+        for sec in out.get("sections") or []:
+            if not isinstance(sec, dict):
+                continue
+            for i, p in enumerate(sec.get("paragraphs") or []):
+                if isinstance(p, str):
+                    yield p, lambda v, s=sec, i=i: s["paragraphs"].__setitem__(i, v)
+        if isinstance(out.get("ps"), str):
+            yield out["ps"], lambda v: out.__setitem__("ps", v)
+
+    for edit in edits:
+        if not isinstance(edit, dict):
+            skipped += 1
+            continue
+        find, repl = edit.get("find"), edit.get("replace")
+        if not isinstance(find, str) or not isinstance(repl, str) or not find.strip():
+            skipped += 1
+            continue
+        hits = [(text, setter) for text, setter in _fields() if find in text]
+        if len(hits) != 1 or hits[0][0].count(find) != 1:
+            # Absent, or ambiguous. Either way we will not guess.
+            skipped += 1
+            continue
+        text, setter = hits[0]
+        setter(text.replace(find, repl, 1))
+        applied += 1
+    return out, applied, skipped
 
 
 def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
@@ -454,9 +573,9 @@ def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
         return content, "skipped"
     try:
         user = (
-            "Review this letter and return the repaired JSON.\n\n"
+            "Review this letter. Return ONLY the edits.\n\n"
             f"Candidate first name: {first_name}\nRole: {role}\n\n"
-            + json.dumps(content, ensure_ascii=False, indent=1)
+            + _letter_as_text(content)
         )
         if harness_hits:
             user += (
@@ -467,6 +586,16 @@ def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
             system=_REVIEWER_SYSTEM, user=user, email_type=email_type,
             first_name=first_name, role=role, prior_violations=None, attempt=0,
         )
+        if isinstance(repaired, dict) and isinstance(repaired.get("edits"), list):
+            edited, applied, skipped = _apply_edits(content, repaired["edits"])
+            if skipped:
+                log.warning("Review pass: %d edit(s) applied, %d discarded "
+                            "(the quoted sentence did not match).", applied, skipped)
+            if not applied:
+                return content, "skipped" if not repaired["edits"] else (
+                    "failed: no edit matched the letter text")
+            return _normalize_content(edited), "applied"
+        # The older contract returned the whole letter. Still honour it.
         if isinstance(repaired, dict) and repaired.get("sections"):
             return _normalize_content(repaired), "applied"
         log.warning("Review pass returned an unusable shape; keeping the draft.")

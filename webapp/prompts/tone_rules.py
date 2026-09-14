@@ -10,6 +10,7 @@ disagree.
 from __future__ import annotations
 
 import os
+import re
 from functools import lru_cache
 
 from ..reuse import SECTION_HEADINGS
@@ -55,6 +56,44 @@ _TYPE_SOPS = {
         os.path.join(_SKILLS, "08_case-study-outcome-email.md"),
     ],
 }
+
+_FEEDBACK_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
+
+_RULE_CARD = """
+========================================================================
+BEFORE YOU WRITE. THE WHOLE JOB, IN TWENTY LINES.
+========================================================================
+EXPLAIN OUR DECISION. DO NOT EVALUATE THEM AS A PERSON.
+
+Test every sentence:
+    Describe the moment, then say what it meant to US.
+    Never conclude what it means ABOUT THEM.
+
+NEVER:
+ 1. Tell them what to do, learn, build or demonstrate next.      (coaching)
+ 2. Name which roles, functions or sectors suit them.            (career direction)
+ 3. Replay a question and assess their answer.                   (grading)
+ 4. Characterise the person. PRAISE COUNTS: "that's rare",
+    "the kind of person who", "you've proven you can".           (judgement)
+ 5. List what they failed to demonstrate. One synthesised
+    sentence about what we could not establish, then STOP.       (the checklist)
+ 6. Reuse the hiring manager's wording.                          (private notes)
+ 7. Promise to contact them or offer them a meeting.             (a promise we must keep)
+
+ALWAYS:
+ - Anchor every strength to ONE moment, in their own quoted words.
+ - Make US the subject: "what stayed with us was...".
+ - Name what the role required BEFORE what was missing.
+ - Spend your longest paragraph explaining why that requirement
+   matters to THIS role. That is where length belongs.
+ - At least 800 words. If short, add evidence about THEM, never advice.
+   NEVER shorten a letter to make it warmer.
+ - Close on a moment. The P.S. gives no advice at all.
+
+Write the final section and the P.S. LAST, then read them again.
+Every letter that has ever failed, failed there.
+========================================================================
+"""
 
 _BENCHMARK_FILE = os.path.join(_SKILLS, "00_BENCHMARK-approved-letter.md")
 
@@ -118,13 +157,36 @@ predate them in places.
 
 
 @lru_cache
+def _strip_operational(text: str) -> str:
+    """Drop what the writer is told to ignore, instead of asking it to ignore.
+
+    The SOPs are operating manuals: they carry send scripts, logo MIME code,
+    signature HTML and template markup alongside the craft guidance. The writer
+    returns JSON content, so none of it applies, and the preamble used to spend
+    a paragraph asking the model to skip it.
+
+    That ask is expensive on a small model. The warm-bench system prompt runs to
+    ~22,500 tokens, and a long instruction block loses its middle, which is
+    exactly where the SOPs sit. Removing the noise is worth more than asking for
+    it to be overlooked.
+    """
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)  # code / HTML fences
+    kept = [
+        line for line in text.split("\n")
+        # A line of template markup, not guidance about writing.
+        if not re.search(r"<(p|div|table|td|tr|img|span|a|h[1-6]|style|br)\b", line)
+    ]
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(kept)).strip()
+
+
+@lru_cache
 def _type_sops(email_type: str) -> str:
-    """The verbatim SOP text for this email type, or "" when none is available."""
+    """The SOP text for this email type, craft guidance only, or "" if absent."""
     parts = []
     for path in _TYPE_SOPS.get(email_type, []):
         try:
             with open(path, encoding="utf-8") as f:
-                text = f.read().strip()
+                text = _strip_operational(f.read())
         except OSError:
             continue  # not shipped / not readable: the tone master still applies
         if text:
@@ -553,4 +615,10 @@ def system_prompt(email_type: str) -> str:
     sops = _type_sops(email_type)
     if sops:
         prompt += "\n" + sops
+    # THE LAST THING READ. A long instruction block loses its middle, and this
+    # prompt runs to ~20,000 tokens, so the rules that matter most are repeated
+    # here in twenty lines. Recency is the cheapest lever available on a small
+    # model, and the drafter is on Haiku whenever the Sonnet quota is out.
+    if email_type in _FEEDBACK_TYPES:
+        prompt += "\n" + _RULE_CARD
     return prompt
