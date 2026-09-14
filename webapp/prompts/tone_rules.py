@@ -288,9 +288,60 @@ decision? If no, leave it out.
 Something genuinely nice and specific we noticed about THEM. Not a lecture, not
 advice, not a role suggestion, not a summary of the decision.
 
+----- KEEP THE DETAIL, CHANGE THE LENS -----
+Keep the existing structure, headings, level of detail and word count. DO NOT
+SHORTEN THE FEEDBACK TO MAKE IT WARMER. If a passage starts to sound like
+coaching, do not cut it: use that same space to explain the ROLE, our hiring
+bar, what we genuinely appreciated, and what remained unclear to us.
+
+Reference their specific stories and moments. That is what makes the letter feel
+written for this person. But do not replay a question and grade the answer:
+  NO:  "Your answer about navigating government stakeholders stayed generic."
+  YES: "We came away wanting a more concrete understanding of how you have
+        navigated government stakeholders and moved work forward within those
+        systems."
+Same depth, different lens: our assessment and our requirement, not their
+failure.
+
+----- NEVER DIAGNOSE MOTIVATION OR CHARACTER -----
+One hiring process does not license a verdict on who someone is or what drives
+them. Distinguish what the candidate ACTUALLY LACKS (we cannot know) from what
+WE WERE UNABLE TO ESTABLISH (we can say confidently).
+  NO:  "Your motivation felt circumstantial rather than mission-driven."
+  YES: "We weren't able to understand your connection to this particular mission
+        as deeply as we needed to for this role."
+  NO:  "You lack strategic thinking."
+  YES: "We needed stronger evidence of strategic thinking at an organisational
+        level than we were able to establish through the process."
+And do not psychoanalyse their stories:
+  NO:  "Most people would soften that admission. You didn't. That's real maturity."
+  YES: "We appreciated how openly you spoke about that moment, including the
+        parts that were difficult."
+
+----- PREFERRED PHRASINGS -----
+"We weren't able to establish..." / "We needed to see stronger evidence of..."
+"We came away wanting to understand..." / "For this particular role, we needed..."
+"What remained unclear to us was..." / "The distinction mattered for this role
+because..." / "Ultimately, this is where our decision landed."
+
+----- THE ENDING -----
+Leave the relationship with dignity and warmth. It should say: we saw real
+strengths in you, we had a specific reason for saying no to THIS role, and both
+are true at once. No homework, no development advice, and NO CONDITIONS on
+reapplying. Saying we would welcome hearing from them again is good; making it
+conditional on them fixing the gap is not.
+  NO:  "We'd welcome your application again if you take on work that gives you
+        that experience."
+  YES: "We would be glad to hear from you again, and we hope our paths cross."
+
 ----- LENGTH -----
 {length_rule}
 Length is never padded with advice or with a replay of their application.
+
+----- THE ARC -----
+"We saw you" -> "Here is why we said no" -> "We still respect what we saw".
+The candidate should finish thinking: they genuinely saw me, I understand why
+they said no, and I still feel respected.
 
 ----- FINAL CHECK BEFORE YOU RETURN THE JSON -----
   - Am I explaining our decision, or evaluating the person?

@@ -174,6 +174,45 @@ COACHING_REGISTER = [
     # --- misc coaching register ---
     r'\bthat will make you (stronger|unstoppable|a better)\b',
     r'\blean into (that|this)\b',
+    r'\bkeep building\b',
+    r'\bdevelop (this|that) further\b',
+    r'\bthe step forward for you\b',
+
+    # --- GRADING THEIR ANSWERS (Ayesha 2026-09-14) ---------------------------
+    # Reference their stories freely, but never replay a question and mark the
+    # answer. Translate the observation into what WE could not establish.
+    #   NO:  "Your answer about government stakeholders stayed generic."
+    #   YES: "We came away wanting a more concrete understanding of how you have
+    #         navigated government stakeholders."
+    r'\byour (answer|answers|response|responses|reasoning|thinking|explanation)\b',
+    r'\b(stayed|remained|felt|was|were) (generic|surface|vague|thin|shallow)\b',
+    r"\b(details?|answer|reasoning) (thinned|didn't deepen|did not deepen)\b",
+    r'\bwhen we (pushed|probed|pressed) you\b',
+    r'\byou misread\b',
+    r"\byou (weren't|were not) able to (answer|explain|articulate)\b",
+    r'\byou (could ?n.t|did ?n.t) (explain|articulate|answer)\b',
+
+    # --- DIAGNOSING MOTIVATION OR CHARACTER (Ayesha 2026-09-14) --------------
+    # One hiring process does not license a verdict on who someone is or what
+    # drives them.
+    #   NO:  "Your motivation felt circumstantial rather than mission-driven."
+    #   YES: "We weren't able to understand your connection to this particular
+    #         mission as deeply as we needed to for this role."
+    r'\byour motivation\b',
+    r'\b(circumstantial|opportunistic) rather than\b',
+    r'\brather than (mission|purpose).driven\b',
+    r'\bthat.s (real|genuine|true) (maturity|humility|character|self.awareness)\b',
+    r'\bmost people would\b',
+    r'\byou lack\b',
+    r'\bthe kind of (person|professional) you are\b',
+
+    # --- A CONDITIONAL DOOR (Ayesha 2026-09-14) -----------------------------
+    # Welcoming them back is good. Making it conditional on fixing the gap is
+    # homework: "we'd welcome you again IF you take on government experience".
+    r'\b(welcome|glad to hear from|hear from) (you|your \w+) again,? (if|once|when|after) you\b',
+    r'\bif you (take on|gain|build|get|develop|acquire)\b.{0,90}\b(experience|exposure|background|track record)\b',
+    r'\b(once|after|when) you (have|had|gain|build|develop)\b.{0,40}\b(come back|apply again|reapply|reach out)\b',
+    r'\b(come back|apply again|reapply) (once|after|when) you\b',
 ]
 
 
