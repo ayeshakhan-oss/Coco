@@ -146,7 +146,11 @@ def healthz() -> dict:
         "status": "ok",
         "service": "coco-backend",
         "env": settings.app_env,
-        "commit": sha[:8] if sha else "unknown",
+        # A full 40-char SHA is truncated for readability, but a short SHA the
+        # deploy script stamped (e.g. "c497c3e+dirty") is reported whole —
+        # truncating it to 8 broke the script's own served-vs-deployed match and
+        # made a successful deploy report as a timeout.
+        "commit": (sha if len(sha) <= 20 else sha[:8]) if sha else "unknown",
     }
 
 
