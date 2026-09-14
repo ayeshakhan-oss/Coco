@@ -756,6 +756,18 @@ _COMMON_WORDS = {
     "note", "notes", "line", "lines", "point", "points", "case", "cases",
     "trust", "care", "honest", "honesty", "respect", "courage", "joy",
     "craft", "hard", "things", "one", "all", "not", "yes", "no", "we", "our",
+    # Generic professional vocabulary, measured as the dominant source of false
+    # flags across the 98 Job-42 letters: "crm" alone accounted for 25. None of
+    # these is a claim ABOUT a person; they are the words any hiring letter uses.
+    "crm", "erp", "ats", "kpi", "kpis", "roi", "seo", "sem", "saas", "b2b", "b2c",
+    "ngo", "ngos", "sql", "api", "apis", "hr", "it", "ui", "ux", "ai", "ml",
+    "pkr", "usd", "gbp", "eur", "rs",
+    "bachelor", "bachelors", "master", "masters", "mphil", "phd", "mba", "bsc",
+    "msc", "ba", "bs", "ms", "diploma", "degree", "university", "college",
+    "commission", "ministry", "federal", "provincial", "government", "public",
+    "private", "sector", "cloud", "digital", "mobile", "web", "online",
+    "higher", "lower", "senior", "junior", "mid", "entry", "cvs", "resume",
+    "focused", "driven", "based", "led", "run", "max", "min",
 }
 
 
