@@ -67,7 +67,7 @@ see? It is not a development plan.
 - **Opening:** Lead with specific moment, show company vulnerability
 - **Section 1:** "What Stayed With Us" (Blue #1565C0 heading) — Specific strengths from interview
 - **Section 2:** "Here's the Honest Part" (Blue heading) — Specific gaps, evidence-based
-- **Section 3:** "Where We Want to Leave This" (Blue heading) — Path forward, not prescriptive
+- **Section 3:** "Where We Want to Leave This" (Blue heading) — where OUR DECISION landed and the respect we want to leave behind. NOT a path forward. The phrase "path forward" was removed 2026-09-14: combined with a heading about where to leave things, it reads as an instruction to write about the candidate's future, and that is exactly where every letter has slipped into coaching.
 - **P.S.:** Memorable moment, reinforcement
 - **Word count:** 800-1100 words minimum (mandatory)
 

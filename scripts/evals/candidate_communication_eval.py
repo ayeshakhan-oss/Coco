@@ -796,16 +796,31 @@ def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[
     if email_type not in _COACHING_CHECKED_TYPES:
         return True, None
     clean = _without_headings(strip_html(text), email_type)
+    # Report EVERY distinct match, not only the first. Stopping at the first
+    # turned review into whack-a-mole: application 3869 contained five coaching
+    # phrases ("spend time building", "stayed generic", "felt generic",
+    # "whether through a role", "That's rare") and exactly one was ever shown,
+    # so each regeneration surfaced the next one instead of all of them.
+    hits: List[str] = []
+    seen_lower = set()
     for pattern in COACHING_REGISTER:
-        m = re.search(pattern, clean, re.IGNORECASE)
-        if m:
-            ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
-            return False, (
-                f'Career-coaching register "{m.group()}". A feedback letter reports what we '
-                f'could and could not SEE; it does not prescribe a '
-                f'career or suggest other job titles. Rewrite as "we could not clearly '
-                f'see X in the application". Context: ...{ctx}...'
-            )
+        for m in re.finditer(pattern, clean, re.IGNORECASE):
+            phrase = m.group().strip()
+            if phrase.lower() not in seen_lower:
+                seen_lower.add(phrase.lower())
+                hits.append(phrase)
+    if hits:
+        first = re.search(re.escape(hits[0]), clean, re.IGNORECASE)
+        ctx = (clean[max(0, first.start() - 45):first.end() + 45].replace("\n", " ")
+               if first else "")
+        listed = ", ".join('"%s"' % h for h in hits[:8])
+        more = " (+%d more)" % (len(hits) - 8) if len(hits) > 8 else ""
+        return False, (
+            f'{len(hits)} coaching phrase(s) to rewrite: {listed}{more}. A feedback '
+            f'letter reports what we could and could not SEE; it does not prescribe '
+            f'a career, suggest job titles, or grade an answer. First context: '
+            f'...{ctx}...'
+        )
     return True, None
 
 
