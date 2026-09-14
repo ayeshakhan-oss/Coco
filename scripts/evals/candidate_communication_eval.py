@@ -591,8 +591,21 @@ APPLICATION_REPLAY = [
 
 
 def check_application_replay(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
-    """Question-by-question replay of the candidate's application."""
-    if email_type not in _COACHING_CHECKED_TYPES:
+    """Question-by-question replay of the candidate's WRITTEN APPLICATION.
+
+    cv_rejection ONLY. This rule came from the CV-rejection spec ("Do Not Repeat
+    Application Answers"), where the evidence is a form someone filled in and
+    quoting it back is an audit. I wrongly applied it to every type alongside the
+    coaching rule, which Ayesha did scope to all templates.
+
+    The interview-stage letters are the opposite case: warm bench, values
+    feedback and GWC rejections are REQUIRED to quote the candidate's own
+    interview moments ("quote their actual interview moments with specific
+    timestamps" - warm_bench_final_locked_approach.md), and case_study_outcome
+    must quote their submission verbatim. Blocking "you said" there blocked the
+    core technique of the letter (application 3869, Muneeb).
+    """
+    if email_type != "cv_rejection":
         return True, None
     clean = strip_html(text)
     for pattern in APPLICATION_REPLAY:
@@ -692,10 +705,33 @@ _FIRST_PERSON_SINGULAR = re.compile(
 )
 
 
+def _strip_quoted_spans(text: str) -> str:
+    """Blank out anything inside quotation marks.
+
+    The rule is that WE speak as "we", never as one person. It was never about
+    the CANDIDATE's own words. A warm-bench letter quotes their interview
+    verbatim, so their "I" and "my" are correct and must survive:
+        You told us the truth: "It was a little difficult initially, since that
+        was my child idea."
+    Flagging that (application 3869, Muneeb) blocked a letter for quoting the
+    person it was written to.
+
+    Single quotes only count when they open after whitespace and close before
+    punctuation or whitespace, so contractions like "didn't" are left alone.
+    """
+    text = re.sub(r'"[^"]{0,400}"', ' ', text)
+    text = re.sub(r'[“][^”]{0,400}[”]', ' ', text)
+    text = re.sub(r"(?<=\s)'[^']{0,400}'(?=[\s.,;:!?)]|$)", ' ', text)
+    text = re.sub(r"(?<=\s)[‘][^’]{0,400}[’](?=[\s.,;:!?)]|$)", ' ', text)
+    return text
+
+
 def check_first_person_singular(text: str) -> Tuple[bool, Optional[str]]:
     """The email must use the collective 'we' voice, never first-person singular.
-    A decision from Taleemabad is 'we', not one person's 'I'."""
-    clean = strip_html(text)
+    A decision from Taleemabad is 'we', not one person's 'I'.
+
+    Quoted spans are exempt: they are the candidate speaking, not us."""
+    clean = _strip_quoted_spans(strip_html(text))
     m = _FIRST_PERSON_SINGULAR.search(clean)
     if m:
         i = m.start()
