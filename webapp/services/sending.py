@@ -233,6 +233,7 @@ def send_communication(
     candidate_email: Optional[str],
     hiring_manager_email: Optional[str] = None,
     cv_corpus: Optional[str] = None,
+    scorecard_text: Optional[str] = None,
     transport: Optional[Transport] = None,
 ) -> dict:
     """Gate + build + send. Returns the resolved recipients / subject / message_id
@@ -252,7 +253,8 @@ def send_communication(
     # these went out written from the candidate's first name and the role title.
     result = evaluate_email(
         full_html, subject, comm.email_type, pilot_mode=pilot,
-        cv_corpus=cv_corpus, candidate_name=first_name, role=role,
+        cv_corpus=cv_corpus, scorecard_text=scorecard_text,
+        candidate_name=first_name, role=role,
     )
     if any(v["severity"] == "HARD_BLOCK" for v in result["violations"]):
         raise SendBlocked(result["violations"])
