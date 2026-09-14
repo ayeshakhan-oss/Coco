@@ -5,7 +5,11 @@ export function QualityPanel({ result, busy }: { result: EvalResult | null; busy
   const hard = result?.violations.filter((v) => v.severity === 'HARD_BLOCK') ?? []
   const warn = result?.violations.filter((v) => v.severity === 'WARNING') ?? []
   const words = result?.word_count ?? 0
-  const wordsOk = words >= 800
+  // The minimum differs by email type (a CV rejection is 350-550; the
+  // interview-stage letters are 800+). Hardcoding 800 here showed "480 / 800"
+  // on a CV rejection that was within range and passing.
+  const minimum = result?.word_minimum ?? 800
+  const wordsOk = words >= minimum
 
   return (
     <div className="border-t border-hairline bg-surface">
@@ -21,7 +25,7 @@ export function QualityPanel({ result, busy }: { result: EvalResult | null; busy
           <span className="flex items-center gap-1.5 text-[#b7791f]"><AlertTriangle className="h-4 w-4" /> {warn.length} warning{warn.length > 1 ? 's' : ''}</span>
         )}
         <span className={`ml-auto rounded-md px-2 py-0.5 text-xs font-semibold tabular-nums ${wordsOk ? 'bg-green/15 text-green' : 'bg-[#b7791f]/15 text-[#b7791f]'}`}>
-          {words} / 800 words
+          {words} / {minimum} words
         </span>
       </div>
       {(hard.length > 0 || warn.length > 0) && (

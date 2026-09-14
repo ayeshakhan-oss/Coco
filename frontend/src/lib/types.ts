@@ -220,6 +220,7 @@ export interface EvalViolation {
 }
 
 export interface EvalResult {
+  word_minimum?: number
   passed: boolean
   word_count: number
   violations: EvalViolation[]

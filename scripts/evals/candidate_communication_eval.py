@@ -114,8 +114,12 @@ HARSH_LANGUAGE = [
 # Say instead: "we could not clearly see X in the application; there may well be
 # experience behind it that shows this more strongly."
 #
-# WARNING, not a hard block: the phrasing is judgement-dependent and a block here
-# would stop letters that are merely warm.
+# HARD BLOCK since 2026-09-14. It shipped as a WARNING and a live draft passed
+# checks while telling a candidate we could not be confident in "your readiness"
+# and pointing him toward "a role more closely aligned with your teaching and
+# training expertise". Ayesha listed these phrasings as ones to AVOID, so
+# "passes checks" has to mean the letter is sendable. Patterns are specific
+# phrases, not judgement calls.
 COACHING_REGISTER = [
     r'you (should|need to|must) (develop|build|document|work on|focus on|gain)',
     r'what (you need|we would encourage you) to develop',
@@ -124,7 +128,6 @@ COACHING_REGISTER = [
     r'\bspend some time (writing|documenting|building)',
     r'look for a (next )?role (where|that)',
     r'(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)',
-    r'roles? (such as|like) (a )?\w+',
     r'that will make you (stronger|unstoppable)',
     r'lean into that',
     # Claims about the PERSON rather than about the evidence (Ayesha's "avoid"
@@ -138,6 +141,17 @@ COACHING_REGISTER = [
     r'(seek|pursue) (out )?(a )?(leadership|senior|bigger) (role|opportunit)',
     r'your next step',
     r'reflect on your career',
+    # Defining the candidate's lane for them. "a role more closely aligned with
+    # your teaching and training expertise" is still coaching: it tells them
+    # which career they belong in. Leave the door open without naming a lane.
+    r'(role|position|opportunit\w+) (more )?(closely )?aligned with your \w+',
+    r'better (suited|suit|fit) (to|for) your',
+    # "Readiness" is a verdict on the person. We are deciding whether there was
+    # enough evidence FOR THIS ROLE, not whether they are generally ready for
+    # seniority. "confidence in your readiness" reads as the latter.
+    r'your readiness',
+    r'readiness for (this|the|a)\b',
+    r'ready for (this|the|a) (role|level|step|seniority|position)',
     r'leadership philosophy',
 ]
 
@@ -148,7 +162,7 @@ CORPORATE_BOILERPLATE = [
     r"after careful consideration",
     r"impressive (candidate )?pool",
     r"strong field of candidates",
-    r"we wish you (all the best|the best) in your future",
+    r"we wish you (all the best|the best|well)",
 ]
 
 # Recruiting abstractions (case-insensitive, whole-word match)
@@ -1264,6 +1278,18 @@ def evaluate_email(
             'detail': detail,
         })
 
+    # 7c2. Never replay the application back at the candidate. HARD BLOCK
+    #      (Ayesha 2026-09-14). Shipped first as a WARNING, which let a live
+    #      draft quote a candidate's answer of 'NAAAAA' back at them inside a
+    #      rejection. "Passes checks" has to mean the letter is sendable.
+    passed, detail = check_application_replay(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Never replay the application back at them',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
     # 7d. CV-stage rejection must be grounded in the candidate's own material
     #     (Skill 01 Rule 5 / Rule 7). Only runs when a corpus is supplied.
     passed, detail = check_cv_grounding(
@@ -1304,21 +1330,12 @@ def evaluate_email(
                        'review of their answers.'),
         })
 
-    # W. Replaying the application back at the candidate (Ayesha 2026-09-14)
-    passed, detail = check_application_replay(html_body, email_type)
-    if not passed:
-        violations.append({
-            'rule': 'Do not replay the application back at them',
-            'severity': 'WARNING',
-            'detail': detail,
-        })
-
     # W. Career-coaching register (the four feedback letters, Ayesha 2026-09-14)
     passed, detail = check_coaching_register(html_body, email_type)
     if not passed:
         violations.append({
             'rule': 'Report the evidence, do not coach their career',
-            'severity': 'WARNING',
+            'severity': 'HARD_BLOCK',
             'detail': detail,
         })
 
@@ -1375,6 +1392,9 @@ def evaluate_email(
     return {
         'passed': not has_hard_blocks,
         'word_count': word_count,
+        # The UI hardcoded "/ 800" and so showed "480 / 800" on a CV rejection
+        # whose real floor is 350. Report the minimum that was actually applied.
+        'word_minimum': minimum,
         'violations': violations,
     }
 
