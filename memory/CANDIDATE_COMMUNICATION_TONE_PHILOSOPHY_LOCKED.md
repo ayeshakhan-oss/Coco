@@ -47,7 +47,7 @@ see? It is not a development plan.
 - 800 words still stands. The length comes from being MORE SPECIFIC ABOUT THEIR
   OWN MATERIAL, not from advice. If a letter runs short, add evidence, not guidance.
 - Section names: cv_rejection is now *What we appreciated / What we were looking
-  for / A final note*. values_feedback closes on *A final note*. warm_bench and
+  for / What we think you should do next*. values_feedback closes on *What we think you should do next*. warm_bench and
   gwc_rejection already close on *Where We Want to Leave This*, which is a warm
   note rather than advice, and are unchanged.
 - NOT applied to case_study_outcome: its guidance is about the submitted WORK,
@@ -56,7 +56,7 @@ see? It is not a development plan.
 **Structure (locked):**
 - **Opening:** Lead with specific moment, show company vulnerability
 - **Section 1:** "What Stayed With Us" (Blue #1565C0 heading) — Specific strengths from interview
-- **Section 2:** "Where We Found Questions" (Blue heading) — Specific gaps, evidence-based
+- **Section 2:** "Here's the Honest Part" (Blue heading) — Specific gaps, evidence-based
 - **Section 3:** "Where We Want to Leave This" (Blue heading) — Path forward, not prescriptive
 - **P.S.:** Memorable moment, reinforcement
 - **Word count:** 800-1100 words minimum (mandatory)

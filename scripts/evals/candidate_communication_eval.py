@@ -219,47 +219,46 @@ DEFAULT_WORD_MINIMUM = 800
 
 # Section headings by email type
 SECTION_HEADINGS = {
-    # "Where We Found Questions" was renamed 2026-09-11: it contained the
-    # hard-blocked phrase "the honest part", so every warm-bench and GWC letter
-    # was blocked on a heading the renderer itself printed. The replacement
-    # matches the wording cv_rejection and values_feedback already use, so the
-    # three decision types now read in one voice.
+    # LOCKED (Ayesha 2026-09-14): "Here's the Honest Part" stays. I renamed it on
+    # 2026-09-11 to resolve a collision with the HARSH_LANGUAGE list, which bans
+    # "the honest part" - that was my call, not an instruction, and it is
+    # reverted. The collision is REAL and unresolved: the renderer prints this
+    # heading, so warm_bench and gwc_rejection letters hard-block on it. See
+    # check_harsh_language.
     'warm_bench': {
         'required': [
             'What Stayed With Us',
-            'Where We Found Questions',
+            "Here's the Honest Part",
             'Where We Want to Leave This',
         ]
     },
-    # Retoned 2026-09-14 (Ayesha): the prescriptive third section is retired
-    # across the feedback letters. A rejection reports what we could and could
-    # not see; it does not prescribe a career. warm_bench and gwc_rejection
-    # already close on "Where We Want to Leave This", which is a warm note
-    # rather than advice, so only this type needed the section replaced.
+    # Heading LOCKED. The section's CONTENT is retoned (no career prescriptions
+    # - see COACHING_REGISTER and the shared feedback tone note), but the
+    # heading wording is not mine to change.
     'values_feedback': {
         'required': [
             'What We Liked Most About You',
             "Where We Found Ourselves Sitting With Questions",
-            ['A final note', 'Where We Want to Leave This'],
+            'What We Think You Should Do Next',
         ]
     },
     'gwc_rejection': {
         'required': [
             'What Stayed With Us',
-            'Where We Found Questions',
+            "Here's the Honest Part",
             'Where We Want to Leave This',
         ]
     },
-    # Retoned 2026-09-14 (Ayesha). A CV rejection reports what we could and could
-    # not SEE IN THE APPLICATION; it is not career coaching. "Where we found
-    # questions" read as a verdict on the person, and "What we think you should
-    # do next" turned the letter into a development plan. The closing section is
-    # now a warm note that keeps the door open without prescribing a career.
+    # Headings LOCKED. The CONTENT of these sections is retoned (Ayesha
+    # 2026-09-14: report what we could and could not see, never coach the
+    # career) - see the shared feedback tone note and COACHING_REGISTER. The
+    # heading wording is not mine to change; the alternative wordings in her
+    # brief were illustrating the tone, not instructing a rename.
     'cv_rejection': {
         'required': [
             'What we appreciated',
-            ['What we were looking for', 'What we needed to see more clearly'],
-            'A final note',
+            'Where we found questions',
+            'What we think you should do next',
         ]
     },
     # Skill 01 type #8 (2026-09-08). Submitted a case study, below the 70% benchmark.
@@ -938,14 +937,14 @@ def check_haroon_balance(body: str, email_type: str) -> Tuple[bool, Optional[str
     clean = strip_html(body)
 
     # Heuristic: count blue heading blocks
-    # "What Stayed With Us" section vs "Where We Found Questions" section
+    # "What Stayed With Us" section vs "Here's the Honest Part" section
     stayed_section = re.search(
-        r"What Stayed With Us.*?(?=Where We Found Questions|$)",
+        r"What Stayed With Us.*?(?=Here's the Honest Part|$)",
         clean,
         re.IGNORECASE | re.DOTALL
     )
     honest_section = re.search(
-        r"Where We Found Questions.*?(?=Where We Want to Leave|$)",
+        r"Here's the Honest Part.*?(?=Where We Want to Leave|$)",
         clean,
         re.IGNORECASE | re.DOTALL
     )
@@ -1299,7 +1298,7 @@ if __name__ == '__main__':
     test_html = """
     <h2>What Stayed With Us</h2>
     <p>This is a test paragraph with good observation.</p>
-    <h2>Where We Found Questions</h2>
+    <h2>Here's the Honest Part</h2>
     <p>This is where we discuss the gap.</p>
     <h2>Where We Want to Leave This</h2>
     <p>Final thoughts.</p>

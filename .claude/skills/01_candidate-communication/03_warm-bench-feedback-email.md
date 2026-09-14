@@ -156,9 +156,9 @@ acknowledgment. You just wanted the problem solved.
 
 ---
 
-### 3. "Where We Found Questions" Section (Blue #1565C0 - LOCKED)
+### 3. "Here's the Honest Part" Section (Blue #1565C0 - LOCKED)
 
-**Heading:** `<span style="font-weight:bold; color:#1565C0;">Where We Found Questions</span>`
+**Heading:** `<span style="font-weight:bold; color:#1565C0;">Here's the Honest Part</span>`
 
 **Requirements:**
 - Name the gap DIRECTLY
@@ -244,7 +244,7 @@ seeing what's broken and fixing it instead of accepting it—is genuinely rare.
 Achieve 800+ by including multiple interview moments + deep analysis, NOT filler.
 
 **HTML design:** Locked specification (2026-05-04)
-- Blue section headings: #1565C0 (3 mandatory headings: "What Stayed With Us", "Where We Found Questions", "Where We Want to Leave This")
+- Blue section headings: #1565C0 (3 mandatory headings: "What Stayed With Us", "Here's the Honest Part", "Where We Want to Leave This")
 - Georgia serif body, 14px, 1.6 line-height, justified
 - Simple <p> tags only (NO complex divs with border-top — triggers Gmail "..." menu)
 - Logo inline via Content-ID (48x48px)
@@ -318,13 +318,13 @@ Sent on behalf of Talent Acquisition Team by Coco
 ## Pre-Send Checklist (Self-QA — MANDATORY)
 
 - [ ] Word count 800-1100 words minimum (verified by counting)
-- [ ] All 4 section headings present and BLUE (#1565C0): Opening, "What Stayed With Us", "Where We Found Questions", "Where We Want to Leave This", P.S.
+- [ ] All 4 section headings present and BLUE (#1565C0): Opening, "What Stayed With Us", "Here's the Honest Part", "Where We Want to Leave This", P.S.
 - [ ] Subject line is POETIC & STORY-BASED (not generic; tied to specific interview moment)
 - [ ] Opening starts with "This isn't a yes for now"
 - [ ] Opening has specific timestamp + company vulnerability (e.g., "the room felt...", "we were worried...")
 - [ ] "What Stayed With Us" has 1-2 new moments (different from opening) with specific timestamps
 - [ ] Each interview moment includes DEEP ANALYSIS: "Why does this matter? What does it reveal?"
-- [ ] "Where We Found Questions" names the gap directly and frames as ROLE-SPECIFIC (not personal failing)
+- [ ] "Here's the Honest Part" names the gap directly and frames as ROLE-SPECIFIC (not personal failing)
 - [ ] "Where We Want to Leave This" does NOT prescribe advice (❌ "you should study X"; ✅ "we'd welcome talking again")
 - [ ] P.S. is memorable and tied to subject line's story
 - [ ] Candidate cleared values interview (Values PASS confirmed from Markaz)
@@ -453,4 +453,4 @@ python scripts/warm_bench_locked.py \
 
 ## Commitment (Coco, 2026-05-04 — HAROON-ALIGNED LOCKED)
 
-I will send warm bench feedback emails ONLY to candidates who cleared values interview + had strong GWC + are NOT selected for the current role. I will lead with "This isn't a yes for now." I will quote their actual interview moments with specific timestamps. I will include 1-2 additional moments with deep analysis of why they matter. I will reference their GWC scorecard. I will include 3 blue section headings exactly: "What Stayed With Us", "Where We Found Questions", "Where We Want to Leave This". I will NOT prescribe advice in the final section. I will use poetic, story-based subject lines tied to interview moments. I will use the locked signature HTML (simple <p> tags, no border-top divs). I will write 800-1100 words minimum (verified by counting). I will avoid all jargon ("GWC", "KCD", "TBC"). I will use "we" voice exclusively. I will pilot first to Ayesha + Jawwad, get approval, then go live. Template, script, and specification are LOCKED for production use. No exceptions.
+I will send warm bench feedback emails ONLY to candidates who cleared values interview + had strong GWC + are NOT selected for the current role. I will lead with "This isn't a yes for now." I will quote their actual interview moments with specific timestamps. I will include 1-2 additional moments with deep analysis of why they matter. I will reference their GWC scorecard. I will include 3 blue section headings exactly: "What Stayed With Us", "Here's the Honest Part", "Where We Want to Leave This". I will NOT prescribe advice in the final section. I will use poetic, story-based subject lines tied to interview moments. I will use the locked signature HTML (simple <p> tags, no border-top divs). I will write 800-1100 words minimum (verified by counting). I will avoid all jargon ("GWC", "KCD", "TBC"). I will use "we" voice exclusively. I will pilot first to Ayesha + Jawwad, get approval, then go live. Template, script, and specification are LOCKED for production use. No exceptions.

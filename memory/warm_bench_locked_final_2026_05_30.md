@@ -56,9 +56,9 @@ that the panel kept discussing afterward...
 
 ### 2. HEADING STRUCTURE (EXACT)
 - "What Stayed With Us"
-- "Where We Found Questions"
+- "Here's the Honest Part"
 - "Where We Want to Leave This"
-- NEVER use old headings ("What Stayed With Us", "Where We Found Questions")
+- NEVER use old headings ("What Stayed With Us", "Here's the Honest Part")
 
 ### 3. NO EM DASHES (—) — ABSOLUTELY FORBIDDEN
 - Replace ALL em dashes with:
@@ -116,7 +116,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 - Deep analysis of why it matters
 - Affirm character, not just competence
 
-**Section 2: Where We Found Questions**
+**Section 2: Here's the Honest Part**
 - Acknowledge what panel saw (warmly)
 - Include positive scorecard observations (integrated, not quoted)
 - Explain decision was narrow/situational
@@ -215,7 +215,7 @@ Change to `False` after approval for live send.
 - ❌ Generic language in places
 
 **Current locked version:**
-- ✅ New headings: "What Stayed With Us" / "Where We Found Questions" / "Where We Want to Leave This"
+- ✅ New headings: "What Stayed With Us" / "Here's the Honest Part" / "Where We Want to Leave This"
 - ✅ NO EM DASHES (all replaced with periods/commas/colons)
 - ✅ Logo embedded (cid:) + centered + 48x48px
 - ✅ Signature format exact and locked

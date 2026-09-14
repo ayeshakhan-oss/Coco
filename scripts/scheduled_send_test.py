@@ -26,7 +26,7 @@ About 35 minutes in, when we asked about a time you'd pushed back on a team deci
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">
-<span style="font-weight:bold; color:#1565C0;">Where We Found Questions</span>
+<span style="font-weight:bold; color:#1565C0;">Here's the Honest Part</span>
 </p>
 
 <p style="font-family:Georgia,serif; font-size:14px; color:#333; margin:0 0 16px 0; line-height:1.6;">

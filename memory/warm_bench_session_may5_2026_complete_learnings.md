@@ -119,7 +119,7 @@ All three are MANDATORY:
 - Color: #1565C0 (blue)
 - Bold weight
 
-**Heading 2:** "Where We Found Questions"
+**Heading 2:** "Here's the Honest Part"
 - Color: #1565C0 (blue)
 - Bold weight
 
@@ -143,7 +143,7 @@ All three are MANDATORY:
    - Deep analysis: "Why does this rare? What does it reveal about their character?"
    - Not just "what they did" but "why it matters"
 
-3. **"Where We Found Questions" Section**
+3. **"Here's the Honest Part" Section**
    - Name the gap directly
    - Frame as ROLE-SPECIFIC, not personal failing
    - Show we understand their potential

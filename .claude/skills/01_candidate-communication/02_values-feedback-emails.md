@@ -70,7 +70,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 **Structure (3 Required Sections):**
 1. What We Liked Most About You (2-3 specific strengths from interview)
 2. Where We Found Ourselves Sitting With Questions (2-3 values gaps, with evidence)
-3. A final note (actionable advice)
+3. What we think you should do next (actionable advice)
 
 **Tone & Voice:**
 - "We" voice (never "I")
@@ -109,7 +109,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 1. Opening: Thank candidate by name, warm rejection + context
 2. Section 1 "What We Liked Most About You" (2-3 strengths with specific interview evidence, 100-150 words)
 3. Section 2 "Where We Found Ourselves Sitting With Questions" (2-3 gaps with interview evidence, 100-150 words)
-4. Section 3 "A final note" (actionable advice, not prescriptive, 100-150 words)
+4. Section 3 "What we think you should do next" (actionable advice, not prescriptive, 100-150 words)
 5. P.S. box: encouraging sign-off (specific to candidate)
 6. No em dashes (replace all " — " with period, comma, or colon)
 7. "We" voice throughout (never "I"), they/them pronouns (never gendered)
@@ -157,7 +157,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 **STEP 5: VERIFY STRUCTURE**
 - Opening thanks candidate by name, warm rejection
 - Section 1: What We Liked (2-3 strengths with specific interview evidence)
-- Section 2: Where We Found Questions (2-3 gaps with interview evidence)
+- Section 2: Here's the Honest Part (2-3 gaps with interview evidence)
 - Section 3: What To Do Next (actionable advice)
 - P.S. box included (encouraging, specific)
 - Closing: warm sign-off
@@ -217,7 +217,7 @@ This skill orchestrates the detailed procedure for writing and sending values fe
 - [ ] Email written and word count ≥800 (verified)
 - [ ] Word count ≤1100 (or justified if longer)
 - [ ] Section 1: What We Liked (2-3 strengths with specific interview evidence)
-- [ ] Section 2: Where We Found Questions (2-3 gaps with interview evidence)
+- [ ] Section 2: Here's the Honest Part (2-3 gaps with interview evidence)
 - [ ] Section 3: What To Do Next (actionable advice)
 - [ ] P.S. box included (encouraging, specific to candidate)
 - [ ] No em dashes (searched and replaced all " — ")

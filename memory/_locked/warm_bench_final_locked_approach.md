@@ -22,7 +22,7 @@ Personalized rejection-keep-warm emails for candidates who cleared values interv
 ### Structure (5 Parts)
 1. **Opening** - Lead with specific interview moment, show company vulnerability
 2. **"What Stayed With Us"** (Blue #1565C0 heading)
-3. **"Where We Found Questions"** (Blue heading)
+3. **"Here's the Honest Part"** (Blue heading)
 4. **"Where We Want to Leave This"** (Blue heading)
 5. **P.S.** (before signature) - Memorable moment, reinforcement
 
@@ -74,7 +74,7 @@ something important about who you are."
 - Deep analysis: "Why does this matter? What does it reveal about their character?"
 - Not just what they did, but why it's rare/valuable
 
-### Section 3: "Where We Found Questions"
+### Section 3: "Here's the Honest Part"
 - Name the gap directly: "In our technical interview, we found..."
 - Frame as role-specific: "For this role, at this moment, that gap matters"
 - NOT a personal failing ("you lack X")
@@ -129,7 +129,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 - [ ] All 4 section headings present and blue
 - [ ] Opening has specific timestamp + company vulnerability
 - [ ] "What Stayed With Us" has 1-2 new moments
-- [ ] "Where We Found Questions" names the gap
+- [ ] "Here's the Honest Part" names the gap
 - [ ] "Where We Want to Leave This" does NOT prescribe
 - [ ] P.S. is memorable and tied to subject
 - [ ] Subject is poetic & story-based (NOT generic)
@@ -156,7 +156,7 @@ Sent on behalf of Talent Acquisition Team by Coco
 **Section 2 heading**: "What Stayed With Us" (blue)
 Content: [Additional interview moment with deep analysis of why it matters]
 
-**Section 3 heading**: "Where We Found Questions" (blue)
+**Section 3 heading**: "Here's the Honest Part" (blue)
 Content: [Names the gap, frames as role-specific, shows we see potential]
 
 **Section 4 heading**: "Where We Want to Leave This" (blue)

@@ -59,17 +59,19 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 4. **Opening paragraph** — warm greeting by candidate's name, thank them for time and interest, brief context about the screening process.
 
-5. **Body sections (retoned 2026-09-14 — report the evidence, do not coach the career):**
-   - **What we appreciated:** 2–3 specific strengths from the CV, cited to actual experience. Keep it **short**. Name what is genuinely there and stop; do not interpret every strength back at them or explain why each one matters.
-   - **What we were looking for** (or *What we needed to see more clearly*): what THIS role required and what the application did not make visible. Frame as our requirement, never their deficiency. Write "we could not clearly see X in the application", never "you need to develop X". Add explicitly that there may well be experience behind the application showing this more strongly; we simply could not see enough of it here.
-   - **A final note:** a warm close, **not advice**. Restate plainly what the role needed, acknowledge the breadth they do bring, leave the door open in general terms.
+5. **Body sections.** 🔒 **The three heading names are LOCKED and unchanged.** What changed on 2026-09-14 is the CONTENT and register inside them: report what we were able and unable to SEE, never coach the candidate's career.
+   - **What we appreciated:** 2–3 specific strengths from the CV, cited to actual experience. Keep it **short**. Name what is genuinely there and stop; do not interpret every strength back at them or explain why each one matters. That lecture is what makes a rejection read as condescending.
+   - **Where we found questions:** what THIS role required and what the application did not make visible. Frame as our requirement, never their deficiency. Write "we could not clearly see X in the application", never "you need to develop X". State explicitly that there may well be experience behind the application showing this more strongly; we simply could not see enough of it here.
+   - **What we think you should do next:** despite the heading, this is a **warm close, not a development plan**. Restate plainly what the role needed, acknowledge the breadth they do bring, leave the door open in general terms.
 
-   **The old third section, "What we think you should do next", is retired.** A rejection does not prescribe someone's career development. Specifically banned:
+   **Banned in all three sections** (the letter is feedback, not career coaching):
    - telling them what to develop, document, build or spend time on
    - suggesting alternative job titles (e.g. "a Trainer or Coordinator role") — however kindly meant, it reads as *you are not senior enough*
    - any advice inside the P.S.
 
    **Unanswered application questions** are raised with curiosity, never as a disciplinary signal. Never quote the non-answer back at them and never call it "an important signal". Write: "the reflection question on X wasn't answered, and we would have liked to hear your perspective there."
+
+   **Reaching 800 words without coaching:** the length comes from being more specific about THEIR material, never from more instruction FOR them. If a letter runs short, add evidence, not guidance.
 
 6. **Closing statement:** "The door remains open. Keep an eye on our careers page at www.taleemabad.com."
 

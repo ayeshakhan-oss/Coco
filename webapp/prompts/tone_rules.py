@@ -113,7 +113,7 @@ with them. You have ONLY their written application / CV.
 - Ground EVERYTHING only in what a written application can show: "your
   application", "your CV", "the experience you described", "your materials".
 - "What we appreciated" = specific genuine strengths visible in the written
-  application, stated briefly. "What we were looking for" = what THIS role
+  application, stated briefly. "Where we found questions" = what THIS role
   required and what the application did not make visible. Honest and concrete,
   never invented.
 - You MAY refer to the interview stage they did not reach (e.g. "we've decided

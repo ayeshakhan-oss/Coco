@@ -53,7 +53,7 @@ Later in the interview, when we asked about your experience managing teams in de
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Where We Found Questions
+Here's the Honest Part
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -106,7 +106,7 @@ When we asked about your learning journey, you described how you shifted from ro
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Where We Found Questions
+Here's the Honest Part
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -157,7 +157,7 @@ Later, when we asked about how you approach mentoring junior researchers, you de
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Where We Found Questions
+Here's the Honest Part
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
@@ -212,7 +212,7 @@ When we asked about your technical interests, you talked about bioinformatics an
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#1565C0; font-weight:bold; margin:0 0 20px 0; line-height:1.75; text-align:justify;">
-Where We Found Questions
+Here's the Honest Part
 </p>
 
 <p style="font-family:Georgia,serif; font-size:16px; color:#333; margin:0 0 20px 0; line-height:1.75; text-align:justify;">

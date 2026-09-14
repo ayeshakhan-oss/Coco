@@ -12,9 +12,10 @@ metadata:
 **Band she chose:** **2-4 years** (she overrode my manager-level reading of the JD).
 Islamabad-first, Pakistan-wide allowed. Clean up the FM sheet in place, then extend it.
 
-**Delivered:** 64 new rows appended to `FM Sourcing Master (Clean)`
-(`18oUr_4rcKJOEp3JRd2sY3GbhtMIbG92Xyr619IPkcLo`) at rows 117-180, every one carrying a
+**Delivered:** **85 new rows** appended to `FM Sourcing Master (Clean)`
+(`18oUr_4rcKJOEp3JRd2sY3GbhtMIbG92Xyr619IPkcLo`) at rows 117-201, every one carrying a
 LinkedIn URL confirmed by an independent source. 115 existing rows tagged, none deleted.
+Tiers 1/45/30/9. 43 of 85 in Islamabad or Rawalpindi.
 
 ---
 
@@ -41,7 +42,7 @@ Three scripts, run in order, in `scripts/sourcing/`:
    sitting verbatim in the raw captures), so NOT_FOUND is never treated as "fake".
 2. `confirm_by_slug.py` — second pass. Folds in org-page confirmations and the raw SearXNG
    capture files with no network at all, then slug-queries whatever is left.
-   Final: 67 CONFIRMED / 11 UNCONFIRMED / 28 no URL.
+   Final across 130 rows: 90 CONFIRMED / 4 UNCONFIRMED / 34 no URL.
 3. `extend_fm_sheet_2026_09_08.py` — three gates, all must pass:
    **G1** slug confirmed · **G2** genuinely new against a cross-sheet index ·
    **G3** not already contacted.
@@ -99,7 +100,7 @@ Junior names surfaced through two channels only: **LinkedIn headlines**, and
 Update yielded five names on its own).
 
 **Honest conclusion for Ayesha: 50-100 *verified in-band* profiles is not achievable through
-public search.** Only 3 of 64 have any real tenure evidence. The channel that would work is
+public search.** Only 3 of 85 have any real tenure evidence in band. The channel that would work is
 a **LinkedIn Recruiter / Sales Navigator seat**, which indexes title x org x location x
 years directly. Second best: a referral sweep through staff with INGO backgrounds.
 
@@ -111,7 +112,42 @@ other's; Khawaja Abbas holds Muneeb Ahmad's `/in/justmuneeb`), 20 placeholder UR
 duplicated people, and 3 rows that are Taleemabad's own staff. Snapshot before any write:
 `output/sourcing/FM_sheet_snapshot_2026_09_08.json`.
 
-⚠️ **Still open:** the education-nonprofits sweep (TCF, ITA, Teach For Pakistan, Zindagi
-Trust) never returned — that is the most on-persona cluster and is entirely unmined.
+**Education-nonprofits sweep** landed last, at ~60 minutes, and was the richest. It also
+found **Sadiq Shah with the identical slug** the corporate-CSR sweep returned - genuine
+two-source confirmation. Key negatives from it worth not re-mining: **Alif Ailaan is defunct**
+(closed 31 Aug 2018, was a DFID-funded DAI campaign); **ITA has no fundraising titles at all**
+across ~49 staff, it runs RM through the CEO and directors; **Sabaq is self-funded**;
+**DIL and Muslim Hands fundraise from their US/UK parents**. READ Foundation is the opposite
+case - no incumbents published, but a live Resource Mobilization Division advertising five
+Officer-grade vacancies, so the junior tier demonstrably exists there.
 
 See [[talent_sourcing_winning_method_2026_07_02]] · [[talent_sourcing_workflow_locked_2026_06_04]]
+
+## 🔴 Two write-path bugs worth never repeating
+
+**1. A re-run wiped the "NEW" tag off the rows the previous run added.** The extend script
+stamped `Sourced By = "FM sheet 2026-05 (pre-existing)"` across every *existing* row. On the
+second append the 64 rows from the first append were "existing" too, so 79 rows silently lost
+the `NEW - Coco 2026-09-08` marker. **That marker was the entire mechanism Ayesha asked for to
+tell new from old** - losing it silently is the worst failure this deliverable could have.
+Fixed by skipping any row already carrying the run tag and writing only contiguous unprotected
+runs. `repair_new_row_tags.py` rebuilds N-S from the cluster files if it happens again.
+
+**2. Re-running `--apply` to test a fix re-appended 6 rows.** The newness gate reads
+`seen_index.json`, a static file. After an append the index is stale, so the same people pass
+Gate 2 again. **Rebuild the seen index immediately after every append, and use `--dry-run` to
+test anything.** Deleted with an assert-then-delete (`deleteDimension`) that verifies the exact
+names in the target range before removing them.
+
+**Final state:** 201 rows = 1 header + 115 pre-existing + 85 new. Tiers 1/45/30/9.
+43 of 85 in Islamabad or Rawalpindi. Every new row has a confirmed URL.
+The 3 duplicate slugs still in the sheet are pre-existing defects, not from this run.
+
+## What the gate actually rejected (the honest yield)
+
+Of 130 sourced rows: 34 had no URL at all, 6 stayed unconfirmed, 83 were already in a
+sourcing sheet or the outreach tracker, 2 were duplicate names, 1 already contacted.
+**Sahar Gul (TFP Assistant Manager Development & Partnerships, Islamabad) looked like the best
+find of the run and failed twice** - her slug never resolved, AND she is already in the SMG
+sheet. There are at least three people called Sahar Gul in this space, one a UN ITC Gender
+Advisor. A clean `firstname-lastname` slug remains the single best predictor of a guess.

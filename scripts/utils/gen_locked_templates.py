@@ -50,13 +50,13 @@ WORD COUNT: 800-1100 mandatory.""",
         "eyebrow": EYEBROW["warm_bench"],
         "headings": [
             "What Stayed With Us",
-            "Where We Found Questions",
+            "Here's the Honest Part",
             "Where We Want to Leave This",
         ],
         "sub": None,
         "rules": """WARM BENCH RULES:
 1. Opening (mandatory): "This is not a yes for now." + panel-kept-discussing hook.
-2. Headings exactly: What Stayed With Us / Where We Found Questions / Where We Want to Leave This.
+2. Headings exactly: What Stayed With Us / Here's the Honest Part / Where We Want to Leave This.
 3. NO interviewer names. NO internal jargon (GWC/values/scorecard/case study/warm bench).
 4. NO comparison to "another candidate". NO recruiting abstractions ("strong candidate").
 5. Haroon balance: praise specificity ~= decision specificity.
@@ -71,12 +71,12 @@ WORD COUNT: 800-1100 mandatory.""",
         "eyebrow": EYEBROW["gwc_rejection"],
         "headings": [
             "What Stayed With Us",
-            "Where We Found Questions",
+            "Here's the Honest Part",
             "Where We Want to Leave This",
         ],
         "sub": None,
         "rules": """GWC REJECTION RULES:
-1. Headings exactly: What Stayed With Us / Where We Found Questions / Where We Want to Leave This.
+1. Headings exactly: What Stayed With Us / Here's the Honest Part / Where We Want to Leave This.
 2. NEVER use "GWC" or "KCD" terminology (internal jargon).
 3. Evidence-based rationale: observable behaviors, not abstractions (hunger/energy/confidence).
 4. NO intent inference. NO interviewer names. NO comparison to other candidates.
@@ -91,8 +91,8 @@ WORD COUNT: 800-1100 mandatory.""",
         "eyebrow": EYEBROW["cv_rejection"],
         "headings": [
             "What we appreciated",
-            "What we were looking for",
-            "A final note",
+            "Where we found questions",
+            "What we think you should do next",
         ],
         "sub": None,
         "rules": """CV REJECTION RULES:
