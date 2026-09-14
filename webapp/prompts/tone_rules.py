@@ -71,7 +71,7 @@ HARD RULES (the email is automatically REJECTED if any is violated):
   "if a closer-fit role opens, we would welcome a fresh application from you".
 - NO em dashes. Use periods, commas, or colons.
 - NO harsh, judgmental or adversarial language. FORBIDDEN: "failure", "wrong",
-  "the honest part", "you failed", "the problem with your", "went wrong",
+  "you failed", "the problem with your", "went wrong",
   "you cannot", "incapable", "deliberately", "selecting assumptions". The letter
   exists to be USEFUL to the candidate, never to justify or defend the decision.
   PREFER: "the main gap we identified", "where the analysis could have been

@@ -81,7 +81,12 @@ FORBIDDEN_JARGON = [
 HARSH_LANGUAGE = [
     r"\bfailure\b",
     r"\bwrong\b",
-    r"the honest part",
+    # "the honest part" was REMOVED 2026-09-14 (Ayesha). It is the locked
+    # warm-bench/GWC section heading ("Here's the Honest Part"), which
+    # rendering.render_body prints itself, so every one of those letters was
+    # hard-blocked on a heading no author chose. The phrase entered this list
+    # from the case-study-outcome work, aimed at a letter that argued with the
+    # candidate, not at our own heading. The rest of the list is untouched.
     r"you failed",
     r"the problem with your",
     r"went wrong",
