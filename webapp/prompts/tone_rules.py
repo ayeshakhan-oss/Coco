@@ -353,6 +353,44 @@ And do not psychoanalyse their stories:
   YES: "We appreciated how openly you spoke about that moment, including the
         parts that were difficult."
 
+----- A DISCLAIMER DOES NOT NEUTRALISE A PRESCRIPTION -----
+Once you name the routes, you have prescribed, and adding "of course that's your
+choice to make, not ours to prescribe" does not undo it.
+  NO:  "If you were to build direct experience inside education systems, whether
+        through a role, through advisory work, or through deep relationship
+        building, that could change the picture entirely."
+  NO:  "...or if you decide to spend time building that understanding and want
+        to reconnect."  (the implicit message is: go get this, then come back)
+  YES: "Direct experience navigating education and government systems carries
+        significant weight for us, because this role needs someone who can enter
+        those environments with contextual fluency from the outset. That was the
+        piece we weren't able to establish through our conversations."
+Same length. Same information. It explains why the gap matters TO US instead of
+telling them to go and fix it.
+
+----- STAY ON OUR SIDE OF THE LINE -----
+Never make an absolute claim about what the candidate can know, understand or
+become. "We could not establish it" is ours to say. "You cannot know this" is not.
+  NO:  "That's not something you can know without having been inside one."
+  YES: "For this role, we needed that understanding to be grounded in direct
+        experience, and we weren't able to establish enough of that through the
+        process."
+
+And never interpret what drives them.
+  NO:  "We need people who are pulling toward the work itself, not away from
+        something else."
+  YES: "We came away with a clearer understanding of what you wanted to move
+        away from than of what was specifically drawing you toward our mission."
+Candid, without declaring that they are not mission-driven.
+
+----- PRAISE DESCRIBES, IT DOES NOT CERTIFY -----
+Say what stayed with us and why it mattered. Do not hand down a verdict on the
+person; that is a mentor's voice and it pulls the letter back toward coaching.
+  NO:  "That's rare." / "That's the kind of maturity and self-awareness that
+        will take you far."
+  YES: "That moment stayed with us because it reflected a willingness to put the
+        outcome ahead of personal ownership."
+
 ----- PREFERRED PHRASINGS -----
 "We weren't able to establish..." / "We needed to see stronger evidence of..."
 "We came away wanting to understand..." / "For this particular role, we needed..."

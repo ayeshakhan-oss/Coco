@@ -213,6 +213,46 @@ COACHING_REGISTER = [
     r'\bif you (take on|gain|build|get|develop|acquire)\b.{0,90}\b(experience|exposure|background|track record)\b',
     r'\b(once|after|when) you (have|had|gain|build|develop)\b.{0,40}\b(come back|apply again|reapply|reach out)\b',
     r'\b(come back|apply again|reapply) (once|after|when) you\b',
+
+    # --- PRESCRIBING HOW TO GET THE EXPERIENCE (Ayesha 2026-09-14) -----------
+    # "If you were to build direct experience inside education systems, whether
+    #  through a role, through advisory work, or through deep relationship-
+    #  building, that could change the picture entirely."
+    # A disclaimer does NOT neutralise this. Once the routes are named, it has
+    # been prescribed. Explain why the gap matters to US instead.
+    r'\bif you (were to|ever) (build|gain|acquire|develop|get)\b',
+    r'\bwhether through (a|an) \w+',
+    r'\bthat could change the picture\b',
+    r'\bif you (decide|chose|choose) to spend time\b',
+    r'\bwant to reconnect\b',
+    r"\bthat.s your choice to make\b",
+
+    # --- ABSOLUTE CLAIMS ABOUT WHAT THEY CAN KNOW OR BE ----------------------
+    # "That's not something you can know without having been inside one."
+    # That moves from "we could not establish it" to "you cannot know this".
+    r"\bnot something you (can|could) (know|understand|learn)\b",
+    r"\byou (can ?not|can't|could ?not|couldn't) (know|understand|see) (that|this)\b",
+    r'\bwithout having been (inside|in|part of)\b',
+
+    # --- INTERPRETING THEIR MOTIVATION --------------------------------------
+    # "we need people who are pulling toward the work itself, not away from
+    #  something else" declares he is not mission-driven. Say what we came away
+    #  understanding, and what we did not.
+    r'\bpulling (toward|towards|away)\b',
+    r'\b(not )?away from something else\b',
+    # "running away from" only. Bare "running from" matched a CV line about a
+    # career "running from ABN AMRO through Barclays", which means spanning.
+    r'\brunning away from\b',
+
+    # --- MENTOR-VOICE PRAISE ------------------------------------------------
+    # Praise should describe what stayed with us and why it mattered, not
+    # certify the person. "That's rare." / "That's the kind of maturity and
+    # self-awareness that will take you far." reads as a mentor's verdict.
+    r"\bthat.s rare\b",
+    r'\bwill take you far\b',
+    r'\bthe kind of (maturity|self.awareness|wisdom|humility) (that|you)\b',
+    r'\bgo far in (your career|this field|life)\b',
+    r"\byou.re going to do (great|well|big things)\b",
 ]
 
 
