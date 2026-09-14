@@ -42,8 +42,19 @@ def _scorecard_for(raw: dict, email_type: str) -> Optional[dict]:
         return None
     if email_type == "gwc_rejection":
         return normalize_gwc_scorecard(raw.get("gwc_scorecard"))
-    # values_feedback / warm_bench lean on the values scorecard
-    return normalize_values_scorecard(raw.get("values_scorecard"))
+    values = normalize_values_scorecard(raw.get("values_scorecard"))
+    if email_type == "warm_bench":
+        # A warm-bench candidate CLEARED the values interview and was assessed on
+        # GWC, and was not selected for this role. Both scorecards are evidence
+        # about them, and the GWC one usually carries the hiring manager's
+        # reasoning for the decision. Sending only the values scorecard is why a
+        # warm-bench letter could not reflect the GWC conversation at all
+        # (Ayesha, application 3869).
+        gwc = normalize_gwc_scorecard(raw.get("gwc_scorecard"))
+        if gwc:
+            return {"kind": "values_and_gwc", "values": values, "gwc": gwc}
+    # values_feedback leans on the values scorecard alone
+    return values
 
 
 @router.post("/generate", response_model=GenerateResponse)

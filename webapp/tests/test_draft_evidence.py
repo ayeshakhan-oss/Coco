@@ -162,3 +162,45 @@ def test_extract_refuses_unparseable_bytes():
     junk = base64.b64encode(b"not a document" * 50).decode()
     with pytest.raises(cv_text.CVUnreadable):
         cv_text.extract(junk, mime_type="application/pdf", file_name="x.pdf")
+
+
+# --- warm bench needs BOTH scorecards (Ayesha, application 3869) --------------
+#
+# A warm-bench candidate cleared the values interview AND was assessed on GWC,
+# and was not selected for this role. Routing only the values scorecard meant the
+# letter could not reflect the GWC conversation at all, even though the GWC
+# scorecard carried the hiring manager's actual reasoning for the decision.
+
+FILLED_GWC = {
+    "kind": "gwc",
+    "final_mark": "No",
+    "additional_comments": "Purely corporate background, no direct government experience.",
+    "competencies": [{"name": "Get It", "score": 7, "weight": 30}],
+    "get_it": {"question1": "Yes", "question2": "Yes"},
+    "capacity_to_do_it": {"question1": "No", "question2": "No"},
+}
+
+
+def test_warm_bench_prompt_carries_both_scorecards():
+    out = build_user_prompt(
+        scorecard={"kind": "values_and_gwc", "values": FILLED_VALUES, "gwc": FILLED_GWC},
+        first_name="Muneeb", role="Growth Manager", email_type="warm_bench")
+    assert "VALUES INTERVIEW" in out
+    assert "avoiding a peer conflict" in out          # from the values scorecard
+    assert "GWC INTERVIEW" in out
+    assert "no direct government experience" in out   # the hiring manager's reasoning
+    assert "Final mark: No" in out
+    assert "Capacity to do it responses" in out       # per-question answers, not just a score
+
+
+def test_warm_bench_refuses_only_when_both_are_empty():
+    empty_gwc = {"kind": "gwc", "competencies": [{"name": "Get It", "score": None}]}
+    # one filled half is enough to write from
+    out = build_user_prompt(
+        scorecard={"kind": "values_and_gwc", "values": EMPTY_VALUES, "gwc": FILLED_GWC},
+        first_name="Muneeb", role="Growth Manager", email_type="warm_bench")
+    assert "no direct government experience" in out
+    with pytest.raises(MissingEvidence, match="both the values and the GWC"):
+        build_user_prompt(
+            scorecard={"kind": "values_and_gwc", "values": EMPTY_VALUES, "gwc": empty_gwc},
+            first_name="Muneeb", role="Growth Manager", email_type="warm_bench")

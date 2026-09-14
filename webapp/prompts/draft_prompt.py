@@ -68,11 +68,34 @@ def _gwc_evidence(sc: dict) -> str:
     if sc.get("final_mark"):
         lines.append(f"Final mark: {sc['final_mark']}")
     if sc.get("additional_comments"):
-        lines.append(f"Interviewer comments: {sc['additional_comments']}")
+        lines.append(f"Hiring manager's assessment: {sc['additional_comments']}")
     lines.append("Competency scores:")
     for c in sc.get("competencies", []):
         lines.append(f"  - {c.get('name', '')}: score {c.get('score')} (weight {c.get('weight')})")
+    # The per-question answers are where the signal sits. A bare score of 7 is
+    # not something a letter can be written from.
+    for key, label in (("get_it", "Get It"), ("want_it", "Want It"),
+                       ("capacity_to_do_it", "Capacity to do it")):
+        answers = sc.get(key) or {}
+        filled = {k: v for k, v in answers.items() if v not in (None, "")}
+        if filled:
+            lines.append(f"  {label} responses: "
+                         + ", ".join(f"{k}={v}" for k, v in sorted(filled.items())))
     return "\n".join(lines)
+
+
+def _values_and_gwc_evidence(sc: dict) -> str:
+    """Warm bench: the candidate cleared the values interview AND was assessed
+    on GWC. Both are evidence about them, and the GWC scorecard usually carries
+    the hiring manager's reasoning for the decision."""
+    parts = []
+    values, gwc = sc.get("values"), sc.get("gwc")
+    if values:
+        parts += ["VALUES INTERVIEW:", _values_evidence(values)]
+    if gwc:
+        parts += ["", "GWC INTERVIEW (Get it / Want it / Capacity to do it):",
+                  _gwc_evidence(gwc)]
+    return "\n".join(parts)
 
 
 def _gwc_is_empty(sc: dict) -> bool:
@@ -191,6 +214,17 @@ def build_user_prompt(
             )
         evidence = _cv_evidence(cv_evidence)
         header = _EVIDENCE_HEADER["cv_rejection"]
+    elif scorecard and scorecard.get("kind") == "values_and_gwc":
+        values, gwc = scorecard.get("values"), scorecard.get("gwc")
+        values_empty = (not values) or _values_is_empty(values)
+        gwc_empty = (not gwc) or _gwc_is_empty(gwc)
+        if values_empty and gwc_empty:
+            raise MissingEvidence(
+                "Cannot draft this email: both the values and the GWC scorecard "
+                "for this candidate are empty, so there is nothing to write from."
+            )
+        evidence = _values_and_gwc_evidence(scorecard)
+        header = _EVIDENCE_HEADER["_scorecard"]
     elif scorecard and scorecard.get("kind") == "values":
         if _values_is_empty(scorecard):
             raise MissingEvidence(
