@@ -278,16 +278,9 @@ def system_prompt(email_type: str) -> str:
     # application and is deliberately concise (Ayesha 2026-09-14: 350-550).
     # The interview-stage letters still carry the 800-word floor from their own
     # locked SOPs, where the evidence is a full interview.
-    if email_type == "cv_rejection":
-        contract = contract.replace(
-            "{length_contract}",
-            "roughly 350-550 words total across greeting + opening + all "
-            "paragraphs + ps. Concise. At least 350.")
-    else:
-        contract = contract.replace(
-            "{length_contract}",
-            "at least 800 words total across greeting + opening + all "
-            "paragraphs + ps.")
+    contract = contract.replace(
+        "{length_contract}",
+        "at least 800 words total across greeting + opening + all paragraphs + ps.")
     prompt = _tone_master() + "\n\n" + contract
     # The four FEEDBACK letters share one tone: report the evidence, never coach
     # the career. case_study_outcome is deliberately excluded — its guidance is
@@ -295,12 +288,12 @@ def system_prompt(email_type: str) -> str:
     # separately (CLAUDE.md Rule 25).
     if email_type in ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection"):
         length_rule = (
-            "Concise: roughly 350-550 words unless there is a strong reason for "
-            "more context."
-            if email_type == "cv_rejection" else
-            "At least 800 words, per this letter type's locked SOP. The evidence "
-            "is a full interview, so there is genuinely more to say; that is "
-            "never a licence to pad with advice."
+            "At least 800 words. With coaching and any replay of the application "
+            "both forbidden, the length must come from BEING MORE SPECIFIC ABOUT "
+            "THE CANDIDATE'S OWN EXPERIENCE and about exactly what this role "
+            "needed and why. More detail about THEM, never more instruction FOR "
+            "them, and never a walk through their answers. If you find yourself "
+            "short, add evidence, not guidance."
         )
         prompt += "\n" + _FEEDBACK_TONE_NOTE.replace("{length_rule}", length_rule)
     if email_type == "cv_rejection":

@@ -236,11 +236,12 @@ KNOWN_INTERVIEWERS = [
 # own send scripts. They are listed here so that adding one never silently
 # inherits the 800-word rule.
 WORD_MINIMUMS = {
-    # A CV rejection is decided on a written application and is deliberately
-    # CONCISE: 350-550 (Ayesha 2026-09-14). It replaced an 800 floor that was
-    # set when the letter still carried a coaching section. The interview-stage
-    # letters keep 800: the evidence there is a full interview.
-    'cv_rejection': 350,
+    # 800 for EVERY feedback letter, cv_rejection included (Ayesha 2026-09-14,
+    # confirmed after briefly trialling 350-550). With career coaching and
+    # application replay both hard-blocked, the length has to come from being
+    # more specific about the candidate's OWN experience and about exactly what
+    # this role needed. If a letter runs short, add evidence, never guidance.
+    'cv_rejection': 800,
     'values_feedback': 800,
     'warm_bench': 800,
     'gwc_rejection': 800,
@@ -1316,18 +1317,6 @@ def evaluate_email(
             'rule': 'CV rejection: check these terms against the CV',
             'severity': 'WARNING',
             'detail': detail,
-        })
-
-    # W. A CV rejection that runs long has usually started replaying the
-    #    application or coaching. 550 is the target ceiling, 650 the nag point.
-    if email_type == 'cv_rejection' and word_count > 650:
-        violations.append({
-            'rule': 'CV rejection: aim for 350-550 words',
-            'severity': 'WARNING',
-            'detail': (f'{word_count} words. A rejection this long is usually replaying '
-                       'the application or drifting into coaching. Synthesise instead: '
-                       'the candidate needs to understand the decision, not receive a '
-                       'review of their answers.'),
         })
 
     # W. Career-coaching register (the four feedback letters, Ayesha 2026-09-14)

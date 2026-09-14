@@ -1,6 +1,6 @@
 ---
 name: Candidate Rejections SOP (CV-Stage)
-description: Reject candidates during CV screening with warm, specific feedback on ROLE FIT, tied to their actual CV. 350-550 words, concise. Never replays the application or coaches the career. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see 03_warm-bench-feedback-email.md.
+description: Reject candidates during CV screening with warm, specific feedback on ROLE FIT, tied to their actual CV. 800+ words. Never replays the application or coaches the career. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see 03_warm-bench-feedback-email.md.
 type: feedback
 ---
 
@@ -36,7 +36,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 ---
 
-## TYPE 1: CV-STAGE REJECTION (350-550 words)
+## TYPE 1: CV-STAGE REJECTION (800+ words)
 
 **Purpose:** Reject a candidate at the resume screening stage with specific, warm, reflective feedback tied to their actual CV.
 
@@ -97,7 +97,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 9. **HTML format:** v8 design only. Use helpers: `H()` = blue #1565c0 headings · `SUB()` = green #1b5e20 subheadings · `P()` = Georgia serif 15px/1.8 justified · `PS()` = green italicized P.S. box
 
-10. **Word count:** 🔴 **350-550 words** (Ayesha 2026-09-14), minimum 350. A CV rejection is concise. This REPLACES the old 800 floor, which was set when the letter still carried a coaching section. The interview-stage letters (values feedback, warm bench, GWC) keep their 800 minimum. A CV rejection over ~650 words has usually started replaying the application or coaching, and the harness warns.
+10. **Word count:** **Minimum 800 words**, for every feedback letter including this one (Ayesha 2026-09-14, confirmed after briefly trialling 350-550). With coaching and application replay both HARD BLOCKED, the length has to come from being more specific about the candidate's own experience and about exactly what this role needed. **If a letter runs short, add evidence, never guidance.**
 
 11. **Recipients:** TO = candidate email, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com
 
@@ -142,7 +142,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 - [ ] P.S. is something nice and specific about them, not a lecture
 - [ ] Closing section is a warm note, NOT advice or a development plan
 - [ ] Closing: "The door remains open. Keep an eye on our careers page at www.taleemabad.com."
-- [ ] Word count 350-550 (minimum 350)
+- [ ] Word count ≥800
 - [ ] v8 HTML design used (blue headings, green subheadings, Georgia serif, justified)
 - [ ] Feedback widget included with correct app_id
 - [ ] Sign-off is exact (Warm regards, / People and Culture Team / etc.)
@@ -166,7 +166,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 6. **Wrong recipients** — forgetting to CC hiring@taleemabad.com or ayesha.khan@taleemabad.com. Verify CC list before sending.
 
-7. **Word count out of range** — 350-550 words for a CV rejection (minimum 350). Count before wrap(). A letter running long is usually replaying the application or coaching.
+7. **Word count too low** — minimum 800 words. Count before wrap(). Reach it with more detail about THEIR experience, never with advice or a walk through their answers.
 
 8. **Em dashes in subject or body** — search for " — " and replace with period, comma, or colon.
 
