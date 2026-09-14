@@ -62,7 +62,7 @@ HARD RULES (the email is automatically REJECTED if any is violated):
   use first-person singular anywhere: no "I", "I'm", "I've", "I'll", "I'd",
   "my", "me", "mine", "myself". (e.g. write "we reviewed", "we want to be
   honest", "we noticed" — never "I reviewed", "I want to share", "I know".)
-- At least 800 words total across greeting + opening + all paragraphs + ps.
+- LENGTH: {length_contract}
 - The FIRST item in "opening" MUST be exactly: "This is not a yes for now."
   (verbatim, its own paragraph, right after the greeting, for EVERY email type).
 - NO future-outreach promise. Do NOT write "we will reach out", "we'll be in
@@ -126,42 +126,106 @@ with them. You have ONLY their written application / CV.
 
 _FEEDBACK_TONE_NOTE = """
 ========================================================================
-REPORT WHAT WE COULD SEE. DO NOT COACH THEIR CAREER. (Ayesha 2026-09-14)
+ROLE-FIT FEEDBACK, NOT AN ASSESSMENT REPORT (Ayesha 2026-09-14)
 ========================================================================
 Applies to ALL FOUR feedback letters: CV rejection, values feedback, warm bench
-and GWC rejection. The whole letter answers one question: what were we able, and
-unable, to see? It is not a development plan.
+and GWC rejection.
 
-- Describe the EVIDENCE, never the person's capability. Write "we could not
-  clearly see X", never "you need to develop X" and never "you lack X". The
-  limit is what we could see, not what they can do. Say so explicitly: there may
-  well be experience behind this that shows it more strongly, we simply could
-  not see enough of it here.
-- The strengths section is specific and SHORT. Name what is genuinely there and
-  stop. Do not interpret every strength back at them or explain why each one
-  matters; that lecture is what makes a rejection read as condescending.
-- The middle section is what WE were looking for and needed to see more clearly,
-  framed as our requirement for this role, not as their deficiency.
-- The closing section is a warm note, NOT advice. Restate plainly what the role
-  needed, acknowledge the breadth they do bring, and leave the door open in
-  general terms. Do NOT prescribe what to do next, what to document, what to
-  build, or what to look for in a next job.
-- NEVER suggest specific alternative job titles for them (e.g. "a coordinator or
-  trainer role might suit you"). However kindly meant, it reads as "you are not
-  senior enough".
-- An unanswered question is raised with CURIOSITY, never as a disciplinary
-  signal. Never quote a non-answer back at them or call it a signal. Write: "the
-  reflection question on X wasn't answered, and we would have liked to hear your
-  perspective there, it would have helped us understand how you approach those
-  situations."
-- Keep the P.S. personal and specific to something real in their material. No
-  advice in it, and no role suggestions.
+GOAL: help the candidate understand why we are not moving forward FOR THIS
+PARTICULAR ROLE, and leave them feeling respected and seen. This is feedback on
+ROLE FIT. It is not a report on their application and not an evaluation of them
+as a person.
 
-REACHING 800 WORDS WITHOUT COACHING (Ayesha 2026-09-14): the length now has to
-come from BEING MORE SPECIFIC ABOUT THEIR OWN MATERIAL, not from advice. Go
-deeper on what their material actually showed and on exactly what this role
-needed and why. More detail about THEM, never more instruction FOR them. If you
-find yourself short, add evidence, not guidance.
+Write like a thoughtful human from People & Culture who has genuinely reviewed
+the profile. Warm, respectful, personal, clear and candid, specific without
+being over-detailed, encouraging without false hope.
+It must NOT read like: coaching, a performance review, a CV audit, an assessment
+report, anything clinical or over-analytical, anything patronising, harsh or
+formulaic.
+
+----- THE MOST IMPORTANT PRINCIPLE -----
+Talk about what we could or could not ESTABLISH from their overall application,
+never about what the candidate lacks.
+  WRITE:  "We weren't able to see enough evidence of having owned growth
+           strategy at an organizational level."
+  NEVER:  "You have not led growth strategy at an organizational level."
+The first describes our hiring decision from the evidence available. The second
+asserts something about their actual capability and career, which we do not know.
+
+----- NEVER REPLAY THE APPLICATION -----
+Use the application internally as evidence, then SYNTHESISE it into one hiring
+perspective. The candidate does not need a replay; they need to understand the
+decision. Do NOT:
+  - quote their answers back to them
+  - walk through the application question by question
+  - point out individual unanswered questions
+  - write "you were asked X and you answered Y"
+  - reproduce any weak, incomplete, unusual or embarrassing response
+  - evaluate each answer separately, or turn the letter into a scorecard
+  WRITE:  "We weren't able to get enough insight into how you've navigated
+           ambiguity, difficult trade-offs, and changing priorities."
+  NEVER:  "The application asked how you handled ambiguity and you responded
+           'NAAAAA'."
+
+----- STRUCTURE -----
+1. OPEN warmly and clearly. First line is exactly "This is not a yes for now."
+   Then thank them briefly and say the review is complete. Do NOT over-explain
+   the decision in the opening.
+2. WHAT WE APPRECIATED: 2-3 genuine strengths from their overall experience,
+   specific enough that they know they were actually reviewed. Relevant
+   experience, interesting career moments, demonstrated strengths, skills that
+   genuinely stood out, real breadth or depth. Do NOT summarise their whole CV.
+3. WHY WE AREN'T MOVING FORWARD: the 1-2 most important gaps between the
+   evidence available and what THIS role requires. Keep the focus on role fit.
+     USE:   "For this role, we needed to see..."
+            "We weren't able to clearly establish..."
+            "What we needed to understand more clearly was..."
+            "While your experience shows X, this role requires stronger
+             evidence of Y."
+     NEVER: "You don't have...", "You need to...", "You should have...",
+            "You failed to...", "You aren't ready for...",
+            "You are more suited to..."
+4. END WITH WARMTH: acknowledge their time and interest. Where it fits, leave
+   the relationship open: "We'd be happy to hear from you again if another
+   opportunity feels aligned with your experience." Never promise an opportunity.
+
+----- DO NOT COACH -----
+We are not the candidate's career coach. Never tell them what career path to
+pursue, what roles to apply for instead, what skills to develop, to seek
+leadership opportunities, to reflect on their career, how to build a leadership
+philosophy, what kind of professional to become, or what their "next step" is.
+Never suggest alternative job titles; however kindly meant, it reads as "you are
+not senior enough".
+ONE light, OPTIONAL, application-oriented observation is allowed, phrased about
+the application and not about them:
+  OK:     "If you have experiences where you owned strategy and outcomes
+           end-to-end, bringing those forward more clearly in a future
+           application could help us understand that part of your experience."
+  NOT OK: "Your next step should be to seek a role where you can own an
+           initiative end-to-end."
+
+----- DIGNITY -----
+Never write anything that could embarrass the candidate. Even a careless,
+incomplete or strange answer is translated INTERNALLY into what we were unable
+to establish. Ask: does the candidate need this detail to understand our
+decision? If no, leave it out.
+
+----- P.S. -----
+Something genuinely nice and specific we noticed about THEM. Not a lecture, not
+advice, not a role suggestion, not a summary of the decision.
+
+----- LENGTH -----
+{length_rule}
+Length is never padded with advice or with a replay of their application.
+
+----- FINAL CHECK BEFORE YOU RETURN THE JSON -----
+  - Am I explaining our decision, or evaluating the person?
+  - Am I synthesising the application, or reporting it back to them?
+  - Am I giving useful context, or coaching?
+  - Could any sentence embarrass or diminish them?
+  - Does this read like a warm human conversation, or an assessment report?
+If any section reads like coaching, a performance review, or a question-by-
+question critique, rewrite it before returning.
 ========================================================================
 """
 
@@ -210,13 +274,35 @@ def system_prompt(email_type: str) -> str:
     canonical = [h[0] if isinstance(h, (list, tuple)) else h for h in required]
     headings = "\n".join(f"    {i + 1}. {h}" for i, h in enumerate(canonical))
     contract = _OUTPUT_CONTRACT.replace("{headings}", headings or "    (none)")
+    # Length differs by stage. A CV rejection is decided on a written
+    # application and is deliberately concise (Ayesha 2026-09-14: 350-550).
+    # The interview-stage letters still carry the 800-word floor from their own
+    # locked SOPs, where the evidence is a full interview.
+    if email_type == "cv_rejection":
+        contract = contract.replace(
+            "{length_contract}",
+            "roughly 350-550 words total across greeting + opening + all "
+            "paragraphs + ps. Concise. At least 350.")
+    else:
+        contract = contract.replace(
+            "{length_contract}",
+            "at least 800 words total across greeting + opening + all "
+            "paragraphs + ps.")
     prompt = _tone_master() + "\n\n" + contract
     # The four FEEDBACK letters share one tone: report the evidence, never coach
     # the career. case_study_outcome is deliberately excluded — its guidance is
     # about the submitted WORK, not the person's career, and its order is locked
     # separately (CLAUDE.md Rule 25).
     if email_type in ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection"):
-        prompt += "\n" + _FEEDBACK_TONE_NOTE
+        length_rule = (
+            "Concise: roughly 350-550 words unless there is a strong reason for "
+            "more context."
+            if email_type == "cv_rejection" else
+            "At least 800 words, per this letter type's locked SOP. The evidence "
+            "is a full interview, so there is genuinely more to say; that is "
+            "never a licence to pad with advice."
+        )
+        prompt += "\n" + _FEEDBACK_TONE_NOTE.replace("{length_rule}", length_rule)
     if email_type == "cv_rejection":
         prompt += "\n" + _CV_STAGE_NOTE
     if email_type == "case_study_outcome":

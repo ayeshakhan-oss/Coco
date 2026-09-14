@@ -127,6 +127,18 @@ COACHING_REGISTER = [
     r'roles? (such as|like) (a )?\w+',
     r'that will make you (stronger|unstoppable)',
     r'lean into that',
+    # Claims about the PERSON rather than about the evidence (Ayesha's "avoid"
+    # list, 2026-09-14). Each asserts something about their actual capability or
+    # career that we cannot know from an application.
+    r"you (don't|do not) have\b",
+    r'you should have\b',
+    r"you (aren't|are not|re not) ready\b",
+    r'you are more suited\b',
+    r'you have not (led|owned|run|managed)\b',
+    r'(seek|pursue) (out )?(a )?(leadership|senior|bigger) (role|opportunit)',
+    r'your next step',
+    r'reflect on your career',
+    r'leadership philosophy',
 ]
 
 
@@ -210,7 +222,11 @@ KNOWN_INTERVIEWERS = [
 # own send scripts. They are listed here so that adding one never silently
 # inherits the 800-word rule.
 WORD_MINIMUMS = {
-    'cv_rejection': 800,
+    # A CV rejection is decided on a written application and is deliberately
+    # CONCISE: 350-550 (Ayesha 2026-09-14). It replaced an 800 floor that was
+    # set when the letter still carried a coaching section. The interview-stage
+    # letters keep 800: the evidence there is a full interview.
+    'cv_rejection': 350,
     'values_feedback': 800,
     'warm_bench': 800,
     'gwc_rejection': 800,
@@ -492,6 +508,50 @@ def check_harsh_language(text: str, email_type: Optional[str] = None) -> Tuple[b
 # WORK ("what would strengthen the approach"), not the person's career, and its
 # order is locked separately (CLAUDE.md Rule 25).
 _COACHING_CHECKED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
+
+
+# Replaying the application back at the candidate — WARNING (Ayesha 2026-09-14).
+#
+# "Use the application internally as evidence to understand the candidate, but
+# synthesize it into an overall hiring perspective." The letter must never walk
+# through it question by question, quote answers back, or point out individual
+# unanswered questions. A real example of what this prevents:
+#   BAD:  "The application asked how you handled ambiguity and you responded
+#          'NAAAAA'. That was an important signal."
+#   GOOD: "We weren't able to get enough insight into how you've navigated
+#          ambiguity, difficult trade-offs, and changing priorities."
+# It is also a dignity rule: never reproduce a weak, incomplete or embarrassing
+# response. Ask whether the candidate needs that detail to understand the
+# decision; if not, leave it out.
+APPLICATION_REPLAY = [
+    r'you (were asked|answered|responded|wrote|said)\b',
+    r'(the|your) application asked',
+    r'your (response|answer) (was|to)',
+    r'in (response|answer) to (that|this|the) question',
+    r'(that|this) question (was|went) unanswered',
+    r"(wasn't|was not|you did ?n.t) answer(ed)?\b",
+    r'you left (that|this|it) (blank|empty|unanswered)',
+    r'(question|prompt) \d+',
+    r'when asked (about|how|why|what)',
+]
+
+
+def check_application_replay(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Question-by-question replay of the candidate's application."""
+    if email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    clean = strip_html(text)
+    for pattern in APPLICATION_REPLAY:
+        m = re.search(pattern, clean, re.IGNORECASE)
+        if m:
+            ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
+            return False, (
+                f'Replaying the application ("{m.group()}"). Use it internally as '
+                f'evidence, then synthesise: "we were not able to get enough insight '
+                f'into how you have navigated X". Never quote answers back, walk '
+                f'through questions, or name an unanswered one. Context: ...{ctx}...'
+            )
+    return True, None
 
 
 def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
@@ -1228,6 +1288,27 @@ def evaluate_email(
     if not passed:
         violations.append({
             'rule': 'CV rejection: check these terms against the CV',
+            'severity': 'WARNING',
+            'detail': detail,
+        })
+
+    # W. A CV rejection that runs long has usually started replaying the
+    #    application or coaching. 550 is the target ceiling, 650 the nag point.
+    if email_type == 'cv_rejection' and word_count > 650:
+        violations.append({
+            'rule': 'CV rejection: aim for 350-550 words',
+            'severity': 'WARNING',
+            'detail': (f'{word_count} words. A rejection this long is usually replaying '
+                       'the application or drifting into coaching. Synthesise instead: '
+                       'the candidate needs to understand the decision, not receive a '
+                       'review of their answers.'),
+        })
+
+    # W. Replaying the application back at the candidate (Ayesha 2026-09-14)
+    passed, detail = check_application_replay(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Do not replay the application back at them',
             'severity': 'WARNING',
             'detail': detail,
         })

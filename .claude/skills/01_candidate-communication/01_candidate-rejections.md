@@ -1,6 +1,6 @@
 ---
 name: Candidate Rejections SOP (CV-Stage)
-description: Reject candidates during CV screening with warm, specific feedback tied to their actual CV. 800+ words. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see 03_warm-bench-feedback-email.md.
+description: Reject candidates during CV screening with warm, specific feedback on ROLE FIT, tied to their actual CV. 350-550 words, concise. Never replays the application or coaches the career. v8 design. Feedback widget required. For warm bench feedback (values-passed candidates), see 03_warm-bench-feedback-email.md.
 type: feedback
 ---
 
@@ -36,7 +36,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 ---
 
-## TYPE 1: CV-STAGE REJECTION (800+ words)
+## TYPE 1: CV-STAGE REJECTION (350-550 words)
 
 **Purpose:** Reject a candidate at the resume screening stage with specific, warm, reflective feedback tied to their actual CV.
 
@@ -59,7 +59,19 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 4. **Opening paragraph** — warm greeting by candidate's name, thank them for time and interest, brief context about the screening process.
 
-5. **Body sections.** 🔒 **The three heading names are LOCKED and unchanged.** What changed on 2026-09-14 is the CONTENT and register inside them: report what we were able and unable to SEE, never coach the candidate's career.
+5. **Body sections.** 🔒 **The three heading names are LOCKED and unchanged.** What changed on 2026-09-14 is the CONTENT and register inside them.
+
+   **This is feedback on ROLE FIT, not a report on their application.** The goal is that the candidate understands why we are not moving forward *for this particular role*, and finishes reading feeling respected and seen. Three things should be clear to them: they were genuinely reviewed, they understand why this role wasn't the match, and they still feel respected.
+
+   **The most important principle** — talk about what we could or could not ESTABLISH, never about what they lack:
+   - ✅ "We weren't able to see enough evidence of having owned growth strategy at an organizational level."
+   - ❌ "You have not led growth strategy at an organizational level."
+
+   **Never replay the application.** Use it internally as evidence, then synthesise it into one hiring perspective. Do NOT quote answers back, walk through it question by question, point out individual unanswered questions, write "you were asked X and you answered Y", or reproduce any weak, incomplete or embarrassing response.
+   - ✅ "We weren't able to get enough insight into how you've navigated ambiguity, difficult trade-offs, and changing priorities."
+   - ❌ "The application asked how you handled ambiguity and you responded 'NAAAAA'."
+
+   **Dignity check:** does the candidate need this detail to understand our decision? If no, leave it out.
    - **What we appreciated:** 2–3 specific strengths from the CV, cited to actual experience. Keep it **short**. Name what is genuinely there and stop; do not interpret every strength back at them or explain why each one matters. That lecture is what makes a rejection read as condescending.
    - **Where we found questions:** what THIS role required and what the application did not make visible. Frame as our requirement, never their deficiency. Write "we could not clearly see X in the application", never "you need to develop X". State explicitly that there may well be experience behind the application showing this more strongly; we simply could not see enough of it here.
    - **What we think you should do next:** despite the heading, this is a **warm close, not a development plan**. Restate plainly what the role needed, acknowledge the breadth they do bring, leave the door open in general terms.
@@ -69,9 +81,13 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
    - suggesting alternative job titles (e.g. "a Trainer or Coordinator role") — however kindly meant, it reads as *you are not senior enough*
    - any advice inside the P.S.
 
-   **Unanswered application questions** are raised with curiosity, never as a disciplinary signal. Never quote the non-answer back at them and never call it "an important signal". Write: "the reflection question on X wasn't answered, and we would have liked to hear your perspective there."
+   **Unanswered application questions are NEVER named.** Do not point out that a question went unanswered. Translate it into what we could not establish: "we weren't able to get enough insight into how you've navigated ambiguity and shifting priorities."
 
-   **Reaching 800 words without coaching:** the length comes from being more specific about THEIR material, never from more instruction FOR them. If a letter runs short, add evidence, not guidance.
+   **One light, optional, application-oriented observation is allowed**, phrased about the application and never about them:
+   - ✅ "If you have experiences where you owned strategy and outcomes end-to-end, bringing those forward more clearly in a future application could help us understand that part of your experience."
+   - ❌ "Your next step should be to seek a role where you can own an initiative end-to-end."
+
+   **P.S.:** something genuinely nice and specific we noticed about THEM. Not a lecture, not advice, not a role suggestion, not a restatement of the decision.
 
 6. **Closing statement:** "The door remains open. Keep an eye on our careers page at www.taleemabad.com."
 
@@ -81,7 +97,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 9. **HTML format:** v8 design only. Use helpers: `H()` = blue #1565c0 headings · `SUB()` = green #1b5e20 subheadings · `P()` = Georgia serif 15px/1.8 justified · `PS()` = green italicized P.S. box
 
-10. **Word count:** Minimum 800 words. Verify before wrapping.
+10. **Word count:** 🔴 **350-550 words** (Ayesha 2026-09-14), minimum 350. A CV rejection is concise. This REPLACES the old 800 floor, which was set when the letter still carried a coaching section. The interview-stage letters (values feedback, warm bench, GWC) keep their 800 minimum. A CV rejection over ~650 words has usually started replaying the application or coaching, and the harness warns.
 
 11. **Recipients:** TO = candidate email, CC = hiring@taleemabad.com + ayesha.khan@taleemabad.com
 
@@ -121,10 +137,12 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 - [ ] Subject line is simple, no em dashes
 - [ ] Opening thanks candidate by name
 - [ ] 2–3 genuine strengths cited with specific CV text
-- [ ] 1–2 honest gaps explained reflectively
-- [ ] "What to do next" section is actionable
+- [ ] 1–2 role-fit gaps framed as what we could not establish, never as what they lack
+- [ ] No question-by-question replay, no quoted answers, no named unanswered questions
+- [ ] P.S. is something nice and specific about them, not a lecture
+- [ ] Closing section is a warm note, NOT advice or a development plan
 - [ ] Closing: "The door remains open. Keep an eye on our careers page at www.taleemabad.com."
-- [ ] Word count ≥800
+- [ ] Word count 350-550 (minimum 350)
 - [ ] v8 HTML design used (blue headings, green subheadings, Georgia serif, justified)
 - [ ] Feedback widget included with correct app_id
 - [ ] Sign-off is exact (Warm regards, / People and Culture Team / etc.)
@@ -148,7 +166,7 @@ Reject candidates during CV screening phase with specific, warm, reflective feed
 
 6. **Wrong recipients** — forgetting to CC hiring@taleemabad.com or ayesha.khan@taleemabad.com. Verify CC list before sending.
 
-7. **Word count too low** — minimum 800 words. Count before wrap(). Don't send <800w.
+7. **Word count out of range** — 350-550 words for a CV rejection (minimum 350). Count before wrap(). A letter running long is usually replaying the application or coaching.
 
 8. **Em dashes in subject or body** — search for " — " and replace with period, comma, or colon.
 
