@@ -4,6 +4,20 @@ description: Warm-tone rejection emails for GWC interview candidates. 800+ words
 compatibility: Requires memory/warm_bench_locked_final_2026_05_30.md, memory/email_template_format_FINAL.md, RULES.md
 ---
 
+## 🔒 CORE TONE — APPLIES TO THIS AND EVERY CANDIDATE COMMUNICATION
+
+**Read [CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md](../../../memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md) first — the CORE TONE section at the top.** Locked 2026-09-14.
+
+**The one rule:** explain OUR hiring decision; do not evaluate THEM as a person.
+**The sentence test:** describe the moment, then say what it meant to US. Never conclude what it means ABOUT THEM.
+
+**Six behaviours that must never appear:** coaching · career direction · grading an answer · person-level judgement · replaying evidence (especially a list of everything they failed to demonstrate) · private-note leakage from the scorecard.
+
+🔴 A disclaimer does not neutralise a prescription. 🔴 A heading is not an instruction. 🔴 Never shorten a letter to make it warmer.
+
+---
+
+
 # GWC Rejection Emails
 
 Send warm-tone rejection emails to candidates who participated in GWC interviews but were not selected, using scorecard data and honest feedback.

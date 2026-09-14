@@ -19,6 +19,159 @@ metadata:
 - Any future candidate communication
 
 **DO NOT SCATTER RULES.** All tone/philosophy guidance lives here. All skills link to this file.
+---
+
+## 🔒 THE CORE TONE — READ THIS BEFORE ANYTHING ELSE (LOCKED 2026-09-14)
+
+**This is the core tone for ALL candidate communication at Taleemabad.** It was
+agreed after a full working session, and it is the tone of the first letter
+Ayesha approved without changes (Muneeb Arif, Growth Manager Karachi, warm
+bench). Every rule below exists because a real letter broke it.
+
+### THE ONE RULE
+
+> **Explain OUR hiring decision. Do not evaluate THEM as a person.**
+
+We can speak with confidence about **what we needed and could not establish**.
+We cannot speak with confidence about **what the candidate lacks, who they are,
+or what they should do next.**
+
+Say it as a sentence-level test:
+
+> **Describe the moment, then say what it meant to US. Never conclude what it
+> means ABOUT THEM.**
+
+Every good sentence in the approved letter keeps that rule. Every sentence that
+ever had to be rewritten broke it.
+
+The arc: **"We saw you" → "Here is why we said no" → "We still respect what we saw."**
+The candidate should finish thinking: *they genuinely saw me, I understand why
+they said no, and I still feel respected.*
+
+---
+
+### THE SIX BEHAVIOURS THAT MUST NEVER APPEAR
+
+These are enforced by a second reading pass over every drafted letter, and each
+is reported by name. Judge the MEANING of a sentence, never its wording: a
+banned phrasing can always be rewritten, and that is exactly how these kept
+reaching candidates.
+
+**1. COACHING — telling them what to do or build.**
+Never what to develop, learn, gain, document, demonstrate next time, or pursue.
+Includes conditionals ("if you were to...", "once you have...", "that would
+change the picture") and includes naming HOW the gap could be closed.
+🔴 A disclaimer does NOT neutralise a prescription. "That's your choice to make,
+not ours to prescribe" after naming the routes changes nothing. Once the options
+are named, it has been prescribed.
+
+**2. CAREER DIRECTION — naming their lane.**
+Never tell them which roles, functions, sectors or paths suit them. "If a role
+opens where X matters more than Y, we'd welcome your application" is career
+direction in a softer coat: it still tells them where they belong.
+
+**3. GRADING AN ANSWER — marking what they said.**
+Reference their stories freely. Never replay a question and assess the answer.
+Not "your answer stayed at the relationship level", not "when we pressed for
+tactics", not "when we pushed back", not "the details thinned out".
+
+**4. PERSON-LEVEL JUDGEMENT — verdicts on who they are.**
+No claims about their character, motivation, readiness or future behaviour.
+Not "that's who you are", not "it reveals something important about who you
+are", not "you're coachable", not "you don't detach from hard things".
+**Praise counts.** Describing what stayed with us is right; certifying the
+person is not. Not "that's rare", not "the kind of maturity that will take you
+far".
+
+**5. REPLAYING EVIDENCE — and the checklist trap.**
+Never narrate a question or scenario we posed and then say what was missing.
+🔴 THE WORST FORM, and the one that hid longest because it contains no banned
+word at all:
+> ❌ "No specific approach to reading the room. No concrete tactic for building
+> leverage. No sense of how you would navigate someone who has power."
+
+That is an improvement checklist for their next interview. Replace the whole
+passage with ONE synthesised sentence about what we needed and could not
+establish, **and stop there.** Do not list the missing sub-components afterwards.
+
+For CV-stage letters this extends to the written application: never name a
+question, quote an answer back, or point out that something went unanswered.
+
+**6. PRIVATE-NOTE LEAKAGE — the hiring manager's words.**
+The scorecard is internal shorthand, written at speed, for colleagues. They were
+not writing to the candidate. The letter is candidate-facing and may be
+forwarded, screenshotted or posted publicly. Use the scorecard as evidence of
+what happened; write every sentence in our own warm words.
+
+---
+
+### THE TRANSFORMATIONS
+
+| ❌ Never | ✅ Instead |
+|---|---|
+| "If you were to build direct experience inside education systems, whether through a role, advisory work, or relationship-building, that could change the picture." | "Direct experience navigating education and government systems carries significant weight for us, because this role needs someone who can enter those environments with contextual fluency from the outset. That was the piece we weren't able to establish." |
+| "Your answer about government stakeholders stayed generic." | "We came away wanting a more concrete understanding of how you have navigated government stakeholders and moved work forward within those systems." |
+| "Your motivation felt circumstantial rather than mission-driven." | "We weren't able to understand your connection to this particular mission as deeply as we needed to for this role." |
+| "You lack strategic thinking." | "We needed stronger evidence of strategic thinking at an organisational level than we were able to establish through the process." |
+| "That's not something you can know without having been inside one." | "For this role, we needed that understanding grounded in direct experience, and we weren't able to establish enough of that." |
+| "That's rare." / "The kind of maturity that will take you far." | "That moment stayed with us because it reflected a willingness to put the outcome ahead of personal ownership." |
+| "We'd welcome your application again if you take on work that gives you that experience." | "We would be glad to hear from you again, and we hope our paths cross." |
+| "The application asked how you handled ambiguity and your response was 'NAAAAA'." | "We weren't able to get enough insight into how you've navigated ambiguity, difficult trade-offs and changing priorities." |
+
+**Scorecard → letter:**
+
+| Scorecard said | Letter must say |
+|---|---|
+| "Motivation reads circumstantial, wants out of a night-shift job" | "We weren't able to understand your connection to this particular mission as deeply as we needed to." |
+| "Stayed generic under the role-play, no concrete tactic" | "We came away wanting a more concrete picture of how you would open a door inside a government system." |
+| "Enthusiastic and coachable but unproven on the core skill" | What we could see clearly, versus what we needed and could not yet establish. |
+| "Struggled to track the conversation, misread my closing question" | **Nothing at all.** A moment, not a capability. Naming it serves nothing the candidate can use. |
+
+**The test:** if they read this sentence aloud to a friend, or posted it, would
+it be fair AND kind?
+
+---
+
+### PREFERRED CONSTRUCTIONS
+
+"For this role, we needed…" · "We weren't able to establish…" · "We came away
+wanting to understand…" · "What remained unclear to us was…" · "The distinction
+mattered for this role because…" · "Ultimately, this is where our decision landed."
+
+**Avoid:** "You didn't…" · "You failed to…" · "You need to…" · "You should…" ·
+"You aren't ready…" · "Your next step is…"
+
+---
+
+### WHAT THE APPROVED LETTER ACTUALLY DID (copy these moves)
+
+1. **Anchored every strength to a moment**, with a timestamp and the candidate's
+   own words: *"about 12 minutes into our conversation… You told us: 'I had put
+   in my blood and sweat in this project.'"*
+2. **Made US the subject, not them:** *"What we noticed was that you didn't step
+   away from the discomfort"*, never *"that's who you are"*.
+3. **Named the requirement before the shortfall:** what the role needs, why it
+   needs it, then what we could not confirm.
+4. **Refused the checklist:** one synthesised sentence about the gap, then stop.
+5. **Withheld the verdict explicitly** on the hardest paragraph: *"It's not that
+   your interest isn't real. What remained unclear to us was…"*
+6. **Closed on a moment, not a lesson.** The P.S. quotes them, says why it
+   stayed with us, and gives no advice.
+
+---
+
+### LENGTH AND SHAPE
+
+- **800 words minimum** for every feedback letter.
+- 🔴 **NEVER shorten a letter to make it warmer.** If a passage sounds like
+  coaching, use that same space to explain the role, our bar, what we genuinely
+  appreciated, and what stayed unclear. Length comes from specificity about
+  **their own material**, never from advice.
+- Headings are LOCKED. 🔴 **A heading is not an instruction**: "What we think you
+  should do next" is a fixed label, not permission to advise. That section is a
+  warm close, and it is the single place a letter is most likely to slip.
+- The P.S. is something genuinely nice and specific about them. No advice.
+
 
 ---
 
