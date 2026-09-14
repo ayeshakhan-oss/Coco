@@ -16,7 +16,15 @@ logs/
 .env
 .env.*
 .mcp.json
-.claude/
+# .claude/ holds LOCAL CONFIG (OAuth tokens - never ship) but also the
+# candidate-communication SOPs that the drafter now reads at runtime. Exclude
+# everything under it EXCEPT that one skill folder. Excluding the whole
+# directory is why the build failed with:
+#   failed to compute cache key: "/.claude/skills/01_candidate-communication": not found
+.claude/*
+!.claude/skills
+.claude/skills/*
+!.claude/skills/01_candidate-communication
 archive/
 *.bak
 C:/tmp
