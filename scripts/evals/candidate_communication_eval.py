@@ -69,7 +69,11 @@ FORBIDDEN_JARGON = [
     r'\bKCD\b',
     r'\bwarm bench\b',
     r'\bvalues scorecard\b',
-    r'\bcase study\b',
+    # "case study" was REMOVED 2026-09-14 (Ayesha): it is not internal jargon.
+    # The candidate wrote the case study, submitted it, and discussed it with us.
+    # It is their own deliverable. A letter that cannot name it has to talk
+    # around something they lived through, and it was blocking a warm-bench
+    # letter for the phrase "in the case study conversation".
 ]
 
 # Adversarial / judgmental register — HARD BLOCK (Ayesha 2026-09-08).
@@ -499,19 +503,20 @@ def check_opening_line(body: str, email_type: str) -> Tuple[bool, Optional[str]]
 #   case_study_outcome - Skill 01 type #8 (Ayesha 2026-09-08)
 # The exemption is scoped to the phrase "case study" only. GWC, KCD, warm bench and values
 # scorecard stay blocked for every type.
+# Kept for callers that still import it. "case study" is no longer forbidden
+# for ANY type (2026-09-14), so this no longer gates anything.
 CASE_STUDY_PHRASE_ALLOWED = {"case_study_update", "case_study_outcome"}
 
 
 def check_jargon(text: str, email_type: str = "") -> Tuple[bool, Optional[str]]:
     """
-    Check for internal jargon (GWC, KCD, warm bench, values scorecard, case study).
+    Check for internal jargon (GWC, KCD, warm bench, values scorecard). These are
+    OUR labels for OUR process; the candidate never hears them. "case study" is
+    NOT on the list: it is the candidate's own deliverable.
     Returns: (passed, detail_msg_if_found)
     """
     clean = strip_html(text)
-    patterns = list(FORBIDDEN_JARGON)
-    if email_type in CASE_STUDY_PHRASE_ALLOWED:
-        patterns = [p for p in patterns if p != r'\bcase study\b']
-    for pattern in patterns:
+    for pattern in FORBIDDEN_JARGON:
         matches = re.finditer(pattern, clean, re.IGNORECASE)
         for match in matches:
             start = max(0, match.start() - 30)

@@ -160,8 +160,9 @@ HARD RULES (the email is automatically REJECTED if any is violated):
   "you were energized", "you would likely", "you appeared". State what was
   observed or what is uncertain, never what the candidate felt or intended.
 - NO internal jargon: do not write "GWC", "KCD", "warm bench", or "values
-  scorecard". ("case study" is allowed ONLY for the case_study_outcome type,
-  where it is the candidate's own deliverable.)
+  scorecard". These are OUR labels for OUR process and the candidate has never
+  heard them. "case study" is NOT jargon and may be named freely: the candidate
+  wrote it, submitted it and discussed it with us.
 - NO interviewer or staff names anywhere in the email.
 - Ground every strength and every concern in the scorecard evidence provided.
   No generic recruiting abstractions ("strong candidate", "great fit").
