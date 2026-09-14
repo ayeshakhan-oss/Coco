@@ -195,6 +195,7 @@ class _FakeMessages:
 def _drafter_with(servable, configured):
     d = drafting.AnthropicDrafter.__new__(drafting.AnthropicDrafter)
     d.model = configured
+    d.degraded_from = None
     d.mode = "api_key"
     d.client = type("C", (), {"messages": _FakeMessages(servable)})()
     return d
@@ -216,12 +217,37 @@ def test_an_unknown_model_falls_back_and_sticks():
     assert d.client.messages.asked[-1] == "claude-haiku-4-5-20251001"
 
 
-def test_a_real_error_is_not_swallowed_as_a_model_problem():
-    """Only an unknown-model error triggers fallback. A rate limit or an outage
-    must surface, not silently downgrade the model writing candidate letters."""
+def test_a_rate_limited_model_falls_back_instead_of_returning_nothing():
+    """The real failure, 2026-09-14: ANTHROPIC_MODEL was moved to Sonnet, whose
+    quota on this Claude Code subscription token was exhausted while Haiku still
+    answered. Every call 429'd, so Ayesha got a 92-word empty scaffold with no
+    explanation. A weaker letter that SAYS it is weaker beats no letter."""
+    d = _drafter_with({"claude-haiku-4-5-20251001"}, "claude-sonnet-5")
+    real = d.client.messages.create
+
+    def _create(**kw):
+        if kw["model"] != "claude-haiku-4-5-20251001":
+            raise RuntimeError("Error code: 429 - {'type':'rate_limit_error'}")
+        return real(**kw)
+
+    d.client.messages.create = _create
+    d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert d.model == "claude-haiku-4-5-20251001"
+    assert d.degraded_from == "claude-sonnet-5", "the downgrade must be recorded"
+
+
+def test_a_real_outage_is_not_swallowed():
+    """Only unusable-model and rate-limit errors fall back. An outage, a bad
+    request or an auth failure must surface rather than quietly downgrade."""
     d = _drafter_with(set(), "claude-sonnet-5")
     d.client.messages.create = lambda **kw: (_ for _ in ()).throw(
-        RuntimeError("Error code: 429 - rate_limit_error")
+        RuntimeError("Error code: 500 - internal_server_error")
     )
-    with pytest.raises(RuntimeError, match="429"):
+    with pytest.raises(RuntimeError, match="500"):
         d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+
+
+def test_an_undegraded_drafter_records_nothing():
+    d = _drafter_with({"claude-sonnet-5"}, "claude-sonnet-5")
+    d.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
+    assert d.degraded_from is None

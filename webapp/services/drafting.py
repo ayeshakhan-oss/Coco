@@ -186,6 +186,7 @@ class AnthropicDrafter:
         from anthropic import Anthropic
 
         self.model = model
+        self.degraded_from: Optional[str] = None
         self.mode = "api_key" if api_key else "oauth"
         if api_key:
             self.client = Anthropic(api_key=api_key)
@@ -210,6 +211,26 @@ class AnthropicDrafter:
             k in msg for k in ("not_found", "not found", "404", "invalid_request")
         )
 
+    @staticmethod
+    def _is_rate_limited(exc: Exception) -> bool:
+        msg = str(exc).lower()
+        return "rate_limit" in msg or "429" in msg or "too many requests" in msg
+
+    @classmethod
+    def _should_fall_back(cls, exc: Exception) -> bool:
+        """Try the next model, rather than hand back an empty letter.
+
+        A rate limit counts. The drafting credential is a Claude Code
+        subscription token whose Sonnet and Opus quota can be exhausted while
+        Haiku still answers, which is exactly what happened the night
+        ANTHROPIC_MODEL was moved to Sonnet: every model call 429'd and Ayesha
+        got a 92-word scaffold with no explanation.
+
+        A weaker letter that says so beats no letter at all. Anything else (an
+        outage, a bad request, an auth failure) still surfaces untouched.
+        """
+        return cls._is_unknown_model(exc) or cls._is_rate_limited(exc)
+
     def draft(self, *, system, user, email_type, first_name, role, prior_violations=None, attempt=0) -> dict:
         content = user
         if prior_violations:
@@ -228,16 +249,18 @@ class AnthropicDrafter:
                     messages=[{"role": "user", "content": content}],
                 )
             except Exception as exc:  # noqa: BLE001
-                if self._is_unknown_model(exc) and model != self._FALLBACK_MODELS[-1]:
-                    log.error("Model %r was rejected (%s); falling back.", model, exc)
+                if self._should_fall_back(exc) and model != self._FALLBACK_MODELS[-1]:
+                    log.error("Model %r unusable (%s); falling back.", model, exc)
                     continue
                 raise
             if model != self.model:
-                # Stick to what works for the rest of this process, and say so
-                # loudly: a silent downgrade is how you end up writing candidate
-                # letters on a weaker model without knowing it.
-                log.error("Drafting on FALLBACK model %r; ANTHROPIC_MODEL=%r is not "
-                          "servable by this account.", model, self.model)
+                # Say so loudly AND on the draft itself: a silent downgrade is
+                # how you end up writing candidate letters on a weaker model
+                # without knowing it, which had already happened once when
+                # ANTHROPIC_MODEL quietly overrode the Opus default with Haiku.
+                log.error("Drafting on FALLBACK model %r; configured %r was unusable.",
+                          model, self.model)
+                self.degraded_from = self.model
                 self.model = model
             text = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
             return _parse_json(text)
@@ -719,6 +742,20 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
 
     # Say so when every attempt failed. Handing back a broken draft with no
     # signal reads as "here is your letter" when it means "I could not write one".
+    degraded = getattr(drafter, "degraded_from", None)
+    if best and degraded:
+        best["eval"]["violations"].append({
+            "rule": "Written by a fallback model",
+            "severity": "WARNING",
+            "detail": (
+                f"The configured model ({degraded}) could not be used for this "
+                f"draft, so it was written by {drafter.model} instead. On a "
+                f"Claude Code subscription token the Sonnet and Opus quota can "
+                f"run out while Haiku still answers. The tone judgement is "
+                f"weaker on the smaller model, so read this letter closely."
+            ),
+        })
+
     if best and untranslated:
         best["eval"]["violations"].append({
             "rule": "Hiring manager's summary was left out",
