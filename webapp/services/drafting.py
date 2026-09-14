@@ -433,6 +433,13 @@ def _leaks_from(candidate_text: str, raw_note: str) -> bool:
                for i in range(len(a) - _LEAK_NGRAM + 1))
 
 
+# A note translates to the same rationale every time, and Ayesha regenerates a
+# draft several times while iterating. Cache per (note, role) so a regeneration
+# costs no extra model call: the drafting credential is rate limited, and every
+# 429 means a dropped note and a thinner letter.
+_NOTE_CACHE: dict[tuple[str, str], str] = {}
+
+
 def _translate_note(drafter, raw: str, *, role: str) -> Optional[str]:
     """One manager note -> neutral rationale, verified not to echo the original.
 
@@ -442,6 +449,9 @@ def _translate_note(drafter, raw: str, *, role: str) -> Optional[str]:
     """
     if not raw or not raw.strip():
         return None
+    key = (raw.strip(), role)
+    if key in _NOTE_CACHE:
+        return _NOTE_CACHE[key]
     for attempt in range(2):
         try:
             user = (
@@ -463,6 +473,7 @@ def _translate_note(drafter, raw: str, *, role: str) -> Optional[str]:
             if _leaks_from(text, raw):
                 log.warning("Note translation still echoed the note (attempt %d).", attempt + 1)
                 continue
+            _NOTE_CACHE[key] = text
             return text
         except Exception as exc:  # noqa: BLE001 - never lose a draft to this
             log.warning("Note translation failed (%s).", exc)

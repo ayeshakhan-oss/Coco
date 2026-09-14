@@ -39,6 +39,17 @@ CLEAN = (
 )
 
 
+@pytest.fixture(autouse=True)
+def _clear_translation_cache():
+    """Translations are cached per (note, role) so regenerating a draft costs no
+    extra model call. Without this fixture the cache leaks between tests and a
+    failure case silently reads an earlier test's successful translation, which
+    is exactly what happened when the cache was first added."""
+    drafting._NOTE_CACHE.clear()
+    yield
+    drafting._NOTE_CACHE.clear()
+
+
 class _FakeDrafter:
     """Returns a scripted translation, or raises, without touching the network."""
 
@@ -133,3 +144,22 @@ def test_an_absent_note_costs_no_model_call(empty):
     out, warnings = drafting._soften_manager_notes(fake, sc, role="GM")
     assert fake.calls == 0
     assert warnings == []
+
+
+def test_a_second_draft_reuses_the_cached_translation():
+    """Regenerating must not re-pay for the translation. The drafting credential
+    is rate limited, and every 429 costs a dropped note and a thinner letter."""
+    fake = _FakeDrafter(CLEAN)
+    sc = {"final_comments": RAW_NOTE, "values": []}
+    first, _ = drafting._soften_manager_notes(fake, sc, role="Growth Manager")
+    second, _ = drafting._soften_manager_notes(fake, sc, role="Growth Manager")
+    assert fake.calls == 1, "the second draft called the model again"
+    assert first["final_comments"] == second["final_comments"] == CLEAN
+
+
+def test_the_cache_is_keyed_by_role_too():
+    fake = _FakeDrafter(CLEAN)
+    sc = {"final_comments": RAW_NOTE, "values": []}
+    drafting._soften_manager_notes(fake, sc, role="Growth Manager")
+    drafting._soften_manager_notes(fake, sc, role="Senior Manager Growth")
+    assert fake.calls == 2, "a different role must get its own translation"
