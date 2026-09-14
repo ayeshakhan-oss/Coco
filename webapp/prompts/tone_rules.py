@@ -55,6 +55,12 @@ You are drafting ONE candidate-communication email. Return ONLY valid JSON
   heading.
 - Required headings for this email type (in order):
 {headings}
+- A HEADING IS NOT AN INSTRUCTION. If a heading reads "What we think you should
+  do next", that is a fixed label, NOT permission to give advice. That section
+  is a warm close: restate plainly what the role needed, acknowledge the breadth
+  they bring, leave the door open in general terms. It is the single place a
+  letter is most likely to slip into coaching or schooling, so write it last and
+  check it against the tone rules before returning.
 
 HARD RULES (the email is automatically REJECTED if any is violated):
 - VOICE: write ONLY in the first-person PLURAL, collective voice — "we", "our",

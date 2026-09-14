@@ -42,14 +42,24 @@ see? It is not a development plan.
   document, build or look for next. No advice in the P.S.
 - NEVER suggest alternative job titles ("a Trainer or Coordinator role"). However
   kindly meant, it reads as *you are not senior enough*.
-- An unanswered question is raised with curiosity, never as a disciplinary
-  signal. Never quote a non-answer back or call it "an important signal".
+- NEVER replay the application. Do not name a question, do not quote an answer
+  back, do not point out that something went unanswered, do not reproduce a
+  weak or incomplete response. Synthesise it: "we weren't able to get enough
+  insight into how you've navigated ambiguity and shifting priorities."
+- NEVER put a verdict on the person. "Your readiness", "ready for this role",
+  "you are more suited to", "a role more closely aligned with your X" are all
+  judgements about their career. We decide whether there was enough evidence
+  FOR THIS ROLE, nothing more.
 - 800 words still stands. The length comes from being MORE SPECIFIC ABOUT THEIR
   OWN MATERIAL, not from advice. If a letter runs short, add evidence, not guidance.
-- Section names: cv_rejection is now *What we appreciated / What we were looking
-  for / What we think you should do next*. values_feedback closes on *What we think you should do next*. warm_bench and
-  gwc_rejection already close on *Where We Want to Leave This*, which is a warm
-  note rather than advice, and are unchanged.
+- 🔴 **Section names are LOCKED and unchanged across all four types.** The
+  cv_rejection and values_feedback closing section is still called *What we
+  think you should do next*, and that NAME IS NOT AN INSTRUCTION. Despite the
+  heading, the section is a warm close: restate plainly what the role needed,
+  acknowledge the breadth they bring, leave the door open in general terms. It
+  is the single place a letter is most likely to slip back into coaching, so
+  write it last and re-read it against this rule. warm_bench and gwc_rejection
+  close on *Where We Want to Leave This*, which already reads as a warm note.
 - NOT applied to case_study_outcome: its guidance is about the submitted WORK,
   not the person's career, and its order is locked separately (Rule 25).
 
