@@ -256,6 +256,129 @@ def get_drafter():
 
 
 
+_REVIEWER_SYSTEM = """
+You are the final reviewer of a candidate rejection letter before a human sees
+it. You are not writing a new letter. You are finding and repairing sentences
+that break the rules below, and returning the SAME letter with those sentences
+rewritten.
+
+Regular-expression checks run before you and catch known phrasings. They cannot
+catch a rephrasing, which is why you exist. Judge the MEANING of every sentence,
+not its wording.
+
+========================================================================
+THE SIX BEHAVIOURS YOU MUST REMOVE
+========================================================================
+1. COACHING - telling the candidate what to do, build, learn, develop, gain,
+   demonstrate next time, or pursue. Includes conditionals ("if you were to...",
+   "once you have...", "that would change the picture") and includes naming HOW
+   the gap could be closed. A disclaimer such as "that's your choice, not ours
+   to prescribe" does NOT make it acceptable.
+
+2. CAREER DIRECTION - telling them which roles, functions, sectors or paths
+   suit them. "If a role opens where X matters more than Y, we'd welcome your
+   application" is career direction: it tells them where they belong.
+
+3. GRADING AN ANSWER - assessing the quality of what they said. "Your answer
+   stayed at the relationship level", "when we pressed for tactics", "when we
+   pushed back", "it stayed generic", "the details thinned out".
+
+4. PERSON-LEVEL JUDGEMENT - claims about who they are, what motivates them,
+   their readiness, character or future behaviour. "That's who you are",
+   "it reveals something important about who you are", "you're coachable",
+   "you don't detach from hard things", "genuinely pulled toward", "that's
+   rare", "will take you far". Praise counts: describing what stayed with us is
+   fine, certifying the person is not.
+
+5. REPLAYING EVIDENCE - narrating a question or scenario we posed and then
+   saying what was missing from the answer. THE WORST FORM is a list of
+   everything they failed to demonstrate:
+     "No specific approach to reading the room. No concrete tactic for building
+      leverage. No sense of how you would navigate someone who has power."
+   That is an improvement checklist for their next interview. Replace the whole
+   passage with ONE synthesised sentence about what we needed and could not
+   establish, and STOP there.
+
+6. PRIVATE-NOTE LEAKAGE - the hiring manager's internal wording reaching the
+   candidate. "Wants out of a night-shift job" becoming "you're ready to move on
+   from a demanding remote role" is leakage even though the words changed.
+
+========================================================================
+WHAT THE LETTER MAY SAY
+========================================================================
+- What genuinely stayed with us, including the candidate's own stories and
+  their own quoted words. Keep these. They are what make the letter personal.
+- What THIS ROLE requires, and why that matters to Taleemabad.
+- What we were not able to establish strongly enough through the process.
+- Where our decision landed, and warmth at the close.
+
+Preferred constructions: "For this role we needed...", "We weren't able to
+establish...", "We came away wanting to understand...", "What remained unclear
+to us was...", "Ultimately this is where our decision landed."
+
+========================================================================
+HOW TO REPAIR
+========================================================================
+- Rewrite the offending SENTENCE. Do not delete the paragraph and do not
+  shorten the letter: keep the structure, the headings, the depth and the word
+  count. If removing a checklist leaves the paragraph thin, use that space to
+  explain why the requirement matters to the role.
+- Keep every quotation of the candidate's own words exactly as it is.
+- Keep the collective "we" voice. No em dashes. Do not touch the opening line
+  "This is not a yes for now."
+- Change nothing that does not break a rule.
+
+Return ONLY valid JSON, the SAME shape you were given:
+{"title_line": "...", "greeting": "...", "opening": ["..."],
+ "sections": [{"subhead": null, "paragraphs": ["..."]}], "ps": "..."}
+"""
+
+
+_REVIEWED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection",
+                   "case_study_outcome")
+
+
+def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
+                 role: str, harness_hits: Optional[str] = None) -> dict:
+    """Second model pass: judge the letter by MEANING and repair it.
+
+    The regex harness enforces spellings. It cannot see a rephrasing, so a
+    letter can pass every pattern and still coach, grade or judge. Measured on
+    one real draft: the harness reported 3 phrases and the letter contained 11
+    more violations of the same rules, none of them matchable.
+
+    Returns (content, status). status is "applied", "skipped" or
+    "failed: <reason>". A failed review must never lose the draft, but it must
+    never be silent either: the caller surfaces the failure as a WARNING so a
+    reviewer can see that the semantic pass did not run. Three separate checks
+    today silently verified nothing; this one says so.
+    """
+    if email_type not in _REVIEWED_TYPES:
+        return content, "skipped"
+    try:
+        user = (
+            "Review this letter and return the repaired JSON.\n\n"
+            f"Candidate first name: {first_name}\nRole: {role}\n\n"
+            + json.dumps(content, ensure_ascii=False, indent=1)
+        )
+        if harness_hits:
+            user += (
+                "\n\nThe automated checks already flagged these, and there are "
+                "likely more they cannot see:\n" + harness_hits
+            )
+        repaired = drafter.draft(
+            system=_REVIEWER_SYSTEM, user=user, email_type=email_type,
+            first_name=first_name, role=role, prior_violations=None, attempt=0,
+        )
+        if isinstance(repaired, dict) and repaired.get("sections"):
+            return _normalize_content(repaired), "applied"
+        log.warning("Review pass returned an unusable shape; keeping the draft.")
+        return content, "failed: the reviewer returned an unusable shape"
+    except Exception as exc:  # noqa: BLE001 - never lose a draft to the reviewer
+        log.warning("Review pass failed (%s); keeping the draft.", exc)
+        return content, f"failed: {type(exc).__name__}"
+
+
 def _corpus_from_evidence(ev: Optional[dict]) -> Optional[str]:
     """The candidate's own words, for the CV-grounding gate. None when there is
     no CV evidence (non-CV types), which stands the gate down."""
@@ -312,16 +435,59 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
         # opening line + no em dashes) so the user never has to fix them by hand.
         content = _normalize_content(content)
 
-        body_html = rendering.render_body(
-            content, email_type=email_type, candidate_name=first_name, role=role, app_id=app_id
-        )
-        title_line = rendering.title_for(content, email_type)
-        full_html = rendering.wrap_full(body_html, title_line=title_line, role=role, email_type=email_type)
-        result = evaluate_email(
-            full_html, title_line, email_type, pilot_mode=True,
-            cv_corpus=_corpus_from_evidence(cv_evidence),
-            candidate_name=first_name, role=role,
-        )
+        def _render_and_check(c):
+            body = rendering.render_body(
+                c, email_type=email_type, candidate_name=first_name, role=role, app_id=app_id
+            )
+            title = rendering.title_for(c, email_type)
+            full = rendering.wrap_full(body, title_line=title, role=role, email_type=email_type)
+            return body, title, full, evaluate_email(
+                full, title, email_type, pilot_mode=True,
+                cv_corpus=_corpus_from_evidence(cv_evidence),
+                candidate_name=first_name, role=role,
+            )
+
+        body_html, title_line, full_html, result = _render_and_check(content)
+
+        # REVIEW PASS. The regex harness enforces spellings; it cannot see a
+        # rephrasing. Measured on one real draft: the harness reported 3 phrases
+        # while the letter contained 11 more violations of the same rules, none
+        # of them matchable ("pushed back" vs the pattern's "pushed you",
+        # "pulled toward" vs "pulling toward"), plus a whole paragraph listing
+        # everything the candidate failed to demonstrate, which contains no
+        # forbidden word at all. A second model pass judges by MEANING and
+        # repairs the sentences. Skipped when the model is unreachable.
+        if not drafter_name.startswith("unavailable"):
+            hits = "\n".join(
+                f"  - {v['rule']}: {v['detail']}"
+                for v in result["violations"] if v["severity"] == "HARD_BLOCK"
+            )
+            reviewed, review_status = _review_pass(
+                drafter, content, email_type=email_type, first_name=first_name,
+                role=role, harness_hits=hits or None,
+            )
+            if review_status.startswith("failed"):
+                # Say so on the draft itself. A letter that skipped the semantic
+                # review looks identical to one that passed it.
+                result["violations"].append({
+                    "rule": "Semantic review did not run",
+                    "severity": "WARNING",
+                    "detail": (f"The second-pass reviewer {review_status}. The regex "
+                               f"checks cannot see a rephrasing, so this draft has NOT "
+                               f"been judged for coaching, grading or person-level "
+                               f"judgement by meaning. Read it yourself before sending."),
+                })
+            if reviewed is not content:
+                r_body, r_title, r_full, r_result = _render_and_check(reviewed)
+                # Keep the review only if it did not make things worse.
+                def _hard(res):
+                    return sum(1 for v in res["violations"] if v["severity"] == "HARD_BLOCK")
+                if _hard(r_result) <= _hard(result):
+                    content, body_html, title_line, full_html, result = (
+                        reviewed, r_body, r_title, r_full, r_result
+                    )
+                    log.info("Review pass applied: %d -> %d hard blocks.",
+                             _hard(result), _hard(r_result))
 
         candidate = {
             "content": content,
