@@ -124,136 +124,133 @@ HARSH_LANGUAGE = [
 # training expertise". Ayesha listed these phrasings as ones to AVOID, so
 # "passes checks" has to mean the letter is sendable. Patterns are specific
 # phrases, not judgement calls.
-COACHING_REGISTER = [
-    # --- telling them what to do / work on / develop ---
-    r'\byou (should|need to|needs to|ought to|must|have to|will need to)\b',
-    r"\byou'(ll|d) (need|want|have) to\b",
-    r'\byou could (work on|develop|build|focus|strengthen|improve)\b',
-    r'\bwe (would )?(encourage|recommend|suggest|advise) (you|that you)\b',
-    r'\bwe would encourage you to\b',
-    r'\bhere is what (you should|we would encourage|we would suggest)\b',
-    r'\bwhat (you need|we would encourage you) to develop\b',
-    r'\bspend (some )?time (writing|documenting|building|developing)\b',
-    # --- next time / if you apply again / homework ---
-    r'\bnext time,? (bring|share|try|make sure|focus|consider)\b',
-    r'\bin (future|your next) (interviews?|applications?|conversations?)\b',
-    r'\bif you apply again,? (make sure|try|bring|consider)\b',
-    r'\bwhen you (apply|interview) again\b',
-    r'\b(bring|share) (forward )?(more )?examples? of\b',
-    r'\bwhat (you|we would) (should|want to) demonstrate\b',
-    r'\breflect on your (career|experience|approach|journey)\b',
-    # --- career direction / lane ---
-    r'\bbetter (suited|suit|fit) (to|for)\b',
-    r'\byou (are|may be|might be|would be) (better )?suited\b',
-    r'(role|position|opportunit\w+|path) (more )?(closely )?aligned with your \w+',
-    r'\blook for a (next )?role (where|that)\b',
-    r'\b(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)\b',
-    r'\b(seek|pursue|build) (out )?(a |more )?(leadership|senior|bigger|management) (role|experience|opportunit)',
-    r'\byour next step\b',
-    r'\bbefore applying (for|to)\b',
-    r'\bleadership philosophy\b',
-    # --- verdicts on the person: readiness, maturity, level ---
-    r'\byour readiness\b',
-    r'\breadiness for (this|the|a)\b',
-    r'\bready for (this|the|a) (role|level|step|seniority|position)\b',
-    r"\byou (aren't|are not|re not) ready\b",
-    r'\bnot (quite )?there yet\b',
-    r'\b(take|taking) the next step\b',
-    r'\bgrow into\b',
-    r'\b(professional|leadership) maturity\b',
-    r'\byou need more experience\b',
-    r"\byou (don't|do not) have\b",
-    r'\byou should have\b',
-    r"\byou (haven't|have not) (developed|led|owned|run|managed|built)\b",
-    # --- grading / replaying their answers ---
-    r'\byour (reasoning|answer|response|thinking) (stayed|remained|was|felt) \w+',
-    r'\bwe (expected|were expecting|were looking for) (you to|a)\b',
-    r'\bbut we expected\b',
-    r'\bat (a )?surface level\b',
-    r'\blacked depth\b',
-    # --- misc coaching register ---
-    r'\bthat will make you (stronger|unstoppable|a better)\b',
-    r'\blean into (that|this)\b',
-    r'\bkeep building\b',
-    r'\bdevelop (this|that) further\b',
-    r'\bthe step forward for you\b',
+# Tone violations, grouped by the BEHAVIOUR they represent (Ayesha 2026-09-14).
+#
+# Previously all of these sat in one list reported under a single label,
+# 'Report the evidence, do not coach their career'. That label covered five
+# different behaviours at once, so a person reading the editor could not tell
+# whether a letter was coaching, grading an answer, or judging the person, and
+# could not tell whether a fix had worked. Each group is now reported by name.
+COACHING_CATEGORIES = {
+    # Coaching: telling them what to do or develop - advice about what the candidate should build, learn or do next
+    'COACHING': [
+        r'\byou could (work on|develop|build|focus|strengthen|improve)\b',
+        r'\bwe (would )?(encourage|recommend|suggest|advise) (you|that you)\b',
+        r'\bhere is what (you should|we would encourage|we would suggest)\b',
+        r'\bwhat (you need|we would encourage you) to develop\b',
+        r'\bspend (some )?time (writing|documenting|building|developing)\b',
+        r'\bnext time,? (bring|share|try|make sure|focus|consider)\b',
+        r'\bin (future|your next) (interviews?|applications?|conversations?)\b',
+        r'\bif you apply again,? (make sure|try|bring|consider)\b',
+        r'\bwhen you (apply|interview) again\b',
+        r'\b(bring|share) (forward )?(more )?examples? of\b',
+        r'\bwhat (you|we would) (should|want to) demonstrate\b',
+        r'\breflect on your (career|experience|approach|journey)\b',
+        r'\byour next step\b',
+        r'\bbefore applying (for|to)\b',
+        r'\bthat will make you (stronger|unstoppable|a better)\b',
+        r'\blean into (that|this)\b',
+        r'\bkeep building\b',
+        r'\bdevelop (this|that) further\b',
+        r'\bthe step forward for you\b',
+        r'\bif you (were to|ever) (build|gain|acquire|develop|get)\b',
+        r'\bwhether through (a|an) \w+',
+        r'\bthat could change the picture\b',
+        r'\bif you (decide|chose|choose) to spend time\b',
+        r'\bwant to reconnect\b',
+        r"\bthat.s your choice to make\b",
+        r'\byou (should|need to|needs to|ought to|must|have to|will need to)\b',
+        r"\byou'(ll|d) (need|want|have) to\b",
+        r'\bwe would encourage you to\b',
+    ],
+    # Career direction: naming their lane - advice about which roles, functions or paths suit them
+    'CAREER_DIRECTION': [
+        r'\bbetter (suited|suit|fit) (to|for)\b',
+        r'\byou (are|may be|might be|would be) (better )?suited\b',
+        r'(role|position|opportunit\w+|path) (more )?(closely )?aligned with your \w+',
+        r'\blook for a (next )?role (where|that)\b',
+        r'\b(a|an) (trainer|coordinator|assistant|junior|entry.level) (role|position)\b',
+        r'\b(seek|pursue|build) (out )?(a |more )?(leadership|senior|bigger|management) (role|experience|opportunit)',
+        r'\bleadership philosophy\b',
+    ],
+    # Grading their answer - assessing the quality of an individual interview answer
+    'GRADING': [
+        r'\byour (answer|answers|response|responses|reasoning|thinking|explanation)\b',
+        r'\b(stayed|remained|felt|was|were) (generic|surface|vague|thin|shallow)\b',
+        r"\b(details?|answer|reasoning) (thinned|didn't deepen|did not deepen)\b",
+        r'\bwhen we (pushed|probed|pressed) you\b',
+        r'\byou misread\b',
+        r"\byou (weren't|were not) able to (answer|explain|articulate)\b",
+        r'\byou (could ?n.t|did ?n.t) (explain|articulate|answer)\b',
+        r'\byour (reasoning|answer|response|thinking) (stayed|remained|was|felt) \w+',
+        r'\bwe (expected|were expecting|were looking for) (you to|a)\b',
+        r'\bbut we expected\b',
+        r'\bat (a )?surface level\b',
+        r'\blacked depth\b',
+    ],
+    # Person-level judgement - a claim about who they are, their motivation, readiness or future
+    'PERSON_JUDGMENT': [
+        r'\byour readiness\b',
+        r'\breadiness for (this|the|a)\b',
+        r'\bready for (this|the|a) (role|level|step|seniority|position)\b',
+        r"\byou (aren't|are not|re not) ready\b",
+        r'\bnot (quite )?there yet\b',
+        r'\b(take|taking) the next step\b',
+        r'\bgrow into\b',
+        r'\b(professional|leadership) maturity\b',
+        r'\byou need more experience\b',
+        r"\byou (don't|do not) have\b",
+        r'\byou should have\b',
+        r"\byou (haven't|have not) (developed|led|owned|run|managed|built)\b",
+        r'\byour motivation\b',
+        r'\b(circumstantial|opportunistic) rather than\b',
+        r'\brather than (mission|purpose).driven\b',
+        r'\bthat.s (real|genuine|true) (maturity|humility|character|self.awareness)\b',
+        r'\bmost people would\b',
+        r'\byou lack\b',
+        r'\bthe kind of (person|professional) you are\b',
+        r"\bnot something you (can|could) (know|understand|learn)\b",
+        r"\byou (can ?not|can't|could ?not|couldn't) (know|understand|see) (that|this)\b",
+        r'\bwithout having been (inside|in|part of)\b',
+        r'\bpulling (toward|towards|away)\b',
+        r'\b(not )?away from something else\b',
+        r'\brunning away from\b',
+        r"\bthat.s rare\b",
+        r'\bwill take you far\b',
+        r'\bthe kind of (maturity|self.awareness|wisdom|humility) (that|you)\b',
+        r'\bgo far in (your career|this field|life)\b',
+        r"\byou.re going to do (great|well|big things)\b",
+    ],
+    # A conditional door - welcoming them back only once they have fixed the gap
+    'CONDITIONAL_DOOR': [
+        r'\b(welcome|glad to hear from|hear from) (you|your \w+) again,? (if|once|when|after) you\b',
+        r'\bif you (take on|gain|build|get|develop|acquire)\b.{0,90}\b(experience|exposure|background|track record)\b',
+        r'\b(once|after|when) you (have|had|gain|build|develop)\b.{0,40}\b(come back|apply again|reapply|reach out)\b',
+        r'\b(come back|apply again|reapply) (once|after|when) you\b',
+    ],
+    # Replaying interview evidence - replaying a question or scenario and what was missing from the answer
+    'REPORT_EVIDENCE': [
+        r'\bwhen we (walked through|ran|posed|gave you) (a|the|that)\b',
+        r'\bwe (asked|walked) you (to|through|about)\b',
+        r'\bwhen we asked (you )?(about|how|why|what|for)\b',
+        r'\bwe wanted you to (tell|show|walk|explain)\b',
+        r'\bwhat we heard (was|back)\b',
+        r'\bthe scenario we (gave|posed|walked)\b',
+        r'\bin (that|the) (scenario|role.play|exercise)\b',
+    ],
+}
 
-    # --- GRADING THEIR ANSWERS (Ayesha 2026-09-14) ---------------------------
-    # Reference their stories freely, but never replay a question and mark the
-    # answer. Translate the observation into what WE could not establish.
-    #   NO:  "Your answer about government stakeholders stayed generic."
-    #   YES: "We came away wanting a more concrete understanding of how you have
-    #         navigated government stakeholders."
-    r'\byour (answer|answers|response|responses|reasoning|thinking|explanation)\b',
-    r'\b(stayed|remained|felt|was|were) (generic|surface|vague|thin|shallow)\b',
-    r"\b(details?|answer|reasoning) (thinned|didn't deepen|did not deepen)\b",
-    r'\bwhen we (pushed|probed|pressed) you\b',
-    r'\byou misread\b',
-    r"\byou (weren't|were not) able to (answer|explain|articulate)\b",
-    r'\byou (could ?n.t|did ?n.t) (explain|articulate|answer)\b',
+COACHING_CATEGORY_LABELS = {
+    'COACHING': 'Coaching: telling them what to do or develop',
+    'CAREER_DIRECTION': 'Career direction: naming their lane',
+    'GRADING': 'Grading their answer',
+    'PERSON_JUDGMENT': 'Person-level judgement',
+    'CONDITIONAL_DOOR': 'A conditional door',
+    'REPORT_EVIDENCE': 'Replaying interview evidence',
+}
 
-    # --- DIAGNOSING MOTIVATION OR CHARACTER (Ayesha 2026-09-14) --------------
-    # One hiring process does not license a verdict on who someone is or what
-    # drives them.
-    #   NO:  "Your motivation felt circumstantial rather than mission-driven."
-    #   YES: "We weren't able to understand your connection to this particular
-    #         mission as deeply as we needed to for this role."
-    r'\byour motivation\b',
-    r'\b(circumstantial|opportunistic) rather than\b',
-    r'\brather than (mission|purpose).driven\b',
-    r'\bthat.s (real|genuine|true) (maturity|humility|character|self.awareness)\b',
-    r'\bmost people would\b',
-    r'\byou lack\b',
-    r'\bthe kind of (person|professional) you are\b',
-
-    # --- A CONDITIONAL DOOR (Ayesha 2026-09-14) -----------------------------
-    # Welcoming them back is good. Making it conditional on fixing the gap is
-    # homework: "we'd welcome you again IF you take on government experience".
-    r'\b(welcome|glad to hear from|hear from) (you|your \w+) again,? (if|once|when|after) you\b',
-    r'\bif you (take on|gain|build|get|develop|acquire)\b.{0,90}\b(experience|exposure|background|track record)\b',
-    r'\b(once|after|when) you (have|had|gain|build|develop)\b.{0,40}\b(come back|apply again|reapply|reach out)\b',
-    r'\b(come back|apply again|reapply) (once|after|when) you\b',
-
-    # --- PRESCRIBING HOW TO GET THE EXPERIENCE (Ayesha 2026-09-14) -----------
-    # "If you were to build direct experience inside education systems, whether
-    #  through a role, through advisory work, or through deep relationship-
-    #  building, that could change the picture entirely."
-    # A disclaimer does NOT neutralise this. Once the routes are named, it has
-    # been prescribed. Explain why the gap matters to US instead.
-    r'\bif you (were to|ever) (build|gain|acquire|develop|get)\b',
-    r'\bwhether through (a|an) \w+',
-    r'\bthat could change the picture\b',
-    r'\bif you (decide|chose|choose) to spend time\b',
-    r'\bwant to reconnect\b',
-    r"\bthat.s your choice to make\b",
-
-    # --- ABSOLUTE CLAIMS ABOUT WHAT THEY CAN KNOW OR BE ----------------------
-    # "That's not something you can know without having been inside one."
-    # That moves from "we could not establish it" to "you cannot know this".
-    r"\bnot something you (can|could) (know|understand|learn)\b",
-    r"\byou (can ?not|can't|could ?not|couldn't) (know|understand|see) (that|this)\b",
-    r'\bwithout having been (inside|in|part of)\b',
-
-    # --- INTERPRETING THEIR MOTIVATION --------------------------------------
-    # "we need people who are pulling toward the work itself, not away from
-    #  something else" declares he is not mission-driven. Say what we came away
-    #  understanding, and what we did not.
-    r'\bpulling (toward|towards|away)\b',
-    r'\b(not )?away from something else\b',
-    # "running away from" only. Bare "running from" matched a CV line about a
-    # career "running from ABN AMRO through Barclays", which means spanning.
-    r'\brunning away from\b',
-
-    # --- MENTOR-VOICE PRAISE ------------------------------------------------
-    # Praise should describe what stayed with us and why it mattered, not
-    # certify the person. "That's rare." / "That's the kind of maturity and
-    # self-awareness that will take you far." reads as a mentor's verdict.
-    r"\bthat.s rare\b",
-    r'\bwill take you far\b',
-    r'\bthe kind of (maturity|self.awareness|wisdom|humility) (that|you)\b',
-    r'\bgo far in (your career|this field|life)\b',
-    r"\byou.re going to do (great|well|big things)\b",
-]
+# Back-compat: some callers/tests import the flat list.
+COACHING_REGISTER = [p for pats in COACHING_CATEGORIES.values() for p in pats]
 
 
 # Corporate rejection boilerplate — HARD BLOCK. The opposite of a human letter.
@@ -791,37 +788,66 @@ def check_scorecard_leakage(
     return True, None
 
 
-def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
-    """Career-coaching language in a feedback letter (Ayesha 2026-09-14)."""
+def _letter_prose(text: str, email_type: Optional[str] = None) -> str:
+    """The words a HUMAN WROTE. Strips our own furniture before any tone scan.
+
+    Three pieces of every rendered email are template output, not authored prose:
+      - the canonical section headings (rendering.render_body prints them),
+      - the in-email feedback widget, whose button labels include the literal
+        string "No, felt generic",
+      - the signature/footer block.
+
+    Scanning them produced phantom violations on EVERY webapp-rendered letter.
+    The 103-letter corpus used to calibrate these rules carries no widget, so
+    the false positive never showed up in measurement while real drafts kept
+    failing on it (application 3869).
+    """
+    clean = strip_html(text)
+    # Feedback widget: from its heading to the end of the useful-buttons row.
+    clean = re.sub(r"Be honest\. We can take it\..*?(Not really|Was the feedback useful\?)",
+                   " ", clean, flags=re.DOTALL | re.IGNORECASE)
+    # Signature / footer.
+    clean = re.sub(r"Warm regards,.*$", " ", clean, flags=re.DOTALL | re.IGNORECASE)
+    return _without_headings(clean, email_type)
+
+
+def check_tone_categories(text: str, email_type: str) -> List[Tuple[str, str, List[str]]]:
+    """Every tone violation, grouped by the BEHAVIOUR it represents.
+
+    Returns [(category, human label, [phrases]), ...]. Reporting one combined
+    "coaching" verdict made it impossible to tell whether a letter was coaching,
+    grading an answer, or judging the person, and impossible to tell whether a
+    fix had landed. REPORT_EVIDENCE only applies to the interview-stage letters,
+    where replaying a question is the risk; a cv_rejection has its own
+    application-replay rule.
+    """
     if email_type not in _COACHING_CHECKED_TYPES:
+        return []
+    clean = _letter_prose(text, email_type)
+    out = []
+    for category, patterns in COACHING_CATEGORIES.items():
+        if category == "REPORT_EVIDENCE" and email_type == "cv_rejection":
+            continue
+        hits, seen = [], set()
+        for pattern in patterns:
+            for m in re.finditer(pattern, clean, re.IGNORECASE):
+                phrase = m.group().strip()
+                if phrase.lower() not in seen:
+                    seen.add(phrase.lower())
+                    hits.append(phrase)
+        if hits:
+            out.append((category, COACHING_CATEGORY_LABELS[category], hits))
+    return out
+
+
+def check_coaching_register(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Back-compat single verdict across every tone category."""
+    found = check_tone_categories(text, email_type)
+    if not found:
         return True, None
-    clean = _without_headings(strip_html(text), email_type)
-    # Report EVERY distinct match, not only the first. Stopping at the first
-    # turned review into whack-a-mole: application 3869 contained five coaching
-    # phrases ("spend time building", "stayed generic", "felt generic",
-    # "whether through a role", "That's rare") and exactly one was ever shown,
-    # so each regeneration surfaced the next one instead of all of them.
-    hits: List[str] = []
-    seen_lower = set()
-    for pattern in COACHING_REGISTER:
-        for m in re.finditer(pattern, clean, re.IGNORECASE):
-            phrase = m.group().strip()
-            if phrase.lower() not in seen_lower:
-                seen_lower.add(phrase.lower())
-                hits.append(phrase)
-    if hits:
-        first = re.search(re.escape(hits[0]), clean, re.IGNORECASE)
-        ctx = (clean[max(0, first.start() - 45):first.end() + 45].replace("\n", " ")
-               if first else "")
-        listed = ", ".join('"%s"' % h for h in hits[:8])
-        more = " (+%d more)" % (len(hits) - 8) if len(hits) > 8 else ""
-        return False, (
-            f'{len(hits)} coaching phrase(s) to rewrite: {listed}{more}. A feedback '
-            f'letter reports what we could and could not SEE; it does not prescribe '
-            f'a career, suggest job titles, or grade an answer. First context: '
-            f'...{ctx}...'
-        )
-    return True, None
+    parts = ["%s: %s" % (label, ", ".join('"%s"' % h for h in hits[:6]))
+             for _, label, hits in found]
+    return False, "; ".join(parts)
 
 
 def check_corporate_boilerplate(text: str) -> Tuple[bool, Optional[str]]:
@@ -1601,13 +1627,16 @@ def evaluate_email(
             'detail': detail,
         })
 
-    # W. Career-coaching register (the four feedback letters, Ayesha 2026-09-14)
-    passed, detail = check_coaching_register(html_body, email_type)
-    if not passed:
+    # One HARD BLOCK per BEHAVIOUR, named, listing every phrase (2026-09-14).
+    for _category, label, hits in check_tone_categories(html_body, email_type):
+        listed = ", ".join('"%s"' % h for h in hits[:8])
+        more = " (+%d more)" % (len(hits) - 8) if len(hits) > 8 else ""
         violations.append({
-            'rule': 'Report the evidence, do not coach their career',
+            'rule': label,
             'severity': 'HARD_BLOCK',
-            'detail': detail,
+            'detail': (f'{len(hits)} phrase(s) to rewrite: {listed}{more}. Explain OUR '
+                       f'decision and what we could not establish; do not tell the '
+                       f'candidate what to do, judge who they are, or grade an answer.'),
         })
 
     # WARNING checks
