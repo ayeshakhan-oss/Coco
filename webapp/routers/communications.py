@@ -90,6 +90,9 @@ def generate(
             app_id=body.application_id,
             email_type=body.email_type,
             cv_evidence=cv_evidence,
+            # The leakage gate must run here, not only at send: the drafter can
+            # still be told and the review pass can still repair it.
+            scorecard_text=reads.scorecard_text_for(db, body.application_id),
         )
     except drafting.MissingEvidence as exc:
         # No evidence for this type. Say so and write nothing — a letter built on

@@ -394,12 +394,22 @@ def _corpus_from_evidence(ev: Optional[dict]) -> Optional[str]:
 
 
 def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app_id,
-                   email_type: str, cv_evidence: Optional[dict] = None) -> dict:
+                   email_type: str, cv_evidence: Optional[dict] = None,
+                   scorecard_text: Optional[str] = None) -> dict:
     """Generate + self-correct a draft. Returns a dict with the rendered body,
     title, full HTML, eval result, attempts, and which drafter was used.
 
     Raises MissingEvidence (propagated from build_user_prompt) when this email
     type has no evidence to stand on. The caller must surface that, never draft.
+
+    `scorecard_text` is the hiring manager's own free-text notes. It is passed
+    here ONLY so the scorecard-leakage gate runs at DRAFT time, where the retry
+    loop and the review pass can still repair the sentence. Without it the check
+    stands down silently, the stored eval reads "passed", and the letter blocks
+    at SEND instead — which is how "his one government-adjacent example doesn't
+    translate" reached a finished warm-bench draft (comm-b0e84207, app 3869).
+    EVERY gate must be handed the SAME inputs; see _first_name_for() in the
+    router for the same lesson learned on a different argument.
     """
     system = system_prompt(email_type)
     user = build_user_prompt(scorecard=scorecard, first_name=first_name, role=role,
@@ -444,6 +454,7 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             return body, title, full, evaluate_email(
                 full, title, email_type, pilot_mode=True,
                 cv_corpus=_corpus_from_evidence(cv_evidence),
+                scorecard_text=scorecard_text,
                 candidate_name=first_name, role=role,
             )
 

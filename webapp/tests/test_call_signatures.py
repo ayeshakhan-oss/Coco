@@ -66,3 +66,65 @@ def test_send_communication_forwards_the_evidence_to_the_gate():
     src = inspect.getsource(sending.send_communication)
     assert "cv_corpus=cv_corpus" in src
     assert "scorecard_text=scorecard_text" in src
+
+
+# --- Every gate gets the same evidence -------------------------------------
+# A second regression of the same shape (2026-09-14, comm-b0e84207): four of the
+# five evaluate_email call sites were handed `scorecard_text`; the one inside
+# generate_draft was not. The leakage check stands down when it gets no
+# scorecard, so the draft stored eval_passed=true with zero violations, and the
+# letter hard-blocked only at Send — after the drafter and the review pass had
+# both lost their chance to repair it. A gate that runs late is a gate that
+# reaches Ayesha.
+
+_EVIDENCE_KWARGS = {"cv_corpus", "scorecard_text", "candidate_name", "role"}
+
+_WEBAPP = os.path.join(os.path.dirname(__file__), "..")
+_GATE_FILES = [
+    os.path.join(_WEBAPP, "routers", "communications.py"),
+    os.path.join(_WEBAPP, "services", "drafting.py"),
+    os.path.join(_WEBAPP, "services", "sending.py"),
+]
+
+
+def _evaluate_email_calls():
+    """(file, lineno, {kwargs}) for every evaluate_email call in the app."""
+    out = []
+    for path in _GATE_FILES:
+        with open(path, encoding="utf-8") as f:
+            tree = ast.parse(f.read())
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            fn = node.func
+            name = fn.attr if isinstance(fn, ast.Attribute) else getattr(fn, "id", None)
+            if name == "evaluate_email":
+                out.append(
+                    (os.path.basename(path), node.lineno,
+                     {kw.arg for kw in node.keywords if kw.arg})
+                )
+    return out
+
+
+def test_every_gate_is_handed_the_same_evidence():
+    calls = _evaluate_email_calls()
+    assert len(calls) >= 5, f"expected every gate to be found, got {calls}"
+    starved = [
+        (f, line, sorted(_EVIDENCE_KWARGS - kwargs))
+        for f, line, kwargs in calls
+        if _EVIDENCE_KWARGS - kwargs
+    ]
+    assert not starved, (
+        "these evaluate_email gates are missing evidence, so they check less "
+        f"than the others and a letter passes one stage to block at the next: {starved}"
+    )
+
+
+def test_generate_draft_accepts_and_uses_the_scorecard():
+    from webapp.services import drafting
+
+    assert "scorecard_text" in inspect.signature(drafting.generate_draft).parameters
+    assert "scorecard_text=scorecard_text" in inspect.getsource(drafting.generate_draft)
+    assert "scorecard_text=" in _kwargs_passed_to("generate_draft") or (
+        "scorecard_text" in _kwargs_passed_to("generate_draft")
+    ), "the generate endpoint must pass the scorecard to the drafter's gate"
