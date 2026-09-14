@@ -881,6 +881,26 @@ def check_benchmark_echo(text: str, email_type: str) -> Tuple[bool, Optional[str
     )
 
 
+def _proper_nouns(text: str) -> set:
+    """Capitalised words that are NOT sentence-initial: names of projects,
+    organisations, programmes, places, people.
+
+    Used to spare a leaked span that is simply a NAME. A judgement can always be
+    rewritten in our own words; a proper noun cannot, because it is what the
+    thing is called. Sentence-initial words are excluded so "Motivation reads
+    circumstantial" does not launder itself into a name.
+    """
+    out = set()
+    for sentence in re.split(r"[.!?\n]+", text):
+        tokens = re.findall(r"[A-Za-z][A-Za-z'\-]*", sentence)
+        for idx, tok in enumerate(tokens):
+            if idx == 0:
+                continue  # sentence-initial capital carries no signal
+            if tok[:1].isupper():
+                out.add(_fold(tok).strip("'-"))
+    return out
+
+
 def check_scorecard_leakage(
     text: str, email_type: str, scorecard_text: Optional[str]
 ) -> Tuple[bool, Optional[str]]:
@@ -905,6 +925,7 @@ def check_scorecard_leakage(
     if not scorecard_text or email_type not in _COACHING_CHECKED_TYPES:
         return True, None
 
+    proper = _proper_nouns(scorecard_text)
     letter_words = _content_words(_letter_prose(text, email_type))
     if len(letter_words) < _LEAK_NGRAM:
         return True, None
@@ -934,7 +955,15 @@ def check_scorecard_leakage(
             j = i
             while j < n and lifted[j]:
                 j += 1
-            spans.append(" ".join(letter_words[i:j]))
+            span = letter_words[i:j]
+            # A NAME is not the manager's private wording, it is a fact. "Punjab
+            # Startup Portal feasibility" blocked a warm-bench letter for naming
+            # the candidate's OWN project, which is exactly the specificity these
+            # letters need. There is no warmer way to say a proper noun: you can
+            # rewrite a judgement, you cannot rewrite what something is called.
+            named = sum(1 for w in span if w in proper)
+            if not (named >= 2 and named / len(span) >= 0.6):
+                spans.append(" ".join(span))
             i = j
         else:
             i += 1
