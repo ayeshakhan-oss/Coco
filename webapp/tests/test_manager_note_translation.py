@@ -380,3 +380,23 @@ def test_a_dead_model_is_remembered_across_requests():
     second.draft(system="s", user="u", email_type="warm_bench", first_name="A", role="R")
     assert "claude-sonnet-5" not in second.client.messages.asked, \
         "the second request re-probed a model already known to be dead"
+
+
+def test_an_edit_that_would_duplicate_a_sentence_is_discarded():
+    """An APPROVED warm-bench letter went out reading "The client had cost
+    concerns. The client had cost concerns." Every tone rule passed; to the
+    candidate it just looks broken. Refuse the edit whatever produced it."""
+    letter = {**LETTER, "sections": [{"subhead": None, "paragraphs": [
+        "You re-engaged them and brought the deal back to life. It mattered to us."]}]}
+    bad = [{"find": "It mattered to us.",
+            "replace": "You re-engaged them and brought the deal back to life."}]
+    out, applied, skipped = drafting._apply_edits(letter, bad)
+    assert (applied, skipped) == (0, 1)
+    assert out == letter
+
+
+def test_repetition_detector_matches_the_harness():
+    assert drafting._has_repeated_sentence(
+        "The client had cost concerns. The client had cost concerns.")
+    assert not drafting._has_repeated_sentence(
+        "The client had cost concerns. You re-engaged them and restructured the quote.")

@@ -226,6 +226,14 @@ COACHING_CATEGORIES = {
         r'\b(not )?away from something else\b',
         r'\brunning away from\b',
         r"\bthat.s rare\b",
+        # Widened after "That's a rare instinct, and it's worth holding on to."
+        # slipped past \bthat.s rare\b in an APPROVED letter, together with
+        # "Most people stop when the first answer is no." 0/103 and 1/103, and
+        # that one hit is itself a comparison ("an asset most people at your
+        # stage simply do not have").
+        r"\b(that|it).?s (a |an )?(genuinely |truly |really |quite )?rare\b",
+        r"\bmost people (would|wouldn.t|do not|don.t|stop|give up|walk away|never|can.t|cannot)\b",
+        r"\bworth holding on to\b",
         r'\bwill take you far\b',
         r'\bthe kind of (maturity|self.awareness|wisdom|humility) (that|you)\b',
         # Certifying the person through OUR OWN observation. The noun list
@@ -1065,6 +1073,39 @@ def check_sensitive_detail(text: str, email_type: str) -> Tuple[bool, Optional[s
     )
 
 
+def check_repeated_sentences(text: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """The same sentence printed twice. Nothing else caught this.
+
+    An APPROVED warm-bench letter, ready to send, read: "The client had cost
+    concerns. The client had cost concerns. You re-engaged them, broke down the
+    original quote, restructured it, and brought the deal back to life. You
+    re-engaged them, broke down the original quote, restructured it, and brought
+    the deal back to life." Every tone rule passed. To the candidate it simply
+    looks broken, and it is the first thing they would notice.
+
+    Deterministic, so unlike the tone rules it cannot be argued with: exact
+    repetition of a sentence of five words or more. 0 of the 103 sent letters.
+    """
+    if email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    prose = _letter_prose(text, email_type)
+    seen, repeated = {}, []
+    for sentence in re.split(r"(?<=[.!?])\s+", prose):
+        sentence = sentence.strip()
+        if len(sentence.split()) < 5:
+            continue
+        key = re.sub(r"\W+", " ", sentence.lower()).strip()
+        seen[key] = seen.get(key, 0) + 1
+        if seen[key] == 2:
+            repeated.append(sentence)
+    if not repeated:
+        return True, None
+    listed = "; ".join('"%s"' % r[:90] for r in repeated[:3])
+    return False, (
+        "%d sentence(s) appear twice: %s. Delete the repeat." % (len(repeated), listed)
+    )
+
+
 def check_scorecard_leakage(
     text: str, email_type: str, scorecard_text: Optional[str]
 ) -> Tuple[bool, Optional[str]]:
@@ -1821,6 +1862,7 @@ HARD_BLOCK_BRIEF = {
     "Translate the scorecard": "Never reuse the hiring manager's wording. Say it in your own warm words.",
     "Never headline a bereavement or crisis": "The subject line comes from their WORK, never from a loss, illness or crisis.",
     "Never repeat a confidence": "Leave out another person's death, any medical or mental-health disclosure, and any family crisis told as a scene. Say what the candidate DID instead.",
+    "A sentence is printed twice": "Never print the same sentence twice. Read the draft through once for repetition before returning it.",
     "Never replay the application back at them": "Never quote their application answers back or point out what they left unanswered.",
     "CV rejection: no fabricated interview": "A CV-stage letter had no conversation. Never imply one happened.",
     "CV rejection: the letter must be built from their application": "Every concrete detail must come from their own CV, cover letter or answers.",
@@ -1909,6 +1951,16 @@ def evaluate_email(
                 f'If the decision turned on ONE role-fit gap, do not carry secondary '
                 f'concerns alongside it.'
             ),
+        })
+
+    # 1b2. The same sentence twice. Deterministic, and invisible to every
+    # tone rule: an APPROVED letter shipped with two duplicated sentences.
+    passed, detail = check_repeated_sentences(html_body, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'A sentence is printed twice',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
         })
 
     # 1c. Material that must be ABSENT, not softened (Ayesha 2026-09-15, second

@@ -554,6 +554,20 @@ def _letter_as_text(content: dict) -> str:
     return "\n\n".join(parts)
 
 
+def _has_repeated_sentence(text: str, min_words: int = 5) -> bool:
+    """Exact repetition of a sentence of five words or more."""
+    seen = set()
+    for sentence in re.split(r"(?<=[.!?])\s+", text or ""):
+        sentence = sentence.strip()
+        if len(sentence.split()) < min_words:
+            continue
+        key = re.sub(r"\W+", " ", sentence.lower()).strip()
+        if key in seen:
+            return True
+        seen.add(key)
+    return False
+
+
 def _apply_edits(content: dict, edits: list) -> tuple:
     """Apply find/replace edits to the letter's text fields, deterministically.
 
@@ -595,7 +609,15 @@ def _apply_edits(content: dict, edits: list) -> tuple:
             skipped += 1
             continue
         text, setter = hits[0]
-        setter(text.replace(find, repl, 1))
+        new_text = text.replace(find, repl, 1)
+        if _has_repeated_sentence(new_text):
+            # An APPROVED letter once went out reading "The client had cost
+            # concerns. The client had cost concerns." Refuse an edit that
+            # leaves a sentence printed twice, whatever produced it.
+            log.warning("Review edit would duplicate a sentence; discarded.")
+            skipped += 1
+            continue
+        setter(new_text)
         applied += 1
     return out, applied, skipped
 
