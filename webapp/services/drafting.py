@@ -871,6 +871,7 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
     best = None
 
     for attempt in range(MAX_ATTEMPTS):
+        repaired_this_attempt = False
         try:
             if attempt == 0 or best is None:
                 content = drafter.draft(
@@ -895,6 +896,7 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
                     first_name=first_name, role=role,
                     harness_hits=_violation_bullets(prior),
                 )
+                repaired_this_attempt = True
                 log.info("Attempt %d: repairing rather than redrafting (%s).",
                          attempt + 1, repair_status)
                 if content is best["content"]:
