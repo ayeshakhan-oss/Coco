@@ -78,6 +78,13 @@ def _parse_json(text: str) -> dict:
     raise ValueError("LLM did not return parseable JSON")
 
 
+def _violation_bullets(violations: Optional[list]) -> Optional[str]:
+    """The blocking violations, as the reviewer's harness_hits input."""
+    if not violations:
+        return None
+    return "\n".join(f"  - {v['rule']}: {v['detail']}" for v in violations)
+
+
 def _fix_instruction(prior_violations: list[dict]) -> str:
     bullets = "\n".join(f"  - {v['rule']}: {v['detail']}" for v in prior_violations)
     return (
@@ -843,10 +850,34 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
 
     for attempt in range(MAX_ATTEMPTS):
         try:
-            content = drafter.draft(
-                system=system, user=user, email_type=email_type,
-                first_name=first_name, role=role, prior_violations=prior, attempt=attempt,
-            )
+            if attempt == 0 or best is None:
+                content = drafter.draft(
+                    system=system, user=user, email_type=email_type,
+                    first_name=first_name, role=role, prior_violations=prior,
+                    attempt=attempt,
+                )
+            else:
+                # REPAIR THE LETTER WE HAVE. Do not write a new one.
+                #
+                # Every retry used to be a whole fresh draft with the violations
+                # appended. A fresh draft dodges the one rule it was told about
+                # and breaks a different one, so the loop DIVERGED: three
+                # attempts, three different defects, and a blocked letter in
+                # front of Ayesha. It is the same failure as the hiring-manager
+                # note, where each retry echoed a new phrase.
+                #
+                # Targeted edits converge because everything not named is left
+                # exactly as it was.
+                content, repair_status = _review_pass(
+                    drafter, best["content"], email_type=email_type,
+                    first_name=first_name, role=role,
+                    harness_hits=_violation_bullets(prior),
+                )
+                log.info("Attempt %d: repairing rather than redrafting (%s).",
+                         attempt + 1, repair_status)
+                if content is best["content"]:
+                    # Nothing could be repaired; another identical pass is waste.
+                    break
         except Exception as exc:
             # NEVER substitute invented prose for a failed call, in ANY
             # environment. The stub's filler reads like a real letter ("Across
@@ -890,7 +921,9 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
         # everything the candidate failed to demonstrate, which contains no
         # forbidden word at all. A second model pass judges by MEANING and
         # repairs the sentences. Skipped when the model is unreachable.
-        if not drafter_name.startswith("unavailable"):
+        # A repair attempt WAS a review pass. Reviewing it again buys nothing and
+        # costs a call on a rate-limited credential.
+        if not drafter_name.startswith("unavailable") and not repaired_this_attempt:
             hits = "\n".join(
                 f"  - {v['rule']}: {v['detail']}"
                 for v in result["violations"] if v["severity"] == "HARD_BLOCK"

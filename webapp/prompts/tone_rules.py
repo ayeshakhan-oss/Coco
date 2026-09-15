@@ -13,7 +13,7 @@ import os
 import re
 from functools import lru_cache
 
-from ..reuse import SECTION_HEADINGS
+from ..reuse import SECTION_HEADINGS, writer_hard_blocks
 
 _TONE_FILE = os.path.join(
     os.path.dirname(__file__),
@@ -655,4 +655,19 @@ def system_prompt(email_type: str) -> str:
     # model, and the drafter is on Haiku whenever the Sonnet quota is out.
     if email_type in _FEEDBACK_TYPES:
         prompt += "\n" + _RULE_CARD
+    # THE BLOCK LIST, GENERATED FROM THE HARNESS ITSELF. Previously the prompt
+    # carried a hand-written subset of the rules that actually block a letter,
+    # so the writer kept breaking rules nobody had told it about. One source of
+    # truth now, and test_hard_block_brief.py fails if they drift apart.
+    blocks = writer_hard_blocks(email_type)
+    if blocks:
+        prompt += (
+            "\n========================================================================"
+            "\nTHESE WILL BLOCK YOUR LETTER. IT CANNOT BE SENT WHILE ONE IS TRUE."
+            "\n========================================================================\n"
+            + blocks
+            + "\n\nBefore you return the JSON, read your own draft once against this "
+              "list, paying most attention to the final section and the P.S.\n"
+              "========================================================================\n"
+        )
     return prompt

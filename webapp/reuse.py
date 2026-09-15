@@ -53,6 +53,7 @@ from scripts.utils.safe_send import (  # noqa: E402
 from scripts.evals.candidate_communication_eval import (  # noqa: E402
     evaluate_email,
     SECTION_HEADINGS,
+    writer_hard_blocks,
 )
 
 # Email types the harness/templates support.
@@ -76,5 +77,6 @@ __all__ = [
     "SecurityError",
     "evaluate_email",
     "SECTION_HEADINGS",
+    "writer_hard_blocks",
     "EMAIL_TYPES",
 ]

@@ -1795,6 +1795,60 @@ def check_future_promise(text: str) -> Tuple[bool, Optional[str]]:
 # MAIN EVAL FUNCTION
 # ============================================================================
 
+# ---------------------------------------------------------------------------
+# ONE SOURCE OF TRUTH FOR WHAT BLOCKS A LETTER
+#
+# Ayesha 2026-09-15: "putting hard blocks is not the only solution, you need to
+# FOLLOW those hard blocks." She is right, and the drift was structural: the
+# harness knew 16 blocking rules while the drafting prompt carried a
+# hand-written subset of them. A rule added here never reached the writer, so
+# the writer kept breaking rules nobody had told it about.
+#
+# This list is injected verbatim into the writer and the reviewer, and
+# test_hard_block_brief.py fails if a rule is added to the harness without a
+# line here. Adding a block without telling the writer is now a test failure.
+# ---------------------------------------------------------------------------
+HARD_BLOCK_BRIEF = {
+    "Mandatory opening line": 'Open with "This is not a yes for now." as the first line after the greeting.',
+    "No em dashes": "Never use an em dash. Use a comma or a full stop.",
+    "Collective": 'Speak as Taleemabad: "we", "our", "us". Never "I", "my" or "me" outside a quotation of the candidate.',
+    "Required section headings": "Use the section headings exactly as given. Do not invent, rename or reorder them.",
+    "No intent-word inference": 'Never say what they assumed, believed, thought, preferred, seemed or were energised by. Say what WE could not establish.',
+    "No internal jargon": "Never use our internal vocabulary: GWC, KCD, warm bench, right seat, values scorecard.",
+    "No interviewer names": "Never name the interviewer or panel member.",
+    "No harsh or adversarial language": 'Never call their work a failure, say it went wrong, or argue with them.',
+    "No corporate rejection boilerplate": 'Never "we regret to inform you" or "after careful consideration".',
+    "Translate the scorecard": "Never reuse the hiring manager's wording. Say it in your own warm words.",
+    "Never headline a bereavement or crisis": "The subject line comes from their WORK, never from a loss, illness or crisis.",
+    "Never repeat a confidence": "Leave out another person's death, any medical or mental-health disclosure, and any family crisis told as a scene. Say what the candidate DID instead.",
+    "Never replay the application back at them": "Never quote their application answers back or point out what they left unanswered.",
+    "CV rejection: no fabricated interview": "A CV-stage letter had no conversation. Never imply one happened.",
+    "CV rejection: the letter must be built from their application": "Every concrete detail must come from their own CV, cover letter or answers.",
+    "PILOT prefix control": "Never write [PILOT] into the subject line yourself.",
+    # The six tone behaviours. Keys match COACHING_CATEGORY_LABELS exactly;
+    # test_hard_block_brief.py fails if they drift, and it caught three of these
+    # on its first run.
+    "Coaching": "Never say what to develop, learn, gain, document or demonstrate next time.",
+    "Career direction": "Never name which roles, functions or sectors suit them.",
+    "Grading their answer": "Never replay a question and assess the answer.",
+    "Person-level judgement": "Never characterise the person. PRAISE COUNTS: not 'that's rare', not 'the kind of person', not 'you've proven you can'.",
+    "A conditional door": "Never make a welcome back conditional on them fixing the gap. That is homework.",
+    "Replaying interview evidence": "Never list what they failed to demonstrate. One sentence about what we could not establish, then stop.",
+    "Private-note leakage": "Never let the hiring manager's private wording reach the candidate.",
+}
+
+
+def writer_hard_blocks(email_type: str) -> str:
+    """The blocking rules, as the writer must be told them."""
+    skip_cv = () if email_type == "cv_rejection" else ("CV rejection:",)
+    lines = []
+    for name, brief in HARD_BLOCK_BRIEF.items():
+        if any(name.startswith(p) for p in skip_cv):
+            continue
+        lines.append(" - %s: %s" % (name, brief))
+    return "\n".join(lines)
+
+
 def evaluate_email(
     html_body: str,
     subject: str,
