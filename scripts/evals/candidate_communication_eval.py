@@ -94,7 +94,17 @@ HARSH_LANGUAGE = [
     r"\b(your|his|her|their) failure\b(?! modes?\b)",
     r"\bfailure to (demonstrate|show|deliver|meet|provide|answer|engage|address|complete)\b",
     r"\b(was|is|were|are|as) an? (complete |total |clear |real )?failure\b",
-    r"\bwrong\b",
+    # "wrong" ONLY when aimed at the person or their work. A bare \bwrong\b
+    # hard-blocked a warm-bench letter on "showing up as your best self even
+    # when THE PLACE was wrong" - which is about the employer he left, not about
+    # him, and is exactly the kind of sentence these letters should carry. Third
+    # time this shape has bitten: a rule aimed at judgement firing on a fact.
+    # 0/103 on the sent corpus, and every judgement form still caught.
+    r"(?<!admit )(?<!admitted )(?<!admitting )(?<!acknowledge )(?<!acknowledged )(?<!saying )\byou (were|are|was) wrong\b",
+    r"\byour (answer|approach|analysis|reasoning|assumption|framing|thinking|read|instinct) (was|is|were) wrong\b",
+    r"\b(the )?wrong (answer|approach|conclusion|call|assumption|read|instinct|question)\b",
+    r"\bgot (it|this|that) wrong\b",
+    r"\bproved you wrong\b",
     # "the honest part" was REMOVED 2026-09-14 (Ayesha). It is the locked
     # warm-bench/GWC section heading ("Here's the Honest Part"), which
     # rendering.render_body prints itself, so every one of those letters was
@@ -103,14 +113,28 @@ HARSH_LANGUAGE = [
     # candidate, not at our own heading. The rest of the list is untouched.
     r"you failed",
     r"the problem with your",
-    r"went wrong",
-    r"\bblame\b",
+    # "went wrong" only where it is aimed at them. A letter praising "honest
+    # reflection about what went wrong and what you would do differently" is
+    # describing a STRENGTH, and the bare phrase blocked it.
+    r"\b(where|what) you went wrong\b",
+    r"\bwhat went wrong with your\b",
+    # "blame" only when they did it. "You didn't blame the data or the user" is
+    # praise, and the bare word blocked that too.
+    r"\byou blamed\b",
     r"\bsloppy\b",
     r"\bcareless\b",
-    r"you cannot\b",
+    r"(?<!saying )(?<!than )(?<!not )you cannot\b",
     r"you are unable",
     r"\bincapable\b",
-    # never impute motive to a candidate's analysis
+]
+
+# Never impute motive to a candidate's ANALYSIS. These belong to the case-study
+# letter (CLAUDE.md Rule 25), where the harm is implying they picked assumptions
+# to reach a desired answer. Applied to EVERY type they fired on ordinary
+# praise: "you have DELIBERATELY unlearned the old assumption" hit 42 letters,
+# and "REVERSE-ENGINEERING how they solved the problem" is a compliment about
+# competitor research. Scoped to the letter they were written for.
+_HARSH_CASE_STUDY_ONLY = [
     r"\bdeliberately\b",
     r"reverse.?engineer",
     r"until the arithmetic",
@@ -673,8 +697,14 @@ def check_harsh_language(text: str, email_type: Optional[str] = None) -> Tuple[b
     section heading that used to collide with this list was renamed instead —
     see SECTION_HEADINGS.
     """
-    clean = strip_html(text)
-    for pattern in HARSH_LANGUAGE:
+    # The candidate's OWN quoted words are not our register. A letter reporting
+    # "You said: 'I got that wrong. Here's what I learned from it.'" was blocked
+    # for quoting the candidate owning a mistake, which is the opposite of harsh.
+    clean = _strip_quoted_spans(strip_html(text))
+    patterns = list(HARSH_LANGUAGE)
+    if email_type == "case_study_outcome":
+        patterns += _HARSH_CASE_STUDY_ONLY
+    for pattern in patterns:
         m = re.search(pattern, clean, re.IGNORECASE)
         if m:
             ctx = clean[max(0, m.start() - 45):m.end() + 45].replace("\n", " ")
@@ -1308,7 +1338,11 @@ def _strip_quoted_spans(text: str) -> str:
     """
     text = re.sub(r'"[^"]{0,400}"', ' ', text)
     text = re.sub(r'[“][^”]{0,400}[”]', ' ', text)
-    text = re.sub(r"(?<=\s)'[^']{0,400}'(?=[\s.,;:!?)]|$)", ' ', text)
+    # An apostrophe INSIDE the quote must not end it. "I got that wrong. Here's
+    # what I learned" closed on the ' in "Here's", so the quote was never
+    # stripped and the letter was blocked for quoting the candidate owning a
+    # mistake. A ' between two word characters is a contraction, not a delimiter.
+    text = re.sub(r"(?<=\s)'(?:(?<=\w)'(?=\w)|[^'])*?'(?=[\s.,;:!?)]|$)", ' ', text)
     text = re.sub(r"(?<=\s)[‘][^’]{0,400}[’](?=[\s.,;:!?)]|$)", ' ', text)
     return text
 
