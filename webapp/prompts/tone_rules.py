@@ -97,6 +97,23 @@ of money, no account of how someone died. NEVER put it in the subject line.
      coma scale, 6, 7, 8. When he passed you named the outcome as '0'."
   OK "you stayed with something that had no good ending, and did not look away."
 
+AND THREE THINGS ARE NOT SOFTENED, THEY ARE LEFT OUT ENTIRELY:
+ - ANOTHER PERSON'S DEATH. Never the killing, the widow, the funeral, the
+   death benefit. Write only what the candidate DID:
+   X "when an office boy was killed, you fought to secure the death benefit
+      for his widow"
+   OK "you fought your own organisation so a colleague's family got what they
+      were owed, when nobody else would"
+ - A MEDICAL OR MENTAL-HEALTH DISCLOSURE. Never therapy, counselling, a
+   diagnosis, a hospital stay. If they spoke openly about something hard, say
+   that they did, and stop:
+   X "that moment when you described opening therapy this year"
+   OK "you spoke about your own patterns without defensiveness"
+ - A FAMILY CRISIS as a scene. The fact that they did not step away is the
+   point; the scene is not.
+These are HARD BLOCKED, and a P.S. built on one is the worst version of it: it
+is the last thing they read.
+
 ALWAYS:
  - Anchor every strength to ONE moment, in their own quoted words.
  - Make US the subject: "what stayed with us was...".

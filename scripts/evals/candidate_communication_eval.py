@@ -934,6 +934,86 @@ _SENSITIVE_TERMS = [
 ]
 
 
+# A SECOND, HARDER LIST. Material that does not belong in a hiring letter AT
+# ALL - not softened, not abstracted, ABSENT. A WARNING was not enough: a
+# warm-bench draft was flagged for "an office boy at Jamshoro was killed ...
+# the death benefit for his widow" and shipped it anyway, and closed its P.S.
+# on the candidate having started THERAPY that year. A candidate discloses
+# these things to build trust in an interview. Repeating them in a rejection,
+# which may be forwarded or screenshotted, breaks that trust whatever the
+# intent. Reference the BEHAVIOUR instead ("you fought your own organisation so
+# a colleague's family got what they were owed") and leave the tragedy and the
+# diagnosis out of it.
+
+# Never, in any context: these name a specific death or its aftermath.
+_NEVER_ANY = [
+    r"\bshot (and|then) killed\b", r"\bmurder\w*", r"\bsuicide\b",
+    r"\bfuneral\b", r"\bburial\b", r"\bdeathbed\b",
+    r"\bwidow(er)?\b", r"\borphan\w*", r"\bdeath benefit\b",
+    r"\bmiscarriage\b",
+]
+
+# Health and care. These are ALSO ordinary professional vocabulary - Taleemabad
+# hires people who run counselling services and mental-health programmes - so a
+# bare match is not enough. It counts only when the candidate is DISCLOSING
+# their own care, not describing their work. Without this split the rule fired
+# on 8 of the 103 sent letters, every one of them about somebody's profession.
+_NEVER_PERSONAL_HEALTH = [
+    r"\btherap(y|ist)\b", r"\bcounsell?ing\b", r"\bmental health\b",
+    r"\bdepress(ion|ed)\b", r"\bpsychiatr\w*", r"\bdiagnos(is|ed)\b",
+    r"\bmedication\b", r"\bchemo\w*", r"\bcancer\b",
+    r"\bI ?C ?U\b", r"\bintensive care\b", r"\bcoma\b",
+    r"\bh(a)?emorrhage\b", r"\blife support\b", r"\bterminal(ly)? ill\w*",
+]
+
+# The candidate telling us about their own care, rather than their work.
+_DISCLOSURE_VERB = re.compile(
+    r"\b(described|shared|told us|disclos\w*|opened|opening|started|starting|"
+    r"began|beginning|sought|seeking|went to|going to|attending|undergoing|"
+    r"receiving|your own|his own|her own)\b", re.IGNORECASE)
+
+# A field of work, not a disclosure: "counselling notes", "mental health team".
+_WORK_NOUN = re.compile(
+    r"^\W{0,3}(notes|programme|program|service|services|sessions|practice|"
+    r"department|team|experience|background|work|role|initiative|curriculum|"
+    r"training|caseload|clients|support|chapter|sector)\b", re.IGNORECASE)
+
+# A sector prefix: "education counselling", "career counselling".
+_WORK_DOMAIN = re.compile(
+    r"(education|career|school|academic|student|admissions|guidance|community)"
+    r"\W{0,3}$", re.IGNORECASE)
+
+
+def check_never_in_a_letter(text: str, subject: str, email_type: str) -> Tuple[bool, Optional[str]]:
+    """Material that must be ABSENT from a candidate letter, not merely softened."""
+    if email_type not in _COACHING_CHECKED_TYPES:
+        return True, None
+    hay = (subject or "") + " " + _letter_prose(text, email_type)
+    found: List[str] = []
+    for pat in _NEVER_ANY:
+        for m in re.finditer(pat, hay, re.IGNORECASE):
+            if m.group(0).lower() not in found:
+                found.append(m.group(0).lower())
+    for pat in _NEVER_PERSONAL_HEALTH:
+        for m in re.finditer(pat, hay, re.IGNORECASE):
+            before = hay[max(0, m.start() - 70):m.start()]
+            after = hay[m.end():m.end() + 30]
+            if _WORK_NOUN.match(after) or _WORK_DOMAIN.search(before):
+                continue  # their profession, not their private life
+            if _DISCLOSURE_VERB.search(before) and m.group(0).lower() not in found:
+                found.append(m.group(0).lower())
+    if not found:
+        return True, None
+    return False, (
+        "This letter repeats something the candidate disclosed in confidence: "
+        + ", ".join(found[:8]) + ". A bereavement, a violent death, or a medical "
+        "or mental-health disclosure has no place in a hiring decision letter, "
+        "which may be forwarded or screenshotted. Do NOT soften it, REMOVE it. "
+        "Say what they DID instead: \"you fought your own organisation so a "
+        "colleague's family got what they were owed\". Never close a P.S. on it."
+    )
+
+
 def _sensitive_hits(text: str) -> List[str]:
     found = []
     for pat in _SENSITIVE_TERMS:
@@ -1777,7 +1857,19 @@ def evaluate_email(
             ),
         })
 
-    # 1c. Sensitive personal material (Ayesha 2026-09-15).
+    # 1c. Material that must be ABSENT, not softened (Ayesha 2026-09-15, second
+    # pass). A WARNING was not enough: a draft was flagged for a colleague's
+    # killing and shipped it anyway, and closed its P.S. on the candidate's
+    # therapy. This one blocks.
+    passed, detail = check_never_in_a_letter(html_body, subject, email_type)
+    if not passed:
+        violations.append({
+            'rule': 'Never repeat a confidence: grief, violence, health',
+            'severity': 'HARD_BLOCK',
+            'detail': detail,
+        })
+
+    # 1d. Sensitive personal material (Ayesha 2026-09-15).
     passed, detail = check_sensitive_subject(subject, email_type)
     if not passed:
         violations.append({

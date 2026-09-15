@@ -447,6 +447,22 @@ ALSO CUT, NOT ONLY REWRITE. Three things earn an edit that simply DELETES:
    as "0". Replace such a passage with its meaning, in one sentence.
    If the SUBJECT LINE draws on it, that is the most urgent edit in the letter.
 
+ - AND THREE THINGS COME OUT ENTIRELY, not softened. These are hard blocked,
+   so a letter containing one cannot be sent at all:
+     ANOTHER PERSON'S DEATH - the killing, the widow, the funeral, the death
+     benefit. Keep only what the candidate did:
+       X "when an office boy was killed, you fought to secure the death
+          benefit for his widow"
+       OK "you fought your own organisation so a colleague's family got what
+          they were owed, when nobody else would"
+     A MEDICAL OR MENTAL-HEALTH DISCLOSURE - therapy, counselling, a
+     diagnosis, a hospital stay:
+       X "that moment when you described opening therapy this year"
+       OK "you spoke about your own patterns without defensiveness"
+     A FAMILY CRISIS AS A SCENE - that they did not step away is the point.
+   A P.S. built on any of these is the worst version: it is the last thing
+   they read. Rewrite it around something they DID.
+
 THESE ALL REACHED A HUMAN REVIEWER. NONE CONTAINS A BANNED WORD:
   "Most people would have let someone else handle it"      compares them to people
   "that's the kind of person who holds space for people"   certifies them
