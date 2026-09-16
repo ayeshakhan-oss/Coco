@@ -11,7 +11,13 @@ from __future__ import annotations
 
 import pytest
 
+from sqlalchemy import text
+
 from webapp.services.nugget_reads import (
+    CANDIDATES_FOR_JOB_SQL,
+    EVALUATION_FOR_APPLICATION_SQL,
+    JOB_SUMMARY_SQL,
+    LIST_SCREENED_JOBS_SQL,
     TIER_ORDER,
     UNSCORED_TIERS,
     assert_read_only,
@@ -123,6 +129,38 @@ def test_read_only_guard_allows_the_real_call_sites():
     ]
     for sql in real_queries:
         assert assert_read_only(sql) is None
+
+
+def test_query_bind_params_are_all_recognised_by_sqlalchemy():
+    """Regression test for a real production bug: `:tier::text` compiles in
+    Postgres but SQLAlchemy's `text()` bind-parameter regex does not
+    recognise a name immediately followed by `::`, so `tier` silently never
+    became a bind parameter and psycopg raised a SyntaxError on every call to
+    /api/evaluations/jobs/{job_id}/candidates, with or without ?tier=. This
+    asserts against the SAME module-level SQL constants the functions
+    actually execute (imported directly, not pasted here), so it can't drift
+    the way a copy of the SQL could, and it would have caught the bug without
+    needing a live database.
+    """
+    assert set(text(LIST_SCREENED_JOBS_SQL).compile().bind_names.values()) == set()
+    assert set(text(JOB_SUMMARY_SQL).compile().bind_names.values()) == {"job_id"}
+    assert set(text(CANDIDATES_FOR_JOB_SQL).compile().bind_names.values()) == {
+        "job_id",
+        "tier",
+        "limit",
+        "offset",
+    }
+    assert set(text(EVALUATION_FOR_APPLICATION_SQL).compile().bind_names.values()) == {
+        "application_id"
+    }
+
+
+def test_candidates_for_job_sql_does_not_use_the_bare_cast_operator():
+    # `::` is the specific pattern that broke SQLAlchemy's bind-parameter
+    # parsing (see test above). Assert the fixed query never reintroduces it,
+    # so a future "simplification" back to `:tier::text` fails immediately
+    # instead of shipping a 500 on every /candidates request again.
+    assert "::" not in CANDIDATES_FOR_JOB_SQL
 
 
 def test_shape_summary_orders_tiers_and_separates_unusable():

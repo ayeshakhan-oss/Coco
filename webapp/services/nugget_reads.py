@@ -82,27 +82,31 @@ def _rows(db: Session, sql: str, **params: Any) -> list[dict]:
     return [dict(r) for r in result.mappings()]
 
 
+# The four queries this module issues, as module-level constants so both the
+# functions below and the regression tests read the exact same SQL — a test
+# that only compares against a pasted duplicate can silently drift from the
+# real query and stop catching anything.
+LIST_SCREENED_JOBS_SQL = f"""
+SELECT r.job_id,
+       j.title AS job_title,
+       r.version AS rubric_version,
+       r.status  AS rubric_status,
+       r.seniority,
+       COUNT(*) FILTER (WHERE e.status = 'scored')   AS scored,
+       COUNT(*) FILTER (WHERE e.status = 'unusable') AS unusable,
+       MAX(e.evaluated_at) AS last_run_at
+FROM {SCHEMA}.nugget_screening_rubrics r
+LEFT JOIN {SCHEMA}.jobs j ON j.id = r.job_id
+LEFT JOIN {SCHEMA}.nugget_screening_evals e
+       ON e.job_id = r.job_id AND e.is_current
+GROUP BY r.job_id, j.title, r.version, r.status, r.seniority
+ORDER BY scored DESC
+"""
+
+
 def list_screened_jobs(db: Session) -> list[dict]:
     """Every job Nugget holds a rubric for, with current eval counts."""
-    return _rows(
-        db,
-        f"""
-        SELECT r.job_id,
-               j.title AS job_title,
-               r.version AS rubric_version,
-               r.status  AS rubric_status,
-               r.seniority,
-               COUNT(*) FILTER (WHERE e.status = 'scored')   AS scored,
-               COUNT(*) FILTER (WHERE e.status = 'unusable') AS unusable,
-               MAX(e.evaluated_at) AS last_run_at
-        FROM {SCHEMA}.nugget_screening_rubrics r
-        LEFT JOIN {SCHEMA}.jobs j ON j.id = r.job_id
-        LEFT JOIN {SCHEMA}.nugget_screening_evals e
-               ON e.job_id = r.job_id AND e.is_current
-        GROUP BY r.job_id, j.title, r.version, r.status, r.seniority
-        ORDER BY scored DESC
-        """,
-    )
+    return _rows(db, LIST_SCREENED_JOBS_SQL)
 
 
 # Published tier order. UNUSABLE is last and is NOT a ranking position: it means
@@ -154,20 +158,19 @@ def shape_summary(rows: list[dict]) -> dict:
     return {"tiers": tiers, "scored": scored, "unusable": unusable, "total": scored + unusable}
 
 
+JOB_SUMMARY_SQL = f"""
+SELECT tier, status, COUNT(*) AS n,
+       ROUND(AVG(score_pct), 1) AS avg_pct,
+       MIN(score_pct) AS min_pct,
+       MAX(score_pct) AS max_pct
+FROM {SCHEMA}.nugget_screening_evals
+WHERE job_id = :job_id AND is_current
+GROUP BY tier, status
+"""
+
+
 def job_summary(db: Session, job_id: int) -> dict:
-    rows = _rows(
-        db,
-        f"""
-        SELECT tier, status, COUNT(*) AS n,
-               ROUND(AVG(score_pct), 1) AS avg_pct,
-               MIN(score_pct) AS min_pct,
-               MAX(score_pct) AS max_pct
-        FROM {SCHEMA}.nugget_screening_evals
-        WHERE job_id = :job_id AND is_current
-        GROUP BY tier, status
-        """,
-        job_id=job_id,
-    )
+    rows = _rows(db, JOB_SUMMARY_SQL, job_id=job_id)
     return shape_summary(rows)
 
 
@@ -191,6 +194,26 @@ def is_valid_tier(tier: Any) -> bool:
     return isinstance(tier, str) and tier in TIER_ORDER
 
 
+# NOTE: the tier filter uses CAST(:tier AS text), not `:tier::text`. SQLAlchemy's
+# text() parses bind parameters with a regex that does not recognise a name
+# immediately followed by Postgres's `::` cast operator — `:tier::text` reads
+# as literal text to SQLAlchemy, `tier` is never registered as a bind, and
+# psycopg then raises a SyntaxError at the bare `:` at execution time. A bare
+# `:tier IS NULL` doesn't work either: with no cast, psycopg can't infer the
+# parameter's type and raises AmbiguousParameter. CAST(:tier AS text) is the
+# one form both SQLAlchemy and Postgres accept — do not "simplify" this back
+# to `::`.
+CANDIDATES_FOR_JOB_SQL = f"""
+SELECT application_id, candidate_id, candidate_name, candidate_email,
+       score_pct, tier, tier_reason, confidence, resume_health, status
+FROM {SCHEMA}.nugget_screening_evals
+WHERE job_id = :job_id AND is_current
+  AND (CAST(:tier AS text) IS NULL OR tier = CAST(:tier AS text))
+ORDER BY (status = 'unusable'), score_pct DESC NULLS LAST
+LIMIT :limit OFFSET :offset
+"""
+
+
 def candidates_for_job(
     db: Session,
     job_id: int,
@@ -200,15 +223,7 @@ def candidates_for_job(
 ) -> list[dict]:
     rows = _rows(
         db,
-        f"""
-        SELECT application_id, candidate_id, candidate_name, candidate_email,
-               score_pct, tier, tier_reason, confidence, resume_health, status
-        FROM {SCHEMA}.nugget_screening_evals
-        WHERE job_id = :job_id AND is_current
-          AND (:tier::text IS NULL OR tier = :tier::text)
-        ORDER BY (status = 'unusable'), score_pct DESC NULLS LAST
-        LIMIT :limit OFFSET :offset
-        """,
+        CANDIDATES_FOR_JOB_SQL,
         job_id=job_id,
         tier=tier,
         limit=limit,
@@ -217,20 +232,19 @@ def candidates_for_job(
     return [_mark_unusable(r) for r in rows]
 
 
+EVALUATION_FOR_APPLICATION_SQL = f"""
+SELECT e.application_id, e.candidate_id, e.candidate_name, e.candidate_email,
+       e.score_pct, e.tier, e.tier_reason, e.confidence, e.resume_health,
+       e.status, e.dimension_scores, e.strengths, e.gaps,
+       e.hard_filter_flags, e.verdict, e.rubric_version, e.model, e.evaluated_at
+FROM {SCHEMA}.nugget_screening_evals e
+WHERE e.application_id = :application_id AND e.is_current
+LIMIT 1
+"""
+
+
 def evaluation_for_application(db: Session, application_id: int) -> Optional[dict]:
-    rows = _rows(
-        db,
-        f"""
-        SELECT e.application_id, e.candidate_id, e.candidate_name, e.candidate_email,
-               e.score_pct, e.tier, e.tier_reason, e.confidence, e.resume_health,
-               e.status, e.dimension_scores, e.strengths, e.gaps,
-               e.hard_filter_flags, e.verdict, e.rubric_version, e.model, e.evaluated_at
-        FROM {SCHEMA}.nugget_screening_evals e
-        WHERE e.application_id = :application_id AND e.is_current
-        LIMIT 1
-        """,
-        application_id=application_id,
-    )
+    rows = _rows(db, EVALUATION_FOR_APPLICATION_SQL, application_id=application_id)
     if not rows:
         return None
     return _mark_unusable(rows[0])
