@@ -11,7 +11,12 @@ from __future__ import annotations
 
 import pytest
 
-from webapp.services.nugget_reads import TIER_ORDER, assert_read_only, shape_summary
+from webapp.services.nugget_reads import (
+    TIER_ORDER,
+    assert_read_only,
+    is_valid_tier,
+    shape_summary,
+)
 
 
 def test_read_only_guard_blocks_writes():
@@ -66,3 +71,10 @@ def test_shape_summary_suppresses_meaningless_averages_for_unusable():
 
 def test_shape_summary_handles_empty():
     assert shape_summary([]) == {"tiers": [], "scored": 0, "unusable": 0, "total": 0}
+
+
+def test_is_valid_tier_accepts_published_tiers_only():
+    for t in ("P1", "P2", "P3", "P4", "MANUAL_REVIEW", "UNUSABLE"):
+        assert is_valid_tier(t) is True
+    for t in ("p1", "OK", "", "P5", "DROP TABLE", None):
+        assert is_valid_tier(t) is False

@@ -111,3 +111,62 @@ def job_summary(db: Session, job_id: int) -> dict:
         job_id=job_id,
     )
     return shape_summary(rows)
+
+
+def is_valid_tier(tier: Any) -> bool:
+    """Exact match against the published tiers. Case-sensitive on purpose: the
+    value is interpolated nowhere, but an unknown tier should 400, not return []."""
+    return isinstance(tier, str) and tier in TIER_ORDER
+
+
+def candidates_for_job(
+    db: Session,
+    job_id: int,
+    tier: Optional[str] = None,
+    limit: int = 100,
+    offset: int = 0,
+) -> list[dict]:
+    rows = _rows(
+        db,
+        f"""
+        SELECT application_id, candidate_id, candidate_name, candidate_email,
+               score_pct, tier, tier_reason, confidence, resume_health, status
+        FROM {SCHEMA}.nugget_screening_evals
+        WHERE job_id = :job_id AND is_current
+          AND (:tier::text IS NULL OR tier = :tier::text)
+        ORDER BY (status = 'unusable'), score_pct DESC NULLS LAST
+        LIMIT :limit OFFSET :offset
+        """,
+        job_id=job_id,
+        tier=tier,
+        limit=limit,
+        offset=offset,
+    )
+    for r in rows:
+        r["is_unusable"] = r.pop("status") == "unusable"
+        if r["is_unusable"]:
+            r["score_pct"] = None  # never show 0.00 for a document nobody could read
+    return rows
+
+
+def evaluation_for_application(db: Session, application_id: int) -> Optional[dict]:
+    rows = _rows(
+        db,
+        f"""
+        SELECT e.application_id, e.candidate_id, e.candidate_name, e.candidate_email,
+               e.score_pct, e.tier, e.tier_reason, e.confidence, e.resume_health,
+               e.status, e.dimension_scores, e.strengths, e.gaps,
+               e.hard_filter_flags, e.verdict, e.rubric_version, e.model, e.evaluated_at
+        FROM {SCHEMA}.nugget_screening_evals e
+        WHERE e.application_id = :application_id AND e.is_current
+        LIMIT 1
+        """,
+        application_id=application_id,
+    )
+    if not rows:
+        return None
+    row = rows[0]
+    row["is_unusable"] = row.pop("status") == "unusable"
+    if row["is_unusable"]:
+        row["score_pct"] = None
+    return row
