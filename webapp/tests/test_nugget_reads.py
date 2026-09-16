@@ -164,3 +164,36 @@ def test_is_valid_tier_accepts_published_tiers_only():
         assert is_valid_tier(t) is True
     for t in ("p1", "OK", "", "P5", "DROP TABLE", None):
         assert is_valid_tier(t) is False
+
+
+def _flatten_routes(routes):
+    """This FastAPI build wraps every `include_router()` call in an
+    `_IncludedRouter` shim that has no `.path`/`.methods` of its own; the real
+    `APIRoute` objects live on `original_router.routes`. Recurse through those
+    shims so route introspection sees the same flat list `app.routes` gave in
+    older FastAPI versions.
+    """
+    flat = []
+    for r in routes:
+        if hasattr(r, "path"):
+            flat.append(r)
+        nested = getattr(r, "original_router", None)
+        if nested is not None:
+            flat.extend(_flatten_routes(nested.routes))
+    return flat
+
+
+def test_evaluations_router_is_mounted_and_read_only():
+    from webapp.main import app
+
+    routes = _flatten_routes(app.routes)
+    paths = {r.path for r in routes}
+    assert "/api/evaluations/jobs" in paths
+    assert "/api/evaluations/jobs/{job_id}/summary" in paths
+    assert "/api/evaluations/jobs/{job_id}/candidates" in paths
+    assert "/api/evaluations/applications/{application_id}" in paths
+
+    # Read-only surface: no POST/PUT/PATCH/DELETE anywhere under /api/evaluations.
+    for r in routes:
+        if r.path.startswith("/api/evaluations"):
+            assert set(getattr(r, "methods", set())) <= {"GET", "HEAD", "OPTIONS"}

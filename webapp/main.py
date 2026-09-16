@@ -21,6 +21,7 @@ from .deps import get_current_user
 from .routers import auth as auth_router
 from .routers import candidates as candidates_router
 from .routers import communications as communications_router
+from .routers import evaluations as evaluations_router
 from .routers import gmail_sync as gmail_sync_router
 from .routers import users as users_router
 from .schemas import CurrentUserOut
@@ -174,6 +175,7 @@ app.include_router(auth_router.router)
 app.include_router(candidates_router.router)
 app.include_router(communications_router.router)
 app.include_router(communications_router.asset_router)
+app.include_router(evaluations_router.router)
 app.include_router(gmail_sync_router.router)
 app.include_router(users_router.router)
 

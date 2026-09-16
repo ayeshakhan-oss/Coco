@@ -317,3 +317,55 @@ class TimelineItem(_Base):
 
 # Resolve the forward reference (GmailMatch is defined after ApplicationDetail).
 ApplicationDetail.model_rebuild()
+
+
+class ScreenedJob(_Base):
+    job_id: int
+    job_title: Optional[str] = None
+    rubric_version: int
+    rubric_status: str
+    seniority: Optional[str] = None
+    scored: int
+    unusable: int
+    last_run_at: Optional[dt.datetime] = None
+
+
+class TierBucket(_Base):
+    tier: str
+    status: Optional[str] = None
+    n: int
+    avg_pct: Optional[float] = None
+    min_pct: Optional[float] = None
+    max_pct: Optional[float] = None
+    is_unusable: bool
+
+
+class EvaluationSummary(_Base):
+    tiers: list[TierBucket]
+    scored: int
+    unusable: int
+    total: int
+
+
+class EvaluationRow(_Base):
+    application_id: Optional[int] = None
+    candidate_id: Optional[int] = None
+    candidate_name: Optional[str] = None
+    candidate_email: Optional[str] = None
+    score_pct: Optional[float] = None
+    tier: Optional[str] = None
+    tier_reason: Optional[str] = None
+    confidence: Optional[str] = None
+    resume_health: Optional[int] = None
+    is_unusable: bool = False
+
+
+class EvaluationDetail(EvaluationRow):
+    dimension_scores: Optional[dict[str, Any]] = None
+    strengths: Optional[list[Any]] = None
+    gaps: Optional[list[Any]] = None
+    hard_filter_flags: Optional[list[Any]] = None
+    verdict: Optional[str] = None
+    rubric_version: Optional[int] = None
+    model: Optional[str] = None
+    evaluated_at: Optional[dt.datetime] = None
