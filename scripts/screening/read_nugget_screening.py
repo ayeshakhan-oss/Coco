@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, r"c:\Agent Coco")
 from scripts.utils.audit_log import log_db_query  # noqa: E402
-from webapp.services.nugget_reads import assert_read_only  # noqa: E402
+from webapp.services.nugget_reads import UNSCORED_TIERS, assert_read_only  # noqa: E402
 
 load_dotenv(r"c:\Agent Coco\.env")
 _URL = os.environ["DATABASE_URL"]
@@ -113,12 +113,21 @@ def job_summary(job_id: int):
     total = 0
     for x in rows:
         total += int(x["n"])
-        rng = "" if x["avg_pct"] is None else f"  avg {x['avg_pct']}%  range {x['min_pct']}-{x['max_pct']}"
+        if x["tier"] in UNSCORED_TIERS:
+            # avg/min/max are 0.00 artefacts here (the CV never cleared the
+            # readability floor), not a measurement. Never print them as a score.
+            rng = "  not scored (document unreadable / below readability floor)"
+        elif x["avg_pct"] is None:
+            rng = ""
+        else:
+            rng = f"  avg {x['avg_pct']}%  range {x['min_pct']}-{x['max_pct']}"
         print(f"  {x['tier']:<14} {x['status']:<10} n={x['n']:>4}{rng}")
     print(f"  {'TOTAL':<14} {'':<10} n={total:>4}")
     print(
-        "\n  NOTE: UNUSABLE means the CV could not be read. It is NOT a rejection\n"
-        "  and those candidates still need a human to look at them."
+        "\n  NOTE: UNUSABLE and MANUAL_REVIEW both mean the CV could not be read\n"
+        "  (unusable at all, or below the rubric's readability floor). Neither is\n"
+        "  a rejection or a real score, and those candidates still need a human\n"
+        "  to look at them."
     )
 
 
@@ -137,9 +146,14 @@ def tier_list(job_id: int, tier: str, detail: bool = False):
     )
     print(f"\n=== JOB {job_id} · TIER {tier} ({len(rows)}) ===")
     for x in rows:
+        score = (
+            "not scored (document unreadable / below readability floor)"
+            if tier in UNSCORED_TIERS
+            else f"score {x['score_pct']}%"
+        )
         print(
             f"\n  {x['candidate_name']}  ({x['candidate_email']})"
-            f"\n    app {x['application_id']}  score {x['score_pct']}%  "
+            f"\n    app {x['application_id']}  {score}  "
             f"confidence {x['confidence']}  resume health {x['resume_health']}"
             f"\n    {x['tier_reason']}"
         )

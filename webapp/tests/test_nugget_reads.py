@@ -13,6 +13,7 @@ import pytest
 
 from sqlalchemy import text
 
+import webapp.services.nugget_reads as nugget_reads
 from webapp.services.nugget_reads import (
     CANDIDATES_FOR_JOB_SQL,
     EVALUATION_FOR_APPLICATION_SQL,
@@ -20,6 +21,7 @@ from webapp.services.nugget_reads import (
     LIST_SCREENED_JOBS_SQL,
     TIER_ORDER,
     UNSCORED_TIERS,
+    _mark_unusable,
     assert_read_only,
     is_valid_tier,
     shape_summary,
@@ -233,7 +235,14 @@ def test_shape_summary_suppresses_manual_review_scores_but_still_counts_them_as_
 
 
 def test_shape_summary_handles_empty():
-    assert shape_summary([]) == {"tiers": [], "scored": 0, "unusable": 0, "total": 0}
+    # `unscored` (finding 5) is now part of the returned shape.
+    assert shape_summary([]) == {
+        "tiers": [],
+        "scored": 0,
+        "unusable": 0,
+        "unscored": 0,
+        "total": 0,
+    }
 
 
 def test_is_valid_tier_accepts_published_tiers_only():
@@ -274,3 +283,128 @@ def test_evaluations_router_is_mounted_and_read_only():
     for r in routes:
         if r.path.startswith("/api/evaluations"):
             assert set(getattr(r, "methods", set())) <= {"GET", "HEAD", "OPTIONS"}
+
+
+# ---------------------------------------------------------------------------
+# 8a. `is_current` invariant: the single most important constraint in this
+# module (only ever read the CURRENT eval per application), and, until now,
+# untested. Checked against every module-level `..._SQL` constant so a new
+# query added later is covered automatically, not just the four existing ones.
+# ---------------------------------------------------------------------------
+
+
+def test_every_eval_reading_sql_constant_filters_on_is_current():
+    sql_constants = {
+        name: value
+        for name, value in vars(nugget_reads).items()
+        if name.isupper() and name.endswith("_SQL") and isinstance(value, str)
+    }
+    # Guard against the invariant test itself silently checking nothing.
+    assert len(sql_constants) >= 4
+    for name, sql in sql_constants.items():
+        assert "is_current" in sql, f"{name} does not filter on is_current"
+
+
+# ---------------------------------------------------------------------------
+# 8b. Direct tests for `_mark_unusable` (finding-adjacent: this is the
+# function both `candidates_for_job` and `evaluation_for_application` rely on
+# to make sure UNUSABLE/MANUAL_REVIEW rows never render as a 0.00 score).
+# ---------------------------------------------------------------------------
+
+
+def test_mark_unusable_on_an_unusable_row():
+    row = {"tier": "UNUSABLE", "status": "unusable", "score_pct": 0.0}
+    out = _mark_unusable(dict(row))
+    assert out["is_unusable"] is True
+    assert out["is_unscored"] is True
+    assert out["score_pct"] is None
+    assert "status" not in out  # popped, not just overwritten
+
+
+def test_mark_unusable_on_a_manual_review_row():
+    # status='scored' in the DB, but MANUAL_REVIEW is in UNSCORED_TIERS: the
+    # rubric routed it here because the extracted text fell below the
+    # readability floor, not because it scored low.
+    row = {"tier": "MANUAL_REVIEW", "status": "scored", "score_pct": 0.0}
+    out = _mark_unusable(dict(row))
+    assert out["is_unusable"] is False
+    assert out["is_unscored"] is True
+    assert out["score_pct"] is None
+
+
+def test_mark_unusable_on_a_normal_scored_row():
+    row = {"tier": "P2", "status": "scored", "score_pct": 71.4}
+    out = _mark_unusable(dict(row))
+    assert out["is_unusable"] is False
+    assert out["is_unscored"] is False
+    assert out["score_pct"] == 71.4
+
+
+# ---------------------------------------------------------------------------
+# 8c. `shape_summary` — finding 4 (a tier appearing with both statuses must
+# not lose a row; a tier outside TIER_ORDER must not be dropped).
+# ---------------------------------------------------------------------------
+
+
+def test_shape_summary_aggregates_a_tier_that_appears_with_both_statuses():
+    # JOB_SUMMARY_SQL groups by (tier, status), so a tier can legitimately
+    # arrive as two rows. The old `{r["tier"]: r for r in rows}` dict-keying
+    # let the second row silently overwrite the first.
+    rows = [
+        {"tier": "P4", "status": "scored", "n": 300, "avg_pct": 40.0, "min_pct": 10.0, "max_pct": 90.0},
+        {"tier": "P4", "status": "unusable", "n": 20, "avg_pct": 0.0, "min_pct": 0.0, "max_pct": 0.0},
+    ]
+    out = shape_summary(rows)
+
+    p4 = next(t for t in out["tiers"] if t["tier"] == "P4")
+    # Both rows' counts must survive in the tier bucket...
+    assert p4["n"] == 320
+    # ...and in the top-level scored/unusable split, split by each ROW's own
+    # status (not lost because they share a tier).
+    assert out["scored"] == 300
+    assert out["unusable"] == 20
+    assert out["total"] == 320
+    # A tier that is partly unusable is flagged unusable/unscored so its
+    # average (now mixing readable and unreadable documents) never renders.
+    assert p4["is_unusable"] is True
+    assert p4["is_unscored"] is True
+    assert p4["avg_pct"] is None
+
+
+def test_shape_summary_keeps_a_tier_outside_tier_order_visible():
+    rows = [
+        {"tier": "P1", "status": "scored", "n": 5, "avg_pct": 95.0, "min_pct": 90.0, "max_pct": 100.0},
+        {"tier": "SOME_NEW_TIER", "status": "scored", "n": 3, "avg_pct": 60.0, "min_pct": 55.0, "max_pct": 65.0},
+    ]
+    out = shape_summary(rows)
+
+    tier_names = [t["tier"] for t in out["tiers"]]
+    assert "SOME_NEW_TIER" in tier_names, "unknown tier must not be dropped"
+    # Known tiers keep their published order; the unknown tier is appended
+    # after them rather than interleaved or silently discarded.
+    assert tier_names == ["P1", "SOME_NEW_TIER"]
+    assert out["scored"] == 8
+    assert out["total"] == 8
+
+
+# ---------------------------------------------------------------------------
+# Finding 5: `unscored` is a distinct, additional count (MANUAL_REVIEW rows
+# count toward `scored`, as before, but must also be visible as `unscored`).
+# ---------------------------------------------------------------------------
+
+
+def test_shape_summary_reports_unscored_separately_from_scored():
+    rows = [
+        {"tier": "P4", "status": "scored", "n": 300, "avg_pct": 40.0, "min_pct": 10.0, "max_pct": 90.0},
+        {"tier": "MANUAL_REVIEW", "status": "scored", "n": 11, "avg_pct": 0.0, "min_pct": 0.0, "max_pct": 0.0},
+        {"tier": "UNUSABLE", "status": "unusable", "n": 6, "avg_pct": 0.0, "min_pct": 0.0, "max_pct": 0.0},
+    ]
+    out = shape_summary(rows)
+
+    # `scored` keeps its existing (misleading-but-unchanged) meaning: it
+    # still includes MANUAL_REVIEW because that row's status is 'scored'.
+    assert out["scored"] == 300 + 11
+    assert out["unusable"] == 6
+    # `unscored` makes the 11 unreadable-but-"scored" rows visible without
+    # changing what `scored`/`unusable` mean.
+    assert out["unscored"] == 11 + 6

@@ -345,6 +345,12 @@ class EvaluationSummary(_Base):
     tiers: list[TierBucket]
     scored: int
     unusable: int
+    # Rows counted in `scored` whose score is meaningless (MANUAL_REVIEW, and
+    # any future tier in UNSCORED_TIERS) because the document never cleared
+    # the readability floor. `scored` and `unusable` keep their existing
+    # meaning; this is an additional, overlapping count so a caller can see
+    # how many "scored" candidates actually need a human to open the CV.
+    unscored: int = 0
     total: int
 
 
@@ -362,11 +368,24 @@ class EvaluationRow(_Base):
     is_unscored: bool = False
 
 
+class CandidatePage(_Base):
+    """Response shape for GET /api/evaluations/jobs/{job_id}/candidates.
+
+    Was a bare `list[EvaluationRow]`; changed to an object carrying `total`
+    (finding 3) so a caller can tell there are more rows beyond the current
+    page. NOTE: this is a response-shape change — the frontend consuming
+    this endpoint needs updating to read `.rows` instead of the bare array.
+    """
+
+    rows: list[EvaluationRow]
+    total: int
+
+
 class EvaluationDetail(EvaluationRow):
-    dimension_scores: Optional[dict[str, Any]] = None
+    # `dimension_scores` and `hard_filter_flags` dropped (finding 7): raw
+    # rubric internals with no frontend consumer.
     strengths: Optional[list[Any]] = None
     gaps: Optional[list[Any]] = None
-    hard_filter_flags: Optional[list[Any]] = None
     verdict: Optional[str] = None
     rubric_version: Optional[int] = None
     model: Optional[str] = None

@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..deps import get_current_user
-from ..schemas import EvaluationDetail, EvaluationRow, EvaluationSummary, ScreenedJob
+from ..schemas import CandidatePage, EvaluationDetail, EvaluationSummary, ScreenedJob
 from ..services import nugget_reads
 
 router = APIRouter(prefix="/api/evaluations", tags=["evaluations"])
@@ -37,11 +37,11 @@ def job_summary(
     return nugget_reads.job_summary(db, job_id)
 
 
-@router.get("/jobs/{job_id}/candidates", response_model=list[EvaluationRow])
+@router.get("/jobs/{job_id}/candidates", response_model=CandidatePage)
 def job_candidates(
     job_id: int,
     tier: Optional[str] = Query(None),
-    limit: int = Query(100, le=500),
+    limit: int = Query(100, ge=1, le=500),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
     _user: dict = Depends(get_current_user),

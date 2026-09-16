@@ -86,6 +86,15 @@ def _rows(db: Session, sql: str, **params: Any) -> list[dict]:
 # functions below and the regression tests read the exact same SQL — a test
 # that only compares against a pasted duplicate can silently drift from the
 # real query and stop catching anything.
+# Filtered to r.status = 'active': without it, a job that has been re-rubriced
+# (e.g. a draft or a superseded version sitting alongside the live one) comes
+# back as two rows sharing the same job_id, each labelled a different version
+# but both carrying the SAME full eval counts (the join to `e` isn't scoped
+# to a rubric version), so the dropdown would show a duplicate job with
+# misleadingly duplicated numbers. Nugget's own invariant is one active
+# rubric per job at a time; if that's ever violated this returns all of them
+# rather than guessing which one should win, since that call belongs to
+# Nugget, not Coco.
 LIST_SCREENED_JOBS_SQL = f"""
 SELECT r.job_id,
        j.title AS job_title,
@@ -99,6 +108,7 @@ FROM {SCHEMA}.nugget_screening_rubrics r
 LEFT JOIN {SCHEMA}.jobs j ON j.id = r.job_id
 LEFT JOIN {SCHEMA}.nugget_screening_evals e
        ON e.job_id = r.job_id AND e.is_current
+WHERE r.status = 'active'
 GROUP BY r.job_id, j.title, r.version, r.status, r.seniority
 ORDER BY scored DESC
 """
@@ -124,38 +134,110 @@ UNSCORED_TIERS = ("UNUSABLE", "MANUAL_REVIEW")
 
 
 def shape_summary(rows: list[dict]) -> dict:
-    """Order tier buckets and separate unusable from scored. Pure."""
-    by_tier = {r["tier"]: r for r in rows}
-    tiers: list[dict] = []
+    """Order tier buckets and separate unusable from scored. Pure.
+
+    `JOB_SUMMARY_SQL` groups by `(tier, status)`, so the SAME tier can
+    legitimately arrive as more than one row (e.g. once with
+    status='scored', once with status='unusable'). The previous
+    implementation keyed a dict by tier alone (`{r["tier"]: r for r in
+    rows}`), so a second row for an already-seen tier silently overwrote the
+    first: that row's n vanished from n/scored/unusable/total with no error.
+    Aggregate every row into its tier bucket instead of overwriting. A tier
+    that isn't in the published `TIER_ORDER` is appended after the known
+    tiers (still visible) rather than being dropped on the floor.
+    """
+    buckets: dict[str, dict] = {}
+    order: list[str] = []
     scored = 0
     unusable = 0
 
-    for tier in TIER_ORDER:
-        row = by_tier.get(tier)
-        if row is None:
-            continue
-        is_unusable = row.get("status") == "unusable"
-        is_unscored = is_unusable or tier in UNSCORED_TIERS
+    for row in rows:
+        tier = row["tier"]
         n = int(row.get("n") or 0)
-        if is_unusable:
+        row_is_unusable = row.get("status") == "unusable"
+        if row_is_unusable:
             unusable += n
         else:
             scored += n
+
+        bucket = buckets.get(tier)
+        if bucket is None:
+            bucket = {
+                "tier": tier,
+                "status": row.get("status"),
+                "n": 0,
+                "avg_sum": 0.0,
+                "avg_n": 0,
+                "min_pct": None,
+                "max_pct": None,
+                "is_unusable": False,
+                # A tier can be unscored either because it IS the unusable
+                # bucket for that job (checked below, per row) or because the
+                # tier itself (e.g. MANUAL_REVIEW) is always unscored
+                # regardless of its status column.
+                "is_unscored": tier in UNSCORED_TIERS,
+            }
+            buckets[tier] = bucket
+            order.append(tier)
+        elif bucket["status"] != row.get("status"):
+            # Mixed statuses under one tier: no single status describes it.
+            bucket["status"] = None
+
+        bucket["n"] += n
+        if row_is_unusable:
+            bucket["is_unusable"] = True
+            bucket["is_unscored"] = True
+
+        avg = row.get("avg_pct")
+        if avg is not None and n:
+            bucket["avg_sum"] += float(avg) * n
+            bucket["avg_n"] += n
+        for key, val in (("min_pct", row.get("min_pct")), ("max_pct", row.get("max_pct"))):
+            if val is None:
+                continue
+            current = bucket[key]
+            if current is None:
+                bucket[key] = val
+            elif key == "min_pct":
+                bucket[key] = min(current, val)
+            else:
+                bucket[key] = max(current, val)
+
+    ordered_tiers = [t for t in TIER_ORDER if t in buckets]
+    ordered_tiers += [t for t in order if t not in TIER_ORDER]
+
+    tiers: list[dict] = []
+    unscored = 0
+    for tier in ordered_tiers:
+        bucket = buckets[tier]
+        is_unscored = bucket["is_unscored"]
+        n = bucket["n"]
+        if is_unscored:
+            unscored += n
+        avg_pct = None
+        # An average over unreadable/below-floor documents is noise, not a score.
+        if not is_unscored and bucket["avg_n"]:
+            avg_pct = round(bucket["avg_sum"] / bucket["avg_n"], 1)
         tiers.append(
             {
                 "tier": tier,
-                "status": row.get("status"),
+                "status": bucket["status"],
                 "n": n,
-                # An average over unreadable/below-floor documents is noise, not a score.
-                "avg_pct": None if is_unscored else row.get("avg_pct"),
-                "min_pct": None if is_unscored else row.get("min_pct"),
-                "max_pct": None if is_unscored else row.get("max_pct"),
-                "is_unusable": is_unusable,
+                "avg_pct": avg_pct,
+                "min_pct": None if is_unscored else bucket["min_pct"],
+                "max_pct": None if is_unscored else bucket["max_pct"],
+                "is_unusable": bucket["is_unusable"],
                 "is_unscored": is_unscored,
             }
         )
 
-    return {"tiers": tiers, "scored": scored, "unusable": unusable, "total": scored + unusable}
+    return {
+        "tiers": tiers,
+        "scored": scored,
+        "unusable": unusable,
+        "unscored": unscored,
+        "total": scored + unusable,
+    }
 
 
 JOB_SUMMARY_SQL = f"""
@@ -203,9 +285,19 @@ def is_valid_tier(tier: Any) -> bool:
 # parameter's type and raises AmbiguousParameter. CAST(:tier AS text) is the
 # one form both SQLAlchemy and Postgres accept — do not "simplify" this back
 # to `::`.
+# `COUNT(*) OVER ()` rides along on the existing query instead of a second
+# round-trip: Postgres evaluates window functions over the full WHERE-matched
+# result set before LIMIT/OFFSET are applied, so every row in the page (when
+# there is at least one) carries the same true total of matching candidates,
+# not just the page size. Edge case: if `offset` skips past the last row,
+# zero rows come back and there is nothing to read a total off — that page
+# reports total=0 rather than issuing the second query the no-round-trip
+# constraint rules out. `candidates_for_job` strips `total_count` back off
+# each row before returning it.
 CANDIDATES_FOR_JOB_SQL = f"""
 SELECT application_id, candidate_id, candidate_name, candidate_email,
-       score_pct, tier, tier_reason, confidence, resume_health, status
+       score_pct, tier, tier_reason, confidence, resume_health, status,
+       COUNT(*) OVER () AS total_count
 FROM {SCHEMA}.nugget_screening_evals
 WHERE job_id = :job_id AND is_current
   AND (CAST(:tier AS text) IS NULL OR tier = CAST(:tier AS text))
@@ -220,7 +312,7 @@ def candidates_for_job(
     tier: Optional[str] = None,
     limit: int = 100,
     offset: int = 0,
-) -> list[dict]:
+) -> dict:
     rows = _rows(
         db,
         CANDIDATES_FOR_JOB_SQL,
@@ -229,14 +321,19 @@ def candidates_for_job(
         limit=limit,
         offset=offset,
     )
-    return [_mark_unusable(r) for r in rows]
+    total = int(rows[0]["total_count"]) if rows else 0
+    for r in rows:
+        r.pop("total_count", None)
+    return {"rows": [_mark_unusable(r) for r in rows], "total": total}
 
 
+# `dimension_scores` and `hard_filter_flags` are raw rubric internals with no
+# consumer on the frontend (finding 7) — deliberately left off the select.
 EVALUATION_FOR_APPLICATION_SQL = f"""
 SELECT e.application_id, e.candidate_id, e.candidate_name, e.candidate_email,
        e.score_pct, e.tier, e.tier_reason, e.confidence, e.resume_health,
-       e.status, e.dimension_scores, e.strengths, e.gaps,
-       e.hard_filter_flags, e.verdict, e.rubric_version, e.model, e.evaluated_at
+       e.status, e.strengths, e.gaps,
+       e.verdict, e.rubric_version, e.model, e.evaluated_at
 FROM {SCHEMA}.nugget_screening_evals e
 WHERE e.application_id = :application_id AND e.is_current
 LIMIT 1
