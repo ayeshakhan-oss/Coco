@@ -56,3 +56,58 @@ def list_screened_jobs(db: Session) -> list[dict]:
         ORDER BY scored DESC
         """,
     )
+
+
+# Published tier order. UNUSABLE is last and is NOT a ranking position: it means
+# the CV could not be read, so it is never a rejection and never a zero score.
+TIER_ORDER = ("P1", "P2", "P3", "P4", "MANUAL_REVIEW", "UNUSABLE")
+
+
+def shape_summary(rows: list[dict]) -> dict:
+    """Order tier buckets and separate unusable from scored. Pure."""
+    by_tier = {r["tier"]: r for r in rows}
+    tiers: list[dict] = []
+    scored = 0
+    unusable = 0
+
+    for tier in TIER_ORDER:
+        row = by_tier.get(tier)
+        if row is None:
+            continue
+        is_unusable = row.get("status") == "unusable"
+        n = int(row.get("n") or 0)
+        if is_unusable:
+            unusable += n
+        else:
+            scored += n
+        tiers.append(
+            {
+                "tier": tier,
+                "status": row.get("status"),
+                "n": n,
+                # An average over unreadable documents is noise, not a score.
+                "avg_pct": None if is_unusable else row.get("avg_pct"),
+                "min_pct": None if is_unusable else row.get("min_pct"),
+                "max_pct": None if is_unusable else row.get("max_pct"),
+                "is_unusable": is_unusable,
+            }
+        )
+
+    return {"tiers": tiers, "scored": scored, "unusable": unusable, "total": scored + unusable}
+
+
+def job_summary(db: Session, job_id: int) -> dict:
+    rows = _rows(
+        db,
+        f"""
+        SELECT tier, status, COUNT(*) AS n,
+               ROUND(AVG(score_pct), 1) AS avg_pct,
+               MIN(score_pct) AS min_pct,
+               MAX(score_pct) AS max_pct
+        FROM {SCHEMA}.nugget_screening_evals
+        WHERE job_id = :job_id AND is_current
+        GROUP BY tier, status
+        """,
+        job_id=job_id,
+    )
+    return shape_summary(rows)
