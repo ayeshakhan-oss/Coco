@@ -5,7 +5,7 @@ import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StatCard } from '../components/StatCard'
 import { api } from '../lib/api'
-import { ACTIVE_MODULE, MODULES } from '../lib/modules'
+import { MODULES } from '../lib/modules'
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -83,11 +83,11 @@ export function HomePage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {MODULES.map((skill) => {
             const Icon = skill.icon
-            const isLive = skill.slug === ACTIVE_MODULE
+            const isLive = skill.status === 'live'
             return (
               <Link
                 key={skill.slug}
-                to={isLive ? '/queue' : `/modules/${skill.slug}`}
+                to={isLive && skill.route ? skill.route : `/modules/${skill.slug}`}
                 className="card flex flex-col p-5 transition-colors hover:bg-elevated"
               >
                 <div className="flex items-center gap-3">

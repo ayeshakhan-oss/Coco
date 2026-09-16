@@ -3,6 +3,7 @@ import { AppLayout } from './components/AppLayout'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
+import { EvaluationPage } from './pages/EvaluationPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
@@ -18,6 +19,7 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/queue" element={<QueuePage />} />
+          <Route path="/evaluations" element={<EvaluationPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

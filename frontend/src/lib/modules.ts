@@ -7,13 +7,14 @@ export interface ModuleDef {
   icon: LucideIcon
   status: 'live' | 'soon'
   blurb: string
+  route?: string
 }
 
 export const ACTIVE_MODULE = 'candidate-communication'
 
 export const MODULES: ModuleDef[] = [
-  { slug: 'candidate-communication', label: 'Candidate Communication', icon: Mail, status: 'live', blurb: 'Draft, review, approve and send candidate rejection and feedback emails.' },
-  { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'soon', blurb: 'Screen CVs, score case studies and interview scorecards.' },
+  { slug: 'candidate-communication', label: 'Candidate Communication', icon: Mail, status: 'live', route: '/queue', blurb: 'Draft, review, approve and send candidate rejection and feedback emails.' },
+  { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'live', route: '/evaluations', blurb: 'Screen CVs, score case studies and interview scorecards.' },
   { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'soon', blurb: 'Attendance reports, decision briefs and weekly pipeline monitoring.' },
   { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'soon', blurb: 'Reports, integrations and system infrastructure.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'soon', blurb: 'Find and track passive candidates across sources.' },
