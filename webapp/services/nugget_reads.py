@@ -9,6 +9,7 @@ See .claude/skills/02_candidate-evaluation/technical-screening.md.
 
 from __future__ import annotations
 
+import re
 from typing import Any, Optional
 
 from sqlalchemy import text
@@ -19,13 +20,59 @@ SCHEMA = "public"
 
 READ_ONLY_PREFIXES = ("select", "with")
 
+# Strip SQL comments before any check runs, so a keyword or semicolon sitting
+# inside a comment can't produce a false block, and so a comment can't be used
+# to try to hide text from the checks below.
+_COMMENT_RE = re.compile(r"/\*.*?\*/|--[^\n]*", re.DOTALL)
+
+# Anywhere in the statement, case-insensitive, word-bounded. INTO is included
+# to catch `SELECT ... INTO new_table`, which is DDL despite starting SELECT.
+_FORBIDDEN_KEYWORDS_RE = re.compile(
+    r"\b(INSERT|UPDATE|DELETE|DROP|TRUNCATE|ALTER|CREATE|GRANT|REVOKE|COPY|MERGE|INTO)\b",
+    re.IGNORECASE,
+)
+
 
 def assert_read_only(sql: str) -> None:
-    """Raise unless `sql` is a plain read. These are not Coco's tables."""
-    stripped = sql.lstrip().lower()
+    """Raise unless `sql` is a plain read.
+
+    This is a defence-in-depth STRING check, not a database-level guarantee. It:
+      1. strips `/* */` and `--` comments so they can't hide a keyword or a
+         semicolon from the checks below;
+      2. rejects the statement outright if it contains a `;` other than a
+         single optional trailing one (multi-statement SQL is refused);
+      3. requires the statement to open with SELECT or WITH;
+      4. rejects INSERT/UPDATE/DELETE/DROP/TRUNCATE/ALTER/CREATE/GRANT/REVOKE/
+         COPY/MERGE/INTO anywhere in the statement, so a write or DDL clause
+         nested inside a CTE (`WITH x AS (DELETE ... RETURNING *) SELECT ...`)
+         or appended after the leading SELECT (`SELECT * INTO shadow FROM ...`)
+         is also caught.
+
+    What it does NOT guarantee: it cannot see through a stored procedure or
+    function call that itself writes, and it is a string check, not a parser,
+    so it can still be fooled by SQL this simple pattern-matching can't parse.
+    The durable guarantee is a read-only database role on the connection Coco
+    uses against `public.nugget_screening_*`; this guard is a second,
+    application-layer line of defence, not a substitute for that role.
+    """
+    without_comments = _COMMENT_RE.sub(" ", sql)
+    trimmed = without_comments.strip()
+    if trimmed.endswith(";"):
+        trimmed = trimmed[:-1].rstrip()
+    if ";" in trimmed:
+        raise PermissionError(
+            "nugget_reads is READ ONLY: multi-statement SQL is rejected."
+        )
+
+    stripped = trimmed.lstrip().lower()
     if not stripped.startswith(READ_ONLY_PREFIXES):
         raise PermissionError(
             "nugget_reads is READ ONLY: public.nugget_screening_* belongs to Nugget."
+        )
+
+    if _FORBIDDEN_KEYWORDS_RE.search(trimmed):
+        raise PermissionError(
+            "nugget_reads is READ ONLY: statement contains a write/DDL keyword."
         )
 
 
@@ -113,6 +160,17 @@ def job_summary(db: Session, job_id: int) -> dict:
     return shape_summary(rows)
 
 
+def _mark_unusable(row: dict) -> dict:
+    """Convert the raw `status` column into `is_unusable`, and null out
+    `score_pct` when unusable so a document nobody could read never renders as
+    a 0.00 score. Shared by `candidates_for_job` and `evaluation_for_application`
+    so the suppression rule can't drift between the two call sites."""
+    row["is_unusable"] = row.pop("status") == "unusable"
+    if row["is_unusable"]:
+        row["score_pct"] = None
+    return row
+
+
 def is_valid_tier(tier: Any) -> bool:
     """Exact match against the published tiers. Case-sensitive on purpose: the
     value is interpolated nowhere, but an unknown tier should 400, not return []."""
@@ -142,11 +200,7 @@ def candidates_for_job(
         limit=limit,
         offset=offset,
     )
-    for r in rows:
-        r["is_unusable"] = r.pop("status") == "unusable"
-        if r["is_unusable"]:
-            r["score_pct"] = None  # never show 0.00 for a document nobody could read
-    return rows
+    return [_mark_unusable(r) for r in rows]
 
 
 def evaluation_for_application(db: Session, application_id: int) -> Optional[dict]:
@@ -165,8 +219,4 @@ def evaluation_for_application(db: Session, application_id: int) -> Optional[dic
     )
     if not rows:
         return None
-    row = rows[0]
-    row["is_unusable"] = row.pop("status") == "unusable"
-    if row["is_unusable"]:
-        row["score_pct"] = None
-    return row
+    return _mark_unusable(rows[0])

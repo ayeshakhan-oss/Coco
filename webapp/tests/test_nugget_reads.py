@@ -38,6 +38,92 @@ def test_read_only_guard_allows_reads():
         assert_read_only(sql) is None
 
 
+def test_read_only_guard_blocks_write_nested_in_a_cte():
+    # Starts with WITH, opens like a read, but the CTE body is a DELETE.
+    bad = "WITH x AS (DELETE FROM public.nugget_screening_evals RETURNING *) SELECT * FROM x"
+    with pytest.raises(PermissionError):
+        assert_read_only(bad)
+
+
+def test_read_only_guard_blocks_select_into():
+    # Starts with SELECT but is DDL: creates a new table from the query result.
+    bad = "SELECT * INTO shadow FROM public.nugget_screening_evals"
+    with pytest.raises(PermissionError):
+        assert_read_only(bad)
+
+
+def test_read_only_guard_blocks_multi_statement_sql():
+    bad = "SELECT 1; DROP TABLE public.nugget_screening_evals;"
+    with pytest.raises(PermissionError):
+        assert_read_only(bad)
+
+
+def test_read_only_guard_strips_comments_so_they_cannot_hide_a_keyword():
+    # A keyword or semicolon that only exists inside a SQL comment is inert
+    # (Postgres never executes it), so it must not cause a false block.
+    assert assert_read_only("SELECT 1 -- historical note: used to DROP TABLE here") is None
+    assert assert_read_only("SELECT /* was: DELETE FROM x; */ 1") is None
+
+
+def test_read_only_guard_allows_a_single_trailing_semicolon():
+    assert assert_read_only("SELECT 1;") is None
+    assert assert_read_only("  WITH x AS (SELECT 1) SELECT * FROM x ;  ") is None
+
+
+def test_read_only_guard_allows_the_real_call_sites():
+    # Representative strings for the four queries this module actually issues
+    # (list_screened_jobs, job_summary, candidates_for_job,
+    # evaluation_for_application), so hardening the guard can't silently break
+    # a real call site.
+    real_queries = [
+        """
+        SELECT r.job_id,
+               j.title AS job_title,
+               r.version AS rubric_version,
+               r.status  AS rubric_status,
+               r.seniority,
+               COUNT(*) FILTER (WHERE e.status = 'scored')   AS scored,
+               COUNT(*) FILTER (WHERE e.status = 'unusable') AS unusable,
+               MAX(e.evaluated_at) AS last_run_at
+        FROM public.nugget_screening_rubrics r
+        LEFT JOIN public.jobs j ON j.id = r.job_id
+        LEFT JOIN public.nugget_screening_evals e
+               ON e.job_id = r.job_id AND e.is_current
+        GROUP BY r.job_id, j.title, r.version, r.status, r.seniority
+        ORDER BY scored DESC
+        """,
+        """
+        SELECT tier, status, COUNT(*) AS n,
+               ROUND(AVG(score_pct), 1) AS avg_pct,
+               MIN(score_pct) AS min_pct,
+               MAX(score_pct) AS max_pct
+        FROM public.nugget_screening_evals
+        WHERE job_id = :job_id AND is_current
+        GROUP BY tier, status
+        """,
+        """
+        SELECT application_id, candidate_id, candidate_name, candidate_email,
+               score_pct, tier, tier_reason, confidence, resume_health, status
+        FROM public.nugget_screening_evals
+        WHERE job_id = :job_id AND is_current
+          AND (:tier::text IS NULL OR tier = :tier::text)
+        ORDER BY (status = 'unusable'), score_pct DESC NULLS LAST
+        LIMIT :limit OFFSET :offset
+        """,
+        """
+        SELECT e.application_id, e.candidate_id, e.candidate_name, e.candidate_email,
+               e.score_pct, e.tier, e.tier_reason, e.confidence, e.resume_health,
+               e.status, e.dimension_scores, e.strengths, e.gaps,
+               e.hard_filter_flags, e.verdict, e.rubric_version, e.model, e.evaluated_at
+        FROM public.nugget_screening_evals e
+        WHERE e.application_id = :application_id AND e.is_current
+        LIMIT 1
+        """,
+    ]
+    for sql in real_queries:
+        assert assert_read_only(sql) is None
+
+
 def test_shape_summary_orders_tiers_and_separates_unusable():
     rows = [
         {"tier": "P4", "status": "scored", "n": 378, "avg_pct": 29.1, "min_pct": 0.0, "max_pct": 53.0},

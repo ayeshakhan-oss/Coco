@@ -26,6 +26,7 @@ from dotenv import load_dotenv
 
 sys.path.insert(0, r"c:\Agent Coco")
 from scripts.utils.audit_log import log_db_query  # noqa: E402
+from webapp.services.nugget_reads import assert_read_only  # noqa: E402
 
 load_dotenv(r"c:\Agent Coco\.env")
 _URL = os.environ["DATABASE_URL"]
@@ -37,11 +38,7 @@ SCHEMA = "public"
 
 def q(sql: str, params=None, *, table: str = "nugget_screening", context: str = "read"):
     """Run one read-only query against Neon over HTTPS (port 5432 is blocked)."""
-    stripped = sql.lstrip().lower()
-    if not (stripped.startswith("select") or stripped.startswith("with")):
-        raise PermissionError(
-            "read_nugget_screening is READ ONLY: these are Nugget's tables, not Coco's."
-        )
+    assert_read_only(sql)
     r = requests.post(
         f"https://{_HOST}/sql",
         headers={"Neon-Connection-String": _URL, "Content-Type": "application/json"},
