@@ -25,6 +25,7 @@ logs/
 !.claude/skills
 .claude/skills/*
 !.claude/skills/01_candidate-communication
+!.claude/skills/02_candidate-evaluation
 archive/
 *.bak
 C:/tmp

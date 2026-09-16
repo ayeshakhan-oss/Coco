@@ -45,6 +45,7 @@ COPY memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md memory/CANDIDATE_C
 # interview moment, company vulnerability, timestamps, the P.S., the subject
 # line. Editing a skill file changed nothing in production. Now it does.
 COPY .claude/skills/01_candidate-communication/ .claude/skills/01_candidate-communication/
+COPY .claude/skills/02_candidate-evaluation/ .claude/skills/02_candidate-evaluation/
 COPY memory/warm_bench_final_locked_approach.md memory/warm_bench_final_locked_approach.md
 COPY memory/gwc_rejection_locked_approach_2026_06_08.md memory/gwc_rejection_locked_approach_2026_06_08.md
 COPY memory/v8_candidate_comms_layout_LOCKED.md memory/v8_candidate_comms_layout_LOCKED.md
