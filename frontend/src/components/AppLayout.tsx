@@ -1,22 +1,26 @@
 import { useQuery } from '@tanstack/react-query'
-import { ChevronDown, ClipboardList, History, Inbox, LogOut, Users } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { ChevronDown, ClipboardList, FileSearch, History, Inbox, LogOut, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../lib/api'
 import { fullName, initials } from '../lib/format'
 import { ACTIVE_MODULE, MODULES } from '../lib/modules'
 
+// Sub-pages per live module, keyed by module slug.
+const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon; end: boolean }[]> = {
+  'candidate-communication': [
+    { to: '/queue', label: 'Candidates', icon: ClipboardList, end: true },
+    { to: '/review', label: 'Review', icon: Inbox, end: false },
+    { to: '/history', label: 'History', icon: History, end: false },
+  ],
+  'candidate-evaluation': [{ to: '/evaluations', label: 'Screening', icon: FileSearch, end: true }],
+}
+
 export function AppLayout() {
   const { data: me } = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
   const isSuperAdmin = me?.app_role === 'super_admin'
   const [open, setOpen] = useState<string>(ACTIVE_MODULE) // which skill is expanded
-
-  // Pages that belong to the live skill (Candidate Communication).
-  const pages = [
-    { to: '/queue', label: 'Candidates', icon: ClipboardList, end: true },
-    { to: '/review', label: 'Review', icon: Inbox, end: false },
-    { to: '/history', label: 'History', icon: History, end: false },
-  ]
 
   return (
     <div className="flex h-full bg-canvas">
@@ -36,7 +40,8 @@ export function AppLayout() {
 
           {MODULES.map((skill) => {
             const Icon = skill.icon
-            const isLive = skill.slug === ACTIVE_MODULE
+            const isLive = skill.status === 'live'
+            const modulePages = MODULE_PAGES[skill.slug]
             const isOpen = open === skill.slug
             return (
               <div key={skill.slug} className="mb-0.5">
@@ -59,8 +64,8 @@ export function AppLayout() {
 
                 {isOpen && (
                   <div className="mb-1 mt-0.5 space-y-0.5 pl-8">
-                    {isLive ? (
-                      pages.map(({ to, label, icon: PIcon, end }) => (
+                    {isLive && modulePages && modulePages.length > 0 ? (
+                      modulePages.map(({ to, label, icon: PIcon, end }) => (
                         <NavLink
                           key={to}
                           to={to}
