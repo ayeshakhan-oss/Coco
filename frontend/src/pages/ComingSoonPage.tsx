@@ -1,22 +1,30 @@
 import { ArrowLeft, Sparkles } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { activeModule, comingSoonModules, moduleBySlug } from '../lib/modules'
+import { comingSoonModules, liveModules, moduleBySlug } from '../lib/modules'
+
+// Joins live module labels into readable prose: "A", "A and B", "A, B and C".
+function joinLabels(labels: string[]): string {
+  if (labels.length <= 1) return labels[0] ?? ''
+  if (labels.length === 2) return `${labels[0]} and ${labels[1]}`
+  return `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}`
+}
 
 export function ComingSoonPage() {
   const { slug } = useParams()
   const mod = moduleBySlug(slug)
 
-  // Unknown slug or the live module → send back to the working app.
+  // Unknown slug or a live module → send back to the working app.
   if (!mod || mod.status === 'live') return <Navigate to="/" replace />
 
   const Icon = mod.icon
-  const current = activeModule()
+  const live = liveModules()
+  const first = live[0]
   const others = comingSoonModules().filter((m) => m.slug !== mod.slug)
 
   return (
     <div className="mx-auto max-w-3xl px-8 py-16">
-      <Link to="/" className="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-dim hover:text-ink">
-        <ArrowLeft className="h-4 w-4" /> Back to {current.label}
+      <Link to={first.route ?? '/'} className="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-dim hover:text-ink">
+        <ArrowLeft className="h-4 w-4" /> Back to {first.label}
       </Link>
 
       <div className="card flex flex-col items-center px-8 py-14 text-center">
@@ -29,11 +37,12 @@ export function ComingSoonPage() {
         <h1 className="mt-4 font-display text-3xl font-bold text-ink">{mod.label}</h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted">{mod.blurb}</p>
         <p className="mt-6 max-w-md text-sm leading-relaxed text-ink-dim">
-          This Coco module isn&rsquo;t live yet. We&rsquo;ve launched <span className="font-medium text-ink">{current.label}</span> first.
-          The rest of Coco&rsquo;s capabilities are being brought online module by module.
+          This Coco module isn&rsquo;t live yet. We&rsquo;ve launched{' '}
+          <span className="font-medium text-ink">{joinLabels(live.map((m) => m.label))}</span> so far. The rest of
+          Coco&rsquo;s capabilities are being brought online module by module.
         </p>
-        <Link to="/" className="btn-primary mt-8">
-          Go to {current.label}
+        <Link to={first.route ?? '/'} className="btn-primary mt-8">
+          Go to {first.label}
         </Link>
       </div>
 

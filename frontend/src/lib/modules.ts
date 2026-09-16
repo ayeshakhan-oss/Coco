@@ -22,5 +22,28 @@ export const MODULES: ModuleDef[] = [
 ]
 
 export const activeModule = () => MODULES.find((m) => m.slug === ACTIVE_MODULE)!
+export const liveModules = () => MODULES.filter((m) => m.status === 'live')
 export const comingSoonModules = () => MODULES.filter((m) => m.status === 'soon')
 export const moduleBySlug = (slug?: string) => MODULES.find((m) => m.slug === slug)
+
+// Every URL prefix a live module owns, including detail/child routes that
+// aren't in its own top-level `route` field (e.g. candidate-communication
+// also owns /applications/:id and /drafts/:commId, reached by drilling into
+// /queue or /review). Longest prefix wins so more specific routes never lose
+// to a shorter one. Falls back to ACTIVE_MODULE for routes no module claims
+// (home, /users).
+const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
+  { prefix: '/queue', slug: 'candidate-communication' },
+  { prefix: '/review', slug: 'candidate-communication' },
+  { prefix: '/history', slug: 'candidate-communication' },
+  { prefix: '/applications', slug: 'candidate-communication' },
+  { prefix: '/drafts', slug: 'candidate-communication' },
+  { prefix: '/evaluations', slug: 'candidate-evaluation' },
+]
+
+export const moduleForPath = (pathname: string): ModuleDef => {
+  const matches = ROUTE_OWNERS.filter((o) => pathname.startsWith(o.prefix))
+  if (matches.length === 0) return activeModule()
+  const best = matches.reduce((a, b) => (b.prefix.length > a.prefix.length ? b : a))
+  return moduleBySlug(best.slug) ?? activeModule()
+}

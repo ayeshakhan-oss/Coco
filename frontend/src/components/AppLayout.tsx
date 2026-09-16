@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import type { LucideIcon } from 'lucide-react'
 import { ChevronDown, ClipboardList, FileSearch, History, Inbox, LogOut, Users } from 'lucide-react'
-import { useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { api } from '../lib/api'
 import { fullName, initials } from '../lib/format'
-import { ACTIVE_MODULE, MODULES } from '../lib/modules'
+import { MODULES, moduleForPath } from '../lib/modules'
 
 // Sub-pages per live module, keyed by module slug.
 const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon; end: boolean }[]> = {
@@ -20,7 +20,16 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
 export function AppLayout() {
   const { data: me } = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
   const isSuperAdmin = me?.app_role === 'super_admin'
-  const [open, setOpen] = useState<string>(ACTIVE_MODULE) // which skill is expanded
+  const location = useLocation()
+  const [open, setOpen] = useState<string>(() => moduleForPath(location.pathname).slug) // which skill is expanded
+
+  // Keep the sidebar section in sync with whichever module the current route
+  // belongs to, so e.g. landing on /evaluations directly (bookmark, reload)
+  // doesn't leave candidate-communication expanded and evaluations collapsed.
+  useEffect(() => {
+    setOpen(moduleForPath(location.pathname).slug)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname])
 
   return (
     <div className="flex h-full bg-canvas">

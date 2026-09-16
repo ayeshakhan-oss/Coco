@@ -339,6 +339,11 @@ export interface EvaluationSummary {
   tiers: TierBucket[]
   scored: number
   unusable: number
+  // Rows counted in `scored` whose score is meaningless (MANUAL_REVIEW and
+  // similar) because the document never cleared the readability floor. This
+  // is the number that reveals a broken job: a job can report a healthy
+  // `scored` count while most of it is actually unreadable.
+  unscored: number
   total: number
 }
 
@@ -357,12 +362,17 @@ export interface EvaluationRow {
 }
 
 export interface EvaluationDetail extends EvaluationRow {
-  dimension_scores: Record<string, unknown> | null
   strengths: string[] | null
   gaps: string[] | null
-  hard_filter_flags: Array<Record<string, unknown>> | null
   verdict: string | null
   rubric_version: number | null
   model: string | null
   evaluated_at: string | null
+}
+
+// Response shape for GET /api/evaluations/jobs/{job_id}/candidates. Carries
+// `total` so the caller can tell there are more rows beyond the current page.
+export interface CandidatePage {
+  rows: EvaluationRow[]
+  total: number
 }

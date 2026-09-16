@@ -1,11 +1,11 @@
 import type {
   ApplicationDetail,
+  CandidatePage,
   Communication,
   CurrentUser,
   DraftContent,
   EvalResult,
   EvaluationDetail,
-  EvaluationRow,
   EvaluationSummary,
   GenerateResponse,
   GmailMatch,
@@ -133,11 +133,13 @@ export const api = {
   evaluationJobs: () => get<ScreenedJob[]>('/api/evaluations/jobs'),
   evaluationSummary: (jobId: number) =>
     get<EvaluationSummary>(`/api/evaluations/jobs/${jobId}/summary`),
-  evaluationCandidates: (jobId: number, tier?: string) =>
-    get<EvaluationRow[]>(
-      `/api/evaluations/jobs/${jobId}/candidates` +
-        (tier ? `?tier=${encodeURIComponent(tier)}` : ''),
-    ),
+  evaluationCandidates: (jobId: number, tier?: string, limit = 100, offset = 0) => {
+    const qs = new URLSearchParams()
+    if (tier) qs.set('tier', tier)
+    qs.set('limit', String(limit))
+    qs.set('offset', String(offset))
+    return get<CandidatePage>(`/api/evaluations/jobs/${jobId}/candidates?${qs.toString()}`)
+  },
   evaluationDetail: (applicationId: number) =>
     get<EvaluationDetail>(`/api/evaluations/applications/${applicationId}`),
 }
