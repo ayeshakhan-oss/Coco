@@ -13,6 +13,7 @@ import pytest
 
 from webapp.services.nugget_reads import (
     TIER_ORDER,
+    UNSCORED_TIERS,
     assert_read_only,
     is_valid_tier,
     shape_summary,
@@ -153,6 +154,44 @@ def test_shape_summary_suppresses_meaningless_averages_for_unusable():
     assert out["tiers"][0]["avg_pct"] is None
     assert out["tiers"][0]["min_pct"] is None
     assert out["tiers"][0]["max_pct"] is None
+
+
+def test_shape_summary_suppresses_manual_review_scores_but_still_counts_them_as_scored():
+    # MANUAL_REVIEW's status is 'scored' (the rubric routed it there because the
+    # extracted text fell below the readability floor, not because it lost
+    # points), so it must land in `scored`, not `unusable`, and the existing
+    # scored/unusable/total totals must not shift. Its avg/min/max must still
+    # be suppressed like UNUSABLE's, because a 0.00 on an unreadable document
+    # is noise, not a measurement.
+    rows = [
+        {"tier": "P4", "status": "scored", "n": 378, "avg_pct": 29.1, "min_pct": 0.0, "max_pct": 53.0},
+        {"tier": "MANUAL_REVIEW", "status": "scored", "n": 12, "avg_pct": 0.0, "min_pct": 0.0, "max_pct": 0.0},
+        {"tier": "UNUSABLE", "status": "unusable", "n": 57, "avg_pct": 0.0, "min_pct": 0.0, "max_pct": 0.0},
+    ]
+    out = shape_summary(rows)
+
+    manual_review = next(t for t in out["tiers"] if t["tier"] == "MANUAL_REVIEW")
+    assert manual_review["avg_pct"] is None
+    assert manual_review["min_pct"] is None
+    assert manual_review["max_pct"] is None
+    assert manual_review["is_unscored"] is True
+    # is_unusable keeps its own meaning: MANUAL_REVIEW is not the unusable status.
+    assert manual_review["is_unusable"] is False
+
+    unusable = next(t for t in out["tiers"] if t["tier"] == "UNUSABLE")
+    assert unusable["is_unscored"] is True
+    assert unusable["is_unusable"] is True
+
+    p4 = next(t for t in out["tiers"] if t["tier"] == "P4")
+    assert p4["is_unscored"] is False
+    assert p4["avg_pct"] == 29.1
+
+    # MANUAL_REVIEW's status is 'scored', so it counts toward `scored`, not
+    # `unusable`; totals are unchanged from the pre-existing shape.
+    assert out["scored"] == 378 + 12
+    assert out["unusable"] == 57
+    assert out["total"] == 378 + 12 + 57
+    assert "MANUAL_REVIEW" in UNSCORED_TIERS
 
 
 def test_shape_summary_handles_empty():

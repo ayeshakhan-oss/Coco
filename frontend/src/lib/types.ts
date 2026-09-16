@@ -332,6 +332,7 @@ export interface TierBucket {
   min_pct: number | null
   max_pct: number | null
   is_unusable: boolean
+  is_unscored: boolean
 }
 
 export interface EvaluationSummary {
@@ -352,6 +353,7 @@ export interface EvaluationRow {
   confidence: string | null
   resume_health: number | null
   is_unusable: boolean
+  is_unscored: boolean
 }
 
 export interface EvaluationDetail extends EvaluationRow {

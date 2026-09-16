@@ -338,6 +338,7 @@ class TierBucket(_Base):
     min_pct: Optional[float] = None
     max_pct: Optional[float] = None
     is_unusable: bool
+    is_unscored: bool = False
 
 
 class EvaluationSummary(_Base):
@@ -358,6 +359,7 @@ class EvaluationRow(_Base):
     confidence: Optional[str] = None
     resume_health: Optional[int] = None
     is_unusable: bool = False
+    is_unscored: bool = False
 
 
 class EvaluationDetail(EvaluationRow):
