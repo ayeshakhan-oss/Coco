@@ -4,6 +4,9 @@ import type {
   CurrentUser,
   DraftContent,
   EvalResult,
+  EvaluationDetail,
+  EvaluationRow,
+  EvaluationSummary,
   GenerateResponse,
   GmailMatch,
   GmailSyncStatus,
@@ -13,6 +16,7 @@ import type {
   QueueRow,
   QueueStats,
   ScorecardResponse,
+  ScreenedJob,
   SendResponse,
   TimelineItem,
 } from './types'
@@ -124,4 +128,16 @@ export const api = {
     post<ManagedUser>('/api/users', payload),
   updateUser: (id: string, payload: { app_role?: string; active?: boolean }) =>
     request<ManagedUser>('PATCH', `/api/users/${id}`, payload),
+
+  // Candidate evaluation (Nugget technical screening, read-only)
+  evaluationJobs: () => get<ScreenedJob[]>('/api/evaluations/jobs'),
+  evaluationSummary: (jobId: number) =>
+    get<EvaluationSummary>(`/api/evaluations/jobs/${jobId}/summary`),
+  evaluationCandidates: (jobId: number, tier?: string) =>
+    get<EvaluationRow[]>(
+      `/api/evaluations/jobs/${jobId}/candidates` +
+        (tier ? `?tier=${encodeURIComponent(tier)}` : ''),
+    ),
+  evaluationDetail: (applicationId: number) =>
+    get<EvaluationDetail>(`/api/evaluations/applications/${applicationId}`),
 }

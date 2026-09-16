@@ -311,3 +311,56 @@ export interface ApplicationDetail {
   display_status?: DisplayStatus
   gmail_status?: GmailStatus
 }
+
+// Candidate evaluation (Nugget technical screening, read-only)
+export interface ScreenedJob {
+  job_id: number
+  job_title: string | null
+  rubric_version: number
+  rubric_status: string
+  seniority: string | null
+  scored: number
+  unusable: number
+  last_run_at: string | null
+}
+
+export interface TierBucket {
+  tier: string
+  status: string | null
+  n: number
+  avg_pct: number | null
+  min_pct: number | null
+  max_pct: number | null
+  is_unusable: boolean
+}
+
+export interface EvaluationSummary {
+  tiers: TierBucket[]
+  scored: number
+  unusable: number
+  total: number
+}
+
+export interface EvaluationRow {
+  application_id: number | null
+  candidate_id: number | null
+  candidate_name: string | null
+  candidate_email: string | null
+  score_pct: number | null
+  tier: string | null
+  tier_reason: string | null
+  confidence: string | null
+  resume_health: number | null
+  is_unusable: boolean
+}
+
+export interface EvaluationDetail extends EvaluationRow {
+  dimension_scores: Record<string, unknown> | null
+  strengths: string[] | null
+  gaps: string[] | null
+  hard_filter_flags: Array<Record<string, unknown>> | null
+  verdict: string | null
+  rubric_version: number | null
+  model: string | null
+  evaluated_at: string | null
+}
