@@ -1,6 +1,6 @@
 ---
 name: candidate-evaluation
-description: Evaluate candidates across all stages (CV screening, case study evaluation, values interview scoring, KCD evaluation). Produce screening reports with 4 stat boxes, hyperlinked candidate profiles, and structured scoring. All evaluations require verified data, no fabrication, and specific evidence from source material.
+description: "Evaluate candidates across all stages (CV screening, case study evaluation, values interview scoring, KCD evaluation, and technical screening for engineering roles). Produce screening reports with 4 stat boxes, hyperlinked candidate profiles, and structured scoring. Technical roles are screened by Nugget's live engine in the shared database, which Coco reads READ-ONLY and never duplicates. All evaluations require verified data, no fabrication, and specific evidence from source material."
 compatibility: Requires RULES.md, memory/LOCKED_TEMPLATES_INDEX.md
 ---
 
@@ -32,6 +32,8 @@ Trigger this skill when:
 - User requests "evaluate case study submissions"
 - User wants "values interview scoring" or "KCD evaluation"
 - User needs a "screening report" or "candidate ranking"
+- User asks about screening for a **technical or engineering role** (see #5 below: Nugget's
+  engine already screened it, read the result rather than screening by hand)
 - Any systematic evaluation requiring evidence-based assessment
 
 ---
@@ -64,6 +66,20 @@ This skill orchestrates the following detailed procedures:
    - Case study evaluation framework
    - Technical assessment criteria
    - Problem-solving approach analysis
+
+5. **Technical Screening** — `technical-screening.md` (this folder) — ADDED 2026-09-15
+   - 🔴 Technical and engineering roles are screened by **Nugget** (Aymen Abid's agent), whose
+     engine is LIVE in the shared Markaz Neon DB. **Coco does not screen them by hand and does
+     not run a second system.**
+   - 🔒 **READ ONLY.** `public.nugget_screening_*` (8 tables). Never INSERT/UPDATE/DELETE, never
+     create a rubric, never start a run. Read via `scripts/screening/read_nugget_screening.py`.
+   - ⚠️ The `nugget_deg` schema has the same table names and is EMPTY. Always query `public`.
+   - Always filter `WHERE is_current` or a superseded eval reads as live. `status` is
+     `'scored'` / `'unusable'`, not `'ok'`.
+   - 🔴 **`UNUSABLE` is an extraction failure, NEVER a rejection.** Those candidates still need
+     a human to open the CV.
+   - Attribute every figure to Nugget's engine and its rubric version. A tier is not a hiring
+     decision, and a rejection letter must still be grounded in the candidate's own CV.
 
 ---
 
