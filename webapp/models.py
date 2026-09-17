@@ -412,6 +412,12 @@ class ValuesScorecardDraft(Base):
     # from the other columns.
     markaz_payload: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
 
+    # The PRIOR `applications.values_scorecard` value, when submit() was
+    # called with overwrite=True against an application that already had a
+    # human-written scorecard. NULL on every normal (first-time) submit.
+    # Never let an overwrite destroy the only copy of what it replaced.
+    replaced_payload: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+
     __table_args__ = (
         CheckConstraint(
             "status IN ('draft','submitted')", name="ck_values_draft_status"

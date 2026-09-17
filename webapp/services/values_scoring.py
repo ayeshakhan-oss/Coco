@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import datetime as dt
 import logging
+import re
 from typing import Optional
 
 log = logging.getLogger("webapp.values_scoring")
@@ -66,6 +67,32 @@ def verdict(ratings: list[str]) -> str:
     """PASS = zero minuses AND at most two plus-minuses. Everything else is OUT."""
     t = tally(ratings)
     return "PASS" if (t["minus"] == 0 and t["plus_minus"] <= 2) else "OUT"
+
+
+# Matches the "{PASS|OUT} - N(+) / N(+/-) / N(-)" prefix generate() writes,
+# with an optional " - <narrative>" tail a human may have typed in PATCH.
+_FINAL_COMMENTS_PREFIX_RE = re.compile(
+    r"^(?:PASS|OUT) - \d+\(\+\) / \d+\(\+/-\) / \d+\(-\)\s*(?:-\s*)?"
+)
+
+
+def recompute_final_comments(ratings: list[str], existing_text: Optional[str] = "") -> str:
+    """Rebuild the verdict/tally PREFIX of `final_comments` from the CURRENT
+    ratings, keeping any narrative a human appended after that prefix.
+
+    `final_comments` is a permanent Markaz field. A PATCH that changes
+    ratings must never leave the old verdict/tally standing next to a
+    contradicting `proceedToRightSeat` -- e.g. "PASS - 6(+) / 0(+/-) / 0(-)"
+    beside "No". This is called both when the client left `final_comments`
+    untouched (ratings changed under it) and when the client supplied fresh
+    text (their narrative is kept, but the verdict/tally leading it is never
+    trusted -- it is always the one computed here).
+    """
+    v = verdict(ratings)
+    t = tally(ratings)
+    prefix = f"{v} - {t['plus']}(+) / {t['plus_minus']}(+/-) / {t['minus']}(-)"
+    remainder = _FINAL_COMMENTS_PREFIX_RE.sub("", existing_text or "", count=1).strip()
+    return f"{prefix} - {remainder}" if remainder else prefix
 
 
 def validate_values(values: list[dict]) -> None:

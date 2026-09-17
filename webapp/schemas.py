@@ -413,6 +413,15 @@ class ValuesScorecardEdit(_Base):
     proceed: Optional[bool] = None
 
 
+class ValuesScorecardSubmitRequest(_Base):
+    """`overwrite=True` is the explicit, deliberate override required to
+    replace an application's EXISTING Markaz `values_scorecard`. Defaulted so
+    a plain POST with no body still submits normally in the (far more common)
+    case where the target application has no scorecard yet."""
+
+    overwrite: bool = False
+
+
 class ValuesScorecardOut(_Base):
     id: str
     application_id: int
@@ -433,3 +442,4 @@ class ValuesScorecardOut(_Base):
     approved_at: Optional[dt.datetime] = None
     submitted_at: Optional[dt.datetime] = None
     markaz_payload: Optional[dict[str, Any]] = None
+    replaced_payload: Optional[dict[str, Any]] = None
