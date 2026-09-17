@@ -210,9 +210,12 @@ def score_transcript(*, transcript: str, candidate_name: str, role: str) -> dict
     Refuses a transcript that is too short to be real (TranscriptTooShort).
     Calls the model, validates its response against the locked shape
     (validate_values), and NEVER repairs a malformed response: a response that
-    fails validation is retried once with a fresh model call, and if the
-    second attempt is also malformed this raises ValuesScorecardError rather
-    than coercing, guessing, or filling in a blank field.
+    fails validation -- including a response that is not even parseable JSON,
+    which surfaces as a plain ValueError out of _call_model/drafting rather
+    than a ValuesScorecardError -- is retried once with a fresh model call
+    (not a repair of the old one), and if the second attempt is also
+    malformed this raises ValuesScorecardError (never a bare ValueError)
+    rather than coercing, guessing, or filling in a blank field.
 
     The verdict is always computed by verdict() from the model's six ratings,
     never taken from the model even if it volunteers one (the output contract
@@ -235,10 +238,15 @@ def score_transcript(*, transcript: str, candidate_name: str, role: str) -> dict
     last_error: Optional[ValuesScorecardError] = None
     attempts = 2  # one retry, per the rule: malformed -> retry once -> raise
     for attempt in range(attempts):
-        parsed, model_name = _call_model(
-            transcript=transcript, candidate_name=candidate_name, role=role
-        )
         try:
+            # The call itself is inside the try: a response that is not even
+            # parseable JSON (a plain ValueError out of drafting._parse_json,
+            # raised before this ever reaches ValuesScorecardError territory)
+            # is exactly as "malformed" as a well-formed JSON object with the
+            # wrong shape, and must be retried the same way.
+            parsed, model_name = _call_model(
+                transcript=transcript, candidate_name=candidate_name, role=role
+            )
             if not isinstance(parsed, dict):
                 raise ValuesScorecardError(
                     f"model response was not a JSON object, got {type(parsed).__name__}"
@@ -272,6 +280,23 @@ def score_transcript(*, transcript: str, candidate_name: str, role: str) -> dict
             last_error = exc
             log.warning(
                 "score_transcript: malformed model response for %r "
+                "(attempt %d/%d): %s", candidate_name, attempt + 1, attempts, exc,
+            )
+            continue
+        except ValueError as exc:
+            # ValuesScorecardError IS a ValueError, but that branch is caught
+            # above, so anything landing here is a DIFFERENT ValueError: most
+            # commonly drafting._parse_json's "LLM did not return parseable
+            # JSON" when the model's text is not JSON at all. Wrap it so the
+            # caller only ever has one exception type to handle, and keep the
+            # original exception visible via __cause__ for debugging.
+            wrapped = ValuesScorecardError(
+                f"model response was not parseable JSON: {exc}"
+            )
+            wrapped.__cause__ = exc
+            last_error = wrapped
+            log.warning(
+                "score_transcript: model call/parse failed for %r "
                 "(attempt %d/%d): %s", candidate_name, attempt + 1, attempts, exc,
             )
             continue

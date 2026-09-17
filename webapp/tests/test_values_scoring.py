@@ -67,6 +67,50 @@ def test_malformed_model_response_is_not_silently_repaired(monkeypatch):
         vs.score_transcript(transcript="x" * 3000, candidate_name="A", role="R")
 
 
+def test_a_response_that_is_not_parseable_json_is_retried(monkeypatch):
+    """_call_model can raise a plain ValueError (drafting._parse_json's "LLM
+    did not return parseable JSON") before any ValuesScorecardError territory
+    is reached. That must be retried exactly like a wrong-shape response."""
+    from webapp.services import values_scoring as vs
+
+    good = {
+        "values": [
+            {"name": n, "deepDive": "d", "curveBall": "c", "microCase": "m", "rating": "+"}
+            for n in vs.VALUE_NAMES
+        ],
+    }
+    calls = []
+
+    def flaky(**kw):
+        calls.append(kw)
+        if len(calls) == 1:
+            raise ValueError("Expecting value: line 1 column 1")
+        return good, "test-model"
+
+    monkeypatch.setattr(vs, "_call_model", flaky)
+    out = vs.score_transcript(transcript="x" * 3000, candidate_name="A", role="R")
+    assert out["verdict"] == "PASS"
+    assert len(calls) == 2
+
+
+def test_json_parse_failure_on_both_attempts_raises_scorecard_error_not_bare_value_error(monkeypatch):
+    """Two consecutive parse failures must still surface as a single,
+    handleable exception type, never a bare ValueError escaping the function."""
+    from webapp.services import values_scoring as vs
+
+    calls = []
+
+    def always_broken(**kw):
+        calls.append(kw)
+        raise ValueError("Expecting value: line 1 column 1")
+
+    monkeypatch.setattr(vs, "_call_model", always_broken)
+    with pytest.raises(vs.ValuesScorecardError) as excinfo:
+        vs.score_transcript(transcript="x" * 3000, candidate_name="A", role="R")
+    assert type(excinfo.value) is vs.ValuesScorecardError
+    assert len(calls) == 2
+
+
 def _values(ratings):
     return [
         {"name": n, "deepDive": "d", "curveBall": "c", "microCase": "m", "rating": r}
