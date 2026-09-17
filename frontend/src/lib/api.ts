@@ -19,6 +19,8 @@ import type {
   ScreenedJob,
   SendResponse,
   TimelineItem,
+  ValuesScorecardDraft,
+  ValuesScorecardDraftValue,
 } from './types'
 
 export class ApiError extends Error {
@@ -63,6 +65,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 const get = <T>(p: string) => request<T>('GET', p)
 const post = <T>(p: string, b?: unknown) => request<T>('POST', p, b ?? {})
 const put = <T>(p: string, b: unknown) => request<T>('PUT', p, b)
+const patch = <T>(p: string, b: unknown) => request<T>('PATCH', p, b)
 
 export interface CandidateQuery {
   status?: string
@@ -142,4 +145,15 @@ export const api = {
   },
   evaluationDetail: (applicationId: number) =>
     get<EvaluationDetail>(`/api/evaluations/applications/${applicationId}`),
+
+  // Values scorecard draft lifecycle: generate -> read -> edit -> submit.
+  generateValuesScorecard: (application_id: number, transcript: string, host: string) =>
+    post<ValuesScorecardDraft>('/api/values-scorecards/generate', { application_id, transcript, host }),
+  valuesScorecardDraft: (draftId: string) => get<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}`),
+  editValuesScorecardDraft: (
+    draftId: string,
+    payload: { values?: ValuesScorecardDraftValue[]; final_comments?: string; proceed?: boolean },
+  ) => patch<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}`, payload),
+  submitValuesScorecardDraft: (draftId: string, overwrite = false) =>
+    post<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}/submit`, { overwrite }),
 }

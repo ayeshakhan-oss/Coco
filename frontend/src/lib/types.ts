@@ -376,3 +376,56 @@ export interface CandidatePage {
   rows: EvaluationRow[]
   total: number
 }
+
+// --------------------------------------------------------------------------
+// Values scorecard draft lifecycle (webapp/routers/values_scorecards.py).
+// Field names on `values` items (deepDive/curveBall/microCase) and on `gwc`
+// (gets_it/wants_it/capacity) are camelCase/snake_case exactly as the model
+// writes them and the backend validates them -- not the same shape as the
+// already-in-Markaz ScorecardValueItem/GwcScorecard types above.
+// --------------------------------------------------------------------------
+
+export interface ValuesScorecardDraftValue {
+  name: string
+  rating: string // '+' | '+/-' | '-'
+  deepDive: string
+  curveBall: string
+  microCase: string
+}
+
+export interface ValuesScorecardGwc {
+  gets_it: string // 'Yes' | 'No'
+  wants_it: string
+  capacity: string
+}
+
+export interface ValuesScorecardTally {
+  plus: number
+  plus_minus: number
+  minus: number
+}
+
+export interface ValuesScorecardDraft {
+  id: string
+  application_id: number
+  candidate_name: string
+  host: string
+  transcript_sha256: string
+  values: ValuesScorecardDraftValue[]
+  gwc: ValuesScorecardGwc | null
+  final_comments: string
+  proceed: boolean
+  // Both are always RECOMPUTED server-side from `values` -- never trust a
+  // cached copy, and never compute either of these in the browser.
+  tally: ValuesScorecardTally
+  verdict: 'PASS' | 'OUT'
+  status: 'draft' | 'submitted'
+  model: string
+  created_by: string
+  created_at?: string | null
+  approved_by?: string | null
+  approved_at?: string | null
+  submitted_at?: string | null
+  markaz_payload?: Record<string, unknown> | null
+  replaced_payload?: Record<string, unknown> | null
+}

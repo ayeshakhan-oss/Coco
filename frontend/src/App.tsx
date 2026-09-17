@@ -10,6 +10,7 @@ import { LoginPage } from './pages/LoginPage'
 import { QueuePage } from './pages/QueuePage'
 import { ReviewInboxPage } from './pages/ReviewInboxPage'
 import { UsersPage } from './pages/UsersPage'
+import { ValuesScorecardPage } from './pages/ValuesScorecardPage'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/review" element={<ReviewInboxPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/values-scorecards" element={<ValuesScorecardPage />} />
           <Route path="/modules/:slug" element={<ComingSoonPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -39,6 +39,7 @@ const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
   { prefix: '/applications', slug: 'candidate-communication' },
   { prefix: '/drafts', slug: 'candidate-communication' },
   { prefix: '/evaluations', slug: 'candidate-evaluation' },
+  { prefix: '/values-scorecards', slug: 'candidate-evaluation' },
 ]
 
 export const moduleForPath = (pathname: string): ModuleDef => {
