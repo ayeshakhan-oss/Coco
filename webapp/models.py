@@ -44,6 +44,9 @@ MATCH_METHODS = ("message_id", "recipient_window", "none")
 SYNC_TRIGGERS = ("scheduled", "manual")
 SYNC_STATUSES = ("running", "ok", "partial", "failed")
 
+# Values-scorecard draft enum (see ValuesScorecardDraft below).
+VALUES_DRAFT_STATUSES = ("draft", "submitted")
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -59,6 +62,10 @@ def _evidence_id() -> str:
 
 def _syncrun_id() -> str:
     return "sync-" + uuid4().hex
+
+
+def _values_draft_id() -> str:
+    return "vsd-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -336,4 +343,82 @@ class GmailSyncRun(Base):
         Index("ix_syncrun_status", "status"),
         Index("ix_syncrun_started_at", "started_at"),
         {"schema": "coco"},  # see CommEvidence — protected from Markaz's schema push
+    )
+
+
+class ValuesScorecardDraft(Base):
+    """A values-interview scorecard DRAFT — reviewed by a human before it is
+    ever written to Markaz. `webapp/services/values_scoring.py` holds the pure
+    scoring rules and the Markaz payload shape; this table is where a scored
+    draft lives between "the model scored it" and "a human approved + submitted
+    it", plus the durable record of what was actually submitted.
+
+    We deliberately store only a SHA-256 of the interview transcript, not the
+    transcript itself: the transcript is interview content about a named
+    person and does not need a second home once it has been scored. The hash
+    is enough to tell whether a re-score used the same input.
+    """
+
+    __tablename__ = "values_scorecard_drafts"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_values_draft_id)
+
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
+    host: Mapped[str] = mapped_column(Text, nullable=False)
+    transcript_sha256: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Column is named "values" to match the Markaz payload key
+    # (build_markaz_payload's "values" list of per-value ratings). Mapped to a
+    # differently-named Python attribute: "values" is a builtin dict method
+    # name and shadows SQLAlchemy's (deprecated) Query.values(), so we keep it
+    # out of the attribute namespace even though a standalone declarative
+    # smoke test showed no actual collision on this Base.
+    values_json: Mapped[dict] = mapped_column("values", JSONB, nullable=False)
+
+    final_comments: Mapped[str] = mapped_column(Text, nullable=False)
+    proceed: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+    # The Get/Want/Capacity scorecard, when this draft is part of a warm-bench
+    # evaluation that also carries a GWC interview. Absent for a values-only pass.
+    gwc: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+
+    status: Mapped[str] = mapped_column(
+        Text, nullable=False, default="draft", server_default="draft"
+    )
+
+    # Column is named "model" to record which model scored the draft. Mapped to
+    # a differently-named Python attribute for the same reason as "values"
+    # above: "model" collides with Pydantic v2's `model_`-prefixed protected
+    # namespace on any schema that later wraps this row (e.g. `model_config`,
+    # `model_validate`), even though it is not reserved on the SQLAlchemy side.
+    model_name: Mapped[str] = mapped_column("model", Text, nullable=False)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    approved_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    approved_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    submitted_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    # The exact payload handed to Markaz at submit time (see
+    # build_markaz_payload), kept for audit even though it is reconstructable
+    # from the other columns.
+    markaz_payload: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('draft','submitted')", name="ck_values_draft_status"
+        ),
+        Index("ix_values_draft_application_id", "application_id"),
+        # Live in a dedicated `coco` schema so Markaz's Replit per-deploy schema
+        # push (which prunes unknown `public` tables) can't drop them. See
+        # docs/RAILWAY_DEPLOYMENT_LESSONS.md + the 2026-06-30 root-cause memo.
+        {"schema": "coco"},
     )

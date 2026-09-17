@@ -143,3 +143,10 @@ def test_payload_rejects_extra_or_missing_keys():
         validate_markaz_payload({**p, "extra": 1})
     with pytest.raises(ValuesScorecardError):
         validate_markaz_payload({k: v for k, v in p.items() if k != "noteTaker"})
+
+
+def test_draft_table_lives_in_the_coco_schema():
+    """public is inside Markaz's Replit schema-push blast radius; coco is not."""
+    from webapp.models import ValuesScorecardDraft
+
+    assert ValuesScorecardDraft.__table__.schema == "coco"

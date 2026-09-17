@@ -82,7 +82,11 @@ def ensure_app_tables() -> None:
     an uncommitted request transaction). Shared by the read path, the Gmail sync
     service, and the refresh endpoint so a reset can't hard-break any of them.
     See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
-    from .models import CommEvidence, GmailSyncRun  # local import avoids a cycle
+    from .models import (  # local import avoids a cycle
+        CommEvidence,
+        GmailSyncRun,
+        ValuesScorecardDraft,
+    )
 
     engine = get_engine()
     # The tables live in a dedicated `coco` schema (out of Markaz's Replit
@@ -91,7 +95,11 @@ def ensure_app_tables() -> None:
         conn.execute(text("CREATE SCHEMA IF NOT EXISTS coco"))
     Base.metadata.create_all(
         engine,
-        tables=[CommEvidence.__table__, GmailSyncRun.__table__],
+        tables=[
+            CommEvidence.__table__,
+            GmailSyncRun.__table__,
+            ValuesScorecardDraft.__table__,
+        ],
         checkfirst=True,
     )
 
