@@ -24,6 +24,48 @@ from webapp.services.values_scoring import (
 )
 
 
+# --------------------------------------------------------------------------
+# Task 5: the model call. These monkeypatch _call_model, so no network call is
+# ever made here.
+# --------------------------------------------------------------------------
+
+
+def test_verdict_is_computed_not_taken_from_the_model(monkeypatch):
+    """A model that claims PASS on a scorecard containing a minus must not win."""
+    from webapp.services import values_scoring as vs
+
+    payload = {
+        "values": [
+            {"name": n, "deepDive": "d", "curveBall": "c", "microCase": "m", "rating": r}
+            for n, r in zip(vs.VALUE_NAMES, ["+", "+", "+", "+", "+", "-"])
+        ],
+        "verdict": "PASS",          # the model lying
+        "gwc": {"gets_it": "Yes", "wants_it": "Yes", "capacity": "Yes"},
+    }
+    monkeypatch.setattr(vs, "_call_model", lambda **kw: (payload, "test-model"))
+
+    out = vs.score_transcript(transcript="x" * 3000, candidate_name="A", role="R")
+    assert out["verdict"] == "OUT"      # computed from the ratings
+    assert out["gwc"] is None           # GWC only for a PASS
+
+
+def test_short_transcript_is_refused():
+    from webapp.services.values_scoring import TranscriptTooShort, score_transcript
+
+    with pytest.raises(TranscriptTooShort):
+        score_transcript(transcript="too short", candidate_name="A", role="R")
+
+
+def test_malformed_model_response_is_not_silently_repaired(monkeypatch):
+    from webapp.services import values_scoring as vs
+
+    bad = {"values": [{"name": "Don't Walk Away", "deepDive": "d",
+                       "curveBall": "c", "microCase": "m", "rating": "+"}]}
+    monkeypatch.setattr(vs, "_call_model", lambda **kw: (bad, "test-model"))
+    with pytest.raises(vs.ValuesScorecardError):
+        vs.score_transcript(transcript="x" * 3000, candidate_name="A", role="R")
+
+
 def _values(ratings):
     return [
         {"name": n, "deepDive": "d", "curveBall": "c", "microCase": "m", "rating": r}

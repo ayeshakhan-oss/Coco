@@ -35,7 +35,10 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # Tables this Alembic environment is allowed to manage.
-MANAGED_TABLES = {"app_users", "communications", "comm_evidence", "gmail_sync_runs"}
+MANAGED_TABLES = {
+    "app_users", "communications", "comm_evidence", "gmail_sync_runs",
+    "values_scorecard_drafts",
+}
 
 _PLACEHOLDER_OFFLINE_URL = "postgresql+psycopg://user:pass@localhost:5432/neondb"
 

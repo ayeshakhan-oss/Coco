@@ -13,7 +13,10 @@ records each and are drift, not the standard.
 from __future__ import annotations
 
 import datetime as dt
+import logging
 from typing import Optional
+
+log = logging.getLogger("webapp.values_scoring")
 
 # Canonical order matters: Markaz renders the values in array order.
 VALUE_NAMES = (
@@ -34,6 +37,21 @@ _EVIDENCE_FIELDS = ("deepDive", "curveBall", "microCase")
 
 class ValuesScorecardError(ValueError):
     """The scorecard does not match the locked shape."""
+
+
+class TranscriptTooShort(ValuesScorecardError):
+    """The transcript is under MIN_TRANSCRIPT_CHARS characters.
+
+    A real values interview transcript runs long. A short one almost always
+    means the wrong text was pasted (a summary, a snippet, the wrong tab), so
+    this refuses rather than scoring six values off a few sentences.
+    """
+
+
+# A real values interview runs 45-60+ minutes and transcribes to many
+# thousands of characters. 2,000 is a floor well under any genuine interview,
+# chosen to catch "wrong thing pasted" rather than to gate on interview length.
+MIN_TRANSCRIPT_CHARS = 2000
 
 
 def tally(ratings: list[str]) -> dict:
@@ -120,3 +138,152 @@ def validate_markaz_payload(payload: dict) -> None:
         if not str(payload.get(field, "")).strip():
             raise ValuesScorecardError(f"{field} must not be blank")
     validate_values(payload["values"])
+
+
+# --------------------------------------------------------------------------
+# Model call: transcript -> scored values (+ GWC, when the computed verdict
+# is PASS). The rules above never leave the model's hands; everything below
+# runs its output back through them before anything is trusted.
+# --------------------------------------------------------------------------
+
+_GWC_KEYS = ("gets_it", "wants_it", "capacity")
+
+
+def _validate_gwc(gwc: dict) -> None:
+    """gwc must be exactly the three Get It / Want It / Capacity questions,
+    each answered Yes or No. Never a boolean, never a longer sentence, never
+    a fourth key."""
+    if not isinstance(gwc, dict):
+        raise ValuesScorecardError(f"gwc must be an object, got {type(gwc).__name__}")
+    for key in _GWC_KEYS:
+        val = gwc.get(key)
+        if val not in ("Yes", "No"):
+            raise ValuesScorecardError(
+                f"gwc.{key} must be the string 'Yes' or 'No', got {val!r}"
+            )
+
+
+def _call_model(*, transcript: str, candidate_name: str, role: str) -> tuple:
+    """One model call: transcript in, raw parsed JSON out.
+
+    Module-level (not a method) so tests can monkeypatch it directly and never
+    make a real Anthropic call. Reuses webapp.services.drafting.get_drafter(),
+    the existing client with its model-fallback chain, rather than building a
+    second client. Imported locally to avoid a module-level import cycle:
+    drafting.py -> tone_rules.py -> reuse.py does not touch this module, but
+    values_prompt.py (imported here) reads VALUE_NAMES/RATINGS/NOT_OBSERVED
+    from this module, so the import has to happen after this module is fully
+    defined.
+
+    Returns (parsed_json, model_name). Raises whatever the drafter raises
+    (DraftingUnavailable, an Anthropic SDK error, a JSON parse error from a
+    non-JSON reply) -- none of that is swallowed here.
+    """
+    from . import drafting
+    from ..prompts import values_prompt
+
+    drafter = drafting.get_drafter()
+    system = values_prompt.system_prompt()
+    user = values_prompt.build_user_prompt(
+        transcript=transcript, candidate_name=candidate_name, role=role
+    )
+    parsed = drafter.draft(
+        system=system,
+        user=user,
+        email_type="values_scoring",
+        first_name=candidate_name,
+        role=role,
+        prior_violations=None,
+        attempt=0,
+    )
+    model_name = getattr(drafter, "model", None) or getattr(drafter, "name", "unknown")
+    return parsed, model_name
+
+
+def _score_ratings_from(values: list[dict]) -> list[str]:
+    return [v["rating"] for v in values]
+
+
+def score_transcript(*, transcript: str, candidate_name: str, role: str) -> dict:
+    """Turn an interview transcript into a scored values scorecard.
+
+    Refuses a transcript that is too short to be real (TranscriptTooShort).
+    Calls the model, validates its response against the locked shape
+    (validate_values), and NEVER repairs a malformed response: a response that
+    fails validation is retried once with a fresh model call, and if the
+    second attempt is also malformed this raises ValuesScorecardError rather
+    than coercing, guessing, or filling in a blank field.
+
+    The verdict is always computed by verdict() from the model's six ratings,
+    never taken from the model even if it volunteers one (the output contract
+    tells it not to; this function does not trust that instruction either).
+    GWC is only ever returned when the computed verdict is PASS -- a model
+    that includes a gwc block on an OUT scorecard has that block dropped, not
+    honoured, because GWC is not a back door around a failing values round.
+
+    Returns {"values": [...], "gwc": {...} | None, "tally": {...},
+    "verdict": "PASS"|"OUT", "model": str}.
+    """
+    if len(transcript) < MIN_TRANSCRIPT_CHARS:
+        raise TranscriptTooShort(
+            f"transcript is {len(transcript)} characters; a real values "
+            f"interview transcript runs far longer than the "
+            f"{MIN_TRANSCRIPT_CHARS}-character floor. This looks like the "
+            "wrong text was pasted."
+        )
+
+    last_error: Optional[ValuesScorecardError] = None
+    attempts = 2  # one retry, per the rule: malformed -> retry once -> raise
+    for attempt in range(attempts):
+        parsed, model_name = _call_model(
+            transcript=transcript, candidate_name=candidate_name, role=role
+        )
+        try:
+            if not isinstance(parsed, dict):
+                raise ValuesScorecardError(
+                    f"model response was not a JSON object, got {type(parsed).__name__}"
+                )
+            values = parsed.get("values")
+            if not isinstance(values, list):
+                raise ValuesScorecardError("model response has no 'values' list")
+            validate_values(values)  # the ONLY place a malformed shape is caught
+
+            ratings = _score_ratings_from(values)
+            computed_verdict = verdict(ratings)
+
+            gwc: Optional[dict] = None
+            if computed_verdict == "PASS":
+                gwc_raw = parsed.get("gwc")
+                if gwc_raw is not None:
+                    _validate_gwc(gwc_raw)
+                    gwc = gwc_raw
+                else:
+                    log.warning(
+                        "score_transcript: verdict is PASS but the model "
+                        "returned no gwc block for %r.", candidate_name,
+                    )
+            elif parsed.get("gwc") is not None:
+                log.warning(
+                    "score_transcript: model returned a gwc block on an OUT "
+                    "scorecard for %r; dropping it. GWC is never a back door "
+                    "around a failing values round.", candidate_name,
+                )
+        except ValuesScorecardError as exc:
+            last_error = exc
+            log.warning(
+                "score_transcript: malformed model response for %r "
+                "(attempt %d/%d): %s", candidate_name, attempt + 1, attempts, exc,
+            )
+            continue
+
+        return {
+            "values": values,
+            "gwc": gwc,
+            "tally": tally(ratings),
+            "verdict": computed_verdict,
+            "model": model_name,
+        }
+
+    # Both attempts were malformed. Never silently repair; raise the last
+    # validation error so the caller sees exactly what was wrong.
+    raise last_error
