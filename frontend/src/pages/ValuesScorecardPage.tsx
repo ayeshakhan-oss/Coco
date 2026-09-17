@@ -82,7 +82,12 @@ export function ValuesScorecardPage() {
   const [loadedDraftId, setLoadedDraftId] = useState<string | null>(null)
   const [localValues, setLocalValues] = useState<ValuesScorecardDraftValue[]>([])
   const [localFinalComments, setLocalFinalComments] = useState('')
-  const dirty = useRef(false)
+  // A real state value, not a ref: the submit button and the verdict chip
+  // both need to re-render the instant an edit happens, not just whenever
+  // something else happens to trigger a render. A useRef here was the root
+  // cause of the "submit while dirty" bug -- the button's disabled state
+  // could never react to it.
+  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -94,7 +99,7 @@ export function ValuesScorecardPage() {
       setLocalValues(draft.values)
       setLocalFinalComments(draft.final_comments)
       setLoadedDraftId(draft.id)
-      dirty.current = false
+      setDirty(false)
     }
   }, [draft, loadedDraftId])
 
@@ -112,8 +117,11 @@ export function ValuesScorecardPage() {
     }
   }
 
-  async function save() {
-    if (!draft) return
+  // Returns whether the save actually reached the server successfully, so a
+  // caller that needs the save to land first (submit, below) knows whether
+  // it is safe to proceed.
+  async function save(): Promise<boolean> {
+    if (!draft) return false
     setSaving(true)
     setSaveError(null)
     try {
@@ -124,27 +132,29 @@ export function ValuesScorecardPage() {
         final_comments: localFinalComments,
       })
       setDraft(d)
-      dirty.current = false
+      setDirty(false)
+      return true
     } catch (e) {
       setSaveError(stripStatus((e as ApiError).message))
+      return false
     } finally {
       setSaving(false)
     }
   }
 
   useEffect(() => {
-    if (!draft || draft.status !== 'draft' || !isEditor || !dirty.current) return
+    if (!draft || draft.status !== 'draft' || !isEditor || !dirty) return
     const t = setTimeout(save, 900)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localValues, localFinalComments])
+  }, [localValues, localFinalComments, dirty])
 
   function updateEvidence(i: number, field: 'deepDive' | 'curveBall' | 'microCase', value: string) {
-    dirty.current = true
+    setDirty(true)
     setLocalValues((prev) => prev.map((v, idx) => (idx === i ? { ...v, [field]: value } : v)))
   }
   function updateRating(i: number, rating: string) {
-    dirty.current = true
+    setDirty(true)
     setLocalValues((prev) => prev.map((v, idx) => (idx === i ? { ...v, rating } : v)))
   }
 
@@ -155,6 +165,14 @@ export function ValuesScorecardPage() {
 
   async function doSubmit(overwrite: boolean) {
     if (!draft) return
+    // Never submit against a stale server-side verdict: flush the pending
+    // autosave and wait for its response before doing anything else. The
+    // submit button is also disabled while dirty (belt and braces -- this
+    // covers a click that slips in during the render in between).
+    if (dirty) {
+      const flushed = await save()
+      if (!flushed) return
+    }
     const ok = window.confirm(
       `Submit this values scorecard for ${draft.candidate_name} (application ${draft.application_id}) to Markaz?` +
         (overwrite ? ' This will overwrite the scorecard already on file for this application.' : ' This writes a permanent hiring record.'),
@@ -337,15 +355,34 @@ export function ValuesScorecardPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span
-                className={`chip text-sm font-bold ${draft.verdict === 'PASS' ? 'bg-green/15 text-green' : 'bg-danger/15 text-danger'}`}
-              >
-                {draft.verdict}
+              {/* The verdict shown here always comes from the server -- it is
+                  never recomputed in the browser. While there are unsaved
+                  edits, the ratings on screen may already disagree with it
+                  (that is exactly what the autosave debounce window makes
+                  possible), so it is hidden rather than shown stale next to
+                  a rating that could contradict it. */}
+              {dirty ? (
+                <span
+                  className="chip bg-surface-2 text-sm font-bold text-ink-dim"
+                  title="Unsaved changes -- the verdict will be recalculated by the server once they are saved."
+                >
+                  Verdict pending save…
+                </span>
+              ) : (
+                <span
+                  className={`chip text-sm font-bold ${draft.verdict === 'PASS' ? 'bg-green/15 text-green' : 'bg-danger/15 text-danger'}`}
+                >
+                  {draft.verdict}
+                </span>
+              )}
+              <span className="text-xs text-ink-dim">
+                {dirty
+                  ? 'Tally pending save…'
+                  : `${draft.tally.plus}(+) / ${draft.tally.plus_minus}(+/-) / ${draft.tally.minus}(-)`}
               </span>
               <span className="text-xs text-ink-dim">
-                {draft.tally.plus}(+) / {draft.tally.plus_minus}(+/-) / {draft.tally.minus}(-)
+                Proceed to right seat: {dirty ? 'pending save…' : draft.proceed ? 'Yes' : 'No'}
               </span>
-              <span className="text-xs text-ink-dim">Proceed to right seat: {draft.proceed ? 'Yes' : 'No'}</span>
             </div>
           </div>
 
@@ -394,7 +431,7 @@ export function ValuesScorecardPage() {
             <textarea
               value={localFinalComments}
               onChange={(e) => {
-                dirty.current = true
+                setDirty(true)
                 setLocalFinalComments(e.target.value)
               }}
               disabled={draft.status !== 'draft'}
@@ -462,11 +499,14 @@ export function ValuesScorecardPage() {
                     <button
                       type="button"
                       onClick={() => doSubmit(true)}
-                      disabled={submitting}
+                      disabled={submitting || saving || dirty}
                       className="btn btn-ghost h-8 border-danger/40 text-danger text-sm"
                     >
                       Overwrite the existing scorecard
                     </button>
+                    {dirty && (
+                      <p className="text-xs text-ink-dim">Save your changes before submitting.</p>
+                    )}
                   </div>
                 )}
                 {conflict?.kind === 'stale' && (
@@ -487,15 +527,22 @@ export function ValuesScorecardPage() {
                   </div>
                 )}
                 {draft.status === 'draft' && (!conflict || conflict.kind === 'has_scorecard') && (
-                  <button
-                    type="button"
-                    onClick={() => doSubmit(false)}
-                    disabled={submitting || saving}
-                    className="btn btn-primary"
-                  >
-                    {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <ClipboardCheck className="h-4 w-4" />}
-                    {submitting ? 'Submitting…' : 'Submit to Markaz'}
-                  </button>
+                  <div className="space-y-1.5">
+                    <button
+                      type="button"
+                      onClick={() => doSubmit(false)}
+                      disabled={submitting || saving || dirty}
+                      className="btn btn-primary"
+                    >
+                      {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <ClipboardCheck className="h-4 w-4" />}
+                      {submitting ? 'Submitting…' : 'Submit to Markaz'}
+                    </button>
+                    {dirty && !submitting && (
+                      <p className="text-xs text-ink-dim">
+                        Save your changes before submitting -- your edits are still being saved.
+                      </p>
+                    )}
+                  </div>
                 )}
               </div>
             )}

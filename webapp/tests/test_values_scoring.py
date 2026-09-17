@@ -6,6 +6,7 @@ computed in code and never left to a model, so it is tested exhaustively here.
 
 from __future__ import annotations
 
+import datetime as dt
 import itertools
 import json
 
@@ -19,6 +20,7 @@ from webapp.services.values_scoring import (
     VALUE_NAMES,
     ValuesScorecardError,
     build_markaz_payload,
+    find_newer_duplicate,
     tally,
     validate_markaz_payload,
     validate_values,
@@ -155,6 +157,61 @@ def test_tally():
     assert tally(["+", "+", "+/-", "-", "+", "+/-"]) == {"plus": 3, "plus_minus": 2, "minus": 1}
 
 
+# --------------------------------------------------------------------------
+# find_newer_duplicate: pure logic, no database. `ORDER BY updated_at DESC`
+# in PostgreSQL puts NULLs FIRST, which would wrongly report a
+# never-updated duplicate as "newer" than the genuinely newest row -- this
+# function must never make that mistake.
+# --------------------------------------------------------------------------
+
+_T0 = dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc)
+_T1 = dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc)
+
+
+def test_find_newer_duplicate_returns_none_when_target_is_already_newest():
+    rows = [(10, _T1), (11, _T0)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=_T1) is None
+
+
+def test_find_newer_duplicate_finds_a_genuinely_newer_row():
+    rows = [(10, _T0), (11, _T1)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=_T0) == 11
+
+
+def test_find_newer_duplicate_null_updated_at_never_wins():
+    """A duplicate with a NULL updated_at must never be reported as newer
+    than a target with a real timestamp -- this is the bug being fixed."""
+    rows = [(10, _T0), (11, None)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=_T0) is None
+
+
+def test_find_newer_duplicate_null_target_loses_to_any_real_timestamp():
+    """NULL is treated as older than any real timestamp for the TARGET too:
+    if the target itself has never been updated, any sibling with a real
+    timestamp is genuinely newer."""
+    rows = [(10, None), (11, _T0)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=None) == 11
+
+
+def test_find_newer_duplicate_two_nulls_tie_broken_by_id():
+    rows = [(10, None), (11, None)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=None) == 11
+    assert find_newer_duplicate(rows, target_id=11, target_updated_at=None) is None
+
+
+def test_find_newer_duplicate_exact_tie_broken_by_higher_id():
+    rows = [(10, _T0), (11, _T0)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=_T0) == 11
+    assert find_newer_duplicate(rows, target_id=11, target_updated_at=_T0) is None
+
+
+def test_find_newer_duplicate_excludes_the_target_itself():
+    # Even if a caller passes the target's own row in `rows`, it must never
+    # be reported as "newer than itself".
+    rows = [(10, _T0)]
+    assert find_newer_duplicate(rows, target_id=10, target_updated_at=_T0) is None
+
+
 def test_validate_rejects_wrong_shape():
     with pytest.raises(ValuesScorecardError):
         validate_values(_values(["+"] * 5)[:5])            # only five values
@@ -170,6 +227,25 @@ def test_validate_rejects_wrong_shape():
     with pytest.raises(ValuesScorecardError):
         bad = _values(["+"] * 6); bad[4]["curveBall"] = "   "
         validate_values(bad)                                # blank evidence
+
+
+def test_validate_rejects_an_extra_nested_key():
+    """A PATCH must never be able to smuggle an arbitrary extra key (e.g. an
+    internal note) into the value object that gets written verbatim to
+    Markaz's public.applications.values_scorecard."""
+    bad = _values(["+"] * 6)
+    bad[0]["internalNote"] = "anything"
+    with pytest.raises(ValuesScorecardError) as exc:
+        validate_values(bad)
+    assert "internalNote" in str(exc.value)
+
+
+def test_validate_requires_every_one_of_the_five_keys():
+    for key in ("name", "deepDive", "curveBall", "microCase", "rating"):
+        bad = _values(["+"] * 6)
+        del bad[0][key]
+        with pytest.raises(ValuesScorecardError):
+            validate_values(bad)
 
 
 def test_validate_accepts_the_not_observed_sentinel():
@@ -340,13 +416,16 @@ def test_submit_sql_touches_only_the_values_scorecard_column():
 class _FakeResult:
     """Stands in for whatever a real SQLAlchemy `Result` needs to support at
     each of submit()'s call sites: `.rowcount` for the two UPDATEs,
-    `.mappings().first()` for the `public.applications` read, `.scalar()`
-    for the stale-duplicate lookup."""
+    `.mappings().first()` for the `public.applications` read, and
+    `.mappings().all()` for the sibling-duplicates fetch (the actual
+    "is there a newer one" decision is made in Python by
+    `find_newer_duplicate`, not by the SQL, so the fake just needs to hand
+    back whatever rows the test configures)."""
 
-    def __init__(self, rowcount=0, mapping_row=None, scalar_value=None):
+    def __init__(self, rowcount=0, mapping_row=None, mapping_rows=None):
         self.rowcount = rowcount
         self._mapping_row = mapping_row
-        self._scalar_value = scalar_value
+        self._mapping_rows = mapping_rows if mapping_rows is not None else []
 
     def mappings(self):
         return self
@@ -354,8 +433,8 @@ class _FakeResult:
     def first(self):
         return self._mapping_row
 
-    def scalar(self):
-        return self._scalar_value
+    def all(self):
+        return self._mapping_rows
 
 
 class _FakeSession:
@@ -383,11 +462,13 @@ class _FakeSession:
         # values_scorecard skips the overwrite-refusal check.
         self.applications_row = {
             "values_scorecard": None, "candidate_id": None, "job_id": None,
+            "updated_at": None,
         }
-        # The id of the newest application sharing the target's
-        # (candidate_id, job_id) pair. None (or equal to the draft's own
-        # application_id) means "the target already is the newest."
-        self.newer_application_id = None
+        # Every `(id, updated_at)` row sharing the target's
+        # (candidate_id, job_id) pair, INCLUDING the target's own row (the
+        # router passes them all to find_newer_duplicate, which excludes the
+        # target itself). Empty/unset means "no siblings, target is newest."
+        self.duplicate_rows = []
         self._store = {}
 
     def add(self, obj):
@@ -412,8 +493,8 @@ class _FakeSession:
             return _FakeResult(rowcount=self.flip_rowcount)
         if "SELECT values_scorecard, candidate_id, job_id" in sql:
             return _FakeResult(mapping_row=self.applications_row)
-        if "ORDER BY updated_at DESC LIMIT 1" in sql:
-            return _FakeResult(scalar_value=self.newer_application_id)
+        if "SELECT id, updated_at FROM public.applications" in sql:
+            return _FakeResult(mapping_rows=self.duplicate_rows)
         if "UPDATE public.applications SET values_scorecard" in sql:
             return _FakeResult(rowcount=self.execute_rowcount)
         return _FakeResult(rowcount=self.execute_rowcount)
@@ -621,7 +702,7 @@ def test_submit_logs_the_payload_verbatim_before_the_final_write(monkeypatch):
             return "execute:flip"
         if "SELECT values_scorecard" in sql:
             return "execute:read_application"
-        if "ORDER BY updated_at" in sql:
+        if "SELECT id, updated_at FROM public.applications" in sql:
             return "execute:duplicate_check"
         if "UPDATE public.applications" in sql:
             return "execute:write"
@@ -764,11 +845,19 @@ def test_submit_refuses_a_stale_duplicate_application():
     pair must be refused, naming the newer id -- never silently redirected."""
     import webapp.routers.values_scorecards as router_mod
 
+    t0 = dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc)
+    t1 = dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc)
+
     draft = _make_draft(id="vsd-12", application_id=1111)
     db = _FakeSession()
     db._store["vsd-12"] = draft
-    db.applications_row = {"values_scorecard": None, "candidate_id": 55, "job_id": 7}
-    db.newer_application_id = 2708  # a newer duplicate exists
+    db.applications_row = {
+        "values_scorecard": None, "candidate_id": 55, "job_id": 7, "updated_at": t0,
+    }
+    db.duplicate_rows = [
+        {"id": 1111, "updated_at": t0},
+        {"id": 2708, "updated_at": t1},  # a genuinely newer duplicate exists
+    ]
 
     with pytest.raises(HTTPException) as exc:
         router_mod.submit("vsd-12", db=db, user={"id": "appuser-approver"})
@@ -780,11 +869,19 @@ def test_submit_refuses_a_stale_duplicate_application():
 def test_submit_proceeds_when_the_target_is_already_the_newest_duplicate():
     import webapp.routers.values_scorecards as router_mod
 
+    t0 = dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc)
+    t1 = dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc)
+
     draft = _make_draft(id="vsd-13", application_id=1212)
     db = _FakeSession()
     db._store["vsd-13"] = draft
-    db.applications_row = {"values_scorecard": None, "candidate_id": 55, "job_id": 7}
-    db.newer_application_id = 1212  # the target IS the newest
+    db.applications_row = {
+        "values_scorecard": None, "candidate_id": 55, "job_id": 7, "updated_at": t1,
+    }
+    db.duplicate_rows = [
+        {"id": 1212, "updated_at": t1},  # the target IS the newest
+        {"id": 999, "updated_at": t0},
+    ]
 
     out = router_mod.submit("vsd-13", db=db, user={"id": "appuser-approver"})
     assert out["status"] == "submitted"
@@ -796,12 +893,68 @@ def test_submit_skips_the_duplicate_check_when_ids_are_null():
     draft = _make_draft(id="vsd-14", application_id=1313)
     db = _FakeSession()
     db._store["vsd-14"] = draft
-    db.applications_row = {"values_scorecard": None, "candidate_id": None, "job_id": None}
-    db.newer_application_id = 9999  # would be a hit, but must never be checked
+    db.applications_row = {
+        "values_scorecard": None, "candidate_id": None, "job_id": None, "updated_at": None,
+    }
+    # Would be reported as a newer duplicate if the check ever ran -- it
+    # must never run when candidate_id/job_id are null.
+    db.duplicate_rows = [{"id": 9999, "updated_at": dt.datetime(2030, 1, 1)}]
 
     out = router_mod.submit("vsd-14", db=db, user={"id": "appuser-approver"})
     assert out["status"] == "submitted"
-    assert not any("ORDER BY updated_at" in sql for sql, _ in db.execute_calls)
+    assert not any(
+        "SELECT id, updated_at FROM public.applications" in sql
+        for sql, _ in db.execute_calls
+    )
+
+
+def test_submit_does_not_refuse_on_a_duplicate_with_null_updated_at():
+    """The bug this fix closes: `ORDER BY updated_at DESC` puts NULLs FIRST
+    in PostgreSQL, so a duplicate that was never touched (updated_at IS
+    NULL) would sort above the genuinely newest row and be reported as
+    newer -- a permanent false 409 the UI cannot force past. A NULL must
+    never win against the target's real timestamp."""
+    import webapp.routers.values_scorecards as router_mod
+
+    t0 = dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc)
+
+    draft = _make_draft(id="vsd-12b", application_id=1113)
+    db = _FakeSession()
+    db._store["vsd-12b"] = draft
+    db.applications_row = {
+        "values_scorecard": None, "candidate_id": 55, "job_id": 7, "updated_at": t0,
+    }
+    db.duplicate_rows = [
+        {"id": 1113, "updated_at": t0},
+        {"id": 2709, "updated_at": None},  # never touched -- must not "win"
+    ]
+
+    out = router_mod.submit("vsd-12b", db=db, user={"id": "appuser-approver"})
+    assert out["status"] == "submitted"
+
+
+def test_submit_refuses_on_an_exact_updated_at_tie_broken_by_higher_id():
+    """Two applications updated at the exact same instant: the tie is
+    broken by the higher id, never treated as ambiguous or ignored."""
+    import webapp.routers.values_scorecards as router_mod
+
+    tie = dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc)
+
+    draft = _make_draft(id="vsd-12c", application_id=1114)
+    db = _FakeSession()
+    db._store["vsd-12c"] = draft
+    db.applications_row = {
+        "values_scorecard": None, "candidate_id": 55, "job_id": 7, "updated_at": tie,
+    }
+    db.duplicate_rows = [
+        {"id": 1114, "updated_at": tie},
+        {"id": 2710, "updated_at": tie},  # exact tie, higher id -> "newer"
+    ]
+
+    with pytest.raises(HTTPException) as exc:
+        router_mod.submit("vsd-12c", db=db, user={"id": "appuser-approver"})
+    assert exc.value.status_code == 409
+    assert "2710" in exc.value.detail
 
 
 def test_submit_stores_approved_by_as_id_and_email():

@@ -91,6 +91,7 @@ from ..services.values_scoring import (
     ValuesScorecardError,
     TranscriptTooShort,
     build_markaz_payload,
+    find_newer_duplicate,
     recompute_final_comments,
     score_transcript,
     tally,
@@ -354,7 +355,7 @@ def submit(
     # target, in the SAME transaction, before writing.
     current_row = db.execute(
         text(
-            "SELECT values_scorecard, candidate_id, job_id "
+            "SELECT values_scorecard, candidate_id, job_id, updated_at "
             "FROM public.applications WHERE id = :app_id FOR UPDATE"
         ),
         {"app_id": draft.application_id},
@@ -367,17 +368,27 @@ def submit(
     # the most recently updated application for a (candidate_id, job_id)
     # pair; writing to an older duplicate of the same pair appears to
     # silently fail (the UI never shows it). Skipped when either id is null.
+    #
+    # The comparison is done in Python (find_newer_duplicate), never by
+    # `ORDER BY updated_at DESC LIMIT 1` -- Postgres sorts NULLs FIRST on a
+    # DESC order, so a duplicate that was never touched (updated_at IS
+    # NULL) would sort above the genuinely newest row and be reported as
+    # "newer", producing a permanent false refusal the UI cannot force past.
     candidate_id, job_id = current_row["candidate_id"], current_row["job_id"]
     if candidate_id is not None and job_id is not None:
-        newer_id = db.execute(
+        sibling_rows = db.execute(
             text(
-                "SELECT id FROM public.applications "
-                "WHERE candidate_id = :cid AND job_id = :jid "
-                "ORDER BY updated_at DESC LIMIT 1"
+                "SELECT id, updated_at FROM public.applications "
+                "WHERE candidate_id = :cid AND job_id = :jid"
             ),
             {"cid": candidate_id, "jid": job_id},
-        ).scalar()
-        if newer_id is not None and newer_id != draft.application_id:
+        ).mappings().all()
+        newer_id = find_newer_duplicate(
+            rows=[(r["id"], r["updated_at"]) for r in sibling_rows],
+            target_id=draft.application_id,
+            target_updated_at=current_row["updated_at"],
+        )
+        if newer_id is not None:
             db.rollback()
             raise HTTPException(
                 409,

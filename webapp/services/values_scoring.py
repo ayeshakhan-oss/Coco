@@ -35,6 +35,15 @@ NOT_OBSERVED = "Not directly evident in interview."
 
 _EVIDENCE_FIELDS = ("deepDive", "curveBall", "microCase")
 
+# The exact key set a value object must have -- no more, no fewer. Verified
+# 2026-09-17 against all 219 live public.applications.values_scorecard
+# records: every nested value object across every record uses exactly these
+# five keys, never an extra one. Without this, an editor's PATCH can smuggle
+# an arbitrary extra key (e.g. an "internalNote") straight into Markaz's
+# production table, since the top-level payload keys are whitelisted
+# (MARKAZ_KEYS) but the nested ones previously were not.
+VALUE_KEYS = frozenset({"name", "deepDive", "curveBall", "microCase", "rating"})
+
 
 class ValuesScorecardError(ValueError):
     """The scorecard does not match the locked shape."""
@@ -95,12 +104,61 @@ def recompute_final_comments(ratings: list[str], existing_text: Optional[str] = 
     return f"{prefix} - {remainder}" if remainder else prefix
 
 
+def find_newer_duplicate(
+    rows: list[tuple[int, Optional[dt.datetime]]],
+    target_id: int,
+    target_updated_at: Optional[dt.datetime],
+) -> Optional[int]:
+    """Given every `(id, updated_at)` for `public.applications` rows sharing
+    the target's `(candidate_id, job_id)`, return the id of the one row that
+    is genuinely newer than the target, or `None` if the target already is
+    the newest.
+
+    Deliberately NOT "sort everything by updated_at DESC and take the top
+    row" -- in PostgreSQL that puts NULLs FIRST, so a duplicate that has
+    never been touched (`updated_at IS NULL`) would look newer than every
+    real timestamp and produce a permanent, unforceable false refusal. Here
+    a NULL `updated_at` always sorts OLDER than any real timestamp, for
+    both the target and the candidates. Exact timestamp ties (including two
+    NULLs) are broken by the higher `id`. The target's own row is always
+    excluded, so passing every row for the pair (target included) is safe.
+    """
+
+    def _key(updated_at, row_id):
+        # (has_a_real_timestamp, timestamp, id): comparing two keys with
+        # different first elements never touches the second, so a real
+        # datetime is never compared against a bare `None`.
+        return (updated_at is not None, updated_at, row_id)
+
+    target_key = _key(target_updated_at, target_id)
+    newest_id: Optional[int] = None
+    newest_key = None
+    for row_id, row_updated_at in rows:
+        if row_id == target_id:
+            continue
+        row_key = _key(row_updated_at, row_id)
+        if row_key > target_key and (newest_key is None or row_key > newest_key):
+            newest_id = row_id
+            newest_key = row_key
+    return newest_id
+
+
 def validate_values(values: list[dict]) -> None:
     if len(values) != len(VALUE_NAMES):
         raise ValuesScorecardError(
             f"expected {len(VALUE_NAMES)} values, got {len(values)}"
         )
     for i, (expected_name, v) in enumerate(zip(VALUE_NAMES, values)):
+        extra_keys = set(v) - VALUE_KEYS
+        missing_keys = VALUE_KEYS - set(v)
+        if extra_keys or missing_keys:
+            raise ValuesScorecardError(
+                f"{expected_name}: value object keys must be exactly "
+                f"{sorted(VALUE_KEYS)}, got {sorted(v)} "
+                f"(extra={sorted(extra_keys)}, missing={sorted(missing_keys)}). "
+                "No other key -- e.g. an internal note -- may ride along into "
+                "Markaz's production record."
+            )
         if v.get("name") != expected_name:
             raise ValuesScorecardError(
                 f"value {i} must be {expected_name!r}, got {v.get('name')!r}. "
