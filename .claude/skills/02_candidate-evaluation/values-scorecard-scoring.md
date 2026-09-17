@@ -16,10 +16,10 @@ Score candidates on Taleemabad's 6 core values using the interview transcript pr
 
 ## The 6 Values to Assess
 
-1. **Don't Walk Away** — commitment to mission and communities; persistence through difficulty
-2. **All for One** — team collaboration; lifting teammates; showing up for the collective
-3. **Continuously Improve** — growth mindset; seeking feedback; helping team develop better ways of working
-4. **Courageous Conversations** — ability to have hard conversations; honesty; pushing back on group dynamics
+1. **Don't Walk Away from Hard Things** — commitment to mission and communities; persistence through difficulty
+2. **All for One & One for All** — team collaboration; lifting teammates; showing up for the collective
+3. **Continuously Improve Our Craft** — growth mindset; seeking feedback; helping team develop better ways of working
+4. **Have Courageous Conversations** — ability to have hard conversations; honesty; pushing back on group dynamics
 5. **Don't Hold On Too Tight** — flexibility; adaptability; letting go of being right; learning from mistakes
 6. **Practice Joy** — bringing energy and warmth; finding lightness in hard work; sustaining teams emotionally
 
@@ -130,7 +130,7 @@ Wait for approval before submitting. This prevents accidental submissions and ca
 
 Candidates may give examples from personal life, not only professional life. **These are acceptable if they genuinely fit the value being assessed.**
 
-Example: A candidate discussing how they resolved a conflict in a family context can demonstrate "Courageous Conversations" if the example is genuine and the reasoning is sound.
+Example: A candidate discussing how they resolved a conflict in a family context can demonstrate "Have Courageous Conversations" if the example is genuine and the reasoning is sound.
 
 **Rule:** Evaluate the example on its merit (does it show the value?), not on the context (work vs. personal). Personal examples are valid evidence.
 
@@ -179,26 +179,38 @@ This helps Ayesha refine her interview technique over time and ensures fairness 
 **Exact format required:**
 ```json
 {
-  "date": "2026-04-10",
+  "date": "Aug 14, 2026",
   "host": "Ayesha Khan",
   "candidateName": "Muhammad Junaid",
-  "noteTaker": "Coco",
+  "noteTaker": "Coco (AI P&C Assistant)",
   "values": [
     {
-      "name": "Don't Walk Away",
+      "name": "Don't Walk Away from Hard Things",
       "deepDive": "...",
       "curveBall": "...",
       "microCase": "...",
       "rating": "+"
-    },
-    ...
+    }
   ],
-  "finalComments": "PASS / CONDITIONAL / OUT",
-  "proceedToRightSeat": true or false
+  "finalComments": "PASS - 4(+) / 2(+/-) / 0(-) ...",
+  "proceedToRightSeat": "Yes"
 }
 ```
 
 **Use this format verbatim.** Do not modify field names or structure.
+
+🔒 **VERIFIED AGAINST LIVE DATA (2026-09-17).** These names and types are what all 219
+existing scorecards in `public.applications.values_scorecard` use. Counts at the time of
+checking: `Don't Walk Away from Hard Things` 219, `All for One & One for All` 213,
+`Continuously Improve Our Craft` 212, `Have Courageous Conversations` 214,
+`Don't Hold On Too Tight` 219, `Practice Joy` 219.
+
+`proceedToRightSeat` is a **string** `"Yes"` / `"No"` (215 of 219), not a boolean.
+
+⚠️ This file previously documented shorter names (`Don't Walk Away`, `All for One`,
+`Continuously Improve`, `Courageous Conversations`) and a boolean. Those spellings exist in
+only 1 to 5 records each and are drift from hand-written submissions, not the standard.
+Do not reintroduce them.
 
 ---
 
@@ -244,7 +256,7 @@ This helps Ayesha refine her interview technique over time and ensures fairness 
 
 4. **Confusing + with +/-** — a candidate shows a value once but inconsistently. That's +/-, not +. Reserve + for consistent, clear evidence.
 
-5. **Letting one strong value override a weak one** — "They're amazing at Continuously Improve, so I'll give them a + on Courageous Conversations too." Each value stands alone. Rate each independently.
+5. **Letting one strong value override a weak one** — "They're amazing at Continuously Improve Our Craft, so I'll give them a + on Have Courageous Conversations too." Each value stands alone. Rate each independently.
 
 6. **Ignoring a minus with "but they passed other values"** — One minus = OUT. Period. This is non-negotiable.
 
@@ -282,7 +294,7 @@ This helps Ayesha refine her interview technique over time and ensures fairness 
 - [ ] If PASS: GWC assessed (all 3 questions answered: Gets it? Wants it? Capacity?)
 - [ ] If CONDITIONAL GWC: specific probe documented
 - [ ] Markaz JSON schema exact (no field name deviations)
-- [ ] "proceedToRightSeat": true (if PASS) or false (if OUT)
+- [ ] "proceedToRightSeat": "Yes" (if PASS) or "No" (if OUT)
 - [ ] finalComments field complete: "PASS" / "CONDITIONAL" / "OUT"
 
 **Before submitting to Markaz:**
