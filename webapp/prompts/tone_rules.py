@@ -180,21 +180,41 @@ def _benchmark() -> str:
     return _BENCHMARK_PREAMBLE + "\n" + text + "\n"
 
 
+# The preamble used to spend a paragraph asking the model to IGNORE sending,
+# recipients, pilots, scripts and file paths. _strip_operational now removes all
+# of it before the model ever sees it, so the instruction described material
+# that is no longer there - and it was the last thing in the prompt still naming
+# safe_sendmail. Removing what you do not want beats asking for it to be
+# overlooked, especially on a small model.
 _SOP_PREAMBLE = """
 ========================================================================
-THE SOP FOR THIS LETTER TYPE
+HOW THIS LETTER TYPE IS WRITTEN
 ========================================================================
-Below is our internal SOP, verbatim. It is the craft guidance: what a good
-letter of this type actually does.
+Below is our craft guidance for this type: what a good letter of this type
+actually does, and how it is built.
 
-READ IT FOR THE WRITING, NOT FOR THE OPERATIONS. Ignore anything about sending,
-recipients, pilots, scripts, safe_sendmail, approval flow or file paths: none of
-that is your job. You are returning JSON content only.
-
-Where the SOP and the tone rules above disagree, THE TONE RULES WIN. The SOPs
-predate them in places.
+Where it and the tone rules above disagree, THE TONE RULES WIN. This guidance
+predates them in places.
 ========================================================================
 """
+
+
+# A line about OPERATIONS rather than writing.
+_OPERATIONAL_LINE = re.compile(
+    r"PILOT_MODE|safe_sendmail|smtplib|\.py\b|scripts/|\.claude/|memory/|"
+    r"@taleemabad\.com|@niete\.edu\.pk|hiring@|\bCC\b|\bTO\s*=|"
+    r"\bpilot\b|\bapproval\b|\bapprove\b|\bsend (?:script|to|it|live)\b|"
+    r"\bPILOT\b|\bLIVE\b|^\s*(?:import|from|def|class)\s|\bpython\b",
+    re.IGNORECASE,
+)
+
+# A line that states a word count. The length lives in LENGTH_RULE alone.
+_LENGTH_LINE = re.compile(
+    r"\b\d{3,4}\s*(?:-|–|to)\s*\d{3,4}\s*words?\b|"
+    r"\b\d{3,4}\+?\s*words?\b|"
+    r"\bword count\b|\bminimum \d{3,4}\b",
+    re.IGNORECASE,
+)
 
 
 @lru_cache
@@ -212,12 +232,32 @@ def _strip_operational(text: str) -> str:
     it to be overlooked.
     """
     text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)  # code / HTML fences
-    kept = [
-        line for line in text.split("\n")
-        # A line of template markup, not guidance about writing.
-        if not re.search(r"<(p|div|table|td|tr|img|span|a|h[1-6]|style|br)\b", line)
-    ]
-    return re.sub(r"\n{3,}", "\n\n", "\n".join(kept)).strip()
+    kept = []
+    for line in text.split("\n"):
+        # Template markup, not guidance about writing.
+        if re.search(r"<(p|div|table|td|tr|img|span|a|h[1-6]|style|br)\b", line):
+            continue
+        # Operations: who to send to, which script, which file, whose approval.
+        # The writer returns JSON content and can act on none of it. Measured on
+        # the warm-bench SOPs: 10 send-script mentions, 11 file paths, 14
+        # recipient/approval lines, 5 Python keywords.
+        if _OPERATIONAL_LINE.search(line):
+            continue
+        # A second, different word count. LENGTH_RULE is the only place the
+        # length is stated; the SOPs said "800-1100 MANDATORY" in eleven places
+        # and the model resolved the disagreement by majority.
+        if _LENGTH_LINE.search(line):
+            continue
+        kept.append(line)
+    out = "\n".join(kept)
+    # Drop whole sections whose heading is operational (checklists restate the
+    # block list; send/pilot sections are someone else's job).
+    out = re.sub(
+        r"^#{1,6} *(?:[^\n]*\b(?:checklist|pilot|send|sending|recipients?|approval|"
+        r"deployment|script|implementation|qa|self.?qa|verification)\b[^\n]*)\n"
+        r"(?:(?!^#{1,6} ).*\n?)*",
+        "", out, flags=re.MULTILINE | re.IGNORECASE)
+    return re.sub(r"\n{3,}", "\n\n", out).strip()
 
 
 @lru_cache
