@@ -405,32 +405,23 @@ KNOWN_INTERVIEWERS = [
 # OUTCOME. Neither short type is drafted by the webapp today; they live in their
 # own send scripts. They are listed here so that adding one never silently
 # inherits the 800-word rule.
-WORD_MAXIMUMS = {
-    # Ayesha 2026-09-15: "I think don't add more than 800 words." Selective, not
-    # exhaustive. Reported as a WARNING, so a letter already approved at a higher
-    # count is never stranded by the rule arriving after it.
+WORD_MINIMUMS = {
+    # 800-1,100 for every feedback letter (Ayesha 2026-09-17), which is what the
+    # per-type SOPs have always said and what the letters actually SENT measure:
+    # Muneeb 1,001 words, Salman 843, Jawwad 819. None of them squeezed.
+    #
+    # The 650 floor and the 800 ceiling trialled on 2026-09-15 are reverted. They
+    # left the prompt answering the same question three different ways - the SOPs
+    # said 800-1100 in eleven places, the contract said "at least 800", the rule
+    # card said "never more than 800" - and the model resolved that by majority.
+    #
+    # Length discipline now lives where it belongs: the letter must not work
+    # through everything in the scorecard. That is "selective, not exhaustive"
+    # and "one gap", enforced at the PLANNING stage, not by a word cap.
     'cv_rejection': 800,
     'values_feedback': 800,
     'warm_bench': 800,
     'gwc_rejection': 800,
-}
-
-WORD_MINIMUMS = {
-    # 800 for EVERY feedback letter, cv_rejection included (Ayesha 2026-09-14,
-    # confirmed after briefly trialling 350-550). With career coaching and
-    # application replay both hard-blocked, the length has to come from being
-    # more specific about the candidate's OWN experience and about exactly what
-    # this role needed. If a letter runs short, add evidence, never guidance.
-    # 2026-09-15 (Ayesha): 800 became the CEILING, not the floor. Letters were
-    # running 993-1144 words by listing everything in the scorecard, and
-    # "personalization is selective, not exhaustive". The floor drops so a
-    # disciplined 700-word letter is not forced to pad; the cap below is what
-    # bites now.
-    'cv_rejection': 650,
-    'values_feedback': 650,
-    'warm_bench': 650,
-    'gwc_rejection': 650,
-    # case_study_outcome keeps its own locked 800 (CLAUDE.md Rule 25).
     'case_study_outcome': 800,
     # not feedback -> not 800
     'case_study_update': 120,
@@ -1968,24 +1959,11 @@ def evaluate_email(
             'detail': detail,
         })
 
-    # 1b. Word count CEILING (Ayesha 2026-09-15). A letter earns its length by
-    # being specific about what mattered to the DECISION, not by retelling every
-    # story in the scorecard. WARNING rather than HARD_BLOCK so an already
-    # approved letter is never stranded; the drafting prompt targets 700-800.
-    maximum = WORD_MAXIMUMS.get(email_type)
-    if maximum and actual > maximum:
-        violations.append({
-            'rule': f'Over the {maximum}-word ceiling',
-            'severity': 'WARNING',
-            'detail': (
-                f'{actual} words against a {maximum}-word ceiling. Personalisation '
-                f'is selective, not exhaustive: keep the evidence that explains what '
-                f'stayed with us or why the decision landed where it did, and cut '
-                f'what is in the letter only because it came up in the interview. '
-                f'If the decision turned on ONE role-fit gap, do not carry secondary '
-                f'concerns alongside it.'
-            ),
-        })
+    # The 800-word CEILING trialled on 2026-09-15 is gone (Ayesha 2026-09-17).
+    # It contradicted the eleven SOP statements saying 800-1100, and the letters
+    # we actually send run 819-1,001 words. "Selective, not exhaustive" is still
+    # the rule, but it is a rule about WHICH evidence earns a place, enforced at
+    # the planning stage. A word cap was the wrong instrument for it.
 
     # 1b2. The same sentence twice. Deterministic, and invisible to every
     # tone rule: an APPROVED letter shipped with two duplicated sentences.

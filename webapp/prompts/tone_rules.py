@@ -59,6 +59,13 @@ _TYPE_SOPS = {
 
 _FEEDBACK_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection")
 
+# THE ONE PLACE THE LENGTH IS STATED. Every prompt component interpolates this
+# constant rather than writing its own number, and test_prompt_coherence.py
+# fails if a second, different band ever appears in an assembled prompt.
+# A prompt that answers the same question three ways is a prompt the model
+# resolves by majority, not by recency or authority.
+LENGTH_RULE = "800 to 1,100 words total across greeting + opening + all paragraphs + ps."
+
 _RULE_CARD = """
 ========================================================================
 BEFORE YOU WRITE. THE WHOLE JOB, IN TWENTY LINES.
@@ -120,8 +127,8 @@ ALWAYS:
  - Name what the role required BEFORE what was missing.
  - Spend your longest paragraph explaining why that requirement
    matters to THIS role. That is where length belongs.
- - 700 to 800 words. NEVER more than 800. If short, add evidence about
-   THEM, never advice. Cut breadth before you cut depth.
+ - 800 to 1,100 words. If short, add evidence about THEM, never advice.
+   Cut breadth before you cut depth: fewer moments, told properly.
  - Close on a moment. The P.S. gives no advice at all.
 
 Write the final section and the P.S. LAST, then read them again.
@@ -612,13 +619,18 @@ def system_prompt(email_type: str) -> str:
     canonical = [h[0] if isinstance(h, (list, tuple)) else h for h in required]
     headings = "\n".join(f"    {i + 1}. {h}" for i, h in enumerate(canonical))
     contract = _OUTPUT_CONTRACT.replace("{headings}", headings or "    (none)")
-    # Length differs by stage. A CV rejection is decided on a written
-    # application and is deliberately concise (Ayesha 2026-09-14: 350-550).
-    # The interview-stage letters still carry the 800-word floor from their own
-    # locked SOPs, where the evidence is a full interview.
-    contract = contract.replace(
-        "{length_contract}",
-        "at least 800 words total across greeting + opening + all paragraphs + ps.")
+    # ONE LENGTH RULE, STATED ONCE (Ayesha 2026-09-17).
+    #
+    # The prompt used to carry three different answers at the same time: the
+    # per-type SOPs said "800-1100 MANDATORY" in ELEVEN places, this contract
+    # said "at least 800", and the rule card said "never more than 800". Haiku
+    # followed the majority, which is why letters kept landing at 988-1144 while
+    # the rule card asked for under 800. The model was obeying us; we were
+    # telling it three things.
+    #
+    # 800-1100 is the standard, confirmed by the letters actually sent: Muneeb
+    # 1,001 words, Salman 843, Jawwad 819. None of them squeezed.
+    contract = contract.replace("{length_contract}", LENGTH_RULE)
     prompt = _tone_master() + "\n\n" + contract
     # The four FEEDBACK letters share one tone: report the evidence, never coach
     # the career. case_study_outcome is deliberately excluded — its guidance is
@@ -626,12 +638,12 @@ def system_prompt(email_type: str) -> str:
     # separately (CLAUDE.md Rule 25).
     if email_type in ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection"):
         length_rule = (
-            "AIM FOR 700 TO 800 WORDS, AND DO NOT EXCEED 800. Length is earned "
-            "by being specific about what actually shaped the decision, never by "
-            "working through everything in the scorecard. If you are short, add "
-            "evidence about THEM, never guidance FOR them. If you are long, cut "
-            "the material that is in the letter only because it came up, not "
-            "because it explains what stayed with us or why we decided as we did."
+            LENGTH_RULE.upper() + " Length is earned by being specific about "
+            "what actually shaped the decision, never by working through "
+            "everything in the scorecard. If you are short, add evidence about "
+            "THEM, never guidance FOR them. If a passage is in the letter only "
+            "because it came up in the interview, and not because it explains "
+            "what stayed with us or why we decided as we did, cut it."
         )
         prompt += "\n" + _FEEDBACK_TONE_NOTE.replace("{length_rule}", length_rule)
         # The approved letter, as the standard to write to. Placed AFTER the
