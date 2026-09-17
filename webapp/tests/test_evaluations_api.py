@@ -59,6 +59,23 @@ def client():
     get_settings.cache_clear()
 
 
+@pytest.fixture(scope="module")
+def db_session():
+    """A direct DB session, for tests that need to read a raw column (not
+    exposed through any /api/evaluations response) rather than go through
+    the read-only router. Module-scoped and closed at teardown, same as the
+    `client` fixture above; both talk to the same live DATABASE_URL this
+    module is skipped without."""
+    from webapp.db import get_sessionmaker
+
+    SessionLocal = get_sessionmaker()
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()
+
+
 # Job 38 (AI Engineer Lead) and job 13 (Full Stack Developer) are real,
 # already-screened jobs in the shared database (confirmed via
 # `python scripts/screening/read_nugget_screening.py --list`). Job 38's P4
@@ -152,3 +169,27 @@ def test_application_evaluation_found_drops_raw_rubric_internals(client):
     body = r.json()
     assert "dimension_scores" not in body
     assert "hard_filter_flags" not in body
+
+
+def test_our_payload_shape_matches_a_real_markaz_scorecard(db_session):
+    """Pull a real scorecard and assert our validator accepts it unchanged.
+
+    If Markaz's shape ever drifts, this fails and tells us before we write a
+    scorecard nobody can see.
+    """
+    from sqlalchemy import text
+
+    from webapp.services.values_scoring import validate_markaz_payload
+
+    row = db_session.execute(
+        text(
+            "SELECT values_scorecard FROM public.applications "
+            "WHERE jsonb_typeof(values_scorecard) = 'object' "
+            "AND jsonb_typeof(values_scorecard->'values') = 'array' "
+            "AND jsonb_array_length(values_scorecard->'values') = 6 "
+            "AND jsonb_typeof(values_scorecard->'proceedToRightSeat') = 'string' "
+            "ORDER BY id DESC LIMIT 1"
+        )
+    ).scalar()
+    assert row, "no real scorecard found to compare against"
+    validate_markaz_payload(row)

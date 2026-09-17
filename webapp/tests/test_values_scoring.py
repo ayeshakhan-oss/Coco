@@ -11,11 +11,14 @@ import itertools
 import pytest
 
 from webapp.services.values_scoring import (
+    MARKAZ_KEYS,
     NOT_OBSERVED,
     RATINGS,
     VALUE_NAMES,
     ValuesScorecardError,
+    build_markaz_payload,
     tally,
+    validate_markaz_payload,
     validate_values,
     verdict,
 )
@@ -85,3 +88,58 @@ def test_validate_accepts_the_not_observed_sentinel():
     ok = _values(["+"] * 6)
     ok[3]["curveBall"] = NOT_OBSERVED
     validate_values(ok)  # must not raise
+
+
+def _ok_values():
+    return [
+        {"name": n, "deepDive": "d", "curveBall": "c", "microCase": "m", "rating": "+"}
+        for n in VALUE_NAMES
+    ]
+
+
+def test_payload_shape_matches_the_live_records():
+    p = build_markaz_payload(
+        candidate_name="Muhammad Junaid",
+        host="Ayesha Khan",
+        values=_ok_values(),
+        final_comments="PASS - 6(+) / 0(+/-) / 0(-)",
+        proceed=True,
+        date="Aug 14, 2026",
+    )
+    assert set(p) == MARKAZ_KEYS
+    assert p["candidateName"] == "Muhammad Junaid"
+    assert p["noteTaker"] == "Coco (AI P&C Assistant)"
+    assert p["date"] == "Aug 14, 2026"
+    # The live records store a STRING, not a boolean. 215 of 219.
+    assert p["proceedToRightSeat"] == "Yes"
+    assert isinstance(p["proceedToRightSeat"], str)
+    assert [v["name"] for v in p["values"]] == list(VALUE_NAMES)
+
+
+def test_proceed_false_is_the_string_no():
+    p = build_markaz_payload(
+        candidate_name="X", host="Ayesha Khan", values=_ok_values(),
+        final_comments="OUT", proceed=False,
+    )
+    assert p["proceedToRightSeat"] == "No"
+
+
+def test_payload_rejects_a_boolean_proceed_value():
+    p = build_markaz_payload(
+        candidate_name="X", host="Ayesha Khan", values=_ok_values(),
+        final_comments="PASS", proceed=True,
+    )
+    p["proceedToRightSeat"] = True          # the shape the old skill file documented
+    with pytest.raises(ValuesScorecardError):
+        validate_markaz_payload(p)
+
+
+def test_payload_rejects_extra_or_missing_keys():
+    p = build_markaz_payload(
+        candidate_name="X", host="Ayesha Khan", values=_ok_values(),
+        final_comments="PASS", proceed=True,
+    )
+    with pytest.raises(ValuesScorecardError):
+        validate_markaz_payload({**p, "extra": 1})
+    with pytest.raises(ValuesScorecardError):
+        validate_markaz_payload({k: v for k, v in p.items() if k != "noteTaker"})

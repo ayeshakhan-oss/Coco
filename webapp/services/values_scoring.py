@@ -12,6 +12,9 @@ records each and are drift, not the standard.
 
 from __future__ import annotations
 
+import datetime as dt
+from typing import Optional
+
 # Canonical order matters: Markaz renders the values in array order.
 VALUE_NAMES = (
     "Don't Walk Away from Hard Things",
@@ -67,3 +70,53 @@ def validate_values(values: list[dict]) -> None:
                 raise ValuesScorecardError(
                     f"{expected_name}: {f} is blank. Use NOT_OBSERVED if it was not seen."
                 )
+
+
+MARKAZ_KEYS = frozenset(
+    {"date", "host", "candidateName", "noteTaker", "values", "finalComments", "proceedToRightSeat"}
+)
+
+# Markaz stores the date as a human string, e.g. "Aug 14, 2026".
+_DATE_FMT = "%b %d, %Y"
+
+
+def build_markaz_payload(
+    *,
+    candidate_name: str,
+    host: str,
+    values: list[dict],
+    final_comments: str,
+    proceed: bool,
+    date: Optional[str] = None,
+    note_taker: str = "Coco (AI P&C Assistant)",
+) -> dict:
+    validate_values(values)
+    payload = {
+        "date": date or dt.date.today().strftime(_DATE_FMT),
+        "host": host,
+        "candidateName": candidate_name,
+        "noteTaker": note_taker,
+        "values": values,
+        "finalComments": final_comments,
+        # String, not boolean: 215 of the 219 live records are strings.
+        "proceedToRightSeat": "Yes" if proceed else "No",
+    }
+    validate_markaz_payload(payload)
+    return payload
+
+
+def validate_markaz_payload(payload: dict) -> None:
+    keys = set(payload)
+    if keys != MARKAZ_KEYS:
+        raise ValuesScorecardError(
+            f"payload keys {sorted(keys)} != required {sorted(MARKAZ_KEYS)}"
+        )
+    prs = payload["proceedToRightSeat"]
+    if not isinstance(prs, str) or prs not in ("Yes", "No"):
+        raise ValuesScorecardError(
+            f'proceedToRightSeat must be the string "Yes" or "No", got {prs!r}'
+        )
+    for field in ("date", "host", "candidateName", "noteTaker", "finalComments"):
+        if not str(payload.get(field, "")).strip():
+            raise ValuesScorecardError(f"{field} must not be blank")
+    validate_values(payload["values"])
