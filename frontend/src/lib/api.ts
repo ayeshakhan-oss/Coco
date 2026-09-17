@@ -147,12 +147,27 @@ export const api = {
     get<EvaluationDetail>(`/api/evaluations/applications/${applicationId}`),
 
   // Values scorecard draft lifecycle: generate -> read -> edit -> submit.
-  generateValuesScorecard: (application_id: number, transcript: string, host: string) =>
-    post<ValuesScorecardDraft>('/api/values-scorecards/generate', { application_id, transcript, host }),
+  generateValuesScorecard: (
+    application_id: number,
+    transcript: string,
+    host: string,
+    interview_date?: string | null,
+  ) =>
+    post<ValuesScorecardDraft>('/api/values-scorecards/generate', {
+      application_id,
+      transcript,
+      host,
+      interview_date: interview_date || undefined,
+    }),
   valuesScorecardDraft: (draftId: string) => get<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}`),
   editValuesScorecardDraft: (
     draftId: string,
-    payload: { values?: ValuesScorecardDraftValue[]; final_comments?: string; proceed?: boolean },
+    payload: {
+      values?: ValuesScorecardDraftValue[]
+      final_comments?: string
+      proceed?: boolean
+      interview_date?: string | null
+    },
   ) => patch<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}`, payload),
   submitValuesScorecardDraft: (draftId: string, overwrite = false) =>
     post<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}/submit`, { overwrite }),

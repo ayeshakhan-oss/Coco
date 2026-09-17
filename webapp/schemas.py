@@ -401,6 +401,10 @@ class ValuesScorecardGenerateRequest(_Base):
     application_id: int
     transcript: str
     host: str
+    # The actual interview date (not the date the scorecard is generated or
+    # submitted). Optional: submit() falls back to today, visibly, when this
+    # is never supplied.
+    interview_date: Optional[dt.date] = None
 
 
 class ValuesScorecardEdit(_Base):
@@ -411,6 +415,9 @@ class ValuesScorecardEdit(_Base):
     values: Optional[list[dict[str, Any]]] = None
     final_comments: Optional[str] = None
     proceed: Optional[bool] = None
+    # Same "None means unchanged" convention as the other fields above --
+    # there is no PATCH-time way to explicitly clear it back to unset.
+    interview_date: Optional[dt.date] = None
 
 
 class ValuesScorecardSubmitRequest(_Base):
@@ -428,6 +435,7 @@ class ValuesScorecardOut(_Base):
     candidate_name: str
     host: str
     transcript_sha256: str
+    interview_date: Optional[dt.date] = None
     values: list[dict[str, Any]]
     gwc: Optional[dict[str, Any]] = None
     final_comments: str

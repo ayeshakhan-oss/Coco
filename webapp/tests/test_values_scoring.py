@@ -21,6 +21,8 @@ from webapp.services.values_scoring import (
     ValuesScorecardError,
     build_markaz_payload,
     find_newer_duplicate,
+    format_markaz_date,
+    markaz_result,
     tally,
     validate_markaz_payload,
     validate_values,
@@ -309,6 +311,39 @@ def test_payload_rejects_extra_or_missing_keys():
         validate_markaz_payload({k: v for k, v in p.items() if k != "noteTaker"})
 
 
+# --------------------------------------------------------------------------
+# Decision 1 + 2 (2026-09-17): the interview date format, and the verdict ->
+# lowercase Markaz result mapping.
+# --------------------------------------------------------------------------
+
+
+def test_format_markaz_date_never_zero_pads_the_day():
+    """Verified 2026-09-17 against all 219 live public.applications
+    .values_scorecard records with a "Mon D, YYYY"-shaped date: 0 of 219
+    zero-pad the day. Python's strftime("%b %d, %Y") always zero-pads, so
+    the single-digit-day case is the one that would silently regress."""
+    assert format_markaz_date(dt.date(2025, 11, 3)) == "Nov 3, 2025"
+    assert format_markaz_date(dt.date(2026, 8, 14)) == "Aug 14, 2026"
+    assert format_markaz_date(dt.date(2026, 1, 9)) == "Jan 9, 2026"
+    assert format_markaz_date(dt.date(2025, 12, 17)) == "Dec 17, 2025"
+
+
+def test_markaz_result_maps_verdict_to_the_lowercase_string():
+    """124 of the live applications.values_interview_result records agree on
+    lowercase "pass"/"fail" (101 + 23); there is one legacy "strong_pass"
+    this must never reproduce. Writing "PASS"/"OUT" would introduce a third
+    spelling into a column the rest of the table already agrees on."""
+    assert markaz_result("PASS") == "pass"
+    assert markaz_result("OUT") == "fail"
+
+
+def test_markaz_result_rejects_anything_else():
+    with pytest.raises(ValuesScorecardError):
+        markaz_result("strong_pass")
+    with pytest.raises(ValuesScorecardError):
+        markaz_result("pass")  # already-lowercase input is still not a valid verdict token
+
+
 def test_draft_table_lives_in_the_coco_schema():
     """public is inside Markaz's Replit schema-push blast radius; coco is not."""
     from webapp.models import ValuesScorecardDraft
@@ -390,24 +425,47 @@ def test_the_four_routes_are_gated_on_the_declared_dependency_not_the_docstring(
         assert deps.get_current_user not in calls
 
 
-def test_submit_sql_touches_only_the_values_scorecard_column():
-    """public.applications is Markaz's table. The UPDATE inside submit() must
-    touch ONLY values_scorecard for the one target row -- never another
-    column, never an INSERT, never a DELETE."""
-    import webapp.routers.values_scorecards as m
+def test_submit_writes_exactly_the_four_locked_columns_in_one_statement():
+    """public.applications is Markaz's table. The final UPDATE inside
+    submit() may touch ONLY four columns of the ONE target row --
+    values_scorecard plus the three sibling columns Ayesha decided submit()
+    should also write (values_interview_result, values_interview_date,
+    values_interviewer_name) -- never another column, never a second
+    statement, never an INSERT or a DELETE.
 
-    src = open(m.__file__, encoding="utf-8").read()
-    submit_block = src.split("def submit")[1]
-    # Qualified as public.applications (Minor 7) -- not the bare,
-    # search_path-dependent name.
-    assert "UPDATE public.applications SET values_scorecard" in submit_block
-    assert "INSERT INTO" not in submit_block
-    assert "DELETE FROM" not in submit_block
-    for forbidden in (
-        "values_interview_result", "values_interview_score",
+    Parses the ACTUAL SQL text submit() executed (via
+    _FakeSession.execute_calls), not the source file, so this survives any
+    reformatting of the statement.
+
+    Supersedes `test_submit_sql_touches_only_the_values_scorecard_column`,
+    which FORBADE these three column names outright -- written before
+    Ayesha decided (2026-09-17) that submit() should also write them. See
+    progress.md 2026-09-17."""
+    import re
+
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(id="vsd-cols", application_id=1500)
+    db = _FakeSession()
+    db._store["vsd-cols"] = draft
+
+    router_mod.submit("vsd-cols", db=db, user={"id": "appuser-approver"})
+
+    write_calls = [
+        sql for sql, _ in db.execute_calls
+        if sql.strip().upper().startswith("UPDATE PUBLIC.APPLICATIONS")
+    ]
+    assert len(write_calls) == 1, "expected exactly one UPDATE public.applications statement"
+    sql = write_calls[0]
+    assert "INSERT INTO" not in sql
+    assert "DELETE FROM" not in sql
+    m = re.search(r"SET\s+(.*?)\s+WHERE", sql, re.S | re.I)
+    assert m, f"no SET ... WHERE found in {sql!r}"
+    columns = {frag.split("=")[0].strip() for frag in m.group(1).split(",")}
+    assert columns == {
+        "values_scorecard", "values_interview_result",
         "values_interview_date", "values_interviewer_name",
-    ):
-        assert forbidden not in submit_block
+    }
 
 
 # ---- Fakes for exercising the route functions directly ----------------
@@ -563,7 +621,123 @@ def test_generate_builds_draft_with_computed_verdict_and_proceed(monkeypatch):
     assert out["final_comments"] == "PASS - 6(+) / 0(+/-) / 0(-)"
     assert out["status"] == "draft"
     assert out["transcript_sha256"] == hashlib.sha256(transcript.encode("utf-8")).hexdigest()
+    assert out["interview_date"] is None    # never supplied on this request
     assert db.committed == 1
+
+
+# --------------------------------------------------------------------------
+# Decision 1 (2026-09-17): the interview date flows generate -> patch ->
+# the Markaz payload, with a visible (not silent) fallback to today.
+# --------------------------------------------------------------------------
+
+
+def test_generate_stores_the_supplied_interview_date(monkeypatch):
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardGenerateRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_app_row(app_id)
+    )
+    scored = {
+        "values": _ok_values(), "gwc": None,
+        "tally": {"plus": 6, "plus_minus": 0, "minus": 0},
+        "verdict": "PASS", "model": "test-model",
+    }
+    monkeypatch.setattr(router_mod, "score_transcript", lambda **kw: scored)
+
+    db = _FakeSession()
+    body = ValuesScorecardGenerateRequest(
+        application_id=101, transcript="x" * 3000, host="Ayesha Khan",
+        interview_date=dt.date(2026, 8, 14),
+    )
+    out = router_mod.generate(body, db, {"id": "appuser-editor"})
+    assert out["interview_date"] == dt.date(2026, 8, 14)
+
+
+def test_edit_updates_the_interview_date():
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardEdit
+
+    draft = _make_draft(id="vsd-idate-1")
+    db = _FakeSession()
+    db._store["vsd-idate-1"] = draft
+
+    out = router_mod.edit_draft(
+        "vsd-idate-1", ValuesScorecardEdit(interview_date=dt.date(2026, 3, 19)),
+        db, {"id": "appuser-editor"},
+    )
+    assert out["interview_date"] == dt.date(2026, 3, 19)
+    assert draft.interview_date == dt.date(2026, 3, 19)
+
+
+def test_edit_with_no_interview_date_leaves_it_unchanged():
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardEdit
+
+    draft = _make_draft(id="vsd-idate-2", interview_date=dt.date(2026, 3, 19))
+    db = _FakeSession()
+    db._store["vsd-idate-2"] = draft
+
+    out = router_mod.edit_draft(
+        "vsd-idate-2", ValuesScorecardEdit(final_comments="x"), db, {"id": "appuser-editor"},
+    )
+    assert out["interview_date"] == dt.date(2026, 3, 19)
+
+
+def test_submit_uses_the_drafts_interview_date_in_the_markaz_payload():
+    """The whole point of Decision 1: a Friday interview submitted the
+    following Monday must record the Friday date, not the submit day."""
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(
+        id="vsd-idate-3", application_id=1600, interview_date=dt.date(2025, 11, 3),
+    )
+    db = _FakeSession()
+    db._store["vsd-idate-3"] = draft
+
+    out = router_mod.submit("vsd-idate-3", db=db, user={"id": "appuser-approver"})
+
+    assert out["markaz_payload"]["date"] == "Nov 3, 2025"   # no zero-padded day
+    assert out["interview_date"] == dt.date(2025, 11, 3)
+
+    sql, params = db.execute_calls[-1]
+    assert params["interview_date"] == dt.datetime(2025, 11, 3, 0, 0)
+
+
+def test_submit_falls_back_to_today_and_makes_it_visible_on_the_draft():
+    """No interview date was ever captured: submit() falls back to today,
+    and -- because the fallback must never be silent -- that fallback date
+    is persisted onto the draft, so a subsequent GET shows it rather than a
+    still-blank interview_date next to an already-submitted scorecard."""
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(id="vsd-idate-4", application_id=1601, interview_date=None)
+    db = _FakeSession()
+    db._store["vsd-idate-4"] = draft
+
+    today = dt.date.today()
+    out = router_mod.submit("vsd-idate-4", db=db, user={"id": "appuser-approver"})
+
+    assert out["markaz_payload"]["date"] == format_markaz_date(today)
+    assert out["interview_date"] == today
+    assert draft.interview_date == today
+
+
+def test_submit_writes_the_lowercase_result_and_host_as_interviewer_name():
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(
+        id="vsd-idate-5", application_id=1602, host="Aymen Abid",
+        values_json=_values(["+", "+", "+", "+", "+", "-"]),  # one minus -> OUT
+    )
+    db = _FakeSession()
+    db._store["vsd-idate-5"] = draft
+
+    router_mod.submit("vsd-idate-5", db=db, user={"id": "appuser-approver"})
+
+    sql, params = db.execute_calls[-1]
+    assert params["result"] == "fail"
+    assert params["interviewer_name"] == "Aymen Abid"
 
 
 def test_generate_refuses_a_short_transcript(monkeypatch):
@@ -819,6 +993,11 @@ def test_submit_refuses_to_overwrite_an_existing_markaz_scorecard():
 
 
 def test_submit_overwrite_flag_replaces_and_preserves_the_prior_payload():
+    """`replaced_payload` now wraps the prior `values_scorecard` alongside
+    the three sibling columns (all None here, since `applications_row` never
+    set them) rather than being the bare prior payload dict -- see
+    `test_submit_overwrite_preserves_all_four_prior_column_values` below for
+    the case where the siblings actually held values."""
     import webapp.routers.values_scorecards as router_mod
     from webapp.schemas import ValuesScorecardSubmitRequest
 
@@ -833,10 +1012,52 @@ def test_submit_overwrite_flag_replaces_and_preserves_the_prior_payload():
         db=db, user={"id": "appuser-approver"},
     )
 
+    expected_replaced = {
+        "values_scorecard": prior,
+        "values_interview_result": None,
+        "values_interview_date": None,
+        "values_interviewer_name": None,
+    }
     assert out["status"] == "submitted"
     assert out["markaz_payload"]["candidateName"] == "Zara Iqbal"
-    assert out["replaced_payload"] == prior
-    assert draft.replaced_payload == prior
+    assert out["replaced_payload"] == expected_replaced
+    assert draft.replaced_payload == expected_replaced
+
+
+def test_submit_overwrite_preserves_all_four_prior_column_values():
+    """When the application being overwritten already carries values on all
+    three sibling columns (not just values_scorecard), every one of them
+    must survive into replaced_payload -- an overwrite must be fully
+    reversible, not just for the JSONB column."""
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardSubmitRequest
+
+    draft = _make_draft(id="vsd-11b", application_id=1011, candidate_name="Hina Aslam")
+    db = _FakeSession()
+    db._store["vsd-11b"] = draft
+    prior_scorecard = {"candidateName": "Someone Else", "finalComments": "an old human-written scorecard"}
+    prior_interview_date = dt.datetime(2026, 3, 19, 0, 0)
+    db.applications_row = {
+        "values_scorecard": prior_scorecard,
+        "candidate_id": None,
+        "job_id": None,
+        "values_interview_result": "fail",
+        "values_interview_date": prior_interview_date,
+        "values_interviewer_name": "Aymen Abid",
+    }
+
+    out = router_mod.submit(
+        "vsd-11b", body=ValuesScorecardSubmitRequest(overwrite=True),
+        db=db, user={"id": "appuser-approver"},
+    )
+
+    assert out["status"] == "submitted"
+    assert out["replaced_payload"] == {
+        "values_scorecard": prior_scorecard,
+        "values_interview_result": "fail",
+        "values_interview_date": prior_interview_date.isoformat(),
+        "values_interviewer_name": "Aymen Abid",
+    }
 
 
 def test_submit_refuses_a_stale_duplicate_application():

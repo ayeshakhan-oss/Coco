@@ -411,6 +411,11 @@ export interface ValuesScorecardDraft {
   candidate_name: string
   host: string
   transcript_sha256: string
+  // The actual interview date (ISO "YYYY-MM-DD"), not the date the
+  // scorecard was generated or submitted. Null until captured -- submit()
+  // then falls back to today and writes that fallback back here, so it is
+  // never silently missing after a submission.
+  interview_date: string | null
   values: ValuesScorecardDraftValue[]
   gwc: ValuesScorecardGwc | null
   final_comments: string

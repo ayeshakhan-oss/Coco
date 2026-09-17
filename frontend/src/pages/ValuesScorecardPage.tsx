@@ -74,6 +74,12 @@ export function ValuesScorecardPage() {
   const [selected, setSelected] = useState<QueueRow | null>(null)
   const [transcript, setTranscript] = useState('')
   const [host, setHost] = useState('')
+  // ISO "YYYY-MM-DD" from the <input type="date">, or '' if never set. The
+  // ACTUAL interview date -- never the day the scorecard happens to be
+  // generated or submitted (Decision 1, 2026-09-17). Optional: left blank,
+  // submit() falls back to today and makes that fallback visible afterwards
+  // rather than silent.
+  const [interviewDate, setInterviewDate] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generateError, setGenerateError] = useState<string | null>(null)
 
@@ -82,6 +88,7 @@ export function ValuesScorecardPage() {
   const [loadedDraftId, setLoadedDraftId] = useState<string | null>(null)
   const [localValues, setLocalValues] = useState<ValuesScorecardDraftValue[]>([])
   const [localFinalComments, setLocalFinalComments] = useState('')
+  const [localInterviewDate, setLocalInterviewDate] = useState('')
   // A real state value, not a ref: the submit button and the verdict chip
   // both need to re-render the instant an edit happens, not just whenever
   // something else happens to trigger a render. A useRef here was the root
@@ -98,6 +105,7 @@ export function ValuesScorecardPage() {
     if (draft && draft.id !== loadedDraftId) {
       setLocalValues(draft.values)
       setLocalFinalComments(draft.final_comments)
+      setLocalInterviewDate(draft.interview_date ?? '')
       setLoadedDraftId(draft.id)
       setDirty(false)
     }
@@ -108,7 +116,12 @@ export function ValuesScorecardPage() {
     setGenerating(true)
     setGenerateError(null)
     try {
-      const d = await api.generateValuesScorecard(selected.application_id, transcript, host.trim())
+      const d = await api.generateValuesScorecard(
+        selected.application_id,
+        transcript,
+        host.trim(),
+        interviewDate || null,
+      )
       setDraft(d)
     } catch (e) {
       setGenerateError(stripStatus((e as ApiError).message))
@@ -127,9 +140,13 @@ export function ValuesScorecardPage() {
     try {
       // The response is the ONLY source for verdict/tally/gwc/proceed --
       // they are never recomputed here, only displayed from what comes back.
+      // interview_date is only sent when non-blank: the backend treats a
+      // missing field as "leave it unchanged" and has no PATCH-time way to
+      // explicitly clear it back to unset, so an empty string is never sent.
       const d = await api.editValuesScorecardDraft(draft.id, {
         values: localValues,
         final_comments: localFinalComments,
+        ...(localInterviewDate ? { interview_date: localInterviewDate } : {}),
       })
       setDraft(d)
       setDirty(false)
@@ -147,7 +164,7 @@ export function ValuesScorecardPage() {
     const t = setTimeout(save, 900)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localValues, localFinalComments, dirty])
+  }, [localValues, localFinalComments, localInterviewDate, dirty])
 
   function updateEvidence(i: number, field: 'deepDive' | 'curveBall' | 'microCase', value: string) {
     setDirty(true)
@@ -173,8 +190,15 @@ export function ValuesScorecardPage() {
       const flushed = await save()
       if (!flushed) return
     }
+    // Made visible rather than silent (Decision 1): the confirmation names
+    // the interview date that will actually be written, including the
+    // today-fallback case.
+    const interviewDateLabel = localInterviewDate
+      ? `Interview date: ${localInterviewDate}.`
+      : "No interview date was set -- today's date will be recorded instead."
     const ok = window.confirm(
-      `Submit this values scorecard for ${draft.candidate_name} (application ${draft.application_id}) to Markaz?` +
+      `Submit this values scorecard for ${draft.candidate_name} (application ${draft.application_id}) to Markaz?\n` +
+        `${interviewDateLabel}` +
         (overwrite ? ' This will overwrite the scorecard already on file for this application.' : ' This writes a permanent hiring record.'),
     )
     if (!ok) return
@@ -212,11 +236,13 @@ export function ValuesScorecardPage() {
     setSelected(null)
     setTranscript('')
     setHost('')
+    setInterviewDate('')
     setGenerateError(null)
     setDraft(null)
     setLoadedDraftId(null)
     setLocalValues([])
     setLocalFinalComments('')
+    setLocalInterviewDate('')
     setSaveError(null)
     setSubmitError(null)
     setConflict(null)
@@ -310,12 +336,25 @@ export function ValuesScorecardPage() {
           {selected && (
             <div className="mt-5 space-y-3">
               <h2 className="text-sm font-semibold text-ink">2. Paste the transcript</h2>
-              <input
-                value={host}
-                onChange={(e) => setHost(e.target.value)}
-                placeholder="Interview host name"
-                className="input"
-              />
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <input
+                  value={host}
+                  onChange={(e) => setHost(e.target.value)}
+                  placeholder="Interview host name"
+                  className="input"
+                />
+                <div>
+                  <input
+                    type="date"
+                    value={interviewDate}
+                    onChange={(e) => setInterviewDate(e.target.value)}
+                    className="input"
+                  />
+                  <p className="mt-1 text-xs text-ink-dim">
+                    The actual interview date, not today's date. Leave blank to use today.
+                  </p>
+                </div>
+              </div>
               <textarea
                 value={transcript}
                 onChange={(e) => setTranscript(e.target.value)}
@@ -352,6 +391,28 @@ export function ValuesScorecardPage() {
               <div className="text-sm font-medium text-ink">{draft.candidate_name}</div>
               <div className="text-xs text-ink-dim">
                 Application #{draft.application_id} · Host: {draft.host} · Status: {draft.status}
+              </div>
+              <div className="mt-1.5 flex items-center gap-2">
+                <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim" htmlFor="interview-date">
+                  Interview date
+                </label>
+                {draft.status === 'draft' ? (
+                  <input
+                    id="interview-date"
+                    type="date"
+                    value={localInterviewDate}
+                    onChange={(e) => {
+                      setDirty(true)
+                      setLocalInterviewDate(e.target.value)
+                    }}
+                    className="input h-7 w-40 text-xs"
+                  />
+                ) : (
+                  <span className="text-xs text-ink">{draft.interview_date ?? '—'}</span>
+                )}
+                {draft.status === 'draft' && !localInterviewDate && (
+                  <span className="text-xs text-ink-dim">(none set — today will be used at submit)</span>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3">

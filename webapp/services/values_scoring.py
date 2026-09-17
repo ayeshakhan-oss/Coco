@@ -179,8 +179,33 @@ MARKAZ_KEYS = frozenset(
     {"date", "host", "candidateName", "noteTaker", "values", "finalComments", "proceedToRightSeat"}
 )
 
-# Markaz stores the date as a human string, e.g. "Aug 14, 2026".
-_DATE_FMT = "%b %d, %Y"
+
+def format_markaz_date(d: dt.date) -> str:
+    """Markaz stores the date as a human string, e.g. "Aug 14, 2026" -- but
+    the day is NEVER zero-padded: "Nov 3, 2025", not "Nov 03, 2025".
+    Verified 2026-09-17 against all 219 live `public.applications
+    .values_scorecard` records with a date in this shape: 0 of them
+    zero-pad the day. `dt.date.strftime("%b %d, %Y")` always zero-pads (its
+    `%d` has no non-padded form on every platform), so it must not be used
+    here.
+    """
+    return f"{d:%b} {d.day}, {d:%Y}"
+
+
+# Maps the computed PASS/OUT verdict to the exact lowercase string Markaz's
+# `applications.values_interview_result` column uses -- 101 live records
+# read "pass", 23 read "fail", never "PASS"/"OUT". There is one legacy
+# "strong_pass" (drift, not the standard); this must never produce it.
+MARKAZ_RESULT_BY_VERDICT = {"PASS": "pass", "OUT": "fail"}
+
+
+def markaz_result(computed_verdict: str) -> str:
+    try:
+        return MARKAZ_RESULT_BY_VERDICT[computed_verdict]
+    except KeyError:
+        raise ValuesScorecardError(
+            f"verdict must be one of {sorted(MARKAZ_RESULT_BY_VERDICT)}, got {computed_verdict!r}"
+        )
 
 
 def build_markaz_payload(
@@ -195,7 +220,7 @@ def build_markaz_payload(
 ) -> dict:
     validate_values(values)
     payload = {
-        "date": date or dt.date.today().strftime(_DATE_FMT),
+        "date": date or format_markaz_date(dt.date.today()),
         "host": host,
         "candidateName": candidate_name,
         "noteTaker": note_taker,

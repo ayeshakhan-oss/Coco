@@ -214,7 +214,17 @@ def test_submit_with_overwrite_true_replaces_and_preserves_the_prior_payload(cli
     body = r.json()
     assert body["status"] == "submitted"
     assert body["markaz_payload"]["candidateName"] == "Zara Iqbal"
-    assert body["replaced_payload"] == prior
+    # replaced_payload now wraps the prior values_scorecard alongside the
+    # three sibling columns (None here -- applications_row never set them),
+    # not the bare prior payload dict. See webapp/tests/test_values_scoring.py
+    # ::test_submit_overwrite_preserves_all_four_prior_column_values for the
+    # case where the siblings held values.
+    assert body["replaced_payload"] == {
+        "values_scorecard": prior,
+        "values_interview_result": None,
+        "values_interview_date": None,
+        "values_interviewer_name": None,
+    }
     assert db.committed == 1
 
 

@@ -19,6 +19,7 @@ from sqlalchemy import (
     ARRAY,
     Boolean,
     CheckConstraint,
+    Date,
     DateTime,
     ForeignKey,
     Index,
@@ -366,6 +367,13 @@ class ValuesScorecardDraft(Base):
     application_id: Mapped[int] = mapped_column(Integer, nullable=False)
     candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
     host: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # The actual interview date, captured in the UI -- NEVER the date the
+    # scorecard happens to be submitted. Nullable: still valid to submit
+    # same-day, in which case submit() falls back to today (visibly, in the
+    # UI, not silently). See migration 0008.
+    interview_date: Mapped[Optional[dt.date]] = mapped_column(Date, nullable=True)
+
     transcript_sha256: Mapped[str] = mapped_column(Text, nullable=False)
 
     # Column is named "values" to match the Markaz payload key

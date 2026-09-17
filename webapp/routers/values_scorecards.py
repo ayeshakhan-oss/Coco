@@ -35,7 +35,9 @@ satisfied only by the frontend.
      `application_id` is read (`FOR UPDATE`, same transaction). If
      `values_scorecard` is already populated, the submit refuses (409)
      unless the caller explicitly passes `overwrite=True`; on an explicit
-     overwrite, the prior value is preserved on the draft row
+     overwrite, the prior value of ALL FOUR columns this endpoint writes
+     (`values_scorecard`, `values_interview_result`, `values_interview_date`,
+     `values_interviewer_name`) is preserved on the draft row
      (`replaced_payload`) rather than being silently destroyed.
   5. Before the write, the target application is checked against every
      `public.applications` row sharing its `(candidate_id, job_id)`: if a
@@ -60,8 +62,14 @@ satisfied only by the frontend.
 
 `public.applications` is Markaz's table, not Coco's -- referenced everywhere
 as `public.applications` (not the bare, `search_path`-dependent name): the
-UPDATE below touches ONLY the `values_scorecard` column of the one target
-row. It never inserts, deletes, or touches any other column.
+UPDATE below touches ONLY these FOUR columns of the one target row --
+`values_scorecard`, `values_interview_result` (Ayesha's decision 2026-09-17:
+the lowercase `"pass"`/`"fail"` string 124 live records already agree on --
+NEVER `"PASS"`/`"OUT"`, which would introduce a third spelling),
+`values_interview_date` (the interview date captured in the UI, or today as
+a visible fallback -- never the submit timestamp), and
+`values_interviewer_name` (the draft's `host`). It never inserts, deletes,
+or touches any other column.
 """
 
 from __future__ import annotations
@@ -92,6 +100,8 @@ from ..services.values_scoring import (
     TranscriptTooShort,
     build_markaz_payload,
     find_newer_duplicate,
+    format_markaz_date,
+    markaz_result,
     recompute_final_comments,
     score_transcript,
     tally,
@@ -128,6 +138,7 @@ def _draft_out(draft: ValuesScorecardDraft) -> dict:
         "candidate_name": draft.candidate_name,
         "host": draft.host,
         "transcript_sha256": draft.transcript_sha256,
+        "interview_date": draft.interview_date,
         "values": draft.values_json,
         "gwc": draft.gwc,
         "final_comments": draft.final_comments,
@@ -196,6 +207,7 @@ def generate(
         # Only the hash is stored -- the transcript is interview content
         # about a named person and does not need a second home once scored.
         transcript_sha256=hashlib.sha256(body.transcript.encode("utf-8")).hexdigest(),
+        interview_date=body.interview_date,
         values_json=scored["values"],
         final_comments=recompute_final_comments(ratings, ""),
         proceed=proceed,
@@ -233,6 +245,9 @@ def edit_draft(
     draft = _draft_or_404(db, draft_id)
     if draft.status == "submitted":
         raise HTTPException(409, "This scorecard has already been submitted to Markaz")
+
+    if body.interview_date is not None:
+        draft.interview_date = body.interview_date
 
     try:
         if body.values is not None:
@@ -336,6 +351,17 @@ def submit(
         # sitting beside proceedToRightSeat: "No").
         final_comments = recompute_final_comments(ratings, draft.final_comments)
 
+        # The INTERVIEW date, never the submit timestamp: use whatever was
+        # captured in the UI, falling back to today only when the draft
+        # never got one. Persisted back onto the draft below so the fallback
+        # is visible afterwards rather than silent.
+        effective_interview_date = draft.interview_date or dt.date.today()
+        markaz_date = format_markaz_date(effective_interview_date)
+
+        # Ayesha's decision 2026-09-17: the computed verdict also becomes the
+        # lowercase applications.values_interview_result string.
+        result_str = markaz_result(current_verdict)
+
         # Rebuild the payload from the draft's CURRENT columns and validate
         # it immediately before the write -- never trust that a stored draft
         # is already valid, however it got there.
@@ -345,6 +371,7 @@ def submit(
             values=draft.values_json,
             final_comments=final_comments,
             proceed=proceed,
+            date=markaz_date,
         )
         validate_markaz_payload(payload)
     except ValuesScorecardError as exc:
@@ -352,10 +379,14 @@ def submit(
         raise HTTPException(422, str(exc)) from exc
 
     # --- CRITICAL 4 + 5: read the CURRENT public.applications row for this
-    # target, in the SAME transaction, before writing.
+    # target, in the SAME transaction, before writing. The three sibling
+    # columns are appended at the end (not interleaved) so this SELECT stays
+    # ordered exactly as before for the first four -- only their prior
+    # values are read here, for `replaced_payload` on an overwrite.
     current_row = db.execute(
         text(
-            "SELECT values_scorecard, candidate_id, job_id, updated_at "
+            "SELECT values_scorecard, candidate_id, job_id, updated_at, "
+            "values_interview_result, values_interview_date, values_interviewer_name "
             "FROM public.applications WHERE id = :app_id FOR UPDATE"
         ),
         {"app_id": draft.application_id},
@@ -400,7 +431,11 @@ def submit(
 
     # CRITICAL 4: never silently destroy an existing, human-written Markaz
     # scorecard. Refuse unless the caller explicitly opted into overwriting
-    # it; when they do, keep the prior value rather than losing it.
+    # it; when they do, keep the prior value of ALL FOUR columns this
+    # endpoint writes (not just values_scorecard), so an overwrite remains
+    # fully reversible. `.get(...)` -- not `[...]` -- for the three sibling
+    # columns: they only ever matter inside this already-populated branch,
+    # and a live row predating this feature legitimately has them NULL.
     replaced_payload = None
     if current_row["values_scorecard"] is not None:
         if not body.overwrite:
@@ -411,19 +446,37 @@ def submit(
                 "scorecard in Markaz. Resubmit with overwrite=true to "
                 "replace it deliberately.",
             )
-        replaced_payload = current_row["values_scorecard"]
+        prior_interview_date = current_row.get("values_interview_date")
+        replaced_payload = {
+            "values_scorecard": current_row["values_scorecard"],
+            "values_interview_result": current_row.get("values_interview_result"),
+            "values_interview_date": (
+                prior_interview_date.isoformat() if prior_interview_date else None
+            ),
+            "values_interviewer_name": current_row.get("values_interviewer_name"),
+        }
 
     log.info(
         "values_scorecard submit: draft_id=%s application_id=%s payload=%s",
         draft.id, draft.application_id, json.dumps(payload),
     )
 
-    # public.applications is Markaz's table, not Coco's: touch ONLY the
-    # values_scorecard column of the ONE target row. Never insert, delete,
-    # or touch any other column.
+    # public.applications is Markaz's table, not Coco's: touch ONLY these
+    # FOUR columns of the ONE target row, in a single statement. Never
+    # insert, delete, or touch any other column.
     result = db.execute(
-        text("UPDATE public.applications SET values_scorecard = :payload::jsonb WHERE id = :app_id"),
-        {"payload": json.dumps(payload), "app_id": draft.application_id},
+        text(
+            "UPDATE public.applications SET values_scorecard = :payload::jsonb, "
+            "values_interview_result = :result, values_interview_date = :interview_date, "
+            "values_interviewer_name = :interviewer_name WHERE id = :app_id"
+        ),
+        {
+            "payload": json.dumps(payload),
+            "result": result_str,
+            "interview_date": dt.datetime.combine(effective_interview_date, dt.time.min),
+            "interviewer_name": draft.host,
+            "app_id": draft.application_id,
+        },
     )
     if result.rowcount != 1:
         db.rollback()
@@ -437,6 +490,10 @@ def submit(
     draft.status = "submitted"
     draft.proceed = proceed
     draft.final_comments = final_comments
+    # Persist whichever date was actually used (the captured interview date,
+    # or today's fallback) back onto the draft -- so the fallback is visible
+    # on every subsequent GET, never silent.
+    draft.interview_date = effective_interview_date
     # id + email so an audit trail is readable directly in SQL, no join.
     draft.approved_by = f"{user.get('id') or ''} {user.get('email') or ''}".strip()
     draft.approved_at = now
