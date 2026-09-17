@@ -390,3 +390,46 @@ class EvaluationDetail(EvaluationRow):
     rubric_version: Optional[int] = None
     model: Optional[str] = None
     evaluated_at: Optional[dt.datetime] = None
+
+
+# --------------------------------------------------------------------------
+# Values scorecard draft lifecycle (webapp/routers/values_scorecards.py).
+# --------------------------------------------------------------------------
+
+
+class ValuesScorecardGenerateRequest(_Base):
+    application_id: int
+    transcript: str
+    host: str
+
+
+class ValuesScorecardEdit(_Base):
+    """Edit evidence text and/or ratings on a draft. Supplying `values`
+    re-runs validate_values and RECOMPUTES the verdict from the edited
+    ratings server-side; the verdict is never taken from the client."""
+
+    values: Optional[list[dict[str, Any]]] = None
+    final_comments: Optional[str] = None
+    proceed: Optional[bool] = None
+
+
+class ValuesScorecardOut(_Base):
+    id: str
+    application_id: int
+    candidate_name: str
+    host: str
+    transcript_sha256: str
+    values: list[dict[str, Any]]
+    gwc: Optional[dict[str, Any]] = None
+    final_comments: str
+    proceed: bool
+    tally: dict[str, int]
+    verdict: str
+    status: str
+    model: str
+    created_by: str
+    created_at: Optional[dt.datetime] = None
+    approved_by: Optional[str] = None
+    approved_at: Optional[dt.datetime] = None
+    submitted_at: Optional[dt.datetime] = None
+    markaz_payload: Optional[dict[str, Any]] = None

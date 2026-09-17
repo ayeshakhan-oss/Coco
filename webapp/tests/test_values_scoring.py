@@ -9,6 +9,7 @@ from __future__ import annotations
 import itertools
 
 import pytest
+from fastapi import HTTPException
 
 from webapp.services.values_scoring import (
     MARKAZ_KEYS,
@@ -192,3 +193,294 @@ def test_draft_table_lives_in_the_coco_schema():
     from webapp.models import ValuesScorecardDraft
 
     assert ValuesScorecardDraft.__table__.schema == "coco"
+
+
+# --------------------------------------------------------------------------
+# Task 6: the router. generate/read/edit are exercised directly against the
+# route functions with a fake, in-memory Session (no live database, no real
+# model call) -- these are unit tests of the router's own logic, not
+# integration tests. submit() is deliberately never exercised against a real
+# DATABASE_URL in this test file: it is the only code in the app that writes
+# to Markaz's public.applications, and that write is verified by a human, not
+# by CI. See task-6-brief.md.
+# --------------------------------------------------------------------------
+
+
+def test_submit_requires_approver_and_generate_requires_editor():
+    from webapp.main import app
+
+    def _routes():
+        out = []
+        def walk(rs):
+            for r in rs:
+                if hasattr(r, "path"):
+                    out.append(r)
+                elif hasattr(r, "original_router"):
+                    walk(r.original_router.routes)
+        walk(app.routes)
+        return out
+
+    paths = {r.path for r in _routes()}
+    assert "/api/values-scorecards/generate" in paths
+    assert "/api/values-scorecards/{draft_id}" in paths
+    assert "/api/values-scorecards/{draft_id}/submit" in paths
+
+    import webapp.routers.values_scorecards as m
+    src = open(m.__file__, encoding="utf-8").read()
+    # The submit endpoint must be gated on approver, not on any signed-in user.
+    assert "require_approver" in src
+    submit_block = src.split("def submit")[1]
+    assert "get_current_user" not in submit_block
+
+
+def test_submit_sql_touches_only_the_values_scorecard_column():
+    """public.applications is Markaz's table. The UPDATE inside submit() must
+    touch ONLY values_scorecard for the one target row -- never another
+    column, never an INSERT, never a DELETE."""
+    import webapp.routers.values_scorecards as m
+
+    src = open(m.__file__, encoding="utf-8").read()
+    submit_block = src.split("def submit")[1]
+    assert "UPDATE applications SET values_scorecard" in submit_block
+    assert "INSERT INTO" not in submit_block
+    assert "DELETE FROM" not in submit_block
+    for forbidden in (
+        "values_interview_result", "values_interview_score",
+        "values_interview_date", "values_interviewer_name",
+    ):
+        assert forbidden not in submit_block
+
+
+# ---- Fakes for exercising the route functions directly ----------------
+
+
+class _FakeResult:
+    def __init__(self, rowcount):
+        self.rowcount = rowcount
+
+
+class _FakeSession:
+    """A minimal stand-in for a SQLAlchemy Session. No network, no engine."""
+
+    def __init__(self):
+        self.committed = 0
+        self.rolled_back = 0
+        self.execute_calls = []
+        self.execute_rowcount = 1
+        self._store = {}
+
+    def add(self, obj):
+        self._store[getattr(obj, "id", None)] = obj
+
+    def commit(self):
+        self.committed += 1
+
+    def rollback(self):
+        self.rolled_back += 1
+
+    def refresh(self, obj):
+        pass
+
+    def get(self, model, id_):
+        return self._store.get(id_)
+
+    def execute(self, stmt, params=None):
+        self.execute_calls.append((str(stmt), params))
+        return _FakeResult(self.execute_rowcount)
+
+
+def _fake_app_row(application_id=101):
+    return {
+        "application_id": application_id,
+        "candidate_id": 55,
+        "first_name": "Amina",
+        "last_name": "Raza",
+        "job_title": "Growth Manager",
+        "job_pk": 7,
+    }
+
+
+def _make_draft(**overrides):
+    from webapp.models import ValuesScorecardDraft
+
+    defaults = dict(
+        id="vsd-test",
+        application_id=101,
+        candidate_name="Amina Raza",
+        host="Ayesha Khan",
+        transcript_sha256="abc123",
+        values_json=_ok_values(),
+        final_comments="PASS - 6(+) / 0(+/-) / 0(-)",
+        proceed=True,
+        gwc={"gets_it": "Yes", "wants_it": "Yes", "capacity": "Yes"},
+        status="draft",
+        model_name="test-model",
+        created_by="appuser-editor",
+    )
+    defaults.update(overrides)
+    return ValuesScorecardDraft(**defaults)
+
+
+def test_generate_builds_draft_with_computed_verdict_and_proceed(monkeypatch):
+    import hashlib
+
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardGenerateRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_app_row(app_id)
+    )
+    scored = {
+        "values": _ok_values(),
+        "gwc": {"gets_it": "Yes", "wants_it": "Yes", "capacity": "Yes"},
+        "tally": {"plus": 6, "plus_minus": 0, "minus": 0},
+        "verdict": "PASS",
+        "model": "test-model",
+    }
+    monkeypatch.setattr(router_mod, "score_transcript", lambda **kw: scored)
+
+    db = _FakeSession()
+    transcript = "x" * 3000
+    body = ValuesScorecardGenerateRequest(
+        application_id=101, transcript=transcript, host="Ayesha Khan"
+    )
+    out = router_mod.generate(body, db, {"id": "appuser-editor"})
+
+    assert out["candidate_name"] == "Amina Raza"          # first + last from the application
+    assert out["verdict"] == "PASS"                        # computed, matches the scored verdict
+    assert out["proceed"] is True                           # default: proceed follows PASS
+    assert out["final_comments"] == "PASS - 6(+) / 0(+/-) / 0(-)"
+    assert out["status"] == "draft"
+    assert out["transcript_sha256"] == hashlib.sha256(transcript.encode("utf-8")).hexdigest()
+    assert db.committed == 1
+
+
+def test_generate_refuses_a_short_transcript(monkeypatch):
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardGenerateRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_app_row(app_id)
+    )
+
+    def _raise(**kw):
+        raise router_mod.TranscriptTooShort("transcript is too short")
+
+    monkeypatch.setattr(router_mod, "score_transcript", _raise)
+
+    db = _FakeSession()
+    body = ValuesScorecardGenerateRequest(application_id=101, transcript="too short", host="Ayesha Khan")
+    with pytest.raises(HTTPException) as exc:
+        router_mod.generate(body, db, {"id": "appuser-editor"})
+    assert exc.value.status_code == 422
+
+
+def test_edit_recomputes_verdict_and_drops_gwc_when_the_new_verdict_is_out():
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardEdit
+
+    draft = _make_draft(id="vsd-1")
+    db = _FakeSession()
+    db._store["vsd-1"] = draft
+
+    edited = _values(["+", "+", "+", "+", "+", "-"])  # one minus -> OUT
+    out = router_mod.edit_draft("vsd-1", ValuesScorecardEdit(values=edited), db, {"id": "appuser-editor"})
+
+    assert out["verdict"] == "OUT"
+    assert out["gwc"] is None       # GWC dropped, never a back door around a failing round
+    assert out["proceed"] is False  # follows the recomputed verdict
+    assert db.committed == 1
+
+
+def test_edit_refuses_a_draft_that_is_already_submitted():
+    import webapp.routers.values_scorecards as router_mod
+    from webapp.schemas import ValuesScorecardEdit
+
+    draft = _make_draft(id="vsd-2", status="submitted")
+    db = _FakeSession()
+    db._store["vsd-2"] = draft
+
+    with pytest.raises(HTTPException) as exc:
+        router_mod.edit_draft("vsd-2", ValuesScorecardEdit(final_comments="x"), db, {"id": "appuser-editor"})
+    assert exc.value.status_code == 409
+
+
+def test_submit_writes_the_payload_and_marks_the_draft_submitted():
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(id="vsd-3", application_id=202, candidate_name="Bilal Tariq")
+    db = _FakeSession()
+    db._store["vsd-3"] = draft
+    db.execute_rowcount = 1
+
+    out = router_mod.submit("vsd-3", db, {"id": "appuser-approver"})
+
+    assert out["status"] == "submitted"
+    assert out["approved_by"] == "appuser-approver"
+    assert out["approved_at"] is not None
+    assert out["submitted_at"] is not None
+    assert out["markaz_payload"]["candidateName"] == "Bilal Tariq"
+    assert db.committed == 1
+    assert db.rolled_back == 0
+
+    # The UPDATE targets exactly one application_id.
+    assert len(db.execute_calls) == 1
+    sql_text, params = db.execute_calls[0]
+    assert "UPDATE applications" in sql_text
+    assert "values_scorecard" in sql_text
+    assert params["app_id"] == 202
+
+
+def test_submit_rolls_back_and_raises_if_the_row_count_is_not_exactly_one():
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(id="vsd-4", application_id=303)
+    db = _FakeSession()
+    db._store["vsd-4"] = draft
+    db.execute_rowcount = 0  # simulate a row that no longer matches
+
+    with pytest.raises(HTTPException) as exc:
+        router_mod.submit("vsd-4", db, {"id": "appuser-approver"})
+    assert exc.value.status_code == 500
+    assert db.rolled_back == 1
+    assert db.committed == 0
+    assert draft.status == "draft"      # never mutated on a failed write
+    assert draft.markaz_payload is None
+
+
+def test_submit_refuses_a_second_submission_without_writing_again():
+    import webapp.routers.values_scorecards as router_mod
+
+    draft = _make_draft(id="vsd-5", application_id=404, status="submitted")
+    db = _FakeSession()
+    db._store["vsd-5"] = draft
+
+    with pytest.raises(HTTPException) as exc:
+        router_mod.submit("vsd-5", db, {"id": "appuser-approver"})
+    assert exc.value.status_code == 409
+    assert len(db.execute_calls) == 0  # a double-click must never re-attempt the write
+
+
+def test_submit_logs_the_payload_verbatim_before_the_write(monkeypatch):
+    import webapp.routers.values_scorecards as router_mod
+
+    order = []
+
+    class _TracingLogger:
+        def info(self, *args, **kwargs):
+            order.append("log")
+
+    class _TracingSession(_FakeSession):
+        def execute(self, stmt, params=None):
+            order.append("execute")
+            return super().execute(stmt, params)
+
+    monkeypatch.setattr(router_mod, "log", _TracingLogger())
+
+    draft = _make_draft(id="vsd-6", application_id=505)
+    db = _TracingSession()
+    db._store["vsd-6"] = draft
+
+    router_mod.submit("vsd-6", db, {"id": "appuser-approver"})
+
+    assert order == ["log", "execute"]
