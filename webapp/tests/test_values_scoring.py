@@ -7,6 +7,7 @@ computed in code and never left to a model, so it is tested exhaustively here.
 from __future__ import annotations
 
 import itertools
+import json
 
 import pytest
 from fastapi import HTTPException
@@ -250,31 +251,67 @@ def test_draft_table_lives_in_the_coco_schema():
 # --------------------------------------------------------------------------
 
 
-def test_submit_requires_approver_and_generate_requires_editor():
+def _flatten_routes(routes):
+    """This FastAPI build wraps every `include_router()` call in an
+    `_IncludedRouter` shim that has no `.path`/`.methods` of its own; the real
+    `APIRoute` objects live on `original_router.routes`. Recurse through those
+    shims (same pattern as `webapp/tests/test_nugget_reads.py`) so route
+    introspection sees a flat list."""
+    flat = []
+    for r in routes:
+        if hasattr(r, "path"):
+            flat.append(r)
+        nested = getattr(r, "original_router", None)
+        if nested is not None:
+            flat.extend(_flatten_routes(nested.routes))
+    return flat
+
+
+def _route(path, method):
     from webapp.main import app
 
-    def _routes():
-        out = []
-        def walk(rs):
-            for r in rs:
-                if hasattr(r, "path"):
-                    out.append(r)
-                elif hasattr(r, "original_router"):
-                    walk(r.original_router.routes)
-        walk(app.routes)
-        return out
+    for r in _flatten_routes(app.routes):
+        if r.path == path and method in getattr(r, "methods", set()):
+            return r
+    raise AssertionError(f"route not found: {method} {path}")
 
-    paths = {r.path for r in _routes()}
-    assert "/api/values-scorecards/generate" in paths
-    assert "/api/values-scorecards/{draft_id}" in paths
-    assert "/api/values-scorecards/{draft_id}/submit" in paths
 
-    import webapp.routers.values_scorecards as m
-    src = open(m.__file__, encoding="utf-8").read()
-    # The submit endpoint must be gated on approver, not on any signed-in user.
-    assert "require_approver" in src
-    submit_block = src.split("def submit")[1]
-    assert "get_current_user" not in submit_block
+def test_the_four_routes_are_gated_on_the_declared_dependency_not_the_docstring():
+    """Was: `"require_approver" in src` against the whole module's SOURCE
+    TEXT -- the module docstring mentions `require_approver` five times, so
+    that assertion passed even if `submit` were declared on
+    `Depends(require_editor)`. Same shape for `"get_current_user" not in
+    submit_block`: true for ANY wrong-but-not-that dependency.
+
+    This inspects the route object FastAPI actually built --
+    `route.dependant.dependencies` -- and checks the resolved callable by
+    identity. `require_editor`/`require_approver` are each built once at
+    import time by `_require_role(...)` in webapp/deps.py, so `is` is a
+    valid, exact check, and get_current_user (their own sub-dependency)
+    never appears in a route's own top-level dependency list -- only the
+    gate wrapper does.
+    """
+    import webapp.deps as deps
+
+    generate = _route("/api/values-scorecards/generate", "POST")
+    get_draft = _route("/api/values-scorecards/{draft_id}", "GET")
+    edit_draft = _route("/api/values-scorecards/{draft_id}", "PATCH")
+    submit = _route("/api/values-scorecards/{draft_id}/submit", "POST")
+
+    for route, expected in (
+        (generate, deps.require_editor),
+        (get_draft, deps.require_editor),
+        (edit_draft, deps.require_editor),
+        (submit, deps.require_approver),
+    ):
+        calls = {dep.call for dep in route.dependant.dependencies}
+        assert expected in calls, f"{route.path} [{route.methods}] missing {expected}"
+        other = deps.require_approver if expected is deps.require_editor else deps.require_editor
+        assert other not in calls, f"{route.path} [{route.methods}] wrongly gated on {other}"
+        # get_current_user is a SUB-dependency of require_editor/require_approver,
+        # never wired directly on any of these four routes (a bare signed-in
+        # user is not enough for any of them).
+        assert deps.get_current_user not in calls
 
 
 def test_submit_sql_touches_only_the_values_scorecard_column():
@@ -559,13 +596,24 @@ def test_submit_refuses_a_second_submission_without_writing_again():
 
 def test_submit_logs_the_payload_verbatim_before_the_final_write(monkeypatch):
     """The log line must immediately precede the WRITE, not the earlier reads
-    (the conditional status flip, the public.applications lookup)."""
+    (the conditional status flip, the public.applications lookup) -- AND the
+    payload logged must actually BE the exact payload written, not merely
+    "a log call happened at some point". The prior version of this test used
+    a `_TracingLogger.info` that discarded its args entirely (`*args,
+    **kwargs: order.append("log")`), so "verbatim" was asserted in the
+    docstring but never checked -- a log call with the wrong draft id, the
+    wrong application id, or no payload at all would have passed identically.
+    This version formats the record exactly as `logging.Logger.info` would
+    (`msg % args`, the real call shape: a %s-format string + positional
+    args) and asserts the ACTUAL Markaz payload appears in it."""
     import webapp.routers.values_scorecards as router_mod
 
     order = []
+    logged = []
 
     class _TracingLogger:
-        def info(self, *args, **kwargs):
+        def info(self, msg, *args, **kwargs):
+            logged.append(msg % args if args else msg)
             order.append("log")
 
     def _tag(sql: str) -> str:
@@ -591,10 +639,17 @@ def test_submit_logs_the_payload_verbatim_before_the_final_write(monkeypatch):
     db = _TracingSession()
     db._store["vsd-6"] = draft
 
-    router_mod.submit("vsd-6", db=db, user={"id": "appuser-approver"})
+    out = router_mod.submit("vsd-6", db=db, user={"id": "appuser-approver"})
 
     assert order[-2:] == ["log", "execute:write"]
     assert order.count("log") == 1
+    assert len(logged) == 1
+    # The exact Markaz payload actually written must be present verbatim in
+    # what was logged -- not a summary, not a truncation, the same
+    # `json.dumps(payload)` string the write itself used.
+    assert json.dumps(out["markaz_payload"]) in logged[0]
+    assert "draft_id=vsd-6" in logged[0]
+    assert "application_id=505" in logged[0]
 
 
 # --------------------------------------------------------------------------
@@ -856,17 +911,14 @@ def test_edit_allows_client_proceed_false_on_a_passing_verdict():
     assert out["proceed"] is False
 
 
-def test_get_draft_requires_editor_not_a_bare_signed_in_user():
-    import webapp.routers.values_scorecards as m
-
-    src = open(m.__file__, encoding="utf-8").read()
-    get_block = src.split("def get_draft")[1].split("def edit_draft")[0]
-    assert "require_editor" in get_block
-    # Not imported (a draft carries the candidate's name plus verbatim
-    # interview evidence -- Controller Ruling 9). Check the import line and
-    # every dependency wiring, not the module docstring's own mention of it.
-    assert "get_current_user" not in m.get_draft.__globals__
-    assert "Depends(get_current_user)" not in src
+# NOTE (2026-09-17): the source-text version of this test used to live here
+# (`"require_editor" in get_block`, `"get_current_user" not in
+# m.get_draft.__globals__`). Same shape of theatre as the one above -- it
+# would pass for a route gated on any dependency whose name merely appears
+# somewhere else in the module. Superseded by
+# `test_the_four_routes_are_gated_on_the_declared_dependency_not_the_docstring`,
+# which covers GET /{draft_id} (and the other three routes) against the real
+# resolved dependant.
 
 
 def test_recompute_final_comments_keeps_narrative_after_the_prefix():
