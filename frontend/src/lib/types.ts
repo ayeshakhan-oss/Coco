@@ -339,8 +339,8 @@ export interface EvaluationSummary {
   tiers: TierBucket[]
   scored: number
   unusable: number
-  // Rows counted in `scored` whose score is meaningless (MANUAL_REVIEW and
-  // similar) because the document never cleared the readability floor. This
+  // Rows where `is_unscored` is true: UNUSABLE plus MANUAL_REVIEW, spanning
+  // both the `scored` and `unusable` buckets, not a subset of `scored`. This
   // is the number that reveals a broken job: a job can report a healthy
   // `scored` count while most of it is actually unreadable.
   unscored: number

@@ -19,6 +19,7 @@ export function EvaluationPage() {
   const [rowsLoaded, setRowsLoaded] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
   const [candidatesError, setCandidatesError] = useState<string | null>(null)
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null)
   const [tier, setTier] = useState<string | undefined>(undefined)
   const [openId, setOpenId] = useState<number | null>(null)
   const [detail, setDetail] = useState<EvaluationDetail | null>(null)
@@ -29,6 +30,12 @@ export function EvaluationPage() {
   // a slow response for a row the user already closed (or moved on from)
   // can never overwrite what's currently open.
   const openRequestRef = useRef<number | null>(null)
+
+  // Synchronous guard against double-fire: `loadingMore` state only takes
+  // effect on the next render, so two fast clicks on "Load more" can both
+  // read it as false. This ref is set/cleared immediately, in addition to
+  // the state used for the button's disabled/visual treatment.
+  const loadingMoreRef = useRef(false)
 
   // Bumped every time (jobId, tier) changes, and read back by every summary /
   // candidates / load-more response before it is applied. A late response
@@ -88,8 +95,10 @@ export function EvaluationPage() {
     setDetailError(null)
     openRequestRef.current = null
 
+    setSummary(null)
     setSummaryError(null)
     setCandidatesError(null)
+    setLoadMoreError(null)
     setRowsLoaded(false)
     setRows([])
     setTotal(0)
@@ -120,21 +129,28 @@ export function EvaluationPage() {
   }, [jobId, tier])
 
   const loadMore = () => {
-    if (jobId === null || loadingMore) return
+    if (jobId === null || loadingMoreRef.current) return
     const gen = listGenRef.current // this page belongs to the currently displayed (jobId, tier)
+    loadingMoreRef.current = true
     setLoadingMore(true)
+    setLoadMoreError(null)
     api
       .evaluationCandidates(jobId, tier, PAGE_SIZE, rows.length)
       .then((page) => {
         if (listGenRef.current !== gen) return // the selection moved on while this page was in flight
         setRows((prev) => [...prev, ...page.rows])
         setTotal(page.total)
+        setLoadMoreError(null)
       })
       .catch(() => {
         if (listGenRef.current !== gen) return
-        setCandidatesError(GENERIC_LOAD_ERROR)
+        // A failed "Load more" must never touch `candidatesError`; that
+        // state is reserved for a failed INITIAL load (no table to show).
+        // The rows already on screen stay exactly as they are.
+        setLoadMoreError(GENERIC_LOAD_ERROR)
       })
       .finally(() => {
+        loadingMoreRef.current = false
         if (listGenRef.current === gen) setLoadingMore(false)
       })
   }
@@ -179,6 +195,12 @@ export function EvaluationPage() {
 
       {summaryError ? (
         <p className="mt-4 text-sm text-danger">{summaryError}</p>
+      ) : !summary ? (
+        jobId !== null && (
+          <div className="mt-5">
+            <Spinner label="Loading summary…" />
+          </div>
+        )
       ) : (
         summary && (
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -231,8 +253,8 @@ export function EvaluationPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-hairline">
-              {rows.map((r) => (
-                <Fragment key={r.application_id ?? r.candidate_email}>
+              {rows.map((r, i) => (
+                <Fragment key={r.application_id ?? r.candidate_email ?? i}>
                   <tr onClick={() => openRow(r.application_id)} className="cursor-pointer transition-colors hover:bg-elevated">
                     <td className="px-5 py-3 font-medium text-ink">{r.candidate_name}</td>
                     <td className="px-5 py-3 text-ink-muted">{r.tier}</td>
@@ -296,12 +318,15 @@ export function EvaluationPage() {
           <span>
             Showing {rows.length} of {total}
           </span>
-          {rows.length < total && (
-            <button type="button" onClick={loadMore} disabled={loadingMore} className="btn btn-ghost h-8 text-sm">
-              {loadingMore ? <Loader2 className="h-4 w-4 animate-spin" /> : <ChevronDown className="h-4 w-4" />}
-              {loadingMore ? 'Loading…' : 'Load more'}
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {loadMoreError && <span className="text-xs text-danger">{loadMoreError}</span>}
+            {rows.length < total && (
+              <button type="button" onClick={loadMore} disabled={loadingMore} className="btn btn-ghost h-8 text-sm">
+                {loadingMore ? <Loader2 className="h-4 w-4 animate-spin" /> : <ChevronDown className="h-4 w-4" />}
+                {loadingMore ? 'Loading…' : 'Load more'}
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
