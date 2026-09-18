@@ -27,11 +27,14 @@ import json
 import logging
 import os
 import re
+import time
 from typing import Optional
 
 from ..config import get_settings
-from ..prompts.draft_prompt import MissingEvidence, build_user_prompt
-from ..prompts.tone_rules import system_prompt
+from ..prompts.draft_prompt import MissingEvidence, build_user_prompt, evidence_for
+from ..prompts.plan_prompt import PLANNER_SYSTEM, build_plan_prompt
+from . import planning
+from ..prompts.tone_rules import LENGTH_RULE, system_prompt
 from ..reuse import SECTION_HEADINGS, evaluate_email
 from . import rendering
 
@@ -186,6 +189,48 @@ class StubDrafter:
         }
 
 
+# Haiku's minimum cacheable prefix is 2,048 tokens (1,024 on the larger models);
+# below that a breakpoint is silently ignored. At roughly 4 chars per token this
+# floor admits the 48-84k-char writing prompts, which are byte-stable per type
+# and lru_cached, and excludes the short reviewer and translator prompts where a
+# breakpoint would buy nothing.
+_MIN_CACHEABLE_CHARS = 8192
+
+
+def _cacheable_system(system):
+    """Mark a long, byte-stable system prompt as a cache prefix.
+
+    The writing prompt runs to ~21k tokens and was being re-prefilled on every
+    one of up to twelve calls in a single request, at full price and full
+    latency. It never varies within a type, which makes it the textbook case
+    for a cache breakpoint.
+
+    Returns the string unchanged when it is too short to cache, so the reviewer
+    and translator calls keep their existing plain-string form.
+    """
+    if not isinstance(system, str) or len(system) < _MIN_CACHEABLE_CHARS:
+        return system
+    return [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]
+
+
+def _stage_of(system) -> str:
+    """Which stage a call belongs to, for the timing log.
+
+    Inferred from the system prompt rather than passed in, because every stub
+    implementing draft() would have to grow a new keyword otherwise, and there
+    are four of them with no **kwargs between them.
+    """
+    if not isinstance(system, str):
+        return "unknown"
+    if "ONLY THE SENTENCES YOU ARE CHANGING" in system:
+        return "review"
+    if "translate a hiring manager" in system.lower():
+        return "translate"
+    if "You are NOT writing it" in system:
+        return "plan"
+    return "write"
+
+
 class AnthropicDrafter:
     name = "anthropic"
 
@@ -217,6 +262,7 @@ class AnthropicDrafter:
                 default_headers={"anthropic-beta": "oauth-2025-04-20"},
                 **opts,
             )
+        # `calls` is a lazy property, not set here - see below.
         # Skip straight past anything this process already knows is dead.
         if model in self._unusable:
             for candidate in self._FALLBACK_MODELS:
@@ -261,6 +307,27 @@ class AnthropicDrafter:
         """
         return cls._is_unknown_model(exc) or cls._is_rate_limited(exc)
 
+    @property
+    def calls(self) -> list:
+        """One row per API call, for the budget line generate_draft logs.
+
+        A drafter is built fresh per request (get_drafter), so this is
+        per-request by construction.
+
+        Lazy rather than set in __init__ because the tests build this class with
+        __new__ and assign four attributes by hand; every field added to the
+        constructor otherwise breaks them. Not a class attribute, which would
+        share one list across every drafter in the process.
+
+        We had NO timing at all before this: the 502 risk documented above is
+        inferred from an incident, and its "up to ten model calls" undercounts
+        the real worst case of twelve. Every latency decision was being argued
+        from an unmeasured budget.
+        """
+        if "calls" not in self.__dict__:
+            self.__dict__["calls"] = []
+        return self.__dict__["calls"]
+
     def draft(self, *, system, user, email_type, first_name, role, prior_violations=None, attempt=0) -> dict:
         content = user
         if prior_violations:
@@ -271,11 +338,12 @@ class AnthropicDrafter:
             if model in tried:
                 continue
             tried.append(model)
+            started = time.monotonic()
             try:
                 msg = self.client.messages.create(
                     model=model,
                     max_tokens=4096,
-                    system=system,
+                    system=_cacheable_system(system),
                     messages=[{"role": "user", "content": content}],
                 )
             except Exception as exc:  # noqa: BLE001
@@ -295,9 +363,35 @@ class AnthropicDrafter:
                           model, self.model)
                 self.degraded_from = self.model
                 self.model = model
+            self._record(model, started, msg, system)
             text = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
             return _parse_json(text)
         raise DraftingUnavailable(f"No servable model among {tried}")
+
+    def _record(self, model: str, started: float, msg, system: str) -> None:
+        """Log one API call and keep it for the request summary.
+
+        `cache_read` is the number that says whether 1.2 is actually working. If
+        it stays 0 across a request, something is invalidating the prefix and
+        every call is paying full prefill - which is the state this change
+        exists to end.
+        """
+        usage = getattr(msg, "usage", None)
+        row = {
+            "model": model,
+            "seconds": round(time.monotonic() - started, 2),
+            "stage": _stage_of(system),
+            "input_tokens": getattr(usage, "input_tokens", None),
+            "output_tokens": getattr(usage, "output_tokens", None),
+            "cache_read": getattr(usage, "cache_read_input_tokens", None),
+            "cache_write": getattr(usage, "cache_creation_input_tokens", None),
+        }
+        self.calls.append(row)
+        log.info(
+            "model call stage=%s model=%s %.2fs in=%s out=%s cache_read=%s cache_write=%s",
+            row["stage"], model, row["seconds"], row["input_tokens"],
+            row["output_tokens"], row["cache_read"], row["cache_write"],
+        )
 
 
 def _load_oauth_token() -> Optional[str]:
@@ -409,10 +503,13 @@ to us was...", "Ultimately this is where our decision landed."
 ========================================================================
 HOW TO REPAIR
 ========================================================================
-- Rewrite the offending SENTENCE. Do not delete the paragraph and do not
-  shorten the letter: keep the structure, the headings, the depth and the word
-  count. If removing a checklist leaves the paragraph thin, use that space to
+- Rewrite the offending SENTENCE, keeping the structure, the headings and the
+  depth. If removing a checklist leaves the paragraph thin, use that space to
   explain why the requirement matters to the role.
+- The ONE exception is the three CUT categories below (material that is only
+  there because it came up, a second reason, intimate detail in a sensitive
+  story). Those come out, and the letter is shorter for it. Everywhere else,
+  a rewrite is the same length or longer.
 - Keep every quotation of the candidate's own words exactly as it is.
 - Keep the collective "we" voice. No em dashes. Do not touch the opening line
   "This is not a yes for now."
@@ -440,8 +537,8 @@ ALSO CUT, NOT ONLY REWRITE. Three things earn an edit that simply DELETES:
  - MATERIAL THAT IS ONLY THERE BECAUSE IT CAME UP. Personalisation is
    selective, not exhaustive. A story belongs if it explains what stayed with
    us or why we decided as we did. A letter that works through every item in
-   the scorecard reads as a transcript, and these letters must not exceed 800
-   words. Cut breadth before depth.
+   the scorecard reads as a transcript. Cut breadth before depth: fewer
+   stories, told properly, not the same stories told briefly.
 
  - A SECOND REASON. If the decision turned on one role-fit gap, that one gap
    is the letter. Secondary concerns stacked beside it read as a case being
@@ -519,14 +616,24 @@ RULES FOR "replace":
   to say what the role required and why.
 - CUTTING under the three headings above (material that is only there because
   it came up, a second reason, intimate detail): shorter is the whole point,
-  and "replace" may be a single sentence or an empty string. These letters must
-  not exceed 800 words.
+  and "replace" may be a single sentence or an empty string. The letter's
+  length rule is the same one the writer works to: __LENGTH_RULE__ Do not cut
+  below it.
 - Keep the candidate's quoted words untouched. Keep the collective "we".
   No em dashes.
 
 Return {"edits": []} if the letter genuinely breaks none of the rules. An empty
 list is a real answer and is better than inventing a change.
 """
+
+# The length belongs in exactly one place. This prompt used to carry its own
+# figure - "These letters must not exceed 800 words" - which was the ceiling
+# trialled on 2026-09-15 and reverted two days later. It survived here because
+# test_prompt_coherence.py only inspects tone_rules.system_prompt, so a second
+# prompt stating a second length was invisible to every test. The result: the
+# writer was told 800-1,100 and the reviewer was told to cut below 800, which
+# is also the harness's own HARD-BLOCK floor.
+_REVIEWER_SYSTEM = _REVIEWER_SYSTEM.replace("__LENGTH_RULE__", LENGTH_RULE)
 
 
 _REVIEWED_TYPES = ("cv_rejection", "values_feedback", "warm_bench", "gwc_rejection",
@@ -837,6 +944,63 @@ def _corpus_from_evidence(ev: Optional[dict]) -> Optional[str]:
     return corpus or None
 
 
+_PLANNED_TYPES = _REVIEWED_TYPES
+
+
+def _planning_enabled(email_type: str) -> bool:
+    return (email_type in _PLANNED_TYPES
+            and get_settings().draft_planning_enabled)
+
+
+def _make_plan(drafter, *, evidence, header, first_name, role, email_type):
+    """Select the evidence. Returns (plan_or_None, note_or_None).
+
+    ONE retry, then write unplanned with a WARNING on the draft.
+
+    Three precedents in this file each chose differently on a failed helper
+    call: the review pass swallows and warns, the note translator drops the
+    field and warns, and values scoring retries once then refuses outright.
+    Refusing is wrong here, because a letter written from the full evidence is
+    what we have always shipped and is better than no letter. Silently writing
+    unplanned is also wrong: the person reading the draft would have no idea
+    that the step which keeps a bereavement out of a rejection did not run.
+
+    So: retry once, then proceed and say so, exactly as a failed review does.
+    """
+    user = build_plan_prompt(evidence=evidence, header=header,
+                             first_name=first_name, role=role,
+                             email_type=email_type)
+    problems: list = []
+    for attempt in range(2):
+        try:
+            plan = drafter.draft(
+                system=PLANNER_SYSTEM, user=user, email_type=email_type,
+                first_name=first_name, role=role, attempt=attempt,
+            )
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Planning call failed (%s); attempt %d.",
+                        type(exc).__name__, attempt)
+            problems = [f"the planning call failed: {type(exc).__name__}"]
+            continue
+
+        problems = planning.check_plan(plan, email_type)
+        if not problems:
+            chosen = planning.selected(plan)
+            log.info("Plan accepted for %s: %d moment(s), %d excluded.",
+                     email_type, len(chosen), len(plan.get("excluded") or []))
+            return plan, None
+
+        log.warning("Plan rejected for %s (attempt %d): %s",
+                    email_type, attempt, "; ".join(problems))
+        user = build_plan_prompt(
+            evidence=evidence, header=header, first_name=first_name,
+            role=role, email_type=email_type,
+        ) + "\n\nYour previous plan was rejected:\n- " + "\n- ".join(problems) + \
+            "\n\nReturn a corrected plan."
+
+    return None, "; ".join(problems) or "the planner returned nothing usable"
+
+
 def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app_id,
                    email_type: str, cv_evidence: Optional[dict] = None,
                    scorecard_text: Optional[str] = None) -> dict:
@@ -863,9 +1027,26 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
     # that dodged the one flagged phrase and echoed a different one.
     scorecard, untranslated = _soften_manager_notes(drafter, scorecard, role=role)
 
+    # Choose the evidence before anything is written. This runs AFTER the note
+    # translation on purpose: planning from the manager's raw note would put the
+    # leak back, one stage earlier and harder to see.
+    #
+    # evidence_for() is called here rather than inside the planner so that
+    # MissingEvidence still raises before any model call, and an empty scorecard
+    # keeps costing a fast 422 instead of an API round trip.
+    plan, plan_note = None, None
+    if _planning_enabled(email_type):
+        evidence, header = evidence_for(scorecard=scorecard, email_type=email_type,
+                                        cv_evidence=cv_evidence)
+        plan, plan_note = _make_plan(
+            drafter, evidence=evidence, header=header,
+            first_name=first_name, role=role, email_type=email_type,
+        )
+
     system = system_prompt(email_type)
     user = build_user_prompt(scorecard=scorecard, first_name=first_name, role=role,
-                             email_type=email_type, cv_evidence=cv_evidence)
+                             email_type=email_type, cv_evidence=cv_evidence,
+                             plan=plan)
 
     prior: Optional[list[dict]] = None
     best = None
@@ -1021,6 +1202,23 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             ),
         })
 
+    if best and plan_note:
+        best["eval"]["violations"].append({
+            "rule": "Evidence was not planned",
+            "severity": "WARNING",
+            "detail": (
+                "The pass that chooses which moments belong in this letter, and "
+                "sets aside what is not ours to repeat, did not produce a usable "
+                f"plan ({plan_note}). This letter was written from the full "
+                "evidence in one pass, which is how a letter ends up working "
+                "through everything in the scorecard, or opening on something a "
+                "candidate told us in confidence. Read it closely before sending."
+            ),
+        })
+
+    if best and plan:
+        best["plan"] = plan
+
     if best and untranslated:
         best["eval"]["violations"].append({
             "rule": "Hiring manager's summary was left out",
@@ -1041,4 +1239,28 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
             email_type, best["attempts"], _hard_count(best["eval"]),
         )
 
+    _log_call_budget(drafter, email_type)
     return best
+
+
+def _log_call_budget(drafter, email_type: str) -> None:
+    """One line per request: how many model calls, how long, cache effectiveness.
+
+    This is the measurement the 502 argument has always been missing. Guarded by
+    getattr because StubDrafter and the test doubles do not carry `calls`.
+    """
+    calls = getattr(drafter, "calls", None)
+    if not calls:
+        return
+    total = round(sum(c["seconds"] for c in calls), 2)
+    by_stage: dict[str, int] = {}
+    for c in calls:
+        by_stage[c["stage"]] = by_stage.get(c["stage"], 0) + 1
+    cache_read = sum(c["cache_read"] or 0 for c in calls)
+    cache_write = sum(c["cache_write"] or 0 for c in calls)
+    log.info(
+        "draft budget type=%s calls=%d (%s) wall=%.2fs cache_read=%d cache_write=%d",
+        email_type, len(calls),
+        " ".join(f"{k}:{v}" for k, v in sorted(by_stage.items())),
+        total, cache_read, cache_write,
+    )

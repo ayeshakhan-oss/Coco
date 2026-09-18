@@ -40,6 +40,27 @@ GOOD_PARA = (
 )
 
 
+GOOD_PLAN = {
+    "central_gap": "A record of moving a senior official from interest to commitment.",
+    "why_the_requirement_matters": (
+        "What carries the final step is rarely the analysis. It is the "
+        "relationship that was in place before the ask was made."
+    ),
+    "secondary_concerns": [],
+    "evidence": [
+        {"id": "e1", "slot": "opening", "sensitive": False, "rank": 1,
+         "what_happened": "Asked for more time on a nine district rollout plan."},
+        {"id": "e2", "slot": "stayed_with_us", "sensitive": False, "rank": 2,
+         "what_happened": "Carried a national incubation programme for four years."},
+        {"id": "e3", "slot": "ps", "sensitive": False, "rank": 3,
+         "what_happened": "Let the startup portal feasibility work go."},
+        {"id": "e4", "slot": "unused", "sensitive": True, "rank": 4,
+         "what_happened": "Sat with a dying parent in intensive care."},
+    ],
+    "excluded": [{"source": "values.dont_walk_away.deepDive", "reason": "bereavement"}],
+}
+
+
 class _ScriptedDrafter:
     """Returns letters, then edits, without touching the network."""
 
@@ -49,15 +70,29 @@ class _ScriptedDrafter:
         self.paragraphs = paragraphs
         self.draft_calls = 0
         self.review_calls = 0
+        self.plan_calls = 0
+        self.stages: list = []
+        self.write_user = None
 
     def draft(self, *, system, user, email_type, first_name, role,
               prior_violations=None, attempt=0):
-        # The reviewer and the translator are told apart by their system prompt.
+        # Every stage is told apart by its system prompt. A stage this stub does
+        # not recognise falls through to "return a letter", which is how the
+        # planner silently got served a full letter JSON and counted as a draft
+        # call the first time it was added. Keep the discriminators exhaustive.
         if "ONLY THE SENTENCES YOU ARE CHANGING" in system:
+            self.stages.append("review")
             self.review_calls += 1
             return {"edits": []}
         if "translate a hiring manager" in system.lower():
+            self.stages.append("translate")
             return {"rationale": "We could not establish government experience."}
+        if "You are NOT writing it" in system:
+            self.stages.append("plan")
+            self.plan_calls += 1
+            return GOOD_PLAN
+        self.stages.append("write")
+        self.write_user = user
         self.draft_calls += 1
         return {
             "title_line": "A Note From Us",
@@ -111,6 +146,9 @@ def test_a_blocked_draft_is_REPAIRED_not_redrafted(monkeypatch):
                 return {"edits": []}
             if "translate a hiring manager" in system.lower():
                 return {"rationale": "clean rationale"}
+            if "You are NOT writing it" in system:
+                self.plan_calls += 1
+                return GOOD_PLAN
             self.draft_calls += 1
             return {
                 "title_line": "A Note From Us",
@@ -149,3 +187,111 @@ def test_a_dead_model_yields_a_scaffold_not_a_crash(monkeypatch):
     )
     assert out is not None
     assert out["drafter_used"].startswith("unavailable")
+
+
+# ---------------------------------------------------------------------------
+# THE PLANNING STAGE
+#
+# The point of planning is not that the writer is told to leave things out. It
+# is that the things it must leave out are NOT IN ITS INPUT. A rule can be
+# euphemised around - a real letter got a bereavement past every sensitive-word
+# pattern we own by calling it "a moment of profound loss" - and an absent fact
+# cannot.
+# ---------------------------------------------------------------------------
+
+def test_the_writer_is_given_the_plan_and_not_the_excluded_material(monkeypatch):
+    d = _ScriptedDrafter()
+    monkeypatch.setattr(drafting, "get_drafter", lambda: d)
+    drafting.generate_draft(
+        scorecard=SCORECARD, first_name="Abdul", role="Growth Manager - Lahore",
+        app_id=None, email_type="warm_bench",
+    )
+
+    assert d.plan_calls == 1, "the plan stage did not run"
+    assert d.write_user, "the writer was never called"
+
+    # Every selected moment reached the writer.
+    for item in GOOD_PLAN["evidence"]:
+        if item["slot"] != "unused":
+            assert item["what_happened"] in d.write_user, (
+                f"selected moment missing from the writer's prompt: {item['id']}"
+            )
+
+    # The sensitive one did not, in any form.
+    assert "intensive care" not in d.write_user
+    assert "dying parent" not in d.write_user
+
+    # Nor did the raw scorecard evidence the plan was distilled from.
+    assert "restructuring the quote" not in d.write_user, (
+        "the plan must REPLACE the raw evidence, not sit alongside it"
+    )
+
+    # The single gap and its role-side justification did.
+    assert GOOD_PLAN["central_gap"] in d.write_user
+    assert "relationship that was in place" in d.write_user
+
+
+def test_the_stages_run_in_order(monkeypatch):
+    d = _ScriptedDrafter()
+    monkeypatch.setattr(drafting, "get_drafter", lambda: d)
+    drafting.generate_draft(
+        scorecard=SCORECARD, first_name="Abdul", role="Growth Manager - Lahore",
+        app_id=None, email_type="warm_bench",
+    )
+    ordered = [s for s in d.stages if s in ("plan", "write")]
+    assert ordered[:2] == ["plan", "write"], (
+        f"planning must precede writing, got {d.stages}"
+    )
+
+
+def test_a_rejected_plan_is_retried_once_then_the_letter_is_written_anyway(monkeypatch):
+    """Never refuse, never write unplanned in silence. Say so on the draft.
+
+    A letter written from the full evidence is what we shipped for months and
+    beats no letter. But whoever reads this draft has to know that the step
+    which keeps a bereavement out of a rejection did not run.
+    """
+    class _BadPlanner(_ScriptedDrafter):
+        def draft(self, *, system, user, email_type, first_name, role,
+                  prior_violations=None, attempt=0):
+            if "You are NOT writing it" in system:
+                self.plan_calls += 1
+                return {"evidence": [], "central_gap": ""}   # unusable
+            return super().draft(
+                system=system, user=user, email_type=email_type,
+                first_name=first_name, role=role,
+                prior_violations=prior_violations, attempt=attempt)
+
+    d = _BadPlanner()
+    monkeypatch.setattr(drafting, "get_drafter", lambda: d)
+    out = drafting.generate_draft(
+        scorecard=SCORECARD, first_name="Abdul", role="Growth Manager - Lahore",
+        app_id=None, email_type="warm_bench",
+    )
+
+    assert d.plan_calls == 2, "the planner should get exactly one retry"
+    assert d.draft_calls >= 1, "the letter must still be written"
+    rules = [v["rule"] for v in out["eval"]["violations"]]
+    assert "Evidence was not planned" in rules, (
+        "writing unplanned must be visible on the draft, not silent"
+    )
+    assert "plan" not in out
+
+
+def test_planning_can_be_switched_off(monkeypatch):
+    """The Railway escape hatch: back to one writer call without a redeploy."""
+    from webapp import config
+
+    d = _ScriptedDrafter()
+    monkeypatch.setattr(drafting, "get_drafter", lambda: d)
+    settings = config.get_settings()
+    monkeypatch.setattr(settings, "draft_planning_enabled", False)
+    drafting.generate_draft(
+        scorecard=SCORECARD, first_name="Abdul", role="Growth Manager - Lahore",
+        app_id=None, email_type="warm_bench",
+    )
+    assert d.plan_calls == 0
+    assert d.draft_calls >= 1
+    assert "restructuring the quote" in d.write_user, (
+        "with planning off the writer should see the raw scorecard evidence again"
+    )

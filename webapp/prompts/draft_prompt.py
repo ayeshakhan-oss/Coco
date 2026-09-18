@@ -192,19 +192,21 @@ _EVIDENCE_HEADER = {
 }
 
 
-def build_user_prompt(
+def evidence_for(
     *,
     scorecard: Optional[dict],
-    first_name: str,
-    role: str,
     email_type: str,
     cv_evidence: Optional[dict] = None,
-) -> str:
-    """Assemble the drafting prompt, or raise MissingEvidence.
+) -> tuple:
+    """The evidence block and its header, or raise MissingEvidence.
 
-    `cv_evidence` is reads.get_cv_evidence() output and is REQUIRED for
-    cv_rejection. `scorecard` is the normalized values/GWC scorecard and is
-    required for the interview-stage types.
+    Extracted from build_user_prompt so the planning stage and the writing
+    stage read the SAME evidence from one place, and so MissingEvidence is
+    still raised before any model call is made. The router turns it into a 422;
+    if the plan stage were to start calling the model first, a candidate with an
+    empty scorecard would begin costing an API call and a slower error.
+
+    Returns (evidence, header).
     """
     if email_type == "cv_rejection":
         if cv_evidence is None:
@@ -250,6 +252,34 @@ def build_user_prompt(
             "for this candidate, so there is no evidence to ground the email in."
         )
 
+    return evidence, header
+
+
+def build_user_prompt(
+    *,
+    scorecard: Optional[dict],
+    first_name: str,
+    role: str,
+    email_type: str,
+    cv_evidence: Optional[dict] = None,
+    plan: Optional[dict] = None,
+) -> str:
+    """Assemble the drafting prompt, or raise MissingEvidence.
+
+    `cv_evidence` is reads.get_cv_evidence() output and is REQUIRED for
+    cv_rejection. `scorecard` is the normalized values/GWC scorecard and is
+    required for the interview-stage types.
+
+    `plan` is the approved output of the planning stage. When present it
+    REPLACES the raw evidence block: the writer is given the four moments that
+    were selected and nothing else, so material the planner excluded is not
+    merely forbidden, it is absent. A rule can be euphemised around; an absent
+    fact cannot.
+    """
+    evidence, header = evidence_for(
+        scorecard=scorecard, email_type=email_type, cv_evidence=cv_evidence
+    )
+
     intent = {
         "cv_rejection": "an application-stage update letting them know we will not be moving forward, with specific, useful reflection",
         "values_feedback": "warm, specific feedback after a values-based interview",
@@ -262,6 +292,9 @@ def build_user_prompt(
         ),
     }.get(email_type, "candidate communication")
 
+    if plan:
+        header, evidence = _plan_block(plan)
+
     return f"""Draft {intent}.
 
 Candidate first name (use this EXACTLY for the greeting; ignore any name inside
@@ -273,3 +306,40 @@ Role applied for: {role}
 {evidence}
 
 Write the email per the system rules and the output contract. Return JSON only."""
+
+
+def _plan_block(plan: dict) -> tuple:
+    """Render an approved plan as the writer's only source of material."""
+    lines = []
+    for item in plan.get("evidence", []):
+        if item.get("slot") in (None, "unused"):
+            continue
+        lines.append(
+            f"[{item.get('slot')}] {item.get('what_happened', '').strip()}"
+        )
+
+    body = "\n\n".join(lines)
+    gap = (plan.get("central_gap") or "").strip()
+    why = (plan.get("why_the_requirement_matters") or "").strip()
+
+    evidence = f"""THE MOMENTS TO WRITE FROM (this list is exhaustive):
+
+{body}
+
+THE ONE THING THE DECISION TURNED ON:
+{gap}
+
+WHY THE ROLE NEEDS IT (describe the work this way, never the candidate's
+absence from it):
+{why}"""
+
+    header = (
+        "These moments were selected from the full evidence by an earlier pass, "
+        "and they are ALL you may write from. Everything else about this "
+        "candidate was considered and deliberately set aside, some of it because "
+        "it is not ours to repeat. Do not reach for other material, do not allude "
+        "to it, and do not let it shape the subject line. The tag in brackets is "
+        "the section each moment belongs in: use each one ONCE, in that section. "
+        "Name one gap only, the one below."
+    )
+    return header, evidence

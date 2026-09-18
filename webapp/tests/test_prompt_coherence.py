@@ -43,6 +43,13 @@ def _norm(n: str) -> int:
     return int(n.replace(",", ""))
 
 
+def _show(claims) -> list:
+    """Sortable rendering. A bare floor carries None as its upper bound, which
+    is not orderable against an int, so the assertion message itself used to
+    raise a TypeError and hide the very mismatch it was reporting."""
+    return sorted((lo, hi if hi is not None else -1) for lo, hi in claims)
+
+
 def _length_claims(prompt: str) -> set:
     """Every distinct length instruction, normalised so that '800 to 1,100',
     '800-1100' and '800 TO 1,100' count as one claim and not three."""
@@ -107,6 +114,62 @@ def test_the_prompt_stays_inside_its_budget(email_type):
     assert size <= 90_000, (
         f"{email_type} prompt is {size:,} chars (~{size // 4:,} tokens). "
         f"It was 88,627 on 17 Sep and the direction of travel is down."
+    )
+
+
+# ---------------------------------------------------------------------------
+# EVERY STAGE, not just the writer.
+#
+# 2026-09-18. The reviewer prompt carried "These letters must not exceed 800
+# words" - the ceiling trialled on 15 Sep and reverted on the 17th - for as long
+# as it did because every test above inspects t.system_prompt() and nothing
+# else. So the writer was told 800-1,100 while the reviewer, which edits the
+# letter afterwards, was told to cut below 800, which is also the harness's own
+# HARD-BLOCK floor. Exactly the bug this file exists to prevent, one stage over.
+#
+# Any new stage prompt must be registered below or the last test here fails.
+# ---------------------------------------------------------------------------
+
+def _stage_prompts() -> dict:
+    from webapp.services import drafting as d
+
+    prompts = {
+        "review": d._REVIEWER_SYSTEM,
+        "translate": d._TRANSLATOR_SYSTEM,
+        "plan": d.PLANNER_SYSTEM,
+    }
+    for email_type in EMAIL_TYPES:
+        prompts[f"write:{email_type}"] = t.system_prompt(email_type)
+    return prompts
+
+
+@pytest.mark.parametrize("stage", sorted(_stage_prompts()))
+def test_every_stage_states_the_same_one_length_rule(stage):
+    claims = _length_claims(_stage_prompts()[stage])
+    assert len(claims) <= 1, (
+        f"{stage}: this prompt gives {len(claims)} different length rules "
+        f"{_show(claims)}."
+    )
+    if claims:
+        assert claims == _length_claims(t.LENGTH_RULE), (
+            f"{stage} says {_show(claims)} but LENGTH_RULE says "
+            f"{_show(_length_claims(t.LENGTH_RULE))}. One stage contradicting "
+            f"another is invisible to the writer-only tests above."
+        )
+
+
+def test_no_stage_prompt_escapes_these_checks():
+    """A prompt that no test inspects is a prompt free to contradict the others."""
+    from webapp.services import drafting as d
+
+    declared = {
+        name for name, value in vars(d).items()
+        if name.endswith("_SYSTEM") and isinstance(value, str)
+    }
+    registered = {"_REVIEWER_SYSTEM", "_TRANSLATOR_SYSTEM", "PLANNER_SYSTEM"}
+    assert declared == registered, (
+        f"unregistered system prompt(s): {sorted(declared - registered)}. "
+        f"Add them to _stage_prompts() so the coherence rules apply to them too."
     )
 
 

@@ -40,6 +40,15 @@ class Settings(BaseSettings):
     anthropic_auth_token: Optional[str] = None
     anthropic_model: str = "claude-opus-4-8"
 
+    # Choose the evidence in a separate pass before the letter is written, so
+    # the writer is not selecting, judging what is safe to repeat, planning and
+    # writing all at once. See services/planning.py for why.
+    #
+    # Set DRAFT_PLANNING_ENABLED=false on Railway to fall back to the single
+    # writer call without a redeploy, if a plan stage ever misbehaves in front
+    # of a real letter.
+    draft_planning_enabled: bool = True
+
     # --- Google Workspace SSO (Phase 3) ---
     google_oauth_client_id: Optional[str] = None
     google_oauth_client_secret: Optional[str] = None
