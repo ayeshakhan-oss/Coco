@@ -13,6 +13,7 @@ from webapp.services.case_study_scoring import (
     SCORES,
     CaseStudyScoringError,
     band,
+    score_submission,
     validate_scores,
     weighted_total,
 )
@@ -94,6 +95,181 @@ def test_validate_rejects_a_bad_score_set():
         bad = _all(3); bad["data_judgment"] = 2.5
         validate_scores(bad)                                        # not an integer
     validate_scores(_all(0))                                        # zero is VALID
+
+
+# ── Task 5: the model call (webapp/prompts/case_study_prompt.py) ───────────
+#
+# These monkeypatch _call_model, so no network call is ever made here.
+
+
+def _good_evidence():
+    return {d["key"]: f"See the {d['label']} section of the submission." for d in DIMENSIONS}
+
+
+def _good_response(scores=None, flags=None):
+    return {
+        "scores": scores if scores is not None else _all(3),
+        "evidence": _good_evidence(),
+        "flags": flags or [],
+    }
+
+
+def test_total_and_band_are_computed_not_taken_from_the_model(monkeypatch):
+    """A model returning total: 95 on a score set worth 40 must be overruled."""
+    from webapp.services import case_study_scoring as css
+
+    scores = _all(2)  # weighted_total(_all(2)) == 40.0, per the pure-rules test above
+    payload = {
+        "scores": scores,
+        "evidence": _good_evidence(),
+        "flags": [],
+        "total": 95,            # the model lying
+        "band": "strong_yes",   # the model lying
+    }
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+
+    out = score_submission(
+        corpus="submission text", benchmark_body="benchmark text",
+        candidate_name="Zara Khan", role="Growth Manager",
+    )
+    assert out["total"] == 40.0        # computed, never the model's 95
+    assert out["band"] == "no"         # 40 is below the 50 borderline floor
+
+
+def test_fabricated_data_flag_disqualifies_even_at_a_100_total(monkeypatch):
+    from webapp.services import case_study_scoring as css
+
+    payload = _good_response(scores=_all(5), flags=["fabricated_data"])
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+
+    out = score_submission(
+        corpus="submission text", benchmark_body="benchmark text",
+        candidate_name="Zara Khan", role="Growth Manager",
+    )
+    assert out["total"] == 100.0
+    assert out["band"] == "disqualified"
+
+
+def test_blank_evidence_citation_is_rejected(monkeypatch):
+    """Rule 1: a dimension score with no quoted line, slide number or figure
+    behind it is not a score. Both attempts return the same blank citation,
+    so this must raise rather than be silently repaired."""
+    from webapp.services import case_study_scoring as css
+
+    bad_evidence = _good_evidence()
+    bad_evidence["data_judgment"] = "   "  # whitespace only
+    payload = {"scores": _all(3), "evidence": bad_evidence, "flags": []}
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+
+    with pytest.raises(CaseStudyScoringError):
+        score_submission(
+            corpus="submission text", benchmark_body="benchmark text",
+            candidate_name="Zara Khan", role="Growth Manager",
+        )
+
+
+def test_a_bare_value_error_from_the_model_call_is_retried_and_can_succeed(monkeypatch):
+    """_call_model can raise a plain ValueError (drafting._parse_json's "LLM
+    did not return parseable JSON") before any CaseStudyScoringError territory
+    is reached. That must be retried exactly like a wrong-shape response."""
+    from webapp.services import case_study_scoring as css
+
+    good = _good_response()
+    calls = []
+
+    def flaky(**kw):
+        calls.append(kw)
+        if len(calls) == 1:
+            raise ValueError("Expecting value: line 1 column 1")
+        return good, "test-model"
+
+    monkeypatch.setattr(css, "_call_model", flaky)
+    out = score_submission(
+        corpus="submission text", benchmark_body="benchmark text",
+        candidate_name="Zara Khan", role="Growth Manager",
+    )
+    assert out["model"] == "test-model"
+    assert out["total"] == 60.0
+    assert len(calls) == 2
+
+
+def test_two_bare_value_errors_raise_case_study_scoring_error_not_bare_value_error(monkeypatch):
+    """Two consecutive parse failures must still surface as a single,
+    handleable exception type, and the stub must never be called a third
+    time -- the retry budget is exactly one retry."""
+    from webapp.services import case_study_scoring as css
+
+    calls = []
+
+    def always_broken(**kw):
+        calls.append(kw)
+        raise ValueError("Expecting value: line 1 column 1")
+
+    monkeypatch.setattr(css, "_call_model", always_broken)
+    with pytest.raises(CaseStudyScoringError) as excinfo:
+        score_submission(
+            corpus="submission text", benchmark_body="benchmark text",
+            candidate_name="Zara Khan", role="Growth Manager",
+        )
+    assert type(excinfo.value) is CaseStudyScoringError
+    assert len(calls) == 2
+
+
+def test_score_submission_returns_the_full_locked_shape(monkeypatch):
+    from webapp.services import case_study_scoring as css
+
+    payload = _good_response(scores=_all(4))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+
+    out = score_submission(
+        corpus="submission text", benchmark_body="benchmark text",
+        candidate_name="Zara Khan", role="Growth Manager",
+    )
+    assert set(out) == {"scores", "evidence", "flags", "total", "band", "model"}
+    assert out["scores"] == _all(4)
+    assert out["evidence"] == _good_evidence()
+    assert out["flags"] == []
+    assert out["total"] == 80.0
+    assert out["band"] == "strong_yes"
+    assert out["model"] == "test-model"
+
+
+def test_unknown_flag_from_the_model_is_rejected(monkeypatch):
+    """The flag vocabulary is closed. A model inventing its own flag name
+    must not silently ride through into the band computation."""
+    from webapp.services import case_study_scoring as css
+
+    payload = _good_response(flags=["not_a_real_flag"])
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+
+    with pytest.raises(CaseStudyScoringError):
+        score_submission(
+            corpus="submission text", benchmark_body="benchmark text",
+            candidate_name="Zara Khan", role="Growth Manager",
+        )
+
+
+def test_case_study_prompt_builds_without_a_model():
+    """system_prompt()/build_user_prompt() are pure string assembly and read
+    the locked rubric file at call time -- proving they succeed (and carry
+    the three numbered rules) needs no model and no network."""
+    from webapp.prompts import case_study_prompt
+
+    system = case_study_prompt.system_prompt()
+    assert "RULE 1" in system and "RULE 2" in system and "RULE 3" in system
+    assert "fabricated_data" in system
+    for d in DIMENSIONS:
+        assert d["key"] in system
+
+    user = case_study_prompt.build_user_prompt(
+        corpus="the submission body",
+        benchmark_body="the benchmark body",
+        candidate_name="Zara Khan",
+        role="Growth Manager",
+    )
+    assert "the submission body" in user
+    assert "the benchmark body" in user
+    assert "Zara Khan" in user
 
 
 # ── Submission retrieval (webapp/services/submissions.py) ──────────────────
