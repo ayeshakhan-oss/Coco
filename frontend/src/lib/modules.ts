@@ -14,7 +14,7 @@ export const ACTIVE_MODULE = 'candidate-communication'
 
 export const MODULES: ModuleDef[] = [
   { slug: 'candidate-communication', label: 'Candidate Communication', icon: Mail, status: 'live', route: '/queue', blurb: 'Draft, review, approve and send candidate rejection and feedback emails.' },
-  { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'live', route: '/evaluations', blurb: 'Screen CVs, score case studies and interview scorecards.' },
+  { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'live', route: '/evaluations', blurb: 'Score case studies, run values scorecards and screen technical candidates. CV and KCD evaluation are on the way.' },
   { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'soon', blurb: 'Attendance reports, decision briefs and weekly pipeline monitoring.' },
   { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'soon', blurb: 'Reports, integrations and system infrastructure.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'soon', blurb: 'Find and track passive candidates across sources.' },

@@ -1,23 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
 import type { LucideIcon } from 'lucide-react'
-import { CheckSquare, ChevronDown, ClipboardCheck, ClipboardList, FileSearch, History, Inbox, LogOut, Users } from 'lucide-react'
+import { CheckSquare, ChevronDown, ClipboardCheck, ClipboardList, FileSearch, FileText, Gauge, History, Inbox, ListChecks, LogOut, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { api } from '../lib/api'
 import { fullName, initials } from '../lib/format'
 import { MODULES, moduleForPath } from '../lib/modules'
 
-// Sub-pages per live module, keyed by module slug.
-const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon; end: boolean }[]> = {
+// Sub-pages per live module, keyed by module slug. `built: false` entries are
+// real sub-skills that don't have a page yet — rendered as a non-link row
+// with the same "soon" pill used at the module level, never as a dead link.
+const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon; end: boolean; built: boolean }[]> = {
   'candidate-communication': [
-    { to: '/queue', label: 'Candidates', icon: ClipboardList, end: true },
-    { to: '/review', label: 'Review', icon: Inbox, end: false },
-    { to: '/history', label: 'History', icon: History, end: false },
+    { to: '/queue', label: 'Candidates', icon: ClipboardList, end: true, built: true },
+    { to: '/review', label: 'Review', icon: Inbox, end: false, built: true },
+    { to: '/history', label: 'History', icon: History, end: false, built: true },
   ],
   'candidate-evaluation': [
-    { to: '/evaluations', label: 'Screening', icon: FileSearch, end: true },
-    { to: '/values-scorecards', label: 'Values Scorecards', icon: CheckSquare, end: true },
-    { to: '/case-studies', label: 'Case Studies', icon: ClipboardCheck, end: true },
+    { to: '/evaluations', label: 'Technical Screening', icon: FileSearch, end: true, built: true },
+    { to: '', label: 'CV Screening', icon: FileText, end: true, built: false },
+    { to: '', label: 'Case Study Evaluation', icon: ListChecks, end: true, built: false },
+    { to: '/case-studies', label: 'Case Study Scoring', icon: ClipboardCheck, end: true, built: true },
+    { to: '', label: 'KCD Evaluation', icon: Gauge, end: true, built: false },
+    { to: '/values-scorecards', label: 'Values Scorecards', icon: CheckSquare, end: true, built: true },
   ],
 }
 
@@ -78,21 +83,29 @@ export function AppLayout() {
                 {isOpen && (
                   <div className="mb-1 mt-0.5 space-y-0.5 pl-8">
                     {isLive && modulePages && modulePages.length > 0 ? (
-                      modulePages.map(({ to, label, icon: PIcon, end }) => (
-                        <NavLink
-                          key={to}
-                          to={to}
-                          end={end}
-                          className={({ isActive }) =>
-                            `flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                              isActive ? 'bg-blurple text-white' : 'text-ink-muted hover:bg-elevated hover:text-ink'
-                            }`
-                          }
-                        >
-                          <PIcon className="h-3.5 w-3.5" />
-                          {label}
-                        </NavLink>
-                      ))
+                      modulePages.map(({ to, label, icon: PIcon, end, built }) =>
+                        built ? (
+                          <NavLink
+                            key={label}
+                            to={to}
+                            end={end}
+                            className={({ isActive }) =>
+                              `flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                                isActive ? 'bg-blurple text-white' : 'text-ink-muted hover:bg-elevated hover:text-ink'
+                              }`
+                            }
+                          >
+                            <PIcon className="h-3.5 w-3.5" />
+                            {label}
+                          </NavLink>
+                        ) : (
+                          <div key={label} className="flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm font-medium text-ink-dim">
+                            <PIcon className="h-3.5 w-3.5" />
+                            <span className="flex-1 truncate">{label}</span>
+                            <span className="rounded-full bg-surface-2 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide">soon</span>
+                          </div>
+                        ),
+                      )
                     ) : (
                       <Link
                         to={`/modules/${skill.slug}`}
