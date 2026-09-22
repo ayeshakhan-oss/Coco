@@ -7,21 +7,84 @@ explicitly (mirroring `scripts/screening/read_nugget_screening.py`) because
 `webapp.config.Settings` reads `.env` itself without exporting it into
 `os.environ`, and the skip guard below only has `os.environ` to check.
 
+`DATABASE_URL` being SET is not the same as the database being REACHABLE. From
+this machine, port 5432 is routed through a slow/blocked path (TCP connects
+only after ~10-14s per attempt instead of failing fast — see
+memory/reference_neon_https_sql_workaround_2026_08_05.md), and this module
+opens many such connections (one per test, plus TestClient app startup), which
+used to inflate a 1.6s full-suite run to ~414s. The skip guard below runs a
+short, BOUNDED raw-socket connect (a couple of seconds) before deciding to run
+this module at all, so a slow/blocked path skips fast instead of the whole
+module hanging through real (multi-second-per-attempt) connection retries.
+Wherever the DB connects quickly (e.g. Railway, or any network with a fast
+path to Neon), this still runs normally.
+
 Run:  python -m pytest webapp/tests/test_evaluations_api.py -q
 """
 
 from __future__ import annotations
 
 import os
+import socket
+import threading
+from urllib.parse import urlsplit
 
 import pytest
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
-pytestmark = pytest.mark.skipif(
-    not os.environ.get("DATABASE_URL"), reason="needs DATABASE_URL"
-)
+_DATABASE_URL = os.environ.get("DATABASE_URL")
+_CONNECT_TIMEOUT_SECONDS = 2.5
+
+
+def _database_reachable(url: str) -> bool:
+    """A bounded, best-effort TCP reachability probe (NOT a full Postgres
+    handshake, which the blocked network path here can spend 10+ seconds on
+    per attempt even when it eventually succeeds). Any failure — DNS, refused,
+    or simply too slow to be worth it in a unit-test run — means "skip".
+
+    `socket.create_connection`'s own `timeout=` only bounds the connect() call,
+    NOT the getaddrinfo()/DNS resolution that happens first — and on this
+    machine DNS resolution for the Neon hostname alone routinely takes 8-14s,
+    so a bare `timeout=` here does not actually bound wall-clock time. The
+    probe therefore runs in a DAEMON thread with its own `join(timeout=...)`:
+    if it hasn't reported back within the budget, this returns False
+    immediately and the daemon thread is abandoned (it cannot block process
+    exit), rather than the whole test collection waiting on a slow resolver.
+    """
+    try:
+        parts = urlsplit(url)
+        host = parts.hostname
+        if not host:
+            return False
+        port = parts.port or 5432
+    except ValueError:
+        return False
+
+    outcome: dict[str, bool] = {}
+
+    def _attempt() -> None:
+        try:
+            with socket.create_connection((host, port), timeout=_CONNECT_TIMEOUT_SECONDS):
+                outcome["ok"] = True
+        except OSError:
+            outcome["ok"] = False
+
+    probe = threading.Thread(target=_attempt, daemon=True)
+    probe.start()
+    probe.join(timeout=_CONNECT_TIMEOUT_SECONDS)
+    return outcome.get("ok", False)
+
+
+_SKIP_REASON = "needs DATABASE_URL"
+if _DATABASE_URL and not _database_reachable(_DATABASE_URL):
+    _SKIP_REASON = "DATABASE_URL is set but the database did not respond within " \
+        f"{_CONNECT_TIMEOUT_SECONDS}s from this machine — skipping rather than " \
+        "hanging through slow/blocked-path connection retries"
+    _DATABASE_URL = None
+
+pytestmark = pytest.mark.skipif(not _DATABASE_URL, reason=_SKIP_REASON)
 
 
 @pytest.fixture(scope="module")

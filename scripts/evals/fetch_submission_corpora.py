@@ -5,49 +5,17 @@ downloaded from Drive. Nothing here trusts the evaluation record.
 
 Text extraction covers docx (paragraphs AND text boxes), pptx (all shapes incl. tables and
 notes), xlsx (cell values AND formulas), pdf (PyMuPDF).
+
+The extraction functions below (`text_docx`/`text_pptx`/`text_xlsx`/`text_pdf`/`extract`) are
+pure (path in, text out) and side-effect-free, so `webapp/services/submissions.py` imports
+them directly to score real case-study submissions -- see its module docstring. Everything
+that needs live credentials (Drive auth, the specific candidate folders below) stays inside
+`main()`, guarded by `__main__`, so importing this module never dials out.
 """
 import io
 import os
 import re
 import sys
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build as gbuild
-from googleapiclient.http import MediaIoBaseDownload
-
-OUT = r"C:\Users\Dell\AppData\Local\Temp\claude\c--Agent-Coco\fba5d52e-65f2-44a6-a576-5c1cb54b4837\scratchpad\subs"
-os.makedirs(OUT, exist_ok=True)
-TOK = r"c:\Agent Coco\.claude\config\token_sheets_broad.json"
-
-creds = Credentials.from_authorized_user_file(TOK)
-if creds.expired and creds.refresh_token:
-    creds.refresh(Request())
-    open(TOK, "w").write(creds.to_json())
-drive = gbuild("drive", "v3", credentials=creds)
-
-FOLDERS = {
-    "Kanooz": "1AQy-QpAQDnkXuu7nPlGlcvY2BHNmSAaL",
-    "Irfan": "10CM1Mvz7YgO8hS0dOOU4sx0LWhr69Y4B",
-    "Wajdan": "1fKGJ3LtOXPy5N4EVXShdnDbdiQp3LyBA",
-    "Basit": "1ENRRftnC4SLDykVG3nSeE2pacNUGEQMi",
-    "Rimsha": "1cplnC8M84DO9Zia11tum6gdT3KXBje57",
-}
-
-
-def dl(fid, name):
-    path = os.path.join(OUT, re.sub(r"[^\w.\- ]", "_", name))
-    if os.path.exists(path) and os.path.getsize(path) > 0:
-        return path
-    req = drive.files().get_media(fileId=fid)
-    buf = io.BytesIO()
-    d = MediaIoBaseDownload(buf, req)
-    done = False
-    while not done:
-        _, done = d.next_chunk()
-    with open(path, "wb") as f:
-        f.write(buf.getvalue())
-    return path
 
 
 def text_docx(p):
@@ -126,26 +94,71 @@ def extract(p):
     return ""
 
 
-corpus = {}
-for nm, fid in FOLDERS.items():
-    res = drive.files().list(q=f"'{fid}' in parents and trashed=false",
-                             fields="files(id,name,mimeType)",
-                             supportsAllDrives=True, includeItemsFromAllDrives=True,
-                             pageSize=100).execute()
-    blobs = []
-    for f in res.get("files", []):
-        if f["mimeType"] == "application/vnd.google-apps.folder":
-            continue
-        try:
-            p = dl(f["id"], f"{nm}__{f['name']}")
-            t = extract(p)
-            blobs.append(f"\n===== FILE: {f['name']} =====\n{t}")
-            print(f"  {nm}: {f['name']} -> {len(t)} chars", flush=True)
-        except Exception as ex:
-            print(f"  {nm}: {f['name']} -> DOWNLOAD/EXTRACT ERROR {type(ex).__name__}: "
-                  f"{str(ex)[:130]}", flush=True)
-    corpus[nm] = "\n".join(blobs)
+def main():
+    """The original one-off audit script: download a fixed set of candidate
+    Drive folders and dump one corpus .txt per candidate. Only runs when this
+    file is executed directly -- never on import."""
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build as gbuild
+    from googleapiclient.http import MediaIoBaseDownload
 
-for nm, t in corpus.items():
-    open(os.path.join(OUT, f"CORPUS_{nm}.txt"), "w", encoding="utf-8").write(t)
-print("\ncorpus sizes:", {k: len(v) for k, v in corpus.items()})
+    out = r"C:\Users\Dell\AppData\Local\Temp\claude\c--Agent-Coco\fba5d52e-65f2-44a6-a576-5c1cb54b4837\scratchpad\subs"
+    os.makedirs(out, exist_ok=True)
+    tok = r"c:\Agent Coco\.claude\config\token_sheets_broad.json"
+
+    creds = Credentials.from_authorized_user_file(tok)
+    if creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+        open(tok, "w").write(creds.to_json())
+    drive = gbuild("drive", "v3", credentials=creds)
+
+    folders = {
+        "Kanooz": "1AQy-QpAQDnkXuu7nPlGlcvY2BHNmSAaL",
+        "Irfan": "10CM1Mvz7YgO8hS0dOOU4sx0LWhr69Y4B",
+        "Wajdan": "1fKGJ3LtOXPy5N4EVXShdnDbdiQp3LyBA",
+        "Basit": "1ENRRftnC4SLDykVG3nSeE2pacNUGEQMi",
+        "Rimsha": "1cplnC8M84DO9Zia11tum6gdT3KXBje57",
+    }
+
+    def dl(fid, name):
+        path = os.path.join(out, re.sub(r"[^\w.\- ]", "_", name))
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            return path
+        req = drive.files().get_media(fileId=fid)
+        buf = io.BytesIO()
+        d = MediaIoBaseDownload(buf, req)
+        done = False
+        while not done:
+            _, done = d.next_chunk()
+        with open(path, "wb") as f:
+            f.write(buf.getvalue())
+        return path
+
+    corpus = {}
+    for nm, fid in folders.items():
+        res = drive.files().list(q=f"'{fid}' in parents and trashed=false",
+                                 fields="files(id,name,mimeType)",
+                                 supportsAllDrives=True, includeItemsFromAllDrives=True,
+                                 pageSize=100).execute()
+        blobs = []
+        for f in res.get("files", []):
+            if f["mimeType"] == "application/vnd.google-apps.folder":
+                continue
+            try:
+                p = dl(f["id"], f"{nm}__{f['name']}")
+                t = extract(p)
+                blobs.append(f"\n===== FILE: {f['name']} =====\n{t}")
+                print(f"  {nm}: {f['name']} -> {len(t)} chars", flush=True)
+            except Exception as ex:
+                print(f"  {nm}: {f['name']} -> DOWNLOAD/EXTRACT ERROR {type(ex).__name__}: "
+                      f"{str(ex)[:130]}", flush=True)
+        corpus[nm] = "\n".join(blobs)
+
+    for nm, t in corpus.items():
+        open(os.path.join(out, f"CORPUS_{nm}.txt"), "w", encoding="utf-8").write(t)
+    print("\ncorpus sizes:", {k: len(v) for k, v in corpus.items()})
+
+
+if __name__ == "__main__":
+    main()
