@@ -484,6 +484,16 @@ class CaseStudyScoreRequest(_Base):
     application_id: int
 
 
+class CaseStudyDimensionOut(_Base):
+    """One rubric dimension's metadata (IMPORTANT 4): key/label/weight,
+    mirrored verbatim from `case_study_scoring.DIMENSIONS` so the frontend
+    never has to keep its own copy in sync by hand."""
+
+    key: str
+    label: str
+    weight: int
+
+
 class CaseStudyEvaluationOut(_Base):
     id: str
     application_id: int
@@ -502,3 +512,7 @@ class CaseStudyEvaluationOut(_Base):
     corpus_chars: int
     created_by: str
     created_at: Optional[dt.datetime] = None
+    # IMPORTANT 4: the rubric's dimension metadata, carried on every response
+    # so the page can render from `evaluation.dimensions` instead of a local
+    # TypeScript constant that can drift from case_study_scoring.DIMENSIONS.
+    dimensions: list[CaseStudyDimensionOut] = []

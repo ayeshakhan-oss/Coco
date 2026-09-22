@@ -429,6 +429,17 @@ export interface CaseStudyBenchmark {
   status: CaseStudyBenchmarkStatus
 }
 
+// One rubric dimension's metadata, exactly as `case_study_scoring.DIMENSIONS`
+// defines it server-side. A TYPE only -- there is no browser-side constant of
+// these any more (see the removed CASE_STUDY_DIMENSIONS below). Every
+// CaseStudyEvaluationOut response now carries its own `dimensions` list, so a
+// weight or dimension change in Python can never go stale on the page.
+export interface CaseStudyDimensionMeta {
+  key: string
+  label: string
+  weight: number
+}
+
 export interface CaseStudyEvaluation {
   id: string
   application_id: number
@@ -445,24 +456,11 @@ export interface CaseStudyEvaluation {
   sources: string[]
   created_by: string
   created_at?: string | null
+  // The rubric's dimension metadata, taken verbatim from the response. A
+  // score key with no matching entry here (an unknown/renamed dimension)
+  // must still render -- see CaseStudyPage.tsx's fallback rendering.
+  dimensions: CaseStudyDimensionMeta[]
 }
-
-// Display-only mirror of the locked DIMENSIONS tuple in
-// webapp/services/case_study_scoring.py. The API never returns dimension
-// labels or weights (CaseStudyEvaluationOut carries only `scores`/`evidence`
-// keyed by dimension key), so this exists purely to render a label and a
-// weight next to each score. It is NEVER read to compute a total or a band --
-// those come verbatim from the server on every response. If the Python
-// weights ever change, update this list to match; nothing here feeds back
-// into any calculation.
-export const CASE_STUDY_DIMENSIONS: { key: string; label: string; weight: number }[] = [
-  { key: 'data_judgment', label: 'Data judgment', weight: 20 },
-  { key: 'execution_specificity', label: 'Execution specificity', weight: 25 },
-  { key: 'stakeholder_craft', label: 'Stakeholder craft', weight: 20 },
-  { key: 'commercial_honesty', label: 'Commercial honesty', weight: 15 },
-  { key: 'decision_discipline', label: 'Decision discipline', weight: 10 },
-  { key: 'signal_self_awareness', label: 'Signal & self-awareness', weight: 10 },
-]
 
 // Display-only mirror of the locked FLAGS vocabulary in the same file. Only
 // `disqualifying` changes the server-computed band -- that override already

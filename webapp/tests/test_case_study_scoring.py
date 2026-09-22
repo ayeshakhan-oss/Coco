@@ -1173,17 +1173,22 @@ def test_corpus_for_chars_field_still_reflects_the_full_combined_text():
 
 class _FakeEvalResult:
     """Stands in for whatever a real SQLAlchemy Result needs to support at
-    score()'s one raw-SQL call site: `.mappings().first()` for the Rule 0
-    approved-benchmark-for-this-job lookup."""
+    this router's raw-SQL call sites: `.mappings().first()` for the Rule 0
+    approved-benchmark-for-this-job lookup, and `.mappings().all()` for the
+    IMPORTANT-5 list-benchmarks/list-evaluations lookups."""
 
-    def __init__(self, mapping_row=None):
+    def __init__(self, mapping_row=None, mapping_rows=None):
         self._mapping_row = mapping_row
+        self._mapping_rows = mapping_rows if mapping_rows is not None else []
 
     def mappings(self):
         return self
 
     def first(self):
         return self._mapping_row
+
+    def all(self):
+        return self._mapping_rows
 
 
 _UNSET = object()
@@ -1253,7 +1258,12 @@ class _FakeCaseStudySession:
     def execute(self, stmt, params=None):
         sql = str(stmt)
         self.execute_calls.append((sql, params))
-        if "FROM coco.eval_benchmarks" in sql:
+        # Order matters: the Rule 0 lookup and the IMPORTANT-5a list-benchmarks
+        # lookup both select `FROM coco.eval_benchmarks`, so the Rule 0 query
+        # (which alone carries `status = 'approved'` in its own text) is
+        # checked FIRST, or a real Rule-0 call would be mis-dispatched to the
+        # list branch below.
+        if "FROM coco.eval_benchmarks" in sql and "status = 'approved'" in sql:
             if self.approved_benchmark_row is not _UNSET:
                 return _FakeEvalResult(mapping_row=self.approved_benchmark_row)
             from webapp.models import EvalBenchmark
@@ -1267,6 +1277,47 @@ class _FakeCaseStudySession:
             candidates.sort(key=lambda b: b.qa_approved_at or dt.datetime.min, reverse=True)
             row = {"id": candidates[0].id, "body": candidates[0].body} if candidates else None
             return _FakeEvalResult(mapping_row=row)
+        if "FROM coco.eval_benchmarks" in sql:
+            from webapp.models import EvalBenchmark
+
+            job_id = (params or {}).get("job_id")
+            rows = [
+                b for b in self._store.values()
+                if isinstance(b, EvalBenchmark) and b.job_id == job_id
+            ]
+            rows.sort(key=lambda b: b.created_at or dt.datetime.min, reverse=True)
+            mapping_rows = [
+                {
+                    "id": b.id, "job_id": b.job_id, "kind": b.kind, "title": b.title,
+                    "body": b.body, "source_path": b.source_path, "created_by": b.created_by,
+                    "created_at": b.created_at, "qa_approved_by": b.qa_approved_by,
+                    "qa_approved_at": b.qa_approved_at, "status": b.status,
+                }
+                for b in rows
+            ]
+            return _FakeEvalResult(mapping_rows=mapping_rows)
+        if "FROM coco.case_study_evaluations" in sql:
+            from webapp.models import CaseStudyEvaluation
+
+            application_id = (params or {}).get("application_id")
+            rows = [
+                e for e in self._store.values()
+                if isinstance(e, CaseStudyEvaluation) and e.application_id == application_id
+            ]
+            rows.sort(key=lambda e: e.created_at or dt.datetime.min, reverse=True)
+            mapping_rows = [
+                {
+                    "id": e.id, "application_id": e.application_id, "job_id": e.job_id,
+                    "benchmark_id": e.benchmark_id, "candidate_name": e.candidate_name,
+                    "role": e.role, "scores": e.scores, "evidence": e.evidence,
+                    "flags": e.flags, "total": e.total, "band": e.band,
+                    "model": e.model_name, "sources": e.sources,
+                    "rubric_sha256": e.rubric_sha256, "corpus_chars": e.corpus_chars,
+                    "created_by": e.created_by, "created_at": e.created_at,
+                }
+                for e in rows
+            ]
+            return _FakeEvalResult(mapping_rows=mapping_rows)
         return _FakeEvalResult()
 
 
@@ -1703,6 +1754,12 @@ def test_score_succeeds_and_persists_the_evaluation_with_the_benchmark_actually_
     assert captured["role"] == "Growth Manager"
     assert db.committed == 1
 
+    # IMPORTANT 4: the response carries the rubric's dimension metadata
+    # verbatim from case_study_scoring.DIMENSIONS -- never re-typed here.
+    from webapp.services.case_study_scoring import DIMENSIONS
+
+    assert out["dimensions"] == [dict(d) for d in DIMENSIONS]
+
 
 def test_score_maps_a_disqualifying_flag_all_the_way_through_to_the_persisted_row(monkeypatch):
     """The total/band are never recomputed here -- taken AS-IS from
@@ -1848,6 +1905,221 @@ def test_get_evaluation_returns_the_persisted_row_exactly():
     assert out["benchmark_id"] == "benchmark-1"
     assert out["rubric_sha256"] == "e" * 64
     assert out["corpus_chars"] == 800
+    from webapp.services.case_study_scoring import DIMENSIONS
+
+    assert out["dimensions"] == [dict(d) for d in DIMENSIONS]
+
+
+# --- list_benchmarks / list_evaluations (IMPORTANT 5) ------------------------
+
+
+def test_list_benchmarks_returns_every_status_for_the_job_newest_first():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+
+    db = _FakeCaseStudySession()
+    db._store["b-old"] = EvalBenchmark(
+        id="b-old", job_id=7, kind="case_study", title="v1", body="old body",
+        created_by="x", status="retired",
+        created_at=dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc),
+    )
+    db._store["b-draft"] = EvalBenchmark(
+        id="b-draft", job_id=7, kind="case_study", title="v3 draft", body="draft body",
+        created_by="x", status="draft",
+        created_at=dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc),
+    )
+    db._store["b-approved"] = EvalBenchmark(
+        id="b-approved", job_id=7, kind="case_study", title="v2", body="approved body",
+        created_by="x", status="approved",
+        qa_approved_by="appuser-approver", qa_approved_at=dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc),
+        created_at=dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc),
+    )
+    # A benchmark for a DIFFERENT job must never leak into job 7's list.
+    db._store["b-other-job"] = EvalBenchmark(
+        id="b-other-job", job_id=99, kind="case_study", title="other", body="x",
+        created_by="x", status="approved",
+        created_at=dt.datetime(2026, 4, 1, tzinfo=dt.timezone.utc),
+    )
+
+    out = router_mod.list_benchmarks(7, db, {"id": "appuser-editor"})
+
+    assert [b["id"] for b in out] == ["b-draft", "b-approved", "b-old"]  # newest created_at first
+    assert {b["status"] for b in out} == {"draft", "approved", "retired"}
+    approved = next(b for b in out if b["id"] == "b-approved")
+    assert approved["qa_approved_by"] == "appuser-approver"
+
+
+def test_list_benchmarks_returns_empty_list_for_a_job_with_no_benchmarks():
+    import webapp.routers.case_studies as router_mod
+
+    db = _FakeCaseStudySession()
+    out = router_mod.list_benchmarks(404, db, {"id": "appuser-editor"})
+    assert out == []
+
+
+def test_list_evaluations_returns_every_evaluation_for_the_application_newest_first():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import CaseStudyEvaluation
+
+    db = _FakeCaseStudySession()
+    db._store["cse-old"] = CaseStudyEvaluation(
+        id="cse-old", application_id=555, job_id=7, benchmark_id="benchmark-1",
+        candidate_name="Zara Khan", role="Growth Manager",
+        scores=_all(2), evidence=_good_evidence(), flags=[],
+        total=40.0, band="no", model_name="test-model",
+        sources=["Gmail attachment: case.docx"], rubric_sha256="a" * 64, corpus_chars=700,
+        created_by="appuser-editor",
+        created_at=dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc),
+    )
+    db._store["cse-new"] = CaseStudyEvaluation(
+        id="cse-new", application_id=555, job_id=7, benchmark_id="benchmark-2",
+        candidate_name="Zara Khan", role="Growth Manager",
+        scores=_all(4), evidence=_good_evidence(), flags=[],
+        total=80.0, band="strong_yes", model_name="test-model",
+        sources=["Gmail attachment: case2.docx"], rubric_sha256="b" * 64, corpus_chars=900,
+        created_by="appuser-editor",
+        created_at=dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc),
+    )
+    # An evaluation for a DIFFERENT application must never leak in.
+    db._store["cse-other-app"] = CaseStudyEvaluation(
+        id="cse-other-app", application_id=999, job_id=7, benchmark_id="benchmark-1",
+        candidate_name="Other Candidate", role="Growth Manager",
+        scores=_all(3), evidence=_good_evidence(), flags=[],
+        total=60.0, band="yes", model_name="test-model",
+        sources=[], rubric_sha256="c" * 64, corpus_chars=500,
+        created_by="appuser-editor",
+        created_at=dt.datetime(2026, 3, 1, tzinfo=dt.timezone.utc),
+    )
+
+    out = router_mod.list_evaluations(555, db, {"id": "appuser-editor"})
+
+    assert [e["id"] for e in out] == ["cse-new", "cse-old"]  # newest first == current first
+    assert out[0]["total"] == 80.0
+    assert out[1]["total"] == 40.0
+    from webapp.services.case_study_scoring import DIMENSIONS
+
+    assert out[0]["dimensions"] == [dict(d) for d in DIMENSIONS]
+    assert out[1]["dimensions"] == [dict(d) for d in DIMENSIONS]
+
+
+def test_list_evaluations_returns_empty_list_for_an_application_with_no_evaluations():
+    import webapp.routers.case_studies as router_mod
+
+    db = _FakeCaseStudySession()
+    out = router_mod.list_evaluations(555, db, {"id": "appuser-editor"})
+    assert out == []
+
+
+def test_list_benchmarks_for_job_sql_executes_for_real_against_a_real_table():
+    """Same reasoning as test_approved_benchmark_for_job_sql_executes_for_real_
+    against_a_real_table above: this EXECUTES the real, imported
+    `_LIST_BENCHMARKS_FOR_JOB_SQL` (never a pasted copy) against a real
+    SQLite table, proving the job filter and ordering genuinely hold rather
+    than trusting the fake session's Python re-implementation."""
+    import sqlite3
+
+    from webapp.routers.case_studies import _LIST_BENCHMARKS_FOR_JOB_SQL
+
+    sql = str(_LIST_BENCHMARKS_FOR_JOB_SQL)
+    assert "coco.eval_benchmarks" in sql
+
+    conn = sqlite3.connect(":memory:")
+    try:
+        conn.execute("ATTACH DATABASE ':memory:' AS coco")
+        conn.execute(
+            """
+            CREATE TABLE coco.eval_benchmarks (
+                id TEXT PRIMARY KEY,
+                job_id INTEGER NOT NULL,
+                kind TEXT NOT NULL,
+                title TEXT NOT NULL,
+                body TEXT NOT NULL,
+                source_path TEXT,
+                created_by TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                qa_approved_by TEXT,
+                qa_approved_at TEXT,
+                status TEXT NOT NULL
+            )
+            """
+        )
+
+        def insert(id_, job_id, status, created_at):
+            conn.execute(
+                "INSERT INTO coco.eval_benchmarks "
+                "(id, job_id, kind, title, body, created_by, created_at, status) "
+                "VALUES (?, ?, 'case_study', 't', 'b', 'x', ?, ?)",
+                (id_, job_id, created_at, status),
+            )
+
+        insert("b-draft", 7, "draft", "2026-03-01T00:00:00+00:00")
+        insert("b-approved", 7, "approved", "2026-02-01T00:00:00+00:00")
+        insert("b-retired", 7, "retired", "2026-01-01T00:00:00+00:00")
+        insert("b-other-job", 99, "approved", "2026-04-01T00:00:00+00:00")
+
+        rows = conn.execute(sql, {"job_id": 7}).fetchall()
+        ids = [r[0] for r in rows]
+        assert ids == ["b-draft", "b-approved", "b-retired"]  # newest first, job 99 excluded
+    finally:
+        conn.close()
+
+
+def test_list_evaluations_for_application_sql_executes_for_real_against_a_real_table():
+    """Same reasoning again, for `_LIST_EVALUATIONS_FOR_APPLICATION_SQL`."""
+    import sqlite3
+
+    from webapp.routers.case_studies import _LIST_EVALUATIONS_FOR_APPLICATION_SQL
+
+    sql = str(_LIST_EVALUATIONS_FOR_APPLICATION_SQL)
+    assert "coco.case_study_evaluations" in sql
+
+    conn = sqlite3.connect(":memory:")
+    try:
+        conn.execute("ATTACH DATABASE ':memory:' AS coco")
+        conn.execute(
+            """
+            CREATE TABLE coco.case_study_evaluations (
+                id TEXT PRIMARY KEY,
+                application_id INTEGER NOT NULL,
+                job_id INTEGER NOT NULL,
+                benchmark_id TEXT NOT NULL,
+                candidate_name TEXT NOT NULL,
+                role TEXT NOT NULL,
+                scores TEXT NOT NULL,
+                evidence TEXT NOT NULL,
+                flags TEXT NOT NULL,
+                total REAL NOT NULL,
+                band TEXT NOT NULL,
+                model TEXT NOT NULL,
+                sources TEXT NOT NULL,
+                rubric_sha256 TEXT NOT NULL,
+                corpus_chars INTEGER NOT NULL,
+                created_by TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+            """
+        )
+
+        def insert(id_, application_id, created_at):
+            conn.execute(
+                "INSERT INTO coco.case_study_evaluations "
+                "(id, application_id, job_id, benchmark_id, candidate_name, role, "
+                "scores, evidence, flags, total, band, model, sources, "
+                "rubric_sha256, corpus_chars, created_by, created_at) "
+                "VALUES (?, ?, 7, 'benchmark-1', 'Zara Khan', 'Growth Manager', "
+                "'{}', '{}', '[]', 60.0, 'yes', 'test-model', '[]', 'a', 800, 'x', ?)",
+                (id_, application_id, created_at),
+            )
+
+        insert("cse-old", 555, "2026-01-01T00:00:00+00:00")
+        insert("cse-new", 555, "2026-02-01T00:00:00+00:00")
+        insert("cse-other-app", 999, "2026-03-01T00:00:00+00:00")
+
+        rows = conn.execute(sql, {"application_id": 555}).fetchall()
+        ids = [r[0] for r in rows]
+        assert ids == ["cse-new", "cse-old"]  # newest first, application 999 excluded
+    finally:
+        conn.close()
 
 
 # --- Rule 0 gate identity -----------------------------------------------------
@@ -1893,20 +2165,28 @@ def test_the_case_study_routes_are_gated_on_the_declared_dependency_not_the_docs
     a set of the actual callables is a valid, exact check, and
     `get_current_user` (their own sub-dependency) never appears in a route's
     own top-level dependency list -- only the gate wrapper does.
+
+    IMPORTANT 5's two new GET list endpoints (benchmarks, evaluations) are
+    covered here too, on the same `require_editor` bar as score/get_evaluation
+    -- the spec calls for exactly that gate on both.
     """
     import webapp.deps as deps
 
     create_benchmark = _case_study_route("/api/case-studies/benchmarks", "POST")
+    list_benchmarks = _case_study_route("/api/case-studies/benchmarks", "GET")
     approve_benchmark = _case_study_route(
         "/api/case-studies/benchmarks/{benchmark_id}/approve", "POST"
     )
     score_route = _case_study_route("/api/case-studies/score", "POST")
+    list_evaluations = _case_study_route("/api/case-studies/evaluations", "GET")
     get_evaluation = _case_study_route("/api/case-studies/evaluations/{evaluation_id}", "GET")
 
     for route, expected in (
         (create_benchmark, deps.require_editor),
+        (list_benchmarks, deps.require_editor),
         (approve_benchmark, deps.require_approver),
         (score_route, deps.require_editor),
+        (list_evaluations, deps.require_editor),
         (get_evaluation, deps.require_editor),
     ):
         calls = {dep.call for dep in route.dependant.dependencies}

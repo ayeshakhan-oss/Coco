@@ -5,7 +5,7 @@ import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
 import { fullName } from '../lib/format'
 import { canApprove, canEdit } from '../lib/roles'
-import { CASE_STUDY_DIMENSIONS, CASE_STUDY_FLAGS } from '../lib/types'
+import { CASE_STUDY_FLAGS } from '../lib/types'
 import type { CaseStudyBenchmark, CaseStudyEvaluation, JobItem, QueueRow } from '../lib/types'
 
 const stripStatus = (msg: string) => msg.replace(/^\d+:\s*/, '')
@@ -58,6 +58,43 @@ export function CaseStudyPage() {
   const [body, setBody] = useState('')
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState<string | null>(null)
+
+  // IMPORTANT 5a/c: load the job's own benchmarks on mount and whenever the
+  // selected job changes, so a reload (or a first job pick) recovers the
+  // server's real state instead of showing "approve the benchmark" while an
+  // approved one already exists. The most recently APPROVED row (by
+  // qa_approved_at) wins, matching the server's own Rule 0 ordering exactly;
+  // failing that, the most recently created DRAFT is shown so nobody
+  // re-authors a duplicate without knowing one is already pending approval.
+  const [benchmarksLoading, setBenchmarksLoading] = useState(false)
+  const [benchmarksError, setBenchmarksError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!isEditor || !jobId) return
+    let cancelled = false
+    setBenchmarksLoading(true)
+    setBenchmarksError(null)
+    api
+      .listCaseStudyBenchmarks(Number(jobId))
+      .then((rows) => {
+        if (cancelled) return
+        const approved = rows
+          .filter((b) => b.status === 'approved')
+          .sort((a, b) => (b.qa_approved_at ?? '').localeCompare(a.qa_approved_at ?? ''))
+        const draft = rows.find((b) => b.status === 'draft')
+        setBenchmark(approved[0] ?? draft ?? null)
+      })
+      .catch(() => {
+        if (cancelled) return
+        setBenchmarksError('Could not load this job’s benchmarks. Try reloading the page.')
+      })
+      .finally(() => {
+        if (!cancelled) setBenchmarksLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [isEditor, jobId])
 
   async function createBenchmark() {
     if (!jobId || !title.trim() || !body.trim()) return
@@ -124,6 +161,7 @@ export function CaseStudyPage() {
     setCreateError(null)
     setApproveId('')
     setApproveError(null)
+    setBenchmarksError(null)
   }
 
   const benchmarkApproved = benchmark?.status === 'approved'
@@ -169,6 +207,25 @@ export function CaseStudyPage() {
   const [scoreError, setScoreError] = useState<string | null>(null)
   const [evaluation, setEvaluation] = useState<CaseStudyEvaluation | null>(null)
 
+  // IMPORTANT 5b/d: the full scoring history for whichever application
+  // `evaluation` belongs to -- newest first, so index 0 is always the
+  // current row and the rest render as visibly superseded. /score is not
+  // idempotent, so this is the legibility fix; there is no `is_current`
+  // column or retirement workflow behind it (still outstanding, see the
+  // fix report).
+  const [evaluationHistory, setEvaluationHistory] = useState<CaseStudyEvaluation[]>([])
+
+  async function loadEvaluationHistory(applicationId: number) {
+    try {
+      const rows = await api.listCaseStudyEvaluations(applicationId)
+      setEvaluationHistory(rows)
+    } catch {
+      // Non-fatal: the just-scored/just-opened evaluation above still
+      // renders in full either way, this only powers the superseded list.
+      setEvaluationHistory([])
+    }
+  }
+
   // A client-side heads-up only -- the server is the real Rule 0 gate and
   // re-derives the application's job itself, never trusting anything sent
   // from here.
@@ -183,9 +240,11 @@ export function CaseStudyPage() {
     setScoring(true)
     setScoreError(null)
     setEvaluation(null)
+    setEvaluationHistory([])
     try {
       const ev = await api.scoreCaseStudy(selected.application_id)
       setEvaluation(ev)
+      await loadEvaluationHistory(ev.application_id)
     } catch (e) {
       setScoreError(stripStatus((e as ApiError).message))
     } finally {
@@ -202,9 +261,11 @@ export function CaseStudyPage() {
     if (!lookupId.trim()) return
     setLookupLoading(true)
     setLookupError(null)
+    setEvaluationHistory([])
     try {
       const ev = await api.caseStudyEvaluation(lookupId.trim())
       setEvaluation(ev)
+      await loadEvaluationHistory(ev.application_id)
     } catch (e) {
       setLookupError(stripStatus((e as ApiError).message))
     } finally {
@@ -254,6 +315,11 @@ export function CaseStudyPage() {
               Rule 0: write and QA the benchmark before any submission is opened. Reading a submission first
               calibrates scoring to whoever is read first.
             </div>
+
+            {jobId && benchmarksLoading && (
+              <p className="text-xs text-ink-dim">Checking for an existing benchmark on this job…</p>
+            )}
+            {benchmarksError && <p className="text-xs text-danger">{benchmarksError}</p>}
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
@@ -521,7 +587,20 @@ export function CaseStudyPage() {
         <div className="card mt-5 p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="text-sm font-medium text-ink">{evaluation.candidate_name}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-medium text-ink">{evaluation.candidate_name}</div>
+                {/* IMPORTANT 5d: a /score re-run is not idempotent, so an
+                    application can carry several evaluations -- this says,
+                    plainly, whether the one on screen is the newest. */}
+                {evaluationHistory.length > 0 &&
+                  (evaluationHistory[0]?.id === evaluation.id ? (
+                    <span className="chip bg-green/15 text-xs font-bold text-green">Current</span>
+                  ) : (
+                    <span className="chip bg-[#b7791f]/15 text-xs font-bold text-[#b7791f]">
+                      Superseded -- a newer evaluation exists
+                    </span>
+                  ))}
+              </div>
               <div className="text-xs text-ink-dim">
                 Application #{evaluation.application_id} · {evaluation.role} · Evaluation {evaluation.id}
               </div>
@@ -537,6 +616,30 @@ export function CaseStudyPage() {
               </span>
             </div>
           </div>
+
+          {evaluationHistory.length > 1 && (
+            <div className="mb-4 rounded-xl border border-hairline bg-surface-2 px-4 py-3">
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-ink-dim">
+                Other evaluations for this application
+              </p>
+              <ul className="space-y-1 text-xs text-ink-muted">
+                {evaluationHistory
+                  .filter((row) => row.id !== evaluation.id)
+                  .map((row) => (
+                    <li key={row.id} className="flex flex-wrap items-center gap-2">
+                      <span className="chip bg-surface-2 text-[10px] font-bold text-ink-dim">
+                        {row.id === evaluationHistory[0]?.id ? 'Current' : 'Superseded'}
+                      </span>
+                      <span>{row.id}</span>
+                      <span>
+                        Total {row.total} · {BAND_LABEL[row.band] ?? row.band}
+                      </span>
+                      {row.created_at && <span>{new Date(row.created_at).toLocaleString()}</span>}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
 
           {/* A disqualifying flag outranks the total -- shown first and loudly,
               never quietly beside a total that on its own would look fine. */}
@@ -565,7 +668,11 @@ export function CaseStudyPage() {
           )}
 
           <div className="space-y-3">
-            {CASE_STUDY_DIMENSIONS.map((d) => (
+            {/* IMPORTANT 4b: rendered from the RESPONSE's own dimension
+                metadata, never a local TypeScript constant -- a weight or
+                label change in case_study_scoring.DIMENSIONS shows up here
+                on the very next score, with no separate deploy. */}
+            {evaluation.dimensions.map((d) => (
               <div key={d.key} className="rounded-xl border border-hairline p-4">
                 <div className="mb-1.5 flex items-center justify-between gap-3">
                   <h3 className="text-sm font-semibold text-ink">{d.label}</h3>
@@ -579,6 +686,26 @@ export function CaseStudyPage() {
                 </p>
               </div>
             ))}
+            {/* IMPORTANT 4c: a score key the metadata above does not cover
+                (a renamed or newly added dimension the frontend has not
+                been told about yet) still renders here -- "the evaluation
+                renders in full" stays true regardless of drift, instead of
+                the key silently vanishing. */}
+            {Object.keys(evaluation.scores)
+              .filter((key) => !evaluation.dimensions.some((d) => d.key === key))
+              .map((key) => (
+                <div key={key} className="rounded-xl border border-dashed border-hairline p-4">
+                  <div className="mb-1.5 flex items-center justify-between gap-3">
+                    <h3 className="text-sm font-semibold text-ink">{key}</h3>
+                    <span className="text-xs text-ink-dim">
+                      <span className="font-bold text-ink">{evaluation.scores[key]}</span>/5 · weight unknown
+                    </span>
+                  </div>
+                  <p className="text-xs leading-relaxed text-ink-muted">
+                    {evaluation.evidence[key] || 'No evidence citation returned.'}
+                  </p>
+                </div>
+              ))}
           </div>
 
           <p className="mt-4 text-xs text-ink-dim">

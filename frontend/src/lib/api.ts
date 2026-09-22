@@ -186,8 +186,17 @@ export const api = {
   }) => post<CaseStudyBenchmark>('/api/case-studies/benchmarks', payload),
   approveCaseStudyBenchmark: (benchmarkId: string) =>
     post<CaseStudyBenchmark>(`/api/case-studies/benchmarks/${benchmarkId}/approve`),
+  // IMPORTANT 5a: every benchmark on record for a job, newest first, so the
+  // page can recover its current (approved) one after a reload instead of
+  // depending on an id pasted in by hand.
+  listCaseStudyBenchmarks: (jobId: number) =>
+    get<CaseStudyBenchmark[]>(`/api/case-studies/benchmarks?job_id=${jobId}`),
   scoreCaseStudy: (applicationId: number) =>
     post<CaseStudyEvaluation>('/api/case-studies/score', { application_id: applicationId }),
   caseStudyEvaluation: (evaluationId: string) =>
     get<CaseStudyEvaluation>(`/api/case-studies/evaluations/${evaluationId}`),
+  // IMPORTANT 5b: every evaluation on record for an application, newest
+  // first -- the first entry is the current one, the rest are superseded.
+  listCaseStudyEvaluations: (applicationId: number) =>
+    get<CaseStudyEvaluation[]>(`/api/case-studies/evaluations?application_id=${applicationId}`),
 }

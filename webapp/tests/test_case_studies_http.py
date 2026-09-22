@@ -26,6 +26,8 @@ file must never risk.
 
 from __future__ import annotations
 
+import datetime as dt
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -101,6 +103,20 @@ def test_viewer_is_rejected_from_get_evaluation(client):
     _override_user("viewer")
     _override_db(_FakeCaseStudySession())
     r = client.get(f"{PREFIX}/evaluations/cse-1")
+    assert r.status_code == 403
+
+
+def test_viewer_is_rejected_from_list_benchmarks(client):
+    _override_user("viewer")
+    _override_db(_FakeCaseStudySession())
+    r = client.get(f"{PREFIX}/benchmarks", params={"job_id": 7})
+    assert r.status_code == 403
+
+
+def test_viewer_is_rejected_from_list_evaluations(client):
+    _override_user("viewer")
+    _override_db(_FakeCaseStudySession())
+    r = client.get(f"{PREFIX}/evaluations", params={"application_id": 555})
     assert r.status_code == 403
 
 
@@ -243,6 +259,68 @@ def test_score_409s_through_real_http_for_a_draft_only_benchmark(client, monkeyp
 
     r = client.post(f"{PREFIX}/score", json={"application_id": 555})
     assert r.status_code == 409
+
+
+def test_editor_can_list_benchmarks_for_a_job_through_real_http(client):
+    """IMPORTANT 5a: a reload with no pasted benchmark id can now recover
+    the job's benchmarks (and their status) through a real request."""
+    _override_user("editor")
+    db = _FakeCaseStudySession()
+    db._store["benchmark-http-draft"] = EvalBenchmark(
+        id="benchmark-http-draft", job_id=7, kind="case_study", title="t", body="b",
+        created_by="x", status="draft",
+    )
+    db._store["benchmark-http-approved"] = EvalBenchmark(
+        id="benchmark-http-approved", job_id=7, kind="case_study", title="t2", body="b2",
+        created_by="x", status="approved", qa_approved_by="appuser-approver",
+    )
+    db._store["benchmark-http-other-job"] = EvalBenchmark(
+        id="benchmark-http-other-job", job_id=99, kind="case_study", title="t3", body="b3",
+        created_by="x", status="approved",
+    )
+    _override_db(db)
+
+    r = client.get(f"{PREFIX}/benchmarks", params={"job_id": 7})
+    assert r.status_code == 200
+    ids = {b["id"] for b in r.json()}
+    assert ids == {"benchmark-http-draft", "benchmark-http-approved"}
+    approved = next(b for b in r.json() if b["id"] == "benchmark-http-approved")
+    assert approved["status"] == "approved"
+
+
+def test_editor_can_list_evaluations_for_an_application_through_real_http(client):
+    """IMPORTANT 5b: an application with several `cse-` rows from repeated
+    /score runs is now legible through a real request -- newest first."""
+    _override_user("editor")
+    db = _FakeCaseStudySession()
+    from webapp.models import CaseStudyEvaluation
+
+    db._store["cse-http-old"] = CaseStudyEvaluation(
+        id="cse-http-old", application_id=555, job_id=7, benchmark_id="benchmark-1",
+        candidate_name="Zara Khan", role="Growth Manager",
+        scores=_all(2), evidence=_good_evidence(), flags=[],
+        total=40.0, band="no", model_name="test-model",
+        sources=[], rubric_sha256="a" * 64, corpus_chars=700,
+        created_by="appuser-editor",
+        created_at=dt.datetime(2026, 1, 1, tzinfo=dt.timezone.utc),
+    )
+    db._store["cse-http-new"] = CaseStudyEvaluation(
+        id="cse-http-new", application_id=555, job_id=7, benchmark_id="benchmark-2",
+        candidate_name="Zara Khan", role="Growth Manager",
+        scores=_all(4), evidence=_good_evidence(), flags=[],
+        total=80.0, band="strong_yes", model_name="test-model",
+        sources=[], rubric_sha256="b" * 64, corpus_chars=900,
+        created_by="appuser-editor",
+        created_at=dt.datetime(2026, 2, 1, tzinfo=dt.timezone.utc),
+    )
+    _override_db(db)
+
+    r = client.get(f"{PREFIX}/evaluations", params={"application_id": 555})
+    assert r.status_code == 200
+    body = r.json()
+    assert [e["id"] for e in body] == ["cse-http-new", "cse-http-old"]
+    assert body[0]["total"] == 80.0
+    assert body[0]["dimensions"]  # IMPORTANT 4: metadata present on list too
 
 
 def test_get_benchmark_body_never_leaks_through_a_score_409(client, monkeypatch):

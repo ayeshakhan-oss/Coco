@@ -51,7 +51,7 @@ from __future__ import annotations
 import datetime as dt
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -65,7 +65,7 @@ from ..schemas import (
     CaseStudyScoreRequest,
 )
 from ..services import reads
-from ..services.case_study_scoring import CaseStudyScoringError, score_submission
+from ..services.case_study_scoring import DIMENSIONS, CaseStudyScoringError, score_submission
 from ..services.drafting import DraftingUnavailable
 from ..services.submissions import SubmissionUnreadable, corpus_for
 
@@ -87,6 +87,37 @@ _APPROVED_BENCHMARK_FOR_JOB_SQL = text(
     "SELECT id, body FROM coco.eval_benchmarks "
     "WHERE job_id = :job_id AND status = 'approved' AND qa_approved_at IS NOT NULL "
     "ORDER BY qa_approved_at DESC NULLS LAST LIMIT 1"
+)
+
+# IMPORTANT 5a: lists EVERY benchmark for a job regardless of status, newest
+# first, so the UI can recover "which one is approved" on mount/reload
+# instead of depending on a benchmark id pasted in by hand. Column list is
+# written to match CaseStudyBenchmarkOut's field names/order exactly, so the
+# router below can return `dict(row)` straight off `.mappings()` with no
+# ORM round-trip.
+_LIST_BENCHMARKS_FOR_JOB_SQL = text(
+    "SELECT id, job_id, kind, title, body, source_path, created_by, created_at, "
+    "qa_approved_by, qa_approved_at, status "
+    "FROM coco.eval_benchmarks "
+    "WHERE job_id = :job_id "
+    "ORDER BY created_at DESC"
+)
+
+# IMPORTANT 5b: lists every evaluation for an application, newest first, so a
+# re-scored candidate's history is visible instead of only whichever row's id
+# happens to be in hand. Same column-name-matches-the-schema trick as above.
+# The UI (not this query) decides which row is "current" -- see
+# CaseStudyPage.tsx: the first row here IS the newest by construction, so the
+# frontend marks index 0 current and the rest superseded. No `is_current`
+# column and no retirement workflow in this pass (Rule 25 full treatment is
+# still outstanding -- see the report).
+_LIST_EVALUATIONS_FOR_APPLICATION_SQL = text(
+    "SELECT id, application_id, job_id, benchmark_id, candidate_name, role, "
+    "scores, evidence, flags, total, band, model, sources, rubric_sha256, "
+    "corpus_chars, created_by, created_at "
+    "FROM coco.case_study_evaluations "
+    "WHERE application_id = :application_id "
+    "ORDER BY created_at DESC"
 )
 
 
@@ -117,6 +148,15 @@ def _benchmark_out(benchmark: EvalBenchmark) -> dict:
     }
 
 
+def _dimensions_out() -> list[dict]:
+    """IMPORTANT 4a: the rubric's dimension metadata (key/label/weight), taken
+    straight from `case_study_scoring.DIMENSIONS` -- the single source of
+    truth the frontend's now-deleted `CASE_STUDY_DIMENSIONS` used to mirror
+    by hand. Every evaluation response carries this, so a weight or dimension
+    change in Python is never silently stale on the page again."""
+    return [dict(d) for d in DIMENSIONS]
+
+
 def _evaluation_out(evaluation: CaseStudyEvaluation) -> dict:
     return {
         "id": evaluation.id,
@@ -136,6 +176,7 @@ def _evaluation_out(evaluation: CaseStudyEvaluation) -> dict:
         "corpus_chars": evaluation.corpus_chars,
         "created_by": evaluation.created_by,
         "created_at": evaluation.created_at,
+        "dimensions": _dimensions_out(),
     }
 
 
@@ -188,6 +229,19 @@ def approve_benchmark(
     db.commit()
     db.refresh(benchmark)
     return _benchmark_out(benchmark)
+
+
+@router.get("/benchmarks", response_model=list[CaseStudyBenchmarkOut])
+def list_benchmarks(
+    job_id: int = Query(...),
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """IMPORTANT 5a: every benchmark on record for `job_id`, newest first,
+    with its `status` -- so the page can load the job's current benchmark on
+    mount rather than depending on an id pasted in by hand."""
+    rows = db.execute(_LIST_BENCHMARKS_FOR_JOB_SQL, {"job_id": job_id}).mappings().all()
+    return [dict(r) for r in rows]
 
 
 @router.post("/score", response_model=CaseStudyEvaluationOut)
@@ -278,6 +332,23 @@ def score(
     db.commit()
     db.refresh(evaluation)
     return _evaluation_out(evaluation)
+
+
+@router.get("/evaluations", response_model=list[CaseStudyEvaluationOut])
+def list_evaluations(
+    application_id: int = Query(...),
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """IMPORTANT 5b: every evaluation on record for `application_id`, newest
+    first. A `/score` re-run is not idempotent, so an application can carry
+    several `cse-` rows -- this makes that legible (newest = current) rather
+    than inventing a retirement workflow in this pass."""
+    rows = db.execute(
+        _LIST_EVALUATIONS_FOR_APPLICATION_SQL, {"application_id": application_id}
+    ).mappings().all()
+    dimensions = _dimensions_out()
+    return [{**dict(r), "dimensions": dimensions} for r in rows]
 
 
 @router.get("/evaluations/{evaluation_id}", response_model=CaseStudyEvaluationOut)
