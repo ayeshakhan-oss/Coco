@@ -21,6 +21,10 @@ import type {
   GmailMatch,
   GmailSyncStatus,
   JobItem,
+  KCDCohort,
+  KCDEvaluation,
+  KCDEvaluationInput,
+  KCDFramework,
   ManagedUser,
   PositionSummary,
   QueueRow,
@@ -230,5 +234,15 @@ export const api = {
     get<CaseStudyMirrorPair[]>(`/api/case-study-tracking/jobs/${jobId}/mirrors`),
   caseStudyProbe: (application_id: number, required_parts?: string[]) =>
     post<CaseStudyProbe>('/api/case-study-tracking/probe', { application_id, required_parts }),
+
+
+  // --- KCD evaluation (internal name; reports say "case study") ---
+  kcdFramework: () => get<KCDFramework>('/api/kcd-evaluations/framework'),
+  kcdCohort: (jobId: number) =>
+    get<KCDCohort>(`/api/kcd-evaluations/jobs/${jobId}/cohort`),
+  kcdHistory: (applicationId: number) =>
+    get<KCDEvaluation[]>(`/api/kcd-evaluations/evaluations?application_id=${applicationId}`),
+  kcdEvaluate: (input: KCDEvaluationInput) =>
+    post<KCDEvaluation>('/api/kcd-evaluations/evaluations', input),
 
 }

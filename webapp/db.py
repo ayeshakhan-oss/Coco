@@ -89,6 +89,7 @@ def ensure_app_tables() -> None:
         CVScreen,
         EvalBenchmark,
         GmailSyncRun,
+        KCDEvaluation,
         ValuesScorecardDraft,
     )
 
@@ -107,6 +108,7 @@ def ensure_app_tables() -> None:
             CaseStudyEvaluation.__table__,
             CVScreen.__table__,
             CaseStudyProbe.__table__,
+            KCDEvaluation.__table__,
         ],
         checkfirst=True,
     )

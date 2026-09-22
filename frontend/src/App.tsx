@@ -8,6 +8,7 @@ import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
 import { EvaluationPage } from './pages/EvaluationPage'
 import { HistoryPage } from './pages/HistoryPage'
+import { KCDEvaluationPage } from './pages/KCDEvaluationPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 import { QueuePage } from './pages/QueuePage'
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/evaluations" element={<EvaluationPage />} />
           <Route path="/cv-screening" element={<CVScreeningPage />} />
           <Route path="/case-study-tracking" element={<CaseStudyTrackingPage />} />
+          <Route path="/kcd-evaluations" element={<KCDEvaluationPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

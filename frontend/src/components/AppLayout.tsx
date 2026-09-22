@@ -21,7 +21,7 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
     { to: '/cv-screening', label: 'CV Screening', icon: FileText, end: true, built: true },
     { to: '/case-study-tracking', label: 'Case Study Evaluation', icon: ListChecks, end: true, built: true },
     { to: '/case-studies', label: 'Case Study Scoring', icon: ClipboardCheck, end: true, built: true },
-    { to: '', label: 'KCD Evaluation', icon: Gauge, end: true, built: false },
+    { to: '/kcd-evaluations', label: 'KCD Evaluation', icon: Gauge, end: true, built: true },
     { to: '/values-scorecards', label: 'Values Scorecards', icon: CheckSquare, end: true, built: true },
   ],
 }

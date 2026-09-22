@@ -642,3 +642,89 @@ export interface CaseStudyMirrorPair {
   shared_runs: number
   examples: string[]
 }
+
+// --- KCD evaluation (Skill 02, kcd-evaluation) ---------------------------
+// A human evaluation with the rules enforced, not a model score.
+// 🔒 "KCD" is internal only. Anything leaving the team says "case study".
+
+export interface KCDDimension {
+  key: string
+  label: string
+  weight: number
+  asks: string
+}
+
+export interface KCDFramework {
+  dimensions: KCDDimension[]
+  // Includes 0.0: a real zero, not the SOP's 1-to-5 floor.
+  scores: number[]
+  verdicts: string[]
+  gwc_threshold: number
+  cap_insight_without_evidence: number
+  cap_evidence_without_interpretation: number
+}
+
+export interface KCDCrossCheck {
+  status: 'aligned' | 'review' | 'divergent' | 'not_available'
+  delta: number | null
+  note: string
+}
+
+export interface KCDEvaluation {
+  id: string
+  application_id: number
+  job_id: number
+  candidate_name: string
+  role: string
+  scores: Record<string, number>
+  evidence: Record<string, string>
+  weights: Record<string, number> | null
+  caps_applied: {
+    insight_without_evidence?: string[]
+    evidence_without_interpretation?: string[]
+  }
+  total: number
+  verdict: string
+  condition: string | null
+  advances_to_gwc: boolean
+  incomplete: boolean
+  missing_parts: string[]
+  integrity_flags: Array<Record<string, unknown>>
+  second_evaluator: string | null
+  second_total: number | null
+  cross_check: KCDCrossCheck | null
+  is_current: boolean
+  superseded_by: string | null
+  created_by: string
+  created_at: string | null
+  dimensions: KCDDimension[]
+  // Present only on an incomplete submission: the score with its asterisk and
+  // the plain statement that it is a floor.
+  display_score: string | null
+}
+
+export interface KCDCohort {
+  job_id: number
+  ranked: KCDEvaluation[]
+  // A separate list, never merged: an incomplete submission must never be
+  // ranked above a complete one.
+  incomplete: KCDEvaluation[]
+  note: string | null
+  gwc_threshold: number
+  advancing: number
+}
+
+export interface KCDEvaluationInput {
+  application_id: number
+  scores: Record<string, number>
+  evidence: Record<string, string>
+  caps?: {
+    insight_without_evidence: string[]
+    evidence_without_interpretation: string[]
+  }
+  condition?: string | null
+  incomplete?: boolean
+  missing_parts?: string[]
+  second_evaluator?: string | null
+  second_total?: number | null
+}

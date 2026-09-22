@@ -66,6 +66,7 @@ CV_SCREEN_TIERS = ("shortlist", "maybe", "no_hire")
 # the reconciliation logic cannot drift. There is deliberately no 'not_sent':
 # Markaz records no case-study send, so we can never assert one did not happen.
 from .services.case_study_tracking import STATUSES as CASE_STUDY_PROBE_STATUSES  # noqa: E402
+from .services.kcd_evaluation import VERDICTS as KCD_VERDICTS  # noqa: E402
 
 
 def _appuser_id() -> str:
@@ -102,6 +103,10 @@ def _cv_screen_id() -> str:
 
 def _case_study_probe_id() -> str:
     return "csp-" + uuid4().hex
+
+
+def _kcd_evaluation_id() -> str:
+    return "kcd-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -801,5 +806,99 @@ class CaseStudyProbe(Base):
         ),
         UniqueConstraint("application_id", name="uq_case_study_probe_application_id"),
         Index("ix_case_study_probe_job_id", "job_id"),
+        {"schema": "coco"},
+    )
+
+
+class KCDEvaluation(Base):
+    """One case study evaluated on the Knowledge / Capacity / Design framework.
+
+    A HUMAN evaluation with the rules enforced, not a model score. The SOP
+    requires reading the assignment, the raw datasets and an ideal answer
+    before opening a single submission, and the app has none of those; a model
+    scoring without them would produce exactly the ungrounded output Rule 29
+    exists to prevent. `case_study_evaluations` is the model-scored,
+    benchmark-anchored table and is a different thing.
+
+    What this table guarantees, because the rules are in
+    `services/kcd_evaluation.py` and mirrored as CHECK constraints here:
+
+      * the scale runs 0 to 5 in half steps WITH A REAL ZERO (CLAUDE.md
+        Rule 27), not the SOP's 1-to-5 floor;
+      * a CONDITIONAL verdict cannot exist without its condition, which the
+        SOP's own Common Mistakes table names as making it unactionable;
+      * an incomplete submission is marked as such and is never ranked against
+        a complete one (`kcd_evaluation.rank_results` does the splitting);
+      * advancement to GWC is the SOP's 60%, held in one constant rather than
+        restated in prose.
+
+    Re-evaluating SUPERSEDES rather than duplicates, like `CVScreen` and unlike
+    `CaseStudyProbe`: this is a judgement, so the old number must stay visible
+    and marked, never silently overwritten (CLAUDE.md Rule 25).
+
+    🔒 "KCD" is internal. Anything that leaves the team says "case study".
+    """
+
+    __tablename__ = "kcd_evaluations"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_kcd_evaluation_id)
+
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
+    role: Mapped[str] = mapped_column(Text, nullable=False)
+
+    scores: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    evidence: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    # A role-specific framework may override the default weights. Null means
+    # the defaults in kcd_evaluation.DIMENSIONS were used, and storing which
+    # is the only way a later reader can reproduce the total.
+    weights: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    # Which dimensions were capped and under which of the SOP's two rules.
+    caps_applied: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+
+    total: Mapped[float] = mapped_column(Float, nullable=False)
+    verdict: Mapped[str] = mapped_column(Text, nullable=False)
+    condition: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    advances_to_gwc: Mapped[bool] = mapped_column(Boolean, nullable=False)
+
+    incomplete: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    missing_parts: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+
+    # The SOP's three integrity checks: content dump, mirror problem,
+    # foundational misread. Signals for a human, each with its evidence.
+    integrity_flags: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+
+    # The SOP's cross-check: aligned within 5 points, flag above 10.
+    second_evaluator: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    second_total: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+
+    is_current: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    superseded_by: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "verdict IN (" + ",".join(f"'{v}'" for v in KCD_VERDICTS) + ")",
+            name="ck_kcd_verdict",
+        ),
+        # The SOP's rule, at the database level: a conditional with no
+        # condition is a hedge, not a decision.
+        CheckConstraint(
+            "verdict <> 'conditional' OR (condition IS NOT NULL AND btrim(condition) <> '')",
+            name="ck_kcd_conditional_states_its_condition",
+        ),
+        CheckConstraint("total >= 0 AND total <= 100", name="ck_kcd_total_range"),
+        CheckConstraint(
+            "(is_current AND superseded_by IS NULL) OR "
+            "(NOT is_current AND superseded_by IS NOT NULL)",
+            name="ck_kcd_supersession_is_coherent",
+        ),
+        Index("ix_kcd_evaluation_application_id", "application_id"),
+        Index("ix_kcd_evaluation_job_id", "job_id"),
         {"schema": "coco"},
     )

@@ -676,3 +676,98 @@ class CaseStudyMirrorPairOut(_Base):
     candidate_names: list[str] = []
     shared_runs: int
     examples: list[str]
+
+
+# --------------------------------------------------------------------------
+# KCD evaluation (Skill 02, kcd-evaluation). A human evaluation with the rules
+# enforced -- NOT a model score. "KCD" is internal; reports say "case study".
+# --------------------------------------------------------------------------
+
+
+class KCDDimensionOut(_Base):
+    key: str
+    label: str
+    weight: int
+    asks: str
+
+
+class KCDFrameworkOut(_Base):
+    """Everything the UI needs to render the form without a local copy of the
+    rules that could drift from the service."""
+
+    dimensions: list[KCDDimensionOut]
+    scores: list[float]
+    verdicts: list[str]
+    gwc_threshold: float
+    cap_insight_without_evidence: float
+    cap_evidence_without_interpretation: float
+
+
+class KCDCapsIn(_Base):
+    insight_without_evidence: list[str] = []
+    evidence_without_interpretation: list[str] = []
+
+
+class KCDEvaluationRequest(_Base):
+    application_id: int
+    scores: dict[str, float]
+    evidence: dict[str, str]
+    weights: Optional[dict[str, float]] = None
+    caps: KCDCapsIn = KCDCapsIn()
+    # Required when the computed verdict is CONDITIONAL; the request is
+    # refused otherwise, because a conditional with no condition is not
+    # actionable.
+    condition: Optional[str] = None
+    incomplete: bool = False
+    missing_parts: list[str] = []
+    integrity_flags: list[dict] = []
+    second_evaluator: Optional[str] = None
+    second_total: Optional[float] = None
+
+
+class KCDCrossCheckOut(_Base):
+    status: str
+    delta: Optional[float] = None
+    note: str
+
+
+class KCDEvaluationOut(_Base):
+    id: str
+    application_id: int
+    job_id: int
+    candidate_name: str
+    role: str
+    scores: dict[str, float]
+    evidence: dict[str, str]
+    weights: Optional[dict[str, float]] = None
+    caps_applied: dict = {}
+    total: float
+    verdict: str
+    condition: Optional[str] = None
+    advances_to_gwc: bool
+    incomplete: bool
+    missing_parts: list[str] = []
+    integrity_flags: list[dict] = []
+    second_evaluator: Optional[str] = None
+    second_total: Optional[float] = None
+    cross_check: Optional[KCDCrossCheckOut] = None
+    is_current: bool
+    superseded_by: Optional[str] = None
+    created_by: str
+    created_at: Optional[dt.datetime] = None
+    dimensions: list[KCDDimensionOut] = []
+    # An incomplete submission's score rendered the SOP's way: asterisk plus a
+    # plain statement that it is a floor.
+    display_score: Optional[str] = None
+
+
+class KCDCohortOut(_Base):
+    """A job's evaluations, ranked -- with incomplete submissions in their own
+    list so one can never be ranked above a complete one."""
+
+    job_id: int
+    ranked: list[KCDEvaluationOut]
+    incomplete: list[KCDEvaluationOut]
+    note: Optional[str] = None
+    gwc_threshold: float
+    advancing: int
