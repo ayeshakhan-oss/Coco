@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import type { LucideIcon } from 'lucide-react'
-import { CheckSquare, ChevronDown, ClipboardList, FileSearch, History, Inbox, LogOut, Users } from 'lucide-react'
+import { CheckSquare, ChevronDown, ClipboardCheck, ClipboardList, FileSearch, History, Inbox, LogOut, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { api } from '../lib/api'
@@ -17,6 +17,7 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
   'candidate-evaluation': [
     { to: '/evaluations', label: 'Screening', icon: FileSearch, end: true },
     { to: '/values-scorecards', label: 'Values Scorecards', icon: CheckSquare, end: true },
+    { to: '/case-studies', label: 'Case Studies', icon: ClipboardCheck, end: true },
   ],
 }
 

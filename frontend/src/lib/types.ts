@@ -405,6 +405,77 @@ export interface ValuesScorecardTally {
   minus: number
 }
 
+// --------------------------------------------------------------------------
+// Case-study benchmark + scoring lifecycle (webapp/routers/case_studies.py).
+// 🔒 Rule 0: scoring is refused (409) unless an APPROVED benchmark exists for
+// the target application's own job. `total` / `band` below are ALWAYS taken
+// verbatim from the server (webapp/services/case_study_scoring.py) -- never
+// recomputed in the browser.
+// --------------------------------------------------------------------------
+
+export type CaseStudyBenchmarkStatus = 'draft' | 'approved' | 'retired'
+
+export interface CaseStudyBenchmark {
+  id: string
+  job_id: number
+  kind: string
+  title: string
+  body: string
+  source_path?: string | null
+  created_by: string
+  created_at?: string | null
+  qa_approved_by?: string | null
+  qa_approved_at?: string | null
+  status: CaseStudyBenchmarkStatus
+}
+
+export interface CaseStudyEvaluation {
+  id: string
+  application_id: number
+  job_id: number
+  benchmark_id: string
+  candidate_name: string
+  role: string
+  scores: Record<string, number>
+  evidence: Record<string, string>
+  flags: string[]
+  total: number
+  band: string
+  model: string
+  sources: string[]
+  created_by: string
+  created_at?: string | null
+}
+
+// Display-only mirror of the locked DIMENSIONS tuple in
+// webapp/services/case_study_scoring.py. The API never returns dimension
+// labels or weights (CaseStudyEvaluationOut carries only `scores`/`evidence`
+// keyed by dimension key), so this exists purely to render a label and a
+// weight next to each score. It is NEVER read to compute a total or a band --
+// those come verbatim from the server on every response. If the Python
+// weights ever change, update this list to match; nothing here feeds back
+// into any calculation.
+export const CASE_STUDY_DIMENSIONS: { key: string; label: string; weight: number }[] = [
+  { key: 'data_judgment', label: 'Data judgment', weight: 20 },
+  { key: 'execution_specificity', label: 'Execution specificity', weight: 25 },
+  { key: 'stakeholder_craft', label: 'Stakeholder craft', weight: 20 },
+  { key: 'commercial_honesty', label: 'Commercial honesty', weight: 15 },
+  { key: 'decision_discipline', label: 'Decision discipline', weight: 10 },
+  { key: 'signal_self_awareness', label: 'Signal & self-awareness', weight: 10 },
+]
+
+// Display-only mirror of the locked FLAGS vocabulary in the same file. Only
+// `disqualifying` changes the server-computed band -- that override already
+// happened server-side by the time a flag reaches the browser; this map only
+// controls how prominently each flag renders.
+export const CASE_STUDY_FLAGS: Record<string, { label: string; severity: 'disqualifying' | 'serious' | 'note' }> = {
+  fabricated_data: { label: 'Fabricated data', severity: 'disqualifying' },
+  undisclosed_ai: { label: 'Undisclosed AI use', severity: 'serious' },
+  materially_incomplete: { label: 'Materially incomplete', severity: 'serious' },
+  instruction_breach: { label: 'Instruction breach', severity: 'note' },
+  consent_blindness: { label: 'Consent blindness', severity: 'note' },
+}
+
 export interface ValuesScorecardDraft {
   id: string
   application_id: number

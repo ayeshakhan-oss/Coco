@@ -1,6 +1,8 @@
 import type {
   ApplicationDetail,
   CandidatePage,
+  CaseStudyBenchmark,
+  CaseStudyEvaluation,
   Communication,
   CurrentUser,
   DraftContent,
@@ -171,4 +173,21 @@ export const api = {
   ) => patch<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}`, payload),
   submitValuesScorecardDraft: (draftId: string, overwrite = false) =>
     post<ValuesScorecardDraft>(`/api/values-scorecards/${draftId}/submit`, { overwrite }),
+
+  // Case-study benchmark + scoring lifecycle. Rule 0: /score 409s unless an
+  // approved benchmark exists for the target application's own job (looked
+  // up server-side, never trusted from the client).
+  createCaseStudyBenchmark: (payload: {
+    job_id: number
+    title: string
+    body: string
+    kind?: string
+    source_path?: string | null
+  }) => post<CaseStudyBenchmark>('/api/case-studies/benchmarks', payload),
+  approveCaseStudyBenchmark: (benchmarkId: string) =>
+    post<CaseStudyBenchmark>(`/api/case-studies/benchmarks/${benchmarkId}/approve`),
+  scoreCaseStudy: (applicationId: number) =>
+    post<CaseStudyEvaluation>('/api/case-studies/score', { application_id: applicationId }),
+  caseStudyEvaluation: (evaluationId: string) =>
+    get<CaseStudyEvaluation>(`/api/case-studies/evaluations/${evaluationId}`),
 }
