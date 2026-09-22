@@ -21,6 +21,7 @@ from sqlalchemy import (
     CheckConstraint,
     Date,
     DateTime,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -52,6 +53,10 @@ VALUES_DRAFT_STATUSES = ("draft", "submitted")
 # rubric: the benchmark must be written and QA'd before any submission is read.
 EVAL_BENCHMARK_STATUSES = ("draft", "approved", "retired")
 
+# Case-study evaluation band enum (see CaseStudyEvaluation below) -- matches
+# webapp.services.case_study_scoring.band()'s return values exactly.
+CASE_STUDY_EVALUATION_BANDS = ("strong_yes", "yes", "borderline", "no", "disqualified")
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -75,6 +80,10 @@ def _values_draft_id() -> str:
 
 def _benchmark_id() -> str:
     return "benchmark-" + uuid4().hex
+
+
+def _evaluation_id() -> str:
+    return "cse-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -496,5 +505,76 @@ class EvalBenchmark(Base):
         ),
         Index("ix_eval_benchmark_job_id", "job_id"),
         # Same reasoning as ValuesScorecardDraft above: `coco`, never `public`.
+        {"schema": "coco"},
+    )
+
+
+class CaseStudyEvaluation(Base):
+    """A case-study submission scored against an APPROVED `EvalBenchmark`.
+
+    Persists exactly what `case_study_scoring.score_submission` returned -- the
+    six dimension scores, their evidence citations, any flags, and the total /
+    band it COMPUTED (never recomputed differently by a later reader) -- plus
+    which benchmark and which submission sources actually produced it, so
+    "what was this scored against" is always answerable from the row alone,
+    the same audit reasoning `ValuesScorecardDraft.transcript_sha256` exists
+    for.
+
+    `webapp/routers/case_studies.py` is the only code that writes this table;
+    Rule 0 of the rubric (benchmark written and QA'd before any submission is
+    read) is enforced there, before this row is ever created -- there is no
+    row here that was not scored against a benchmark carrying
+    `status = 'approved'` at the time of scoring.
+    """
+
+    __tablename__ = "case_study_evaluations"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_evaluation_id)
+
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    # The SPECIFIC benchmark row actually used -- never just "the job's
+    # benchmark", since a job can carry more than one over time (a draft, a
+    # retired prior version, a later revision).
+    benchmark_id: Mapped[str] = mapped_column(
+        String, ForeignKey("coco.eval_benchmarks.id"), nullable=False
+    )
+
+    candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
+    role: Mapped[str] = mapped_column(Text, nullable=False)
+
+    scores: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    evidence: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    flags: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    total: Mapped[float] = mapped_column(Float, nullable=False)
+    band: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Column is named "model" (which model actually scored this) but mapped to
+    # a differently-named Python attribute -- same reason as
+    # ValuesScorecardDraft.model_name: "model" collides with Pydantic v2's
+    # `model_`-prefixed protected namespace on any schema that wraps this row.
+    model_name: Mapped[str] = mapped_column("model", Text, nullable=False)
+
+    # Every provenance origin submissions.corpus_for() actually read (a Gmail
+    # attachment, a Drive link, ...) -- so a report's method note can say
+    # exactly what was verified, mirroring corpus_for's own `sources` field.
+    sources: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "band IN ('strong_yes','yes','borderline','no','disqualified')",
+            name="ck_case_study_evaluation_band",
+        ),
+        Index("ix_case_study_evaluation_application_id", "application_id"),
+        Index("ix_case_study_evaluation_job_id", "job_id"),
+        # Same reasoning as ValuesScorecardDraft/EvalBenchmark: `coco`, never
+        # `public` (Markaz's Replit per-deploy schema push prunes tables it
+        # doesn't recognise there).
         {"schema": "coco"},
     )

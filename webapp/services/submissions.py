@@ -17,8 +17,13 @@ lesson in this repo (CLAUDE.md Rule 18, Rule 26):
     never the status code alone.
   - `/api/case-study-file/<app>/<word|excel>` returns 401 to automation (staff
     Google SSO only). That wall is real but NOT a blocker: the same files are
-    almost always already sitting in the mailbox, so a 401 here is logged and
-    skipped, never raised.
+    almost always already sitting in the mailbox, so a 401 here is logged (at
+    INFO) and, when `corpus_for` is doing the calling, recorded in ITS
+    diagnostic list too -- so a total refusal can say "hit the documented 401
+    wall" rather than the indistinguishable "found nothing" (see
+    `markaz_case_study_api`'s `diagnostics` parameter and `corpus_for`'s
+    `_bind_diagnostics`). The fetcher itself still returns an empty list
+    rather than raising -- a 401 is never an error.
 
 Extraction (docx text boxes and tables, pptx notes, xlsx values AND formulas, pdf
 via PyMuPDF) is delegated to `scripts/evals/fetch_submission_corpora.py` -- this
@@ -34,7 +39,10 @@ scored as a weak one.
 
 from __future__ import annotations
 
+import functools
+import inspect
 import json
+import logging
 import os
 import re
 import tempfile
@@ -45,6 +53,8 @@ from sqlalchemy import text as sql_text
 from sqlalchemy.orm import Session
 
 from scripts.evals import fetch_submission_corpora as extraction
+
+log = logging.getLogger("webapp.submissions")
 
 # Below this, whatever was assembled is not a readable submission: a notification
 # email with no real attachment, a Drive link that resolved to the SPA shell, or a
@@ -200,12 +210,20 @@ def markaz_case_study_api(
     ctx: SubmissionContext,
     *,
     http_get: Optional[Callable[..., "object"]] = None,
+    diagnostics: Optional[list[str]] = None,
 ) -> list[RawAttachment]:
     """Markaz's own case-study-file API, for completeness.
 
     Automation gets 401 here (staff Google SSO only) -- a documented, non-fatal
-    wall, not evidence the submission doesn't exist. Skipped silently, not
-    raised; the mailbox almost always already has the same file.
+    wall, not evidence the submission doesn't exist. It is logged at INFO (this
+    was previously claimed in the module docstring but not actually done), and
+    when the caller passes `diagnostics` (a list `corpus_for` owns and reads
+    back after every fetcher runs -- see `_bind_diagnostics`), a line naming
+    the wall is appended there too, so a total-failure refusal message can say
+    "hit the documented 401 wall" rather than the indistinguishable "found
+    nothing". The fetcher itself still returns an empty list rather than
+    raising either way -- a 401 is never an error, and never silently
+    swallowed either.
     """
     get = http_get or _default_http_get
     out: list[RawAttachment] = []
@@ -216,8 +234,20 @@ def markaz_case_study_api(
         except Exception:  # noqa: BLE001 - network error on an expected-to-fail path
             continue
         status = getattr(resp, "status_code", None)
-        if status == 401 or status != 200:
-            continue  # the documented wall, or nothing there -- not a blocker
+        if status == 401:
+            log.info(
+                "markaz_case_study_api: 401 (staff Google SSO only) for %s -- "
+                "documented, non-fatal wall, not evidence the submission doesn't "
+                "exist; trying other sources", url,
+            )
+            if diagnostics is not None:
+                diagnostics.append(
+                    f"Markaz API: {url}: 401 (documented staff-SSO-only wall, not a "
+                    "blocker -- the same file is almost always already in the mailbox)"
+                )
+            continue
+        if status != 200:
+            continue  # nothing there -- not a blocker either
         content_type = (resp.headers.get("content-type") or "").lower()
         if "text/html" in content_type:
             continue
@@ -257,6 +287,36 @@ def _extract_text(attachment: RawAttachment) -> str:
 # ── Orchestration ───────────────────────────────────────────────────────────
 
 
+def _fetch_display_name(fetch) -> str:
+    """A readable name for a fetcher, whether it's a plain function or one
+    `_bind_diagnostics` wrapped in `functools.partial` (which has no
+    `__name__` of its own) to inject this call's `problems` list."""
+    name = getattr(fetch, "__name__", None)
+    if name:
+        return name
+    inner = getattr(fetch, "func", None)
+    if inner is not None:
+        return getattr(inner, "__name__", repr(fetch))
+    return repr(fetch)
+
+
+def _bind_diagnostics(fetch, problems: list[str]):
+    """If `fetch` accepts a `diagnostics` keyword (currently only
+    `markaz_case_study_api`, for its documented, non-fatal 401 -- Rule 18),
+    bind THIS call's `problems` list into it, so that fetcher's own logged-
+    but-not-raised failure surfaces in the eventual refusal message even
+    though the fetcher itself still returns normally rather than raising.
+    Any fetcher that doesn't accept `diagnostics` (a caller's plain lambda,
+    most of this module's own tests) is returned unchanged."""
+    try:
+        params = inspect.signature(fetch).parameters
+    except (TypeError, ValueError):
+        return fetch
+    if "diagnostics" in params:
+        return functools.partial(fetch, diagnostics=problems)
+    return fetch
+
+
 def corpus_for(
     application_id: int,
     *,
@@ -283,9 +343,17 @@ def corpus_for(
     sources: list[str] = []
     text_parts: list[str] = []
     problems: list[str] = []
+    # ACTUAL extracted text only -- never the injected "===== {origin} ====="
+    # provenance headers below. Several degraded sources each yielding a few
+    # real characters must not pad past MIN_USABLE_CHARS on header boilerplate.
+    extracted_chars = 0
 
-    for fetch in resolved_fetchers:
-        fetch_name = getattr(fetch, "__name__", repr(fetch))
+    for raw_fetch in resolved_fetchers:
+        fetch_name = _fetch_display_name(raw_fetch)
+        # Give a fetcher that supports it (markaz_case_study_api) a way to
+        # report a non-fatal, documented failure (a 401) into THIS call's
+        # diagnostics without raising -- see _bind_diagnostics.
+        fetch = _bind_diagnostics(raw_fetch, problems)
         try:
             attachments = fetch(context)
         except Exception as exc:  # noqa: BLE001 - one channel failing tries the next
@@ -300,18 +368,20 @@ def corpus_for(
             if extracted and extracted.strip():
                 text_parts.append(f"\n===== {attachment.origin} =====\n{extracted}")
                 sources.append(attachment.origin)
+                extracted_chars += len(extracted)
             else:
                 problems.append(f"{attachment.origin}: extracted 0 usable chars")
 
     combined = "\n".join(text_parts).strip()
     chars = len(combined)
 
-    if chars < MIN_USABLE_CHARS:
-        tried = ", ".join(getattr(f, "__name__", repr(f)) for f in resolved_fetchers)
+    if extracted_chars < MIN_USABLE_CHARS:
+        tried = ", ".join(_fetch_display_name(f) for f in resolved_fetchers)
         detail = "; ".join(problems) if problems else "no source returned any content"
         raise SubmissionUnreadable(
             f"no usable case-study text for application {application_id} "
-            f"(needs {MIN_USABLE_CHARS}+ chars, got {chars}). Tried: {tried}. {detail}. "
+            f"(needs {MIN_USABLE_CHARS}+ chars of extracted text, got {extracted_chars}). "
+            f"Tried: {tried}. {detail}. "
             "If the submission exists but is a scan or an inaccessible link, it must be "
             "fetched by hand."
         )

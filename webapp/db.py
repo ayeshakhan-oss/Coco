@@ -83,6 +83,7 @@ def ensure_app_tables() -> None:
     service, and the refresh endpoint so a reset can't hard-break any of them.
     See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
     from .models import (  # local import avoids a cycle
+        CaseStudyEvaluation,
         CommEvidence,
         EvalBenchmark,
         GmailSyncRun,
@@ -101,6 +102,7 @@ def ensure_app_tables() -> None:
             GmailSyncRun.__table__,
             ValuesScorecardDraft.__table__,
             EvalBenchmark.__table__,
+            CaseStudyEvaluation.__table__,
         ],
         checkfirst=True,
     )

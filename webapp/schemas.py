@@ -451,3 +451,52 @@ class ValuesScorecardOut(_Base):
     submitted_at: Optional[dt.datetime] = None
     markaz_payload: Optional[dict[str, Any]] = None
     replaced_payload: Optional[dict[str, Any]] = None
+
+
+# --------------------------------------------------------------------------
+# Case-study benchmark + scoring lifecycle (webapp/routers/case_studies.py).
+# --------------------------------------------------------------------------
+
+
+class CaseStudyBenchmarkCreateRequest(_Base):
+    job_id: int
+    title: str
+    body: str
+    kind: str = "case_study"
+    source_path: Optional[str] = None
+
+
+class CaseStudyBenchmarkOut(_Base):
+    id: str
+    job_id: int
+    kind: str
+    title: str
+    body: str
+    source_path: Optional[str] = None
+    created_by: str
+    created_at: Optional[dt.datetime] = None
+    qa_approved_by: Optional[str] = None
+    qa_approved_at: Optional[dt.datetime] = None
+    status: str
+
+
+class CaseStudyScoreRequest(_Base):
+    application_id: int
+
+
+class CaseStudyEvaluationOut(_Base):
+    id: str
+    application_id: int
+    job_id: int
+    benchmark_id: str
+    candidate_name: str
+    role: str
+    scores: dict[str, int]
+    evidence: dict[str, str]
+    flags: list[str]
+    total: float
+    band: str
+    model: str
+    sources: list[str]
+    created_by: str
+    created_at: Optional[dt.datetime] = None

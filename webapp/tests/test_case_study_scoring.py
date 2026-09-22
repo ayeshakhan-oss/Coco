@@ -6,7 +6,10 @@ which is the defect that put all 25 RM case studies above the bar (CLAUDE.md Rul
 
 from __future__ import annotations
 
+import datetime as dt
+
 import pytest
+from fastapi import HTTPException
 
 from webapp.services.case_study_scoring import (
     DIMENSIONS,
@@ -80,6 +83,41 @@ def test_benchmark_carries_a_qa_gate():
     cols = {c.name for c in EvalBenchmark.__table__.columns}
     # Rule 0 is enforced by requiring these before a run may start.
     assert {"qa_approved_at", "qa_approved_by", "status"} <= cols
+
+
+# ── Task 6: evaluation storage (webapp/models.py::CaseStudyEvaluation) ─────
+#
+# A scored evaluation persists what score_submission returned so
+# GET /api/case-studies/evaluations/{id} can read it back later -- see
+# webapp/routers/case_studies.py.
+
+
+def test_case_study_evaluation_table_is_in_the_coco_schema():
+    from webapp.models import CaseStudyEvaluation
+
+    assert CaseStudyEvaluation.__table__.schema == "coco"
+
+
+def test_case_study_evaluation_carries_the_benchmark_it_was_scored_against():
+    from webapp.models import CaseStudyEvaluation
+
+    cols = {c.name for c in CaseStudyEvaluation.__table__.columns}
+    # "which answer key produced this total" must always be answerable from
+    # the row alone -- never just "the job's benchmark" (a job can carry more
+    # than one benchmark row over time).
+    assert {"benchmark_id", "job_id", "application_id"} <= cols
+    assert {"scores", "evidence", "flags", "total", "band"} <= cols
+
+
+def test_case_study_evaluation_references_eval_benchmarks_by_foreign_key():
+    from webapp.models import CaseStudyEvaluation
+
+    fks = {
+        fk.target_fullname
+        for col in CaseStudyEvaluation.__table__.columns
+        for fk in col.foreign_keys
+    }
+    assert "coco.eval_benchmarks.id" in fks
 
 
 def test_validate_rejects_a_bad_score_set():
@@ -280,6 +318,7 @@ def test_case_study_prompt_builds_without_a_model():
 # Drive. A test that reaches the network is not a unit test.
 
 from webapp.services.submissions import (  # noqa: E402
+    MIN_USABLE_CHARS,
     RawAttachment,
     SubmissionContext,
     SubmissionUnreadable,
@@ -624,3 +663,702 @@ def test_mailbox_attachments_never_constructs_a_real_imap_client(monkeypatch):
 
     result = submissions_module.mailbox_attachments(_ctx(), imap_factory=lambda: FakeIMAP())
     assert result == []
+
+
+# ── Task 3-4 review fixes ────────────────────────────────────────────────
+#
+# FIX A: the 401 path (markaz_case_study_api, Rule 18) is now actually logged
+# AND surfaced in corpus_for's own diagnostics, so a total-failure refusal
+# message can distinguish "hit the documented 401 wall" from "found nothing".
+# FIX B: the char floor no longer counts the injected "===== {origin} ====="
+# provenance headers -- only the ACTUAL extracted text.
+
+
+def test_corpus_for_names_the_401_wall_in_its_refusal_message():
+    """The module docstring used to claim the 401 was 'logged and skipped' --
+    it was skipped but never logged, and never surfaced anywhere a caller
+    could see it. When every channel comes up empty, the refusal message
+    must now say the 401 wall was hit, not just 'no source returned any
+    content' -- exactly what the person fetching it by hand needs to know."""
+    import functools
+
+    from webapp.services.submissions import markaz_case_study_api
+
+    class FakeResponse:
+        status_code = 401
+        headers = {}
+        content = b""
+
+    def fake_get(url, timeout=10):
+        return FakeResponse()
+
+    empty_fetcher = lambda ctx: []  # noqa: E731
+    # Passed DIRECTLY (not wrapped in another lambda) so corpus_for's
+    # _bind_diagnostics can see markaz_case_study_api's own `diagnostics`
+    # parameter and inject its own `problems` list into it.
+    api_fetcher = functools.partial(markaz_case_study_api, http_get=fake_get)
+
+    with pytest.raises(SubmissionUnreadable) as exc_info:
+        corpus_for(4242, context=_ctx(), fetchers=[empty_fetcher, api_fetcher])
+
+    message = str(exc_info.value)
+    assert "401" in message
+    assert "case-study-file" in message
+    assert "not a blocker" in message
+
+
+def test_markaz_case_study_api_logs_the_401_at_info(caplog):
+    """The docstring's claim, made real: a 401 is actually logged, not just
+    silently skipped. Independent of corpus_for's diagnostics wiring."""
+    import logging
+
+    from webapp.services.submissions import markaz_case_study_api
+
+    class FakeResponse:
+        status_code = 401
+        headers = {}
+        content = b""
+
+    def fake_get(url, timeout=10):
+        return FakeResponse()
+
+    with caplog.at_level(logging.INFO, logger="webapp.submissions"):
+        result = markaz_case_study_api(_ctx(), http_get=fake_get)
+
+    assert result == []  # still never raises, still never fabricates an attachment
+    assert any("401" in r.message for r in caplog.records)
+
+
+def test_markaz_case_study_api_diagnostics_stays_empty_when_no_list_is_passed():
+    """A caller of markaz_case_study_api directly (not through corpus_for,
+    e.g. every OTHER test in this file) never passes `diagnostics` -- the 401
+    must still just log and return [], not raise for lack of somewhere to
+    record itself."""
+    from webapp.services.submissions import markaz_case_study_api
+
+    class FakeResponse:
+        status_code = 401
+        headers = {}
+        content = b""
+
+    def fake_get(url, timeout=10):
+        return FakeResponse()
+
+    result = markaz_case_study_api(_ctx(), http_get=fake_get)  # no diagnostics kwarg
+    assert result == []
+
+
+def test_corpus_for_floor_excludes_provenance_headers_from_multiple_tiny_sources():
+    """Several degraded sources each yielding only a couple of characters of
+    REAL text must not pad past MIN_USABLE_CHARS on the injected
+    '===== {origin} =====' provenance headers alone. Before this fix,
+    `chars = len(combined)` counted the headers too; 20 sources with long
+    descriptive origins easily clear 400 characters of header boilerplate
+    while contributing only 40 characters of actual candidate text."""
+
+    def make_fetcher(n):
+        att = RawAttachment(
+            origin=f"Gmail attachment: a rather long descriptive filename number {n}.txt",
+            filename=f"note{n}.txt",
+            content=b"hi",  # 2 REAL characters
+        )
+        return lambda ctx, _att=att: [_att]
+
+    fetchers = [make_fetcher(n) for n in range(20)]
+
+    # Sanity check on the OLD (buggy) measure: the headers alone exceed the
+    # floor, which is exactly the defect this test guards against.
+    header_only_estimate = sum(
+        len(f"\n===== Gmail attachment: a rather long descriptive filename "
+            f"number {n}.txt =====\nhi")
+        for n in range(20)
+    )
+    assert header_only_estimate >= MIN_USABLE_CHARS
+
+    with pytest.raises(SubmissionUnreadable) as exc_info:
+        corpus_for(4242, context=_ctx(), fetchers=fetchers)
+    # The refusal message reports the true (tiny) extracted-text count, not
+    # the header-padded combined length.
+    assert "got 40" in str(exc_info.value)
+
+
+def test_corpus_for_chars_field_still_reflects_the_full_combined_text():
+    """FIX B changes what GATES the refusal, not what `chars` reports on
+    success -- the returned dict's `chars` stays len(text) (headers
+    included), exactly as test_corpus_for_succeeds_and_records_every_source_
+    actually_read already asserts. A single long source clears the new
+    extracted-only floor easily, so this only needs to confirm the field
+    didn't quietly change shape."""
+    long_text = "Real candidate text about the case study. " * 20
+    assert len(long_text) >= MIN_USABLE_CHARS
+    att = RawAttachment(origin="Gmail attachment: real.docx", filename="real.txt",
+                         content=long_text.encode("utf-8"))
+
+    result = corpus_for(4242, context=_ctx(), fetchers=[lambda ctx: [att]])
+    assert result["chars"] == len(result["text"])
+
+
+# ── Task 6: the router (webapp/routers/case_studies.py) ────────────────────
+#
+# create_benchmark/approve_benchmark/score/get_evaluation are exercised
+# directly against the route functions with a small in-memory fake Session
+# (no live database, no real model call) -- unit tests of the router's own
+# logic, mirroring test_values_scoring.py's _FakeSession. The dependency-
+# identity gate test and the HTTP-level tests (test_case_studies_http.py)
+# are what actually prove the auth wiring, not these.
+
+
+class _FakeEvalResult:
+    """Stands in for whatever a real SQLAlchemy Result needs to support at
+    score()'s one raw-SQL call site: `.mappings().first()` for the Rule 0
+    approved-benchmark-for-this-job lookup."""
+
+    def __init__(self, mapping_row=None):
+        self._mapping_row = mapping_row
+
+    def mappings(self):
+        return self
+
+    def first(self):
+        return self._mapping_row
+
+
+_UNSET = object()
+
+
+class _FakeCaseStudySession:
+    """A minimal stand-in for a SQLAlchemy Session. No network, no engine.
+
+    `add`/`get` keep EvalBenchmark/CaseStudyEvaluation rows in an in-memory
+    dict keyed by `.id`, exactly like test_values_scoring.py's _FakeSession.
+
+    `execute()` answers the ONE raw-SQL statement score() itself runs (the
+    Rule 0 lookup, `FROM coco.eval_benchmarks`) one of two ways:
+      - if the test set `approved_benchmark_row` explicitly, that row wins
+        (the simple case: most tests just want "there is" / "there isn't"
+        an approved benchmark);
+      - otherwise it DERIVES the answer from whatever EvalBenchmark rows the
+        test `add()`-ed, emulating the real query's
+        `WHERE job_id = :job_id AND status = 'approved'
+         ORDER BY qa_approved_at DESC NULLS LAST LIMIT 1` -- so a test can
+        prove a DRAFT (or retired) benchmark is genuinely invisible to this
+        lookup, not just assert the SQL string contains the word 'approved'.
+    """
+
+    def __init__(self):
+        self.committed = 0
+        self.rolled_back = 0
+        self.execute_calls = []
+        self.approved_benchmark_row = _UNSET
+        self._store = {}
+
+    def add(self, obj):
+        # A real Session generates the primary key from the column's
+        # Python-side `default=` at FLUSH time (inside commit()/add()
+        # against a real engine) -- this fake never touches an engine, so it
+        # emulates that one step explicitly for the two model types this
+        # router constructs without an explicit `id=`, rather than silently
+        # leaving `.id` as None (which a real flush never would).
+        if getattr(obj, "id", None) is None:
+            from webapp.models import CaseStudyEvaluation, EvalBenchmark, _benchmark_id, _evaluation_id
+
+            if isinstance(obj, EvalBenchmark):
+                obj.id = _benchmark_id()
+            elif isinstance(obj, CaseStudyEvaluation):
+                obj.id = _evaluation_id()
+        self._store[getattr(obj, "id", None)] = obj
+
+    def commit(self):
+        self.committed += 1
+
+    def rollback(self):
+        self.rolled_back += 1
+
+    def refresh(self, obj):
+        pass
+
+    def get(self, model, id_):
+        return self._store.get(id_)
+
+    def execute(self, stmt, params=None):
+        sql = str(stmt)
+        self.execute_calls.append((sql, params))
+        if "FROM coco.eval_benchmarks" in sql:
+            if self.approved_benchmark_row is not _UNSET:
+                return _FakeEvalResult(mapping_row=self.approved_benchmark_row)
+            from webapp.models import EvalBenchmark
+
+            job_id = (params or {}).get("job_id")
+            candidates = [
+                b for b in self._store.values()
+                if isinstance(b, EvalBenchmark) and b.job_id == job_id and b.status == "approved"
+            ]
+            candidates.sort(key=lambda b: b.qa_approved_at or dt.datetime.min, reverse=True)
+            row = {"id": candidates[0].id, "body": candidates[0].body} if candidates else None
+            return _FakeEvalResult(mapping_row=row)
+        return _FakeEvalResult()
+
+
+def _fake_case_study_app_row(application_id=555):
+    return {
+        "application_id": application_id,
+        "first_name": "Zara",
+        "last_name": "Khan",
+        "job_title": "Growth Manager",
+        "job_pk": 7,
+    }
+
+
+# --- benchmarks: create -----------------------------------------------------
+
+
+def test_create_benchmark_starts_as_draft_with_no_qa_fields_set():
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyBenchmarkCreateRequest
+
+    db = _FakeCaseStudySession()
+    body = CaseStudyBenchmarkCreateRequest(job_id=7, title="Growth flywheel", body="the case text")
+    out = router_mod.create_benchmark(body, db, {"id": "appuser-editor"})
+
+    assert out["job_id"] == 7
+    assert out["title"] == "Growth flywheel"
+    assert out["status"] == "draft"
+    # The create body carries no qa_approved_by/at fields at all (see
+    # CaseStudyBenchmarkCreateRequest) -- there is no way for a client to
+    # hand this endpoint an already-approved benchmark.
+    assert out["qa_approved_by"] is None
+    assert out["qa_approved_at"] is None
+    assert db.committed == 1
+
+
+# --- benchmarks: approve -----------------------------------------------------
+
+
+def test_approve_benchmark_sets_qa_fields_and_flips_status_to_approved():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-1"] = EvalBenchmark(
+        id="benchmark-1", job_id=7, kind="case_study", title="t", body="b",
+        created_by="appuser-editor", status="draft",
+    )
+
+    out = router_mod.approve_benchmark(
+        "benchmark-1", db, {"id": "appuser-approver", "email": "ayesha.khan@taleemabad.com"}
+    )
+
+    assert out["status"] == "approved"
+    assert out["qa_approved_by"] == "appuser-approver ayesha.khan@taleemabad.com"
+    assert out["qa_approved_at"] is not None
+    assert db.committed == 1
+
+
+def test_approve_benchmark_refuses_a_second_approval():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-2"] = EvalBenchmark(
+        id="benchmark-2", job_id=7, kind="case_study", title="t", body="b",
+        created_by="x", status="approved", qa_approved_by="someone else",
+    )
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.approve_benchmark("benchmark-2", db, {"id": "appuser-approver"})
+    assert exc_info.value.status_code == 409
+    assert db.committed == 0
+
+
+def test_approve_benchmark_refuses_a_retired_benchmark():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-3"] = EvalBenchmark(
+        id="benchmark-3", job_id=7, kind="case_study", title="t", body="b",
+        created_by="x", status="retired",
+    )
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.approve_benchmark("benchmark-3", db, {"id": "appuser-approver"})
+    assert exc_info.value.status_code == 409
+    assert db.committed == 0
+
+
+def test_approve_benchmark_404_on_a_missing_id():
+    import webapp.routers.case_studies as router_mod
+
+    db = _FakeCaseStudySession()
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.approve_benchmark("benchmark-nope", db, {"id": "appuser-approver"})
+    assert exc_info.value.status_code == 404
+
+
+# --- score: RULE 0 -----------------------------------------------------------
+
+
+def test_score_refuses_with_409_when_no_approved_benchmark_exists_for_the_job(monkeypatch):
+    """RULE 0. THE POINT OF THIS TASK. No approved benchmark row for the
+    application's job -> 409, BEFORE the submission is ever fetched or
+    scored -- corpus_for and score_submission must never even be called."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    corpus_calls = []
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: corpus_calls.append(app_id) or {"text": "x", "sources": [], "chars": 1, "usable": True},
+    )
+    score_calls = []
+    monkeypatch.setattr(router_mod, "score_submission", lambda **kw: score_calls.append(kw))
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = None  # no approved benchmark for job 7
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert exc_info.value.status_code == 409
+    assert "Rule 0" in exc_info.value.detail
+    assert "7" in exc_info.value.detail  # names the job that has no benchmark
+    assert corpus_calls == []
+    assert score_calls == []
+    assert db.committed == 0
+
+
+def test_score_refuses_409_for_a_draft_benchmark_too(monkeypatch):
+    """A DRAFT benchmark for the right job must be exactly as invisible to
+    Rule 0 as no benchmark at all -- 409, not a silent pass. Uses the fake
+    session's STORE-DERIVED lookup (not a pre-set `approved_benchmark_row`),
+    so this genuinely exercises "only status='approved' rows are found",
+    not merely a string in the SQL constant."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    score_calls = []
+    monkeypatch.setattr(router_mod, "score_submission", lambda **kw: score_calls.append(kw))
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-draft"] = EvalBenchmark(
+        id="benchmark-draft", job_id=7, kind="case_study", title="t", body="b",
+        created_by="x", status="draft",
+    )
+    # approved_benchmark_row is left at _UNSET, so execute() derives the
+    # answer from the store above -- a real WHERE status='approved' semantic.
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert exc_info.value.status_code == 409
+    assert score_calls == []
+
+
+def test_score_finds_an_approved_benchmark_via_the_store_derived_lookup_and_ignores_a_draft_sibling(
+    monkeypatch,
+):
+    """The positive case for the same store-derived lookup: an approved
+    benchmark for the job is found and used even when a draft sibling for
+    the SAME job also exists in the store -- proving the filter is real,
+    not just "any row present"."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: {
+            "text": "submission text " * 50, "sources": ["Gmail attachment: case.docx"],
+            "chars": 800, "usable": True,
+        },
+    )
+    captured = {}
+
+    def fake_score_submission(*, corpus, benchmark_body, candidate_name, role):
+        captured["benchmark_body"] = benchmark_body
+        return {
+            "scores": _all(4), "evidence": _good_evidence(), "flags": [],
+            "total": 80.0, "band": "strong_yes", "model": "test-model",
+        }
+
+    monkeypatch.setattr(router_mod, "score_submission", fake_score_submission)
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-draft-sibling"] = EvalBenchmark(
+        id="benchmark-draft-sibling", job_id=7, kind="case_study", title="t",
+        body="the wrong, unapproved body", created_by="x", status="draft",
+    )
+    db._store["benchmark-approved"] = EvalBenchmark(
+        id="benchmark-approved", job_id=7, kind="case_study", title="t",
+        body="the right, approved body", created_by="x", status="approved",
+        qa_approved_by="appuser-approver", qa_approved_at=dt.datetime(2026, 9, 20, tzinfo=dt.timezone.utc),
+    )
+
+    out = router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert out["benchmark_id"] == "benchmark-approved"
+    assert captured["benchmark_body"] == "the right, approved body"
+
+
+# --- score: the rest of the happy/refusal paths -----------------------------
+
+
+def test_score_404_when_the_application_is_not_found(monkeypatch):
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(router_mod.reads, "get_application", lambda db, app_id: None)
+    db = _FakeCaseStudySession()
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=9999), db, {"id": "appuser-editor"})
+    assert exc_info.value.status_code == 404
+
+
+def test_score_refuses_422_when_the_submission_is_unreadable(monkeypatch):
+    """An unreadable submission is refused, never scored as a weak one
+    (Rule 26 / cv_text's refusal pattern) -- score_submission must never
+    even be called."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+    from webapp.services.submissions import SubmissionUnreadable as _SU
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+
+    def fake_corpus_for(app_id, *, db=None):
+        raise _SU(f"no usable case-study text for application {app_id}")
+
+    monkeypatch.setattr(router_mod, "corpus_for", fake_corpus_for)
+    score_calls = []
+    monkeypatch.setattr(router_mod, "score_submission", lambda **kw: score_calls.append(kw))
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = {"id": "benchmark-1", "body": "b"}
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert exc_info.value.status_code == 422
+    assert score_calls == []
+    assert db.committed == 0
+
+
+def test_score_succeeds_and_persists_the_evaluation_with_the_benchmark_actually_used(monkeypatch):
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: {
+            "text": "submission text " * 50, "sources": ["Gmail attachment: case.docx"],
+            "chars": 800, "usable": True,
+        },
+    )
+    captured = {}
+
+    def fake_score_submission(*, corpus, benchmark_body, candidate_name, role):
+        captured.update(corpus=corpus, benchmark_body=benchmark_body,
+                         candidate_name=candidate_name, role=role)
+        return {
+            "scores": _all(4), "evidence": _good_evidence(), "flags": [],
+            "total": 80.0, "band": "strong_yes", "model": "test-model",
+        }
+
+    monkeypatch.setattr(router_mod, "score_submission", fake_score_submission)
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = {"id": "benchmark-approved-1", "body": "the answer key body"}
+
+    out = router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert out["benchmark_id"] == "benchmark-approved-1"
+    assert out["total"] == 80.0
+    assert out["band"] == "strong_yes"
+    assert out["candidate_name"] == "Zara Khan"
+    assert out["job_id"] == 7
+    assert out["sources"] == ["Gmail attachment: case.docx"]
+    assert captured["benchmark_body"] == "the answer key body"
+    assert captured["candidate_name"] == "Zara Khan"
+    assert captured["role"] == "Growth Manager"
+    assert db.committed == 1
+
+
+def test_score_maps_a_disqualifying_flag_all_the_way_through_to_the_persisted_row(monkeypatch):
+    """The total/band are never recomputed here -- taken AS-IS from
+    score_submission's own return value (which itself already refused to
+    trust the model, per Task 5). A disqualified band with a high total
+    must survive the round trip unchanged."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: {
+            "text": "submission text " * 50, "sources": ["Gmail attachment: case.docx"],
+            "chars": 800, "usable": True,
+        },
+    )
+    monkeypatch.setattr(
+        router_mod, "score_submission",
+        lambda **kw: {
+            "scores": _all(5), "evidence": _good_evidence(), "flags": ["fabricated_data"],
+            "total": 100.0, "band": "disqualified", "model": "test-model",
+        },
+    )
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = {"id": "benchmark-1", "body": "b"}
+
+    out = router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+    assert out["total"] == 100.0
+    assert out["band"] == "disqualified"
+    assert out["flags"] == ["fabricated_data"]
+
+
+def test_score_maps_drafting_unavailable_to_503_not_500(monkeypatch):
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+    from webapp.services.drafting import DraftingUnavailable
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: {
+            "text": "submission text " * 50, "sources": ["Gmail attachment: case.docx"],
+            "chars": 800, "usable": True,
+        },
+    )
+
+    def boom(**kw):
+        raise DraftingUnavailable("no credential configured")
+
+    monkeypatch.setattr(router_mod, "score_submission", boom)
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = {"id": "benchmark-1", "body": "b"}
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+    assert exc_info.value.status_code == 503
+
+
+# --- get_evaluation -----------------------------------------------------------
+
+
+def test_get_evaluation_404_when_missing():
+    import webapp.routers.case_studies as router_mod
+
+    db = _FakeCaseStudySession()
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.get_evaluation("cse-missing", db, {"id": "appuser-editor"})
+    assert exc_info.value.status_code == 404
+
+
+def test_get_evaluation_returns_the_persisted_row_exactly():
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import CaseStudyEvaluation
+
+    db = _FakeCaseStudySession()
+    db._store["cse-1"] = CaseStudyEvaluation(
+        id="cse-1", application_id=555, job_id=7, benchmark_id="benchmark-1",
+        candidate_name="Zara Khan", role="Growth Manager",
+        scores=_all(3), evidence=_good_evidence(), flags=[],
+        total=60.0, band="yes", model_name="test-model",
+        sources=["Gmail attachment: case.docx"], created_by="appuser-editor",
+    )
+
+    out = router_mod.get_evaluation("cse-1", db, {"id": "appuser-editor"})
+    assert out["id"] == "cse-1"
+    assert out["total"] == 60.0
+    assert out["band"] == "yes"
+    assert out["model"] == "test-model"  # read off model_name, the renamed attribute
+    assert out["benchmark_id"] == "benchmark-1"
+
+
+# --- Rule 0 gate identity -----------------------------------------------------
+
+
+def _flatten_case_study_routes(routes):
+    """See webapp/tests/test_values_scoring.py::_flatten_routes and
+    webapp/tests/test_nugget_reads.py::_flatten_routes -- this FastAPI build
+    (0.137.1) wraps every `include_router()` call in an `_IncludedRouter`
+    shim with no `.path`/`.methods` of its own; the real `APIRoute` objects
+    live on `original_router.routes`. Recurse through those shims so route
+    introspection sees a flat list."""
+    flat = []
+    for r in routes:
+        if hasattr(r, "path"):
+            flat.append(r)
+        nested = getattr(r, "original_router", None)
+        if nested is not None:
+            flat.extend(_flatten_case_study_routes(nested.routes))
+    return flat
+
+
+def _case_study_route(path, method):
+    from webapp.main import app
+
+    for r in _flatten_case_study_routes(app.routes):
+        if r.path == path and method in getattr(r, "methods", set()):
+            return r
+    raise AssertionError(f"route not found: {method} {path}")
+
+
+def test_the_case_study_routes_are_gated_on_the_declared_dependency_not_the_docstring():
+    """Was (in Phase 2, before review caught it):
+    `"require_approver" in src` against the whole module's SOURCE TEXT --
+    this router's own docstring names require_approver/require_editor
+    several times, so that assertion would pass even if a route were wired
+    to the wrong gate. Do NOT repeat that mistake here.
+
+    This inspects the route object FastAPI actually built --
+    `route.dependant.dependencies` -- and checks the resolved callable BY
+    IDENTITY. `require_editor`/`require_approver` are each built once at
+    import time by `_require_role(...)` in webapp/deps.py, so `is`/`in` over
+    a set of the actual callables is a valid, exact check, and
+    `get_current_user` (their own sub-dependency) never appears in a route's
+    own top-level dependency list -- only the gate wrapper does.
+    """
+    import webapp.deps as deps
+
+    create_benchmark = _case_study_route("/api/case-studies/benchmarks", "POST")
+    approve_benchmark = _case_study_route(
+        "/api/case-studies/benchmarks/{benchmark_id}/approve", "POST"
+    )
+    score_route = _case_study_route("/api/case-studies/score", "POST")
+    get_evaluation = _case_study_route("/api/case-studies/evaluations/{evaluation_id}", "GET")
+
+    for route, expected in (
+        (create_benchmark, deps.require_editor),
+        (approve_benchmark, deps.require_approver),
+        (score_route, deps.require_editor),
+        (get_evaluation, deps.require_editor),
+    ):
+        calls = {dep.call for dep in route.dependant.dependencies}
+        assert expected in calls, f"{route.path} [{route.methods}] missing {expected}"
+        other = deps.require_approver if expected is deps.require_editor else deps.require_editor
+        assert other not in calls, f"{route.path} [{route.methods}] wrongly gated on {other}"
+        # get_current_user is a SUB-dependency of require_editor/require_approver,
+        # never wired directly on any of these four routes (a bare signed-in
+        # user is not enough for any of them).
+        assert deps.get_current_user not in calls
