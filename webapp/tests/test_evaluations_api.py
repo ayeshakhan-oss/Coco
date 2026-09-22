@@ -35,7 +35,24 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
 _DATABASE_URL = os.environ.get("DATABASE_URL")
-_CONNECT_TIMEOUT_SECONDS = 2.5
+# Measured 2026-09-22: a cold TCP connect to the Neon pooled endpoint from this
+# machine takes ~3.4s, so the original 2.5s budget bounded wall-clock BELOW the
+# time the connection actually needs. The result was not a flaky suite but a
+# silently dead one -- all 9 tests in this module skipped on every local run,
+# reporting "the database did not respond", while the database was reachable
+# the whole time. Overridable so CI can tighten it.
+# Measured 2026-09-22 from this machine: the probe succeeded in 3.4s, then 7.4s,
+# then timed out at 10s -- the variance is DNS, as the docstring below explains.
+# The original 2.5s budget therefore bounded wall-clock BELOW what the
+# connection needs, and the result was not a flaky suite but a silently dead
+# one: all 9 tests here skipped on EVERY local run, reporting "the database did
+# not respond", while the database was reachable the whole time.
+#
+# The budget is a ceiling, not a cost: `probe.join()` returns the moment the
+# connection succeeds, so a healthy run pays only the real connect time. Only a
+# genuinely offline run waits out the full budget, once, at collection.
+# Set COCO_DB_PROBE_TIMEOUT=0 for an immediate skip when working offline.
+_CONNECT_TIMEOUT_SECONDS = float(os.environ.get("COCO_DB_PROBE_TIMEOUT", "20"))
 
 
 def _database_reachable(url: str) -> bool:

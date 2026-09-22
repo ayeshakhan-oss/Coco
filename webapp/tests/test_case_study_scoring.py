@@ -203,7 +203,13 @@ def test_migration_0011_imports_and_chains_onto_0010():
     module = _load_migration_module(
         "0011_eval_benchmark_qa_gate_and_rubric_provenance.py"
     )
-    assert module.revision == "0011_eval_benchmark_qa_gate_and_rubric_provenance"
+    # The FILENAME may be as descriptive as it likes; the REVISION ID may not.
+    # It is stored in alembic_version.version_num, which is varchar(32), so the
+    # original 49-character id could never have been stamped -- it failed only
+    # against a real Postgres, deep inside SQLAlchemy. See
+    # webapp/tests/test_migration_revision_ids.py, which guards every migration.
+    assert module.revision == "0011_benchmark_qa_gate"
+    assert len(module.revision) <= 32
     assert module.down_revision == "0010_case_study_evaluations"
     assert callable(module.upgrade)
     assert callable(module.downgrade)
