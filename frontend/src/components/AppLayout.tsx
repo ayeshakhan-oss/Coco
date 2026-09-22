@@ -18,7 +18,7 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
   ],
   'candidate-evaluation': [
     { to: '/evaluations', label: 'Technical Screening', icon: FileSearch, end: true, built: true },
-    { to: '', label: 'CV Screening', icon: FileText, end: true, built: false },
+    { to: '/cv-screening', label: 'CV Screening', icon: FileText, end: true, built: true },
     { to: '', label: 'Case Study Evaluation', icon: ListChecks, end: true, built: false },
     { to: '/case-studies', label: 'Case Study Scoring', icon: ClipboardCheck, end: true, built: true },
     { to: '', label: 'KCD Evaluation', icon: Gauge, end: true, built: false },

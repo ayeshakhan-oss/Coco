@@ -5,6 +5,10 @@ import type {
   CaseStudyEvaluation,
   Communication,
   CurrentUser,
+  CVScreen,
+  CVScreenApplication,
+  CVScreenCriterion,
+  CVScreenJobSummary,
   DraftContent,
   EvalResult,
   EvaluationDetail,
@@ -199,4 +203,17 @@ export const api = {
   // first -- the first entry is the current one, the rest are superseded.
   listCaseStudyEvaluations: (applicationId: number) =>
     get<CaseStudyEvaluation[]>(`/api/case-studies/evaluations?application_id=${applicationId}`),
+
+  // --- CV screening (Coco's own criteria; NOT Nugget's technical screening) ---
+  cvScreenCriteria: () => get<CVScreenCriterion[]>('/api/cv-screening/criteria'),
+  cvScreenJobs: () => get<JobItem[]>('/api/cv-screening/jobs'),
+  cvScreenJobSummary: (jobId: number) =>
+    get<CVScreenJobSummary>(`/api/cv-screening/jobs/${jobId}/summary`),
+  cvScreenApplications: (jobId: number) =>
+    get<CVScreenApplication[]>(`/api/cv-screening/jobs/${jobId}/applications`),
+  cvScreenHistory: (applicationId: number) =>
+    get<CVScreen[]>(`/api/cv-screening/screens?application_id=${applicationId}`),
+  cvScreen: (application_id: number) =>
+    post<CVScreen>('/api/cv-screening/screen', { application_id }),
+
 }

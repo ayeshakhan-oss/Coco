@@ -57,6 +57,10 @@ EVAL_BENCHMARK_STATUSES = ("draft", "approved", "retired")
 # webapp.services.case_study_scoring.band()'s return values exactly.
 CASE_STUDY_EVALUATION_BANDS = ("strong_yes", "yes", "borderline", "no", "disqualified")
 
+# Coco's own CV-screening tiers (Skill 02, cv-screening.md). Deliberately NOT
+# Nugget's P1-P4: that is a separate skill with a separate rubric.
+CV_SCREEN_TIERS = ("shortlist", "maybe", "no_hire")
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -84,6 +88,10 @@ def _benchmark_id() -> str:
 
 def _evaluation_id() -> str:
     return "cse-" + uuid4().hex
+
+
+def _cv_screen_id() -> str:
+    return "cvs-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -601,5 +609,101 @@ class CaseStudyEvaluation(Base):
         # Same reasoning as ValuesScorecardDraft/EvalBenchmark: `coco`, never
         # `public` (Markaz's Replit per-deploy schema push prunes tables it
         # doesn't recognise there).
+        {"schema": "coco"},
+    )
+
+
+class CVScreen(Base):
+    """One candidate's CV screened against one job description.
+
+    Persists exactly what `cv_screening.screen_cv` returned -- the three
+    criterion scores, their citations, the strengths and gaps, the two
+    experience figures kept separate, and the match / tier it COMPUTED -- plus
+    which CV and which job description actually produced it, so "what was this
+    screened against" is answerable from the row alone.
+
+    🔒 This is Coco's OWN CV screening. Nugget's technical screening lives in
+       `public.nugget_screening_evals`, is owned by another agent, and is read
+       through services/nugget_reads.py. The two never share a table, a rubric
+       or a tier vocabulary (Ayesha, 2026-09-15).
+
+    Re-screening SUPERSEDES rather than duplicates. A second screen of the same
+    application flips the previous row's `is_current` to False and records the
+    new row's id in `superseded_by`, so a stale number can never be read back
+    as live -- the gap CLAUDE.md Rule 25 records as costing three corrections
+    on the RM round, where a superseded mean stayed live in a sheet tab, a Doc
+    and a PDF after the report had moved on. Readers MUST filter on
+    `is_current`, exactly as Nugget's own evals table requires.
+    """
+
+    __tablename__ = "cv_screens"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_cv_screen_id)
+
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
+    role: Mapped[str] = mapped_column(Text, nullable=False)
+
+    scores: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    evidence: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    strengths: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    gaps: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+
+    # Two figures, never one. Conflating them is the SOP's own named mistake:
+    # "5 years" reads as five relevant years when it may be five total and one
+    # relevant.
+    total_experience_years: Mapped[float] = mapped_column(Float, nullable=False)
+    relevant_experience_years: Mapped[float] = mapped_column(Float, nullable=False)
+    relevant_experience_note: Mapped[str] = mapped_column(Text, nullable=False)
+
+    match: Mapped[float] = mapped_column(Float, nullable=False)
+    tier: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Named "model" in the database but mapped to a differently-named Python
+    # attribute: "model" collides with Pydantic v2's protected `model_`
+    # namespace on any schema wrapping this row.
+    model_name: Mapped[str] = mapped_column("model", Text, nullable=False)
+
+    # Which revision of cv-screening.md produced this screen, and which job
+    # description it was screened against. A JD is edited between rounds, and
+    # without this a row cannot say which wording it was judged on.
+    sop_sha256: Mapped[str] = mapped_column(Text, nullable=False)
+    jd_sha256: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # How much CV text was actually read, and whether it had to be cut. The SOP
+    # forbids truncating below 10,000 characters, so a reader can check.
+    cv_chars: Mapped[int] = mapped_column(Integer, nullable=False)
+    cv_truncated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    is_current: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    superseded_by: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "tier IN (" + ",".join(f"'{t}'" for t in CV_SCREEN_TIERS) + ")",
+            name="ck_cv_screen_tier",
+        ),
+        CheckConstraint(
+            "relevant_experience_years <= total_experience_years",
+            name="ck_cv_screen_relevant_within_total",
+        ),
+        # A superseded row must name its replacement, and a current row must
+        # not: the two fields cannot disagree about which number is live.
+        CheckConstraint(
+            "(is_current AND superseded_by IS NULL) OR "
+            "(NOT is_current AND superseded_by IS NOT NULL)",
+            name="ck_cv_screen_supersession_is_coherent",
+        ),
+        Index("ix_cv_screen_application_id", "application_id"),
+        Index("ix_cv_screen_job_id", "job_id"),
+        # `coco`, never `public`: Markaz's Replit per-deploy schema push prunes
+        # tables it does not recognise there.
         {"schema": "coco"},
     )

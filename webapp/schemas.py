@@ -516,3 +516,83 @@ class CaseStudyEvaluationOut(_Base):
     # so the page can render from `evaluation.dimensions` instead of a local
     # TypeScript constant that can drift from case_study_scoring.DIMENSIONS.
     dimensions: list[CaseStudyDimensionOut] = []
+
+
+# --------------------------------------------------------------------------
+# CV screening (Skill 02, cv-screening). Coco's OWN criteria -- never Nugget's.
+# --------------------------------------------------------------------------
+
+
+class CVScreenCriterionOut(_Base):
+    """One criterion's metadata, mirrored verbatim from
+    `cv_screening.CRITERIA` so the frontend never keeps its own copy."""
+
+    key: str
+    label: str
+    weight: int
+    priority: str
+
+
+class CVScreenRequest(_Base):
+    application_id: int
+
+
+class CVScreenOut(_Base):
+    id: str
+    application_id: int
+    job_id: int
+    candidate_name: str
+    role: str
+    scores: dict[str, int]
+    evidence: dict[str, str]
+    strengths: list[str]
+    gaps: list[str]
+    # Two figures, never one.
+    total_experience_years: float
+    relevant_experience_years: float
+    relevant_experience_note: str
+    match: float
+    tier: str
+    model: str
+    sop_sha256: str
+    jd_sha256: str
+    cv_chars: int
+    cv_truncated: bool
+    is_current: bool
+    superseded_by: Optional[str] = None
+    created_by: str
+    created_at: Optional[dt.datetime] = None
+    criteria: list[CVScreenCriterionOut] = []
+
+
+class CVScreenApplicationOut(_Base):
+    """One application in a job's screening list: who they are, the profile
+    fields the SOP requires captured, and their CURRENT screen if there is one."""
+
+    application_id: int
+    candidate_name: str
+    email: Optional[str] = None
+    status: Optional[str] = None
+    applied_at: Optional[dt.datetime] = None
+    # The SOP requires these captured for every candidate. None means the
+    # candidate was not asked or did not answer -- never a guess.
+    expected_salary: Optional[str] = None
+    city: Optional[str] = None
+    willing_to_relocate: Optional[str] = None
+    cv_available: bool = False
+    cv_error: Optional[str] = None
+    screen: Optional[CVScreenOut] = None
+
+
+class CVScreenJobSummaryOut(_Base):
+    """The four stat boxes the locked report format requires, which must sum."""
+
+    job_id: int
+    title: Optional[str] = None
+    total: int
+    shortlist: int
+    maybe: int
+    no_hire: int
+    unscreened: int
+    jd_chars: int
+    jd_error: Optional[str] = None

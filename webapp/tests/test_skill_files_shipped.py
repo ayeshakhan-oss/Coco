@@ -43,3 +43,36 @@ def test_expected_skill_dirs_are_reincluded_in_dockerignore():
         assert negation in lines, f"no re-inclusion for {d}"
         # A negation BEFORE the exclude does nothing. Order is load-bearing.
         assert lines.index(negation) > star_at, f"{negation} must come after .claude/skills/*"
+
+
+# Folder-level COPY covers any file inside, but not a RENAME. These modules
+# read one specific file by path at runtime and raise if it is missing, so the
+# filename itself is load-bearing.
+SOP_FILES_READ_AT_RUNTIME = [
+    ".claude/skills/02_candidate-evaluation/cv-screening.md",
+    ".claude/skills/02_candidate-evaluation/case-study-scoring-rubric.md",
+]
+
+
+def test_sop_files_read_at_runtime_exist_and_are_inside_a_copied_dir():
+    dockerfile = _read("Dockerfile")
+    for rel in SOP_FILES_READ_AT_RUNTIME:
+        assert os.path.isfile(os.path.join(ROOT, rel)), (
+            f"{rel} is read at runtime by a prompt module and is missing on disk"
+        )
+        parent = os.path.dirname(rel)
+        assert f"COPY {parent}/ {parent}/" in dockerfile, (
+            f"{rel} would not reach the image: no COPY for {parent}/"
+        )
+
+
+def test_the_cv_screening_prompt_actually_resolves_its_sop():
+    """The path is built with os.path.join and '..' hops from the prompt
+    module. A wrong number of hops resolves to a real-looking path that does
+    not exist, and the failure only appears at the first screen."""
+    from webapp.prompts import cv_screening_prompt
+
+    system = cv_screening_prompt.system_prompt()
+    assert "# The SOP, verbatim" in system
+    assert "Minimum reading capacity" in system, "the SOP body did not make it in"
+    assert len(cv_screening_prompt.sop_sha256()) == 64

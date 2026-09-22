@@ -85,6 +85,7 @@ def ensure_app_tables() -> None:
     from .models import (  # local import avoids a cycle
         CaseStudyEvaluation,
         CommEvidence,
+        CVScreen,
         EvalBenchmark,
         GmailSyncRun,
         ValuesScorecardDraft,
@@ -103,6 +104,7 @@ def ensure_app_tables() -> None:
             ValuesScorecardDraft.__table__,
             EvalBenchmark.__table__,
             CaseStudyEvaluation.__table__,
+            CVScreen.__table__,
         ],
         checkfirst=True,
     )

@@ -503,3 +503,71 @@ export interface ValuesScorecardDraft {
   markaz_payload?: Record<string, unknown> | null
   replaced_payload?: Record<string, unknown> | null
 }
+
+// --- CV screening (Skill 02, cv-screening) -------------------------------
+// Coco's OWN criteria. Nugget's technical screening is a separate skill with
+// a separate rubric (EvaluationSummary / EvaluationDetail above); the two
+// never share a type, a tier vocabulary or a page.
+
+export interface CVScreenCriterion {
+  key: string
+  label: string
+  weight: number
+  priority: string
+}
+
+export type CVScreenTier = 'shortlist' | 'maybe' | 'no_hire'
+
+export interface CVScreen {
+  id: string
+  application_id: number
+  job_id: number
+  candidate_name: string
+  role: string
+  scores: Record<string, number>
+  evidence: Record<string, string>
+  strengths: string[]
+  gaps: string[]
+  // Two figures, never one: conflating them is the SOP's named mistake.
+  total_experience_years: number
+  relevant_experience_years: number
+  relevant_experience_note: string
+  match: number
+  tier: CVScreenTier
+  model: string
+  sop_sha256: string
+  jd_sha256: string
+  cv_chars: number
+  cv_truncated: boolean
+  is_current: boolean
+  superseded_by: string | null
+  created_by: string
+  created_at: string | null
+  criteria: CVScreenCriterion[]
+}
+
+export interface CVScreenApplication {
+  application_id: number
+  candidate_name: string
+  email: string | null
+  status: string | null
+  applied_at: string | null
+  expected_salary: string | null
+  city: string | null
+  willing_to_relocate: string | null
+  cv_available: boolean
+  cv_error: string | null
+  screen: CVScreen | null
+}
+
+export interface CVScreenJobSummary {
+  job_id: number
+  title: string | null
+  total: number
+  shortlist: number
+  maybe: number
+  no_hire: number
+  unscreened: number
+  jd_chars: number
+  jd_error: string | null
+}
