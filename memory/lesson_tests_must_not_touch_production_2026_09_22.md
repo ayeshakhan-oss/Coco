@@ -91,7 +91,7 @@ against production for 7 minutes, while `psycopg` minutes later reported *"Netwo
 unreachable"* for both A records and then a DNS failure. So:
 
 - **alembic cannot be relied on locally.** Apply migrations over the Neon HTTPS
-  `/sql` endpoint ([reference_neon_https_sql_workaround_2026_08_05.md](reference_neon_https_sql_workaround_2026_08_05.md)).
+  `/sql` endpoint (`reference_neon_https_sql_workaround_2026_08_05.md`, in the user-level memory directory rather than this repo).
 - **But a local test run CAN reach production**, which is exactly why the guard
   above is needed rather than merely tidy.
 
