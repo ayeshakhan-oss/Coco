@@ -43,7 +43,10 @@ from __future__ import annotations
 import sqlalchemy as sa
 from alembic import op
 
-revision = "0011_eval_benchmark_qa_gate_and_rubric_provenance"
+# NOTE: alembic_version.version_num is varchar(32). This id was originally
+# "0011_eval_benchmark_qa_gate_and_rubric_provenance" (49 chars), which made the
+# migration impossible to stamp. Keep every revision id at 32 characters or fewer.
+revision = "0011_benchmark_qa_gate"
 down_revision = "0010_case_study_evaluations"
 branch_labels = None
 depends_on = None
