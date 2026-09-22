@@ -5,7 +5,7 @@ description: Benchmark-anchored scoring rubric and evaluation report spec for gr
 
 # Case Study Scoring Rubric & Report Spec
 
-**Status:** DRAFT — pending Ayesha's QA (2026-08-16)
+**Status:** Anchors and bands approved by Ayesha 2026-09-22. Report spec still as drafted 2026-08-16.
 **Companion:** [case-study-evaluation.md](case-study-evaluation.md) covers *tracking and
 completeness*. This file covers *scoring and the recommendation*. Read both.
 **Benchmark:** [docs/case_studies/benchmarks/smg_execution_sprint_benchmark.md](../../../docs/case_studies/benchmarks/smg_execution_sprint_benchmark.md)
@@ -42,7 +42,17 @@ matches the benchmark. Never mark down for disagreeing with us.
 
 ## The six dimensions
 
-Each scored 1–5. Weighted total out of 100.
+Each scored **0–5, with a real zero**. Weighted total out of 100.
+Conversion: 5→100%, 4→80%, 3→60%, 2→40%, 1→20%, 0→0.
+
+🔒 **The zero is not decorative (Ayesha, 2026-09-22).** This rubric previously anchored at
+5/3/1 with no zero, which floors every dimension at 20% of its weight: a submission answering
+the wrong question still banked 20 points. That is the defect recorded in CLAUDE.md Rule 27,
+which put all 25 RM case studies above the published bar and required a strict re-mark that
+moved the mean from 88.3 to 75.0. An absent or wholly wrong answer scores 0, not a middling guess.
+
+**The bands below are unchanged.** Totals therefore fall, and the bar genuinely rises. That is
+the intent, not a side effect to be corrected by rescaling.
 
 | # | Dimension | Weight | What it reads |
 |---|---|---|---|
@@ -63,6 +73,8 @@ Each scored 1–5. Weighted total out of 100.
   Reports what the data says without interrogating what it cannot say.
 - **1** — Restates totals as achievement. Ranks on registration or user counts. Numbers wrong or
   absent.
+- **0** — The dataset is not engaged. No figures cited, or the analysis answers a different
+  question than the one asked.
 
 **2. Execution specificity**
 - **5** — Named owners, channels, sequencing and weekly exit metrics. A tracker that could be
@@ -71,6 +83,7 @@ Each scored 1–5. Weighted total out of 100.
   "drive adoption") that would fit any company.
 - **1** — Strategy restated as plan. No owners, no dates, no tracker, or a tracker that is a
   formatted table with nothing to enter.
+- **0** — No plan submitted, or a document with no actions in it at all.
 
 **3. Stakeholder craft**
 - **5** — The email would land well with a real government official: acknowledges the situation
@@ -79,6 +92,7 @@ Each scored 1–5. Weighted total out of 100.
 - **3** — Professional, appropriately brief, but generic — could be sent to any stalled contact.
 - **1** — Pushy, wounded, or a chase. Uses the deadline or the competitor as pressure. Ignores
   the six weeks of silence entirely.
+- **0** — No email submitted, or it does not address the situation described.
 
 **4. Commercial honesty**
 - **5** — A specific probability with gating events in *both* directions, a concrete ask of the
@@ -86,18 +100,21 @@ Each scored 1–5. Weighted total out of 100.
 - **3** — A probability with reasoning, a reasonable ask, no real discomfort.
 - **1** — Optimism as forecast. No number, or a number with nothing behind it. Asks for
   "support".
+- **0** — No internal update, or it contains neither a likelihood nor an ask.
 
 **5. Decision discipline**
 - **5** — Kill criteria that would genuinely stop work, not soften it. Assumptions labelled
   inline. Contingencies tied to named early warnings.
 - **3** — Kill criteria present but soft ("if it underperforms, we will iterate").
-- **1** — Absent, or success metrics with no failure condition.
+- **1** — Success metrics with no failure condition.
+- **0** — Absent entirely.
 
 **6. Signal & self-awareness**
 - **5** — Reflection is specific, costly to admit, and shows early detection with a real
   consequence. AI disclosed per deliverable, distinguishing AI work from own judgment.
 - **3** — A real story told generically. AI disclosed once, vaguely.
 - **1** — Generic or borrowed reflection. No AI disclosure on obviously AI-assisted work.
+- **0** — No reflection submitted.
 
 ---
 
