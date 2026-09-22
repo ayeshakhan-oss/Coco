@@ -48,6 +48,10 @@ SYNC_STATUSES = ("running", "ok", "partial", "failed")
 # Values-scorecard draft enum (see ValuesScorecardDraft below).
 VALUES_DRAFT_STATUSES = ("draft", "submitted")
 
+# Eval-benchmark status enum (see EvalBenchmark below). Rule 0 of the case-study
+# rubric: the benchmark must be written and QA'd before any submission is read.
+EVAL_BENCHMARK_STATUSES = ("draft", "approved", "retired")
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -67,6 +71,10 @@ def _syncrun_id() -> str:
 
 def _values_draft_id() -> str:
     return "vsd-" + uuid4().hex
+
+
+def _benchmark_id() -> str:
+    return "benchmark-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -434,5 +442,59 @@ class ValuesScorecardDraft(Base):
         # Live in a dedicated `coco` schema so Markaz's Replit per-deploy schema
         # push (which prunes unknown `public` tables) can't drop them. See
         # docs/RAILWAY_DEPLOYMENT_LESSONS.md + the 2026-06-30 root-cause memo.
+        {"schema": "coco"},
+    )
+
+
+class EvalBenchmark(Base):
+    """The answer key a case-study run is scored against, written and QA'd
+    BEFORE any submission is opened.
+
+    Rule 0 of the case-study rubric: scoring calibrates to whoever is read
+    first, so reading a submission before the benchmark exists (or before it
+    has been QA'd) anchors the whole pool. `qa_approved_at` / `qa_approved_by`
+    make that discipline mechanical: a scoring run can require this row to be
+    `status = 'approved'` with both fields set before it will start.
+
+    The benchmark carries NO candidate names or responses -- it calibrates to
+    the case, not the cohort, or it stops being reusable for the next round
+    (CLAUDE.md Rule 17).
+    """
+
+    __tablename__ = "eval_benchmarks"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_benchmark_id)
+
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    kind: Mapped[str] = mapped_column(Text, nullable=False)
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Where the benchmark's source material lives (e.g. a Drive doc or a repo
+    # path), for provenance. Not required: a benchmark can be authored directly.
+    source_path: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    # The QA gate. Both stay NULL until a human other than the author has read
+    # the benchmark and approved it -- that is what "approved" in status means.
+    qa_approved_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    qa_approved_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    status: Mapped[str] = mapped_column(
+        Text, nullable=False, default="draft", server_default="draft"
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('draft','approved','retired')", name="ck_eval_benchmark_status"
+        ),
+        Index("ix_eval_benchmark_job_id", "job_id"),
+        # Same reasoning as ValuesScorecardDraft above: `coco`, never `public`.
         {"schema": "coco"},
     )

@@ -67,6 +67,20 @@ def test_fabricated_data_disqualifies_regardless_of_total():
     assert band(92.0, ["undisclosed_ai"]) == "strong_yes"
 
 
+def test_benchmark_table_is_in_the_coco_schema():
+    from webapp.models import EvalBenchmark
+
+    assert EvalBenchmark.__table__.schema == "coco"
+
+
+def test_benchmark_carries_a_qa_gate():
+    from webapp.models import EvalBenchmark
+
+    cols = {c.name for c in EvalBenchmark.__table__.columns}
+    # Rule 0 is enforced by requiring these before a run may start.
+    assert {"qa_approved_at", "qa_approved_by", "status"} <= cols
+
+
 def test_validate_rejects_a_bad_score_set():
     with pytest.raises(CaseStudyScoringError):
         validate_scores({d["key"]: 3 for d in DIMENSIONS[:5]})     # missing one

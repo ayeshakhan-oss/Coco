@@ -84,6 +84,7 @@ def ensure_app_tables() -> None:
     See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
     from .models import (  # local import avoids a cycle
         CommEvidence,
+        EvalBenchmark,
         GmailSyncRun,
         ValuesScorecardDraft,
     )
@@ -99,6 +100,7 @@ def ensure_app_tables() -> None:
             CommEvidence.__table__,
             GmailSyncRun.__table__,
             ValuesScorecardDraft.__table__,
+            EvalBenchmark.__table__,
         ],
         checkfirst=True,
     )
