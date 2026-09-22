@@ -458,6 +458,98 @@ def test_corpus_for_delegates_docx_extraction_to_fetch_submission_corpora():
     assert "Lahore pilot before Karachi" in result["text"]
 
 
+def test_corpus_for_excludes_a_failed_extraction_sentinel_from_sources_and_chars(monkeypatch):
+    """fetch_submission_corpora.extract() swallows its own exceptions and
+    returns the truthy "[EXTRACT FAILED ...]" sentinel string instead of
+    raising (documented in its own module). That string must never be treated
+    as read text: not folded into the corpus, not counted toward
+    extracted_chars (the readability floor), and not recorded in sources as a
+    verified origin. Reproduces the exact production bug: with no
+    python-pptx/openpyxl/PyMuPDF installed, a candidate's .pptx/.xlsx/.pdf
+    extracted to this sentinel and was scored as if it were their real work,
+    while the .docx they also submitted looked like the sole source."""
+    from webapp.services import submissions as submissions_module
+
+    good_text = "D" * 500
+    good = RawAttachment(origin="Gmail attachment: writeup.docx", filename="writeup.docx",
+                          content=b"irrelevant, extraction is faked below")
+    bad = RawAttachment(origin="Gmail attachment: deck.pptx", filename="deck.pptx",
+                         content=b"irrelevant, extraction is faked below")
+
+    def fake_extract(path):
+        if path.endswith(".pptx"):
+            return "[EXTRACT FAILED ModuleNotFoundError: No module named 'pptx']"
+        return good_text
+
+    monkeypatch.setattr(submissions_module.extraction, "extract", fake_extract)
+
+    result = corpus_for(4242, context=_ctx(), fetchers=[lambda ctx: [good, bad]])
+
+    assert result["sources"] == ["Gmail attachment: writeup.docx"]
+    assert "EXTRACT FAILED" not in result["text"]
+    # "chars" legitimately includes the "===== origin =====" provenance header
+    # around the one real source (see test_corpus_for_chars_field_still_
+    # reflects_the_full_combined_text), so it is a little more than the raw
+    # text -- what it must NOT include is anything from the failed .pptx.
+    assert result["chars"] >= len(good_text)
+    assert result["chars"] < len(good_text) + 100
+
+
+def test_corpus_for_excludes_a_failed_extraction_sentinel_from_the_readability_floor(monkeypatch):
+    """The sharper version of the test above: a THIN real source (below
+    MIN_USABLE_CHARS on its own) alongside a LONG failed-extraction sentinel.
+    If the sentinel were wrongly counted toward extracted_chars (the exact
+    production bug -- a truthy error string satisfied
+    `if extracted and extracted.strip():`), the combined length would clear
+    MIN_USABLE_CHARS and the submission would be scored on a source that
+    never actually extracted. With the fix, only the thin genuine text counts
+    toward the floor, so this case correctly still refuses."""
+    from webapp.services import submissions as submissions_module
+
+    thin_good_text = "D" * 200  # real text, but alone under MIN_USABLE_CHARS (400)
+    long_sentinel = "[EXTRACT FAILED ModuleNotFoundError: " + ("x" * 300) + "]"
+    assert len(thin_good_text) < submissions_module.MIN_USABLE_CHARS
+    assert len(thin_good_text) + len(long_sentinel) >= submissions_module.MIN_USABLE_CHARS
+
+    good = RawAttachment(origin="Gmail attachment: writeup.docx", filename="writeup.docx",
+                          content=b"irrelevant, extraction is faked below")
+    bad = RawAttachment(origin="Gmail attachment: deck.pptx", filename="deck.pptx",
+                         content=b"irrelevant, extraction is faked below")
+
+    def fake_extract(path):
+        return long_sentinel if path.endswith(".pptx") else thin_good_text
+
+    monkeypatch.setattr(submissions_module.extraction, "extract", fake_extract)
+
+    with pytest.raises(submissions_module.SubmissionUnreadable):
+        corpus_for(4242, context=_ctx(), fetchers=[lambda ctx: [good, bad]])
+
+
+def test_corpus_for_refuses_when_every_source_fails_extraction(monkeypatch):
+    """A submission whose ONLY sources all fail extraction must be refused
+    (SubmissionUnreadable), never scored on the sentinel text -- and the
+    refusal must name the failure (it "lands in problems"), not report the
+    generic "no source returned any content", which would hide that a file
+    WAS found and read, just not successfully."""
+    from webapp.services import submissions as submissions_module
+
+    bad = RawAttachment(origin="Gmail attachment: deck.pptx", filename="deck.pptx",
+                         content=b"irrelevant, extraction is faked below")
+
+    def fake_extract(path):
+        return "[EXTRACT FAILED ModuleNotFoundError: No module named 'pptx']"
+
+    monkeypatch.setattr(submissions_module.extraction, "extract", fake_extract)
+
+    with pytest.raises(submissions_module.SubmissionUnreadable) as exc_info:
+        corpus_for(4242, context=_ctx(), fetchers=[lambda ctx: [bad]])
+
+    detail = str(exc_info.value)
+    assert "EXTRACT FAILED" in detail
+    assert "ModuleNotFoundError" in detail
+    assert "deck.pptx" in detail
+
+
 def test_extract_links_finds_drive_and_markaz_upload_urls_only():
     blob = (
         "Please see my case study here: https://drive.google.com/file/d/1AbC-XyZ/view?usp=sharing "

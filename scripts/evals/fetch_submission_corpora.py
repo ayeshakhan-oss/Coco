@@ -76,6 +76,16 @@ def text_pdf(p):
     return "\n".join(pg.get_text() for pg in doc)
 
 
+# extract() swallows every exception itself rather than raising, so a caller
+# scanning many files does not abort the batch on one bad file -- but that
+# means a failed extraction comes back as an ordinary, truthy string. Callers
+# MUST treat any return value starting with this prefix as a failure, never as
+# read text: it must not enter a corpus, must not count toward a readability
+# floor, and must not be recorded as a verified source. See
+# webapp/services/submissions.py's use of this constant.
+EXTRACT_FAILED_PREFIX = "[EXTRACT FAILED "
+
+
 def extract(p):
     e = p.lower()
     try:
@@ -90,7 +100,7 @@ def extract(p):
         if e.endswith(".txt"):
             return open(p, encoding="utf-8", errors="replace").read()
     except Exception as ex:
-        return f"[EXTRACT FAILED {type(ex).__name__}: {ex}]"
+        return f"{EXTRACT_FAILED_PREFIX}{type(ex).__name__}: {ex}]"
     return ""
 
 

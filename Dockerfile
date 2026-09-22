@@ -16,7 +16,10 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app
 WORKDIR /app
 
-# Backend dependencies (the reused scripts/* modules are stdlib-only).
+# Backend dependencies. NOTE: the reused scripts/utils/* send + layout helpers
+# are stdlib-only, but scripts/evals/fetch_submission_corpora.py (case-study
+# extraction, reused below) needs python-docx, python-pptx, openpyxl and
+# PyMuPDF -- see webapp/requirements.txt.
 COPY webapp/requirements.txt webapp/requirements.txt
 RUN pip install --no-cache-dir -r webapp/requirements.txt
 
@@ -35,6 +38,7 @@ COPY scripts/utils/safe_send.py scripts/utils/safe_send.py
 COPY scripts/utils/feedback_widget.py scripts/utils/feedback_widget.py
 COPY scripts/evals/__init__.py scripts/evals/__init__.py
 COPY scripts/evals/candidate_communication_eval.py scripts/evals/candidate_communication_eval.py
+COPY scripts/evals/fetch_submission_corpora.py scripts/evals/fetch_submission_corpora.py
 
 # Tone master file used as the drafting system prompt.
 COPY memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md

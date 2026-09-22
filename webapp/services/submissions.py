@@ -365,7 +365,16 @@ def corpus_for(
             except Exception as exc:  # noqa: BLE001 - a bad file must not abort the rest
                 problems.append(f"{attachment.origin}: {type(exc).__name__}: {exc}")
                 continue
-            if extracted and extracted.strip():
+            if extracted and extracted.startswith(extraction.EXTRACT_FAILED_PREFIX):
+                # extraction.extract() swallows its own exceptions and returns
+                # this sentinel instead of raising (so one bad file does not
+                # abort the whole fetch) -- it is a FAILURE, not text: it must
+                # never enter the corpus, count toward extracted_chars, or be
+                # recorded in sources as a verified origin, or a missing
+                # extraction dependency (e.g. no python-pptx installed) gets
+                # scored as if it were the candidate's actual work.
+                problems.append(f"{attachment.origin}: {extracted}")
+            elif extracted and extracted.strip():
                 text_parts.append(f"\n===== {attachment.origin} =====\n{extracted}")
                 sources.append(attachment.origin)
                 extracted_chars += len(extracted)
