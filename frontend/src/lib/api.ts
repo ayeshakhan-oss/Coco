@@ -3,6 +3,10 @@ import type {
   CandidatePage,
   CaseStudyBenchmark,
   CaseStudyEvaluation,
+  CaseStudyMirrorPair,
+  CaseStudyProbe,
+  CaseStudyTrackingRow,
+  CaseStudyTrackingSummary,
   Communication,
   CurrentUser,
   CVScreen,
@@ -215,5 +219,16 @@ export const api = {
     get<CVScreen[]>(`/api/cv-screening/screens?application_id=${applicationId}`),
   cvScreen: (application_id: number) =>
     post<CVScreen>('/api/cv-screening/screen', { application_id }),
+
+
+  // --- Case-study tracking (who submitted, who has not, what the pool shares) ---
+  caseStudyTracking: (jobId: number) =>
+    get<CaseStudyTrackingRow[]>(`/api/case-study-tracking/jobs/${jobId}`),
+  caseStudyTrackingSummary: (jobId: number) =>
+    get<CaseStudyTrackingSummary>(`/api/case-study-tracking/jobs/${jobId}/summary`),
+  caseStudyMirrors: (jobId: number) =>
+    get<CaseStudyMirrorPair[]>(`/api/case-study-tracking/jobs/${jobId}/mirrors`),
+  caseStudyProbe: (application_id: number, required_parts?: string[]) =>
+    post<CaseStudyProbe>('/api/case-study-tracking/probe', { application_id, required_parts }),
 
 }

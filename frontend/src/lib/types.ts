@@ -571,3 +571,74 @@ export interface CVScreenJobSummary {
   jd_chars: number
   jd_error: string | null
 }
+
+// --- Case-study tracking (Skill 02, case-study-evaluation) ---------------
+// Tracking and completeness only. Scoring is CaseStudyEvaluation above.
+
+export interface CaseStudyFlag {
+  flag: string
+  count: number
+  evidence: string
+  meaning: string
+}
+
+// 🔴 There is deliberately no 'not_sent'. Markaz records no case-study send,
+// so we can never assert one did not happen.
+export type CaseStudyStatus =
+  | 'submitted'
+  | 'awaiting'
+  | 'no_record_of_a_send'
+  | 'submitted_without_send_record'
+
+export interface CaseStudyProbe {
+  id: string
+  application_id: number
+  job_id: number
+  channels: string[]
+  send_found: boolean
+  send_subject: string | null
+  send_at: string | null
+  status: CaseStudyStatus
+  corpus_chars: number
+  sources: string[]
+  corpus_error: string | null
+  flags: CaseStudyFlag[]
+  completeness: {
+    known?: boolean
+    present?: string[]
+    missing?: string[]
+    note?: string | null
+  }
+  probed_by: string
+  probed_at: string | null
+}
+
+export interface CaseStudyTrackingRow {
+  application_id: number
+  candidate_name: string
+  email: string | null
+  channels: string[]
+  submitted_at: string | null
+  markaz_status: string | null
+  status: CaseStudyStatus
+  probe: CaseStudyProbe | null
+}
+
+export interface CaseStudyTrackingSummary {
+  job_id: number
+  title: string | null
+  total: number
+  submitted: number
+  awaiting: number
+  no_record_of_a_send: number
+  submitted_without_send_record: number
+  unproven_absence: number
+  probed: number
+}
+
+export interface CaseStudyMirrorPair {
+  application_ids: number[]
+  candidate_names: string[]
+  shared_runs: number
+  examples: string[]
+}

@@ -596,3 +596,83 @@ class CVScreenJobSummaryOut(_Base):
     unscreened: int
     jd_chars: int
     jd_error: Optional[str] = None
+
+
+# --------------------------------------------------------------------------
+# Case-study tracking (Skill 02, case-study-evaluation). Tracking and
+# completeness only -- scoring is CaseStudyEvaluationOut above.
+# --------------------------------------------------------------------------
+
+
+class CaseStudyFlagOut(_Base):
+    """A content-dump signal, always with the evidence that raised it: a flag
+    a human cannot check is an accusation rather than a signal."""
+
+    flag: str
+    count: int
+    evidence: str
+    meaning: str
+
+
+class CaseStudyProbeOut(_Base):
+    id: str
+    application_id: int
+    job_id: int
+    channels: list[str]
+    # 🔴 send_found=False means "we could not find a send", NEVER "not sent":
+    # Markaz records no case-study send anywhere.
+    send_found: bool
+    send_subject: Optional[str] = None
+    send_at: Optional[dt.datetime] = None
+    status: str
+    corpus_chars: int
+    sources: list[str] = []
+    corpus_error: Optional[str] = None
+    flags: list[CaseStudyFlagOut] = []
+    completeness: dict = {}
+    probed_by: str
+    probed_at: Optional[dt.datetime] = None
+
+
+class CaseStudyTrackingRowOut(_Base):
+    application_id: int
+    candidate_name: str
+    email: Optional[str] = None
+    # What Markaz holds, read live on every request (cheap).
+    channels: list[str]
+    submitted_at: Optional[dt.datetime] = None
+    markaz_status: Optional[str] = None
+    # The reconciled status, which folds in the last probe if there is one.
+    status: str
+    probe: Optional[CaseStudyProbeOut] = None
+
+
+class CaseStudyTrackingSummaryOut(_Base):
+    job_id: int
+    title: Optional[str] = None
+    total: int
+    submitted: int
+    awaiting: int
+    no_record_of_a_send: int
+    submitted_without_send_record: int
+    # The number of candidates a reader must NOT describe as "not sent one".
+    unproven_absence: int
+    probed: int
+
+
+class CaseStudyProbeRequest(_Base):
+    application_id: int
+    # The assignment's own section names. Without them completeness is reported
+    # as unknown rather than guessed from the submission's own headings.
+    required_parts: Optional[list[str]] = None
+
+
+class CaseStudyMirrorPairOut(_Base):
+    """Two submissions sharing long verbatim runs. Carries the shared text and
+    NO cause: two candidates quoting the same paragraph of the assignment look
+    identical to two sharing an assistant."""
+
+    application_ids: list[int]
+    candidate_names: list[str] = []
+    shared_runs: int
+    examples: list[str]

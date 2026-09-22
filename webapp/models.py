@@ -27,6 +27,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    UniqueConstraint,
     func,
     text,
 )
@@ -61,6 +62,11 @@ CASE_STUDY_EVALUATION_BANDS = ("strong_yes", "yes", "borderline", "no", "disqual
 # Nugget's P1-P4: that is a separate skill with a separate rubric.
 CV_SCREEN_TIERS = ("shortlist", "maybe", "no_hire")
 
+# Imported from the service rather than restated, so the CHECK constraint and
+# the reconciliation logic cannot drift. There is deliberately no 'not_sent':
+# Markaz records no case-study send, so we can never assert one did not happen.
+from .services.case_study_tracking import STATUSES as CASE_STUDY_PROBE_STATUSES  # noqa: E402
+
 
 def _appuser_id() -> str:
     return "appuser-" + uuid4().hex
@@ -92,6 +98,10 @@ def _evaluation_id() -> str:
 
 def _cv_screen_id() -> str:
     return "cvs-" + uuid4().hex
+
+
+def _case_study_probe_id() -> str:
+    return "csp-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -705,5 +715,91 @@ class CVScreen(Base):
         Index("ix_cv_screen_job_id", "job_id"),
         # `coco`, never `public`: Markaz's Replit per-deploy schema push prunes
         # tables it does not recognise there.
+        {"schema": "coco"},
+    )
+
+
+class CaseStudyProbe(Base):
+    """The last time we went and LOOKED for one candidate's case study.
+
+    A measurement, not a judgement, so there is one row per application and a
+    new probe overwrites it -- unlike CVScreen, where an old score must be
+    retired rather than replaced. `probed_at` is how a reader knows whether to
+    trust it.
+
+    It exists because looking is expensive: the mailbox, the candidate's Drive
+    links and Markaz's own file API are three network round trips per
+    candidate, which cannot happen inside a page load for a job with eighty
+    applicants.
+
+    🔴 `send_found = False` DOES NOT MEAN NOT SENT. Markaz records no
+       case-study send anywhere (no `case_study_sent_at` column, and
+       `candidate_communications` carries 16 typed rows in total while
+       reporting 0 sends against 4-17 submissions per job), so a send is only
+       ever visible in Ayesha's mailbox. A probe that finds nothing means our
+       records are silent. `case_study_tracking.submission_status` encodes
+       this: the status is NO_RECORD_OF_A_SEND, and there is deliberately no
+       "not_sent".
+    """
+
+    __tablename__ = "case_study_probes"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_case_study_probe_id)
+
+    # One row per application: a probe replaces the previous one. The unique
+    # constraint is NAMED in __table_args__ rather than declared with
+    # unique=True, which produces an unnamed constraint that Postgres names
+    # itself and a later migration cannot refer to.
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    # What Markaz holds: the subset of CHANNELS that carried something.
+    channels: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+
+    # What the mailbox holds. `send_found=False` is "we could not find one".
+    send_found: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    send_subject: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    send_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    status: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # What reading the submission produced. `corpus_error` is set, and the rest
+    # left empty, when the submission exists but could not be read -- the same
+    # refuse-rather-than-degrade shape as CVScreen and cv_text.
+    corpus_chars: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    sources: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    corpus_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # The assembled submission text itself. Stored, rather than re-fetched,
+    # because the mirror check is a COHORT check: it compares every
+    # submission on a job against every other, and re-assembling each one
+    # costs three network round trips. More importantly, a mirror finding
+    # has to show the shared text -- a flag a human cannot check is an
+    # accusation -- and hashes alone cannot. Internal evaluation data,
+    # never sent anywhere; the original stays in Markaz and Drive.
+    corpus_text: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    flags: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    completeness: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+
+    probed_by: Mapped[str] = mapped_column(Text, nullable=False)
+    probed_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN (" + ",".join(f"'{s}'" for s in CASE_STUDY_PROBE_STATUSES) + ")",
+            name="ck_case_study_probe_status",
+        ),
+        # A send we claim to have found must say which message it was.
+        CheckConstraint(
+            "(NOT send_found) OR (send_subject IS NOT NULL AND send_at IS NOT NULL)",
+            name="ck_case_study_probe_send_is_evidenced",
+        ),
+        UniqueConstraint("application_id", name="uq_case_study_probe_application_id"),
+        Index("ix_case_study_probe_job_id", "job_id"),
         {"schema": "coco"},
     )

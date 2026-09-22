@@ -84,6 +84,7 @@ def ensure_app_tables() -> None:
     See docs/RAILWAY_DEPLOYMENT_LESSONS.md (incidents 2026-06-20/23/29)."""
     from .models import (  # local import avoids a cycle
         CaseStudyEvaluation,
+        CaseStudyProbe,
         CommEvidence,
         CVScreen,
         EvalBenchmark,
@@ -105,6 +106,7 @@ def ensure_app_tables() -> None:
             EvalBenchmark.__table__,
             CaseStudyEvaluation.__table__,
             CVScreen.__table__,
+            CaseStudyProbe.__table__,
         ],
         checkfirst=True,
     )
