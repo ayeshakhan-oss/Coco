@@ -85,6 +85,36 @@ def test_benchmark_carries_a_qa_gate():
     assert {"qa_approved_at", "qa_approved_by", "status"} <= cols
 
 
+def test_benchmark_status_check_constraint_is_built_from_the_locked_enum():
+    """EVAL_BENCHMARK_STATUSES was dead code (never referenced; the CHECK
+    inlined its own literal) -- it now BUILDS the constraint text, so editing
+    the tuple and forgetting the constraint (or vice versa) is no longer
+    possible within this file."""
+    from webapp.models import EVAL_BENCHMARK_STATUSES, EvalBenchmark
+
+    check = next(
+        c for c in EvalBenchmark.__table__.constraints
+        if getattr(c, "name", None) == "ck_eval_benchmark_status"
+    )
+    for status in EVAL_BENCHMARK_STATUSES:
+        assert f"'{status}'" in str(check.sqltext)
+
+
+def test_benchmark_carries_the_approved_implies_qa_approved_at_check_constraint():
+    """Migration 0011's whole point: the plan defines Rule 0 as 'a benchmark
+    row with qa_approved_at set', not status='approved' alone. This CHECK is
+    the database-level backstop for that -- see also the real-SQL Rule 0
+    gate test and _APPROVED_BENCHMARK_FOR_JOB_SQL's own matching filter."""
+    from webapp.models import EvalBenchmark
+
+    check = next(
+        c for c in EvalBenchmark.__table__.constraints
+        if getattr(c, "name", None) == "ck_eval_benchmark_approved_has_qa_approved_at"
+    )
+    sql = str(check.sqltext)
+    assert "qa_approved_at" in sql and "IS NOT NULL" in sql and "approved" in sql
+
+
 # ── Task 6: evaluation storage (webapp/models.py::CaseStudyEvaluation) ─────
 #
 # A scored evaluation persists what score_submission returned so
@@ -118,6 +148,65 @@ def test_case_study_evaluation_references_eval_benchmarks_by_foreign_key():
         for fk in col.foreign_keys
     }
     assert "coco.eval_benchmarks.id" in fks
+
+
+def test_case_study_evaluation_band_check_constraint_is_built_from_the_locked_enum():
+    """CASE_STUDY_EVALUATION_BANDS was dead code (never referenced; the CHECK
+    inlined its own literal) -- it now BUILDS the constraint text."""
+    from webapp.models import CASE_STUDY_EVALUATION_BANDS, CaseStudyEvaluation
+
+    check = next(
+        c for c in CaseStudyEvaluation.__table__.constraints
+        if getattr(c, "name", None) == "ck_case_study_evaluation_band"
+    )
+    for b in CASE_STUDY_EVALUATION_BANDS:
+        assert f"'{b}'" in str(check.sqltext)
+
+
+def test_case_study_evaluation_carries_rubric_and_corpus_provenance():
+    """Task 6 fix: which rubric text, and how much submission text, produced
+    this score must be answerable from the row alone (migration 0011)."""
+    from webapp.models import CaseStudyEvaluation
+
+    cols = {c.name for c in CaseStudyEvaluation.__table__.columns}
+    assert {"rubric_sha256", "corpus_chars"} <= cols
+    rubric_col = CaseStudyEvaluation.__table__.columns["rubric_sha256"]
+    corpus_col = CaseStudyEvaluation.__table__.columns["corpus_chars"]
+    assert rubric_col.nullable is False
+    assert corpus_col.nullable is False
+
+
+def _load_migration_module(revision_filename: str):
+    """Migration filenames start with a digit (e.g. `0011_...py`), which is
+    not a valid dotted-import name, so alembic itself loads them by file
+    path rather than `import`. Do the same here rather than assume the
+    module can be imported normally -- this genuinely exercises "the file
+    parses and defines what alembic needs", not just "a string exists"."""
+    import importlib.util
+    import os
+
+    path = os.path.join(
+        os.path.dirname(__file__), "..", "..", "alembic", "versions", revision_filename
+    )
+    spec = importlib.util.spec_from_file_location(revision_filename[:-3], path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_migration_0011_imports_and_chains_onto_0010():
+    """We were explicitly told not to run migrations here (port 5432 is
+    blocked from this machine; production migrations go through `railway
+    run`) -- this is the verification that IS possible: the module parses,
+    defines revision/down_revision/upgrade/downgrade, and its down_revision
+    points at exactly 0010 (never edits an existing migration's chain)."""
+    module = _load_migration_module(
+        "0011_eval_benchmark_qa_gate_and_rubric_provenance.py"
+    )
+    assert module.revision == "0011_eval_benchmark_qa_gate_and_rubric_provenance"
+    assert module.down_revision == "0010_case_study_evaluations"
+    assert callable(module.upgrade)
+    assert callable(module.downgrade)
 
 
 def test_validate_rejects_a_bad_score_set():
@@ -164,7 +253,7 @@ def test_total_and_band_are_computed_not_taken_from_the_model(monkeypatch):
         "total": 95,            # the model lying
         "band": "strong_yes",   # the model lying
     }
-    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model", "a" * 64))
 
     out = score_submission(
         corpus="submission text", benchmark_body="benchmark text",
@@ -178,7 +267,7 @@ def test_fabricated_data_flag_disqualifies_even_at_a_100_total(monkeypatch):
     from webapp.services import case_study_scoring as css
 
     payload = _good_response(scores=_all(5), flags=["fabricated_data"])
-    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model", "a" * 64))
 
     out = score_submission(
         corpus="submission text", benchmark_body="benchmark text",
@@ -197,7 +286,7 @@ def test_blank_evidence_citation_is_rejected(monkeypatch):
     bad_evidence = _good_evidence()
     bad_evidence["data_judgment"] = "   "  # whitespace only
     payload = {"scores": _all(3), "evidence": bad_evidence, "flags": []}
-    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model", "a" * 64))
 
     with pytest.raises(CaseStudyScoringError):
         score_submission(
@@ -219,7 +308,7 @@ def test_a_bare_value_error_from_the_model_call_is_retried_and_can_succeed(monke
         calls.append(kw)
         if len(calls) == 1:
             raise ValueError("Expecting value: line 1 column 1")
-        return good, "test-model"
+        return good, "test-model", "b" * 64
 
     monkeypatch.setattr(css, "_call_model", flaky)
     out = score_submission(
@@ -257,19 +346,47 @@ def test_score_submission_returns_the_full_locked_shape(monkeypatch):
     from webapp.services import case_study_scoring as css
 
     payload = _good_response(scores=_all(4))
-    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model", "a" * 64))
 
     out = score_submission(
         corpus="submission text", benchmark_body="benchmark text",
         candidate_name="Zara Khan", role="Growth Manager",
     )
-    assert set(out) == {"scores", "evidence", "flags", "total", "band", "model"}
+    assert set(out) == {
+        "scores", "evidence", "flags", "total", "band", "model",
+        "rubric_sha256", "corpus_chars",
+    }
     assert out["scores"] == _all(4)
     assert out["evidence"] == _good_evidence()
     assert out["flags"] == []
     assert out["total"] == 80.0
     assert out["band"] == "strong_yes"
     assert out["model"] == "test-model"
+    assert out["rubric_sha256"] == "a" * 64
+    assert out["corpus_chars"] == len("submission text")
+
+
+def test_score_submission_reports_the_rubric_hash_and_corpus_length_actually_used(monkeypatch):
+    """rubric_sha256 must be WHAT _call_model reported for that call (never
+    recomputed some other way here), and corpus_chars must be the length of
+    the EXACT corpus string handed to score_submission -- the same text the
+    model was actually shown, not some other count (e.g. the un-stripped
+    source before it was assembled)."""
+    from webapp.services import case_study_scoring as css
+
+    payload = _good_response()
+    captured_hash = "f" * 64
+    monkeypatch.setattr(
+        css, "_call_model", lambda **kw: (payload, "test-model", captured_hash)
+    )
+
+    corpus_text = "a rather specific submission body, forty-one chars long"
+    out = score_submission(
+        corpus=corpus_text, benchmark_body="benchmark text",
+        candidate_name="Zara Khan", role="Growth Manager",
+    )
+    assert out["rubric_sha256"] == captured_hash
+    assert out["corpus_chars"] == len(corpus_text)
 
 
 def test_unknown_flag_from_the_model_is_rejected(monkeypatch):
@@ -278,7 +395,7 @@ def test_unknown_flag_from_the_model_is_rejected(monkeypatch):
     from webapp.services import case_study_scoring as css
 
     payload = _good_response(flags=["not_a_real_flag"])
-    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model"))
+    monkeypatch.setattr(css, "_call_model", lambda **kw: (payload, "test-model", "a" * 64))
 
     with pytest.raises(CaseStudyScoringError):
         score_submission(
@@ -310,6 +427,64 @@ def test_case_study_prompt_builds_without_a_model():
     assert "Zara Khan" in user
 
 
+def test_rubric_sha256_matches_the_text_actually_embedded_in_the_system_prompt():
+    """rubric_sha256() must hash the SAME text system_prompt() embeds -- the
+    whole point of storing it is to say later which rubric revision produced
+    a score, so it cannot drift from what the model was actually shown."""
+    import hashlib
+
+    from webapp.prompts import case_study_prompt
+
+    expected = hashlib.sha256(case_study_prompt._rubric_text().encode("utf-8")).hexdigest()
+    got = case_study_prompt.rubric_sha256()
+    assert got == expected
+    assert len(got) == 64  # hex sha256
+    # Deterministic across calls within the process (the rubric file is
+    # lru_cache'd, so this must not vary call to call).
+    assert case_study_prompt.rubric_sha256() == got
+
+
+def test_call_model_refuses_immediately_when_get_drafter_returns_the_stub(monkeypatch):
+    """StubDrafter.draft() returns an email-shaped dict (title_line/greeting/
+    opening/sections/ps), never a scorecard -- calling it would burn a model
+    call, fail validate_scores on the first key, get retried (burning a
+    second), and surface as a confusing 'malformed scorecard' 422. Detect the
+    stub up front and refuse clearly instead, with no wasted call at all."""
+    from webapp.services import case_study_scoring as css
+    from webapp.services import drafting
+
+    monkeypatch.setattr(drafting, "get_drafter", lambda: drafting.StubDrafter())
+
+    with pytest.raises(drafting.DraftingUnavailable):
+        css._call_model(
+            corpus="submission text", benchmark_body="benchmark text",
+            candidate_name="Zara Khan", role="Growth Manager",
+        )
+
+
+def test_score_submission_does_not_retry_when_the_drafter_is_the_stub(monkeypatch):
+    """DraftingUnavailable out of _call_model must propagate immediately --
+    unlike a malformed/unparseable response, it is not retried (retrying
+    against a missing credential can never succeed)."""
+    from webapp.services import case_study_scoring as css
+    from webapp.services import drafting
+
+    calls = []
+
+    def fake_call_model(**kw):
+        calls.append(kw)
+        raise drafting.DraftingUnavailable("no credential; stub detected")
+
+    monkeypatch.setattr(css, "_call_model", fake_call_model)
+
+    with pytest.raises(drafting.DraftingUnavailable):
+        css.score_submission(
+            corpus="submission text", benchmark_body="benchmark text",
+            candidate_name="Zara Khan", role="Growth Manager",
+        )
+    assert len(calls) == 1
+
+
 # ── Submission retrieval (webapp/services/submissions.py) ──────────────────
 #
 # The core rule: an unreadable submission is REFUSED, never scored as a weak
@@ -331,8 +506,7 @@ from webapp.services.submissions import (  # noqa: E402
 
 
 def _ctx(**overrides):
-    base = dict(application_id=4242, candidate_name="Zara Khan",
-                candidate_email="zara@example.com", job_title="Growth Manager")
+    base = dict(application_id=4242)
     base.update(overrides)
     return SubmissionContext(**base)
 
@@ -621,6 +795,103 @@ def test_markaz_linked_documents_uses_drive_download_for_drive_urls():
     assert calls == [real_length_id]
     assert result[0].content == b"drive bytes"
     assert result[0].filename == "Case Study - Zara Khan.docx"
+
+
+# ── markaz_linked_documents failures are now LOGGED and SURFACED, not just
+# silently skipped (this is the PRIMARY channel for SMG submissions -- Rule
+# 26 -- so a failure here is not a minor best-effort miss). Mirrors the
+# treatment markaz_case_study_api's 401 already got.
+
+
+def test_markaz_linked_documents_logs_and_records_a_drive_download_failure(caplog):
+    import logging
+    real_length_id = "1AbC-XyZ9876543210abcdef"
+
+    def boom(file_id):
+        raise RuntimeError("Drive API quota exceeded")
+
+    ctx = _ctx(links=(f"https://drive.google.com/file/d/{real_length_id}/view",))
+    diagnostics: list[str] = []
+    with caplog.at_level(logging.WARNING, logger="webapp.submissions"):
+        result = markaz_linked_documents(ctx, drive_download=boom, diagnostics=diagnostics)
+
+    assert result == []  # still never raises -- one bad link must not abort the rest
+    assert any("Drive API quota exceeded" in r.message for r in caplog.records)
+    assert len(diagnostics) == 1
+    assert "Drive" in diagnostics[0] and "Drive API quota exceeded" in diagnostics[0]
+
+
+def test_markaz_linked_documents_logs_and_records_a_network_error(caplog):
+    import logging
+
+    def boom(url, timeout=15):
+        raise RuntimeError("Connection reset by peer")
+
+    ctx = _ctx(links=("https://markaz.taleemabad.com/uploads/case-study-99.docx",))
+    diagnostics: list[str] = []
+    with caplog.at_level(logging.WARNING, logger="webapp.submissions"):
+        result = markaz_linked_documents(ctx, http_get=boom, diagnostics=diagnostics)
+
+    assert result == []
+    assert any("Connection reset by peer" in r.message for r in caplog.records)
+    assert len(diagnostics) == 1
+    assert "Connection reset by peer" in diagnostics[0]
+
+
+def test_markaz_linked_documents_logs_and_records_a_non_200_response(caplog):
+    import logging
+
+    class FakeResponse:
+        status_code = 404
+        headers = {}
+        content = b""
+
+    def fake_get(url, timeout=15):
+        return FakeResponse()
+
+    ctx = _ctx(links=("https://markaz.taleemabad.com/uploads/case-study-99.docx",))
+    diagnostics: list[str] = []
+    with caplog.at_level(logging.WARNING, logger="webapp.submissions"):
+        result = markaz_linked_documents(ctx, http_get=fake_get, diagnostics=diagnostics)
+
+    assert result == []
+    assert any("404" in r.message for r in caplog.records)
+    assert len(diagnostics) == 1
+    assert "404" in diagnostics[0]
+
+
+def test_markaz_linked_documents_diagnostics_stays_empty_when_no_list_is_passed():
+    """Same contract as markaz_case_study_api: a direct caller that never
+    passes `diagnostics` must still just log and return [], never raise for
+    lack of somewhere to record itself."""
+
+    def boom(url, timeout=15):
+        raise RuntimeError("boom")
+
+    ctx = _ctx(links=("https://markaz.taleemabad.com/uploads/case-study-99.docx",))
+    result = markaz_linked_documents(ctx, http_get=boom)  # no diagnostics kwarg
+    assert result == []
+
+
+def test_markaz_linked_documents_failure_is_surfaced_through_corpus_for_via_bind_diagnostics():
+    """The same _bind_diagnostics wiring proven for markaz_case_study_api's
+    401 (see test_corpus_for_names_the_401_wall_in_its_refusal_message) must
+    also pick up markaz_linked_documents now that it accepts `diagnostics` --
+    a total refusal must name what actually went wrong on the PRIMARY SMG
+    channel, not just 'no source returned any content'."""
+    import functools
+
+    def boom(url, timeout=15):
+        raise RuntimeError("Connection reset by peer")
+
+    linked_fetcher = functools.partial(markaz_linked_documents, http_get=boom)
+    empty_fetcher = lambda ctx: []  # noqa: E731
+
+    ctx = _ctx(links=("https://markaz.taleemabad.com/uploads/case-study-99.docx",))
+    with pytest.raises(SubmissionUnreadable) as exc_info:
+        corpus_for(4242, context=ctx, fetchers=[empty_fetcher, linked_fetcher])
+
+    assert "Connection reset by peer" in str(exc_info.value)
 
 
 def test_markaz_case_study_api_treats_401_as_a_documented_wall_not_an_error():
@@ -931,10 +1202,17 @@ class _FakeCaseStudySession:
         an approved benchmark);
       - otherwise it DERIVES the answer from whatever EvalBenchmark rows the
         test `add()`-ed, emulating the real query's
-        `WHERE job_id = :job_id AND status = 'approved'
-         ORDER BY qa_approved_at DESC NULLS LAST LIMIT 1` -- so a test can
-        prove a DRAFT (or retired) benchmark is genuinely invisible to this
-        lookup, not just assert the SQL string contains the word 'approved'.
+        `WHERE job_id = :job_id AND status = 'approved' AND qa_approved_at
+         IS NOT NULL ORDER BY qa_approved_at DESC NULLS LAST LIMIT 1` -- so a
+        test can prove a DRAFT (or retired, or approved-but-never-actually-
+        qa'd) benchmark is genuinely invisible to this lookup, not just
+        assert the SQL string contains the word 'approved'.
+
+        This is still a Python re-implementation of the predicate, which is
+        exactly the gap the review flagged -- see
+        test_approved_benchmark_for_job_sql_executes_for_real_against_a_real_table,
+        which executes the ACTUAL imported SQL against a real (if minimal)
+        SQLite table instead of trusting this class to have gotten it right.
     """
 
     def __init__(self):
@@ -983,7 +1261,8 @@ class _FakeCaseStudySession:
             job_id = (params or {}).get("job_id")
             candidates = [
                 b for b in self._store.values()
-                if isinstance(b, EvalBenchmark) and b.job_id == job_id and b.status == "approved"
+                if isinstance(b, EvalBenchmark) and b.job_id == job_id
+                and b.status == "approved" and b.qa_approved_at is not None
             ]
             candidates.sort(key=lambda b: b.qa_approved_at or dt.datetime.min, reverse=True)
             row = {"id": candidates[0].id, "body": candidates[0].body} if candidates else None
@@ -1090,6 +1369,102 @@ def test_approve_benchmark_404_on_a_missing_id():
 # --- score: RULE 0 -----------------------------------------------------------
 
 
+def test_approved_benchmark_for_job_sql_executes_for_real_against_a_real_table():
+    """`_FakeCaseStudySession.execute` matches the SQL only by the substring
+    'FROM coco.eval_benchmarks' and then RE-IMPLEMENTS the predicate in
+    Python -- every test above that uses it would stay green even if the
+    literal in the module changed to `status = 'approve'`, the WHERE clause
+    were dropped entirely, or the schema were mistyped. A gate proved only
+    against a fake that encodes the author's own intent is not proved.
+
+    This EXECUTES the real, imported statement (never a pasted copy, so it
+    cannot drift from the module) against an in-memory SQLite database with
+    a minimal table matching the relevant `coco.eval_benchmarks` columns.
+    SQLite (3.30+; this environment ships 3.50) supports both the
+    schema-qualified table name (via `ATTACH DATABASE ... AS coco`) and
+    `ORDER BY ... NULLS LAST`, so the statement runs completely unmodified --
+    no fallback to structural/string parsing was needed.
+    """
+    import sqlite3
+
+    from webapp.routers.case_studies import _APPROVED_BENCHMARK_FOR_JOB_SQL
+
+    sql = str(_APPROVED_BENCHMARK_FOR_JOB_SQL)
+    # The statement really is schema-qualified and really does carry the
+    # Postgres NULLS LAST construct -- if a future edit dropped either, the
+    # execution below would simply stop proving anything about THIS query.
+    assert "coco.eval_benchmarks" in sql
+    assert "NULLS LAST" in sql
+
+    conn = sqlite3.connect(":memory:")
+    try:
+        conn.execute("ATTACH DATABASE ':memory:' AS coco")
+        conn.execute(
+            """
+            CREATE TABLE coco.eval_benchmarks (
+                id TEXT PRIMARY KEY,
+                job_id INTEGER NOT NULL,
+                body TEXT NOT NULL,
+                status TEXT NOT NULL,
+                qa_approved_at TEXT
+            )
+            """
+        )
+
+        def insert(id_, job_id, body, status, qa_approved_at):
+            conn.execute(
+                "INSERT INTO coco.eval_benchmarks "
+                "(id, job_id, body, status, qa_approved_at) VALUES (?, ?, ?, ?, ?)",
+                (id_, job_id, body, status, qa_approved_at),
+            )
+
+        def lookup(job_id):
+            return conn.execute(sql, {"job_id": job_id}).fetchone()
+
+        # (a) no benchmark row at all for job 7 -> not found.
+        assert lookup(7) is None
+
+        # (b) a DRAFT row for job 7 -> still not found.
+        insert("b-draft", 7, "draft body", "draft", None)
+        assert lookup(7) is None
+
+        # (c) a RETIRED row for job 7 (even with a qa_approved_at from when it
+        # was once approved) -> still not found; retirement, not approval, is
+        # the current state.
+        insert("b-retired", 7, "retired body", "retired", "2026-01-01T00:00:00+00:00")
+        assert lookup(7) is None
+
+        # A row for a DIFFERENT job must never leak into job 7's lookup.
+        insert("b-other-job", 99, "other job body", "approved", "2026-01-01T00:00:00+00:00")
+        assert lookup(7) is None
+        assert lookup(99) is not None
+
+        # (d) Rule 0 TIGHTENED to match the plan's own wording ("a benchmark
+        # row with qa_approved_at set", not status='approved' alone): an
+        # approved row with a NULL qa_approved_at must be REJECTED too, even
+        # though approve_benchmark() never actually produces one -- the SQL
+        # itself must not rely on that being true.
+        insert("b-approved-null-qa", 7, "approved but never actually qa'd", "approved", None)
+        assert lookup(7) is None
+
+        # (e) ACCEPTS only a genuinely approved, genuinely qa'd row.
+        insert("b-approved", 7, "the right body", "approved", "2026-01-02T00:00:00+00:00")
+        row = lookup(7)
+        assert row is not None
+        assert row[0] == "b-approved"
+        assert row[1] == "the right body"
+
+        # The ORDER BY ... DESC NULLS LAST ... LIMIT 1 really is exercised: a
+        # LATER-approved sibling for the same job must win over the one just
+        # inserted.
+        insert("b-approved-later", 7, "the newer right body", "approved", "2026-01-03T00:00:00+00:00")
+        row = lookup(7)
+        assert row[0] == "b-approved-later"
+        assert row[1] == "the newer right body"
+    finally:
+        conn.close()
+
+
 def test_score_refuses_with_409_when_no_approved_benchmark_exists_for_the_job(monkeypatch):
     """RULE 0. THE POINT OF THIS TASK. No approved benchmark row for the
     application's job -> 409, BEFORE the submission is ever fetched or
@@ -1153,6 +1528,39 @@ def test_score_refuses_409_for_a_draft_benchmark_too(monkeypatch):
     assert score_calls == []
 
 
+def test_score_refuses_409_for_an_approved_benchmark_with_no_qa_approved_at(monkeypatch):
+    """Rule 0, TIGHTENED (migration 0011): the plan defines Rule 0 as 'a
+    benchmark row with qa_approved_at set', not status='approved' alone.
+    `approve_benchmark` always sets both together, so this row should never
+    occur in practice (and migration 0011's CHECK constraint makes it
+    impossible in the real database) -- but the SCORING GATE must not rely
+    on that being true either; it must reject this shape on its own."""
+    import webapp.routers.case_studies as router_mod
+    from webapp.models import EvalBenchmark
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    score_calls = []
+    monkeypatch.setattr(router_mod, "score_submission", lambda **kw: score_calls.append(kw))
+
+    db = _FakeCaseStudySession()
+    db._store["benchmark-approved-no-qa"] = EvalBenchmark(
+        id="benchmark-approved-no-qa", job_id=7, kind="case_study", title="t", body="b",
+        created_by="x", status="approved", qa_approved_at=None,
+    )
+    # approved_benchmark_row is left at _UNSET, so execute() derives the
+    # answer from the store above.
+
+    with pytest.raises(HTTPException) as exc_info:
+        router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert exc_info.value.status_code == 409
+    assert "Rule 0" in exc_info.value.detail
+    assert score_calls == []
+
+
 def test_score_finds_an_approved_benchmark_via_the_store_derived_lookup_and_ignores_a_draft_sibling(
     monkeypatch,
 ):
@@ -1181,6 +1589,7 @@ def test_score_finds_an_approved_benchmark_via_the_store_derived_lookup_and_igno
         return {
             "scores": _all(4), "evidence": _good_evidence(), "flags": [],
             "total": 80.0, "band": "strong_yes", "model": "test-model",
+            "rubric_sha256": "a" * 64, "corpus_chars": 800,
         }
 
     monkeypatch.setattr(router_mod, "score_submission", fake_score_submission)
@@ -1269,6 +1678,7 @@ def test_score_succeeds_and_persists_the_evaluation_with_the_benchmark_actually_
         return {
             "scores": _all(4), "evidence": _good_evidence(), "flags": [],
             "total": 80.0, "band": "strong_yes", "model": "test-model",
+            "rubric_sha256": "c" * 64, "corpus_chars": 800,
         }
 
     monkeypatch.setattr(router_mod, "score_submission", fake_score_submission)
@@ -1284,6 +1694,10 @@ def test_score_succeeds_and_persists_the_evaluation_with_the_benchmark_actually_
     assert out["candidate_name"] == "Zara Khan"
     assert out["job_id"] == 7
     assert out["sources"] == ["Gmail attachment: case.docx"]
+    # The provenance score_submission returned is exactly what got persisted
+    # -- never recomputed or dropped on the way into CaseStudyEvaluation.
+    assert out["rubric_sha256"] == "c" * 64
+    assert out["corpus_chars"] == 800
     assert captured["benchmark_body"] == "the answer key body"
     assert captured["candidate_name"] == "Zara Khan"
     assert captured["role"] == "Growth Manager"
@@ -1313,6 +1727,7 @@ def test_score_maps_a_disqualifying_flag_all_the_way_through_to_the_persisted_ro
         lambda **kw: {
             "scores": _all(5), "evidence": _good_evidence(), "flags": ["fabricated_data"],
             "total": 100.0, "band": "disqualified", "model": "test-model",
+            "rubric_sha256": "d" * 64, "corpus_chars": 800,
         },
     )
 
@@ -1354,6 +1769,50 @@ def test_score_maps_drafting_unavailable_to_503_not_500(monkeypatch):
     assert exc_info.value.status_code == 503
 
 
+def test_score_maps_an_unexpected_exception_to_a_503_that_does_not_leak_its_detail(
+    monkeypatch, caplog,
+):
+    """A genuinely unexpected model/SDK failure (timeout, anthropic.APIError,
+    ...) must still surface as 503, like DraftingUnavailable -- but its raw
+    text must never reach the caller: it can carry SDK internals that have
+    no business in a user-visible response. The detail is LOGGED instead."""
+    import logging
+
+    import webapp.routers.case_studies as router_mod
+    from webapp.schemas import CaseStudyScoreRequest
+
+    monkeypatch.setattr(
+        router_mod.reads, "get_application", lambda db, app_id: _fake_case_study_app_row(app_id)
+    )
+    monkeypatch.setattr(
+        router_mod, "corpus_for",
+        lambda app_id, *, db=None: {
+            "text": "submission text " * 50, "sources": ["Gmail attachment: case.docx"],
+            "chars": 800, "usable": True,
+        },
+    )
+
+    sensitive_detail = "anthropic.APIConnectionError: leaked-internal-token=sk-secret-xyz"
+
+    def boom(**kw):
+        raise RuntimeError(sensitive_detail)
+
+    monkeypatch.setattr(router_mod, "score_submission", boom)
+
+    db = _FakeCaseStudySession()
+    db.approved_benchmark_row = {"id": "benchmark-1", "body": "b"}
+
+    with caplog.at_level(logging.ERROR, logger="webapp.case_studies"):
+        with pytest.raises(HTTPException) as exc_info:
+            router_mod.score(CaseStudyScoreRequest(application_id=555), db, {"id": "appuser-editor"})
+
+    assert exc_info.value.status_code == 503
+    assert sensitive_detail not in exc_info.value.detail
+    # ... but it IS on the server side, in the log (log.exception's own
+    # traceback), for whoever actually debugs this.
+    assert sensitive_detail in caplog.text
+
+
 # --- get_evaluation -----------------------------------------------------------
 
 
@@ -1376,7 +1835,9 @@ def test_get_evaluation_returns_the_persisted_row_exactly():
         candidate_name="Zara Khan", role="Growth Manager",
         scores=_all(3), evidence=_good_evidence(), flags=[],
         total=60.0, band="yes", model_name="test-model",
-        sources=["Gmail attachment: case.docx"], created_by="appuser-editor",
+        sources=["Gmail attachment: case.docx"],
+        rubric_sha256="e" * 64, corpus_chars=800,
+        created_by="appuser-editor",
     )
 
     out = router_mod.get_evaluation("cse-1", db, {"id": "appuser-editor"})
@@ -1385,6 +1846,8 @@ def test_get_evaluation_returns_the_persisted_row_exactly():
     assert out["band"] == "yes"
     assert out["model"] == "test-model"  # read off model_name, the renamed attribute
     assert out["benchmark_id"] == "benchmark-1"
+    assert out["rubric_sha256"] == "e" * 64
+    assert out["corpus_chars"] == 800
 
 
 # --- Rule 0 gate identity -----------------------------------------------------

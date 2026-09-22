@@ -501,7 +501,19 @@ class EvalBenchmark(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "status IN ('draft','approved','retired')", name="ck_eval_benchmark_status"
+            "status IN (" + ",".join(f"'{s}'" for s in EVAL_BENCHMARK_STATUSES) + ")",
+            name="ck_eval_benchmark_status",
+        ),
+        # The plan's own wording for Rule 0 is "a benchmark row with
+        # qa_approved_at set" -- not just status='approved'. Without this,
+        # an approved-but-null-qa_approved_at row was structurally possible
+        # even though approve_benchmark() never actually writes one; the
+        # scoring gate's SQL (_APPROVED_BENCHMARK_FOR_JOB_SQL) now also
+        # filters on qa_approved_at IS NOT NULL, so the two cannot diverge.
+        # Added in migration 0011 (this table predates it, from 0009).
+        CheckConstraint(
+            "status <> 'approved' OR qa_approved_at IS NOT NULL",
+            name="ck_eval_benchmark_approved_has_qa_approved_at",
         ),
         Index("ix_eval_benchmark_job_id", "job_id"),
         # Same reasoning as ValuesScorecardDraft above: `coco`, never `public`.
@@ -561,6 +573,19 @@ class CaseStudyEvaluation(Base):
     # exactly what was verified, mirroring corpus_for's own `sources` field.
     sources: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
 
+    # Which revision of the (mutable, unversioned)
+    # `.claude/skills/02_candidate-evaluation/case-study-scoring-rubric.md`
+    # actually produced this score -- an anchor edit between two rounds makes
+    # them scored on different scales, and without this a row cannot say
+    # which one it was (see webapp/prompts/case_study_prompt.rubric_sha256).
+    # Same audit reasoning as ValuesScorecardDraft.transcript_sha256.
+    rubric_sha256: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # How much submission text was actually scored (len() of the exact
+    # corpus string handed to the model) -- previously unanswerable from a
+    # persisted row.
+    corpus_chars: Mapped[int] = mapped_column(Integer, nullable=False)
+
     created_by: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
@@ -568,7 +593,7 @@ class CaseStudyEvaluation(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "band IN ('strong_yes','yes','borderline','no','disqualified')",
+            "band IN (" + ",".join(f"'{b}'" for b in CASE_STUDY_EVALUATION_BANDS) + ")",
             name="ck_case_study_evaluation_band",
         ),
         Index("ix_case_study_evaluation_application_id", "application_id"),

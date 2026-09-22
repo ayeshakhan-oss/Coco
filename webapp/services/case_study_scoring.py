@@ -128,14 +128,28 @@ def _call_model(*, corpus: str, benchmark_body: str, candidate_name: str, role: 
     here) reads DIMENSIONS/FLAGS/SCORES from this module, so the import has
     to happen after this module is fully defined.
 
-    Returns (parsed_json, model_name). Raises whatever the drafter raises
-    (DraftingUnavailable, an Anthropic SDK error, a JSON parse error from a
-    non-JSON reply) -- none of that is swallowed here.
+    Returns (parsed_json, model_name, rubric_sha256). Raises whatever the
+    drafter raises (DraftingUnavailable, an Anthropic SDK error, a JSON parse
+    error from a non-JSON reply) -- none of that is swallowed here.
     """
     from . import drafting
     from ..prompts import case_study_prompt
 
     drafter = drafting.get_drafter()
+    if isinstance(drafter, drafting.StubDrafter):
+        # StubDrafter.draft() returns an EMAIL-shaped dict (title_line/
+        # greeting/opening/sections/ps) -- never a scorecard. Calling it
+        # would burn a model "call", fail validate_scores/_validate_evidence
+        # on the very first key, get retried (burning a second), and finally
+        # surface as a confusing "Model returned a malformed scorecard" 422.
+        # Refuse up front with a clear message instead; get_drafter() only
+        # ever returns the stub when no credential is configured, dev-only.
+        raise drafting.DraftingUnavailable(
+            "No Anthropic credential configured: get_drafter() returned the "
+            "offline StubDrafter, whose output is an email-shaped placeholder, "
+            "never a scorecard. Set ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN "
+            "to score case studies."
+        )
     system = case_study_prompt.system_prompt()
     user = case_study_prompt.build_user_prompt(
         corpus=corpus, benchmark_body=benchmark_body,
@@ -151,7 +165,7 @@ def _call_model(*, corpus: str, benchmark_body: str, candidate_name: str, role: 
         attempt=0,
     )
     model_name = getattr(drafter, "model", None) or getattr(drafter, "name", "unknown")
-    return parsed, model_name
+    return parsed, model_name, case_study_prompt.rubric_sha256()
 
 
 def score_submission(*, corpus: str, benchmark_body: str, candidate_name: str, role: str) -> dict:
@@ -176,7 +190,8 @@ def score_submission(*, corpus: str, benchmark_body: str, candidate_name: str, r
     total, exactly like the pure rule above.
 
     Returns {"scores": {...}, "evidence": {...}, "flags": [...],
-    "total": float, "band": str, "model": str}.
+    "total": float, "band": str, "model": str, "rubric_sha256": str,
+    "corpus_chars": int}.
     """
     last_error: Optional[CaseStudyScoringError] = None
     attempts = 2  # one retry, per the rule: malformed -> retry once -> raise
@@ -187,7 +202,7 @@ def score_submission(*, corpus: str, benchmark_body: str, candidate_name: str, r
             # raised before this ever reaches CaseStudyScoringError territory)
             # is exactly as "malformed" as a well-formed JSON object with the
             # wrong shape, and must be retried the same way.
-            parsed, model_name = _call_model(
+            parsed, model_name, rubric_hash = _call_model(
                 corpus=corpus, benchmark_body=benchmark_body,
                 candidate_name=candidate_name, role=role,
             )
@@ -240,6 +255,8 @@ def score_submission(*, corpus: str, benchmark_body: str, candidate_name: str, r
             "total": total,
             "band": computed_band,
             "model": model_name,
+            "rubric_sha256": rubric_hash,
+            "corpus_chars": len(corpus),
         }
 
     # Both attempts were malformed. Never silently repair; raise the last

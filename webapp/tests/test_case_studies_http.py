@@ -168,6 +168,7 @@ def test_approver_can_still_reach_the_lower_editor_gate_on_score(client, monkeyp
         lambda **kw: {
             "scores": _all(4), "evidence": _good_evidence(), "flags": [],
             "total": 80.0, "band": "strong_yes", "model": "test-model",
+            "rubric_sha256": "a" * 64, "corpus_chars": 800,
         },
     )
     db = _FakeCaseStudySession()
@@ -180,6 +181,8 @@ def test_approver_can_still_reach_the_lower_editor_gate_on_score(client, monkeyp
     assert body["total"] == 80.0
     assert body["band"] == "strong_yes"
     assert body["benchmark_id"] == "benchmark-approved-http"
+    assert body["rubric_sha256"] == "a" * 64
+    assert body["corpus_chars"] == 800
 
 
 def test_approver_can_read_an_evaluation(client):
@@ -192,12 +195,17 @@ def test_approver_can_read_an_evaluation(client):
         candidate_name="Zara Khan", role="Growth Manager",
         scores=_all(3), evidence=_good_evidence(), flags=[],
         total=60.0, band="yes", model_name="test-model",
-        sources=["Gmail attachment: case.docx"], created_by="appuser-editor",
+        sources=["Gmail attachment: case.docx"],
+        rubric_sha256="b" * 64, corpus_chars=800,
+        created_by="appuser-editor",
     )
     _override_db(db)
     r = client.get(f"{PREFIX}/evaluations/cse-http-1")
     assert r.status_code == 200
-    assert r.json()["id"] == "cse-http-1"
+    body = r.json()
+    assert body["id"] == "cse-http-1"
+    assert body["rubric_sha256"] == "b" * 64
+    assert body["corpus_chars"] == 800
 
 
 # ---------------------------------------------------------------------------

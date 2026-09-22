@@ -77,9 +77,15 @@ router = APIRouter(prefix="/api/case-studies", tags=["case-studies"])
 # one benchmark row over time: a draft, a retired prior version, a later
 # revision). `qa_approved_at` -- not `created_at` -- orders these, since that is
 # the moment Rule 0 actually cleared.
+#
+# `AND qa_approved_at IS NOT NULL` matches the plan's own wording for Rule 0:
+# "a benchmark row with qa_approved_at set", not just status='approved' alone.
+# `approve_benchmark` always sets both together, and migration 0011 backs this
+# with a matching CHECK constraint on the table (ck_eval_benchmark_approved_
+# has_qa_approved_at) so the two cannot diverge.
 _APPROVED_BENCHMARK_FOR_JOB_SQL = text(
     "SELECT id, body FROM coco.eval_benchmarks "
-    "WHERE job_id = :job_id AND status = 'approved' "
+    "WHERE job_id = :job_id AND status = 'approved' AND qa_approved_at IS NOT NULL "
     "ORDER BY qa_approved_at DESC NULLS LAST LIMIT 1"
 )
 
@@ -126,6 +132,8 @@ def _evaluation_out(evaluation: CaseStudyEvaluation) -> dict:
         "band": evaluation.band,
         "model": evaluation.model_name,
         "sources": evaluation.sources,
+        "rubric_sha256": evaluation.rubric_sha256,
+        "corpus_chars": evaluation.corpus_chars,
         "created_by": evaluation.created_by,
         "created_at": evaluation.created_at,
     }
@@ -237,10 +245,17 @@ def score(
         # An unexpected model/SDK failure (timeout, anthropic.APIError, ...) is
         # not a predictable input error -- surface it as 503, like
         # DraftingUnavailable, never as an uncaught 500 with a stack trace.
+        # The exception detail is LOGGED, never handed to the caller: it can
+        # carry SDK internals that have no business in a user-visible
+        # response.
         log.exception(
             "score: unexpected scoring failure for application %s", body.application_id,
         )
-        raise HTTPException(503, f"Scoring unavailable: {exc}") from exc
+        raise HTTPException(
+            503,
+            "Scoring unavailable due to an unexpected error. Try again, or check "
+            "the server logs for detail.",
+        ) from exc
 
     evaluation = CaseStudyEvaluation(
         application_id=body.application_id,
@@ -255,6 +270,8 @@ def score(
         band=scored["band"],
         model_name=scored["model"],
         sources=corpus["sources"],
+        rubric_sha256=scored["rubric_sha256"],
+        corpus_chars=scored["corpus_chars"],
         created_by=user.get("id") or "",
     )
     db.add(evaluation)

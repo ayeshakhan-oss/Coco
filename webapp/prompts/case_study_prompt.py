@@ -21,6 +21,7 @@ written against an undefined rubric is worse than no score.
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
 from functools import lru_cache
@@ -155,6 +156,21 @@ RULES YOU MUST FOLLOW:
   unless its condition is actually met. Never invent a flag to be cautious.
 ========================================================================
 """
+
+
+def rubric_sha256() -> str:
+    """SHA-256 (hex) of the rubric text actually embedded in `system_prompt()`.
+
+    The rubric file is mutable and unversioned, so two scoring runs on
+    either side of an anchor edit are otherwise indistinguishable once
+    persisted -- this is what makes "which rubric text produced this score"
+    answerable later, the same audit reasoning
+    `ValuesScorecardDraft.transcript_sha256` exists for. Reads the same
+    `lru_cache`d text `system_prompt()` embeds, so a call right after
+    building a system prompt always reports the text that prompt actually
+    carried.
+    """
+    return hashlib.sha256(_rubric_text().encode("utf-8")).hexdigest()
 
 
 def system_prompt() -> str:

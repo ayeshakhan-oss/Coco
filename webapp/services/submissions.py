@@ -91,12 +91,18 @@ class RawAttachment:
 
 @dataclass(frozen=True)
 class SubmissionContext:
-    """Everything a fetcher needs to go find one application's submission."""
+    """Everything a fetcher needs to go find one application's submission.
+
+    Deliberately narrow: every fetcher below reads only `application_id` and
+    `links`. An earlier revision also carried `candidate_name`/
+    `candidate_email`/`job_title` (populated from the DB in
+    `_context_from_db`, below), but no fetcher, and no caller of
+    `corpus_for`, ever read them -- the candidate's name and role the router
+    actually uses come straight from `reads.get_application`, not from this
+    struct. Removed rather than left as unread dead weight.
+    """
 
     application_id: int
-    candidate_name: Optional[str] = None
-    candidate_email: Optional[str] = None
-    job_title: Optional[str] = None
     # Candidate-facing URLs already found in their own application text (cover
     # letter / custom answers / communication log) -- Drive share links or a
     # direct markaz.taleemabad.com/uploads/... link most often.
@@ -171,13 +177,25 @@ def markaz_linked_documents(
     *,
     http_get: Optional[Callable[..., "object"]] = None,
     drive_download: Optional[Callable[[str], tuple[str, bytes]]] = None,
+    diagnostics: Optional[list[str]] = None,
 ) -> list[RawAttachment]:
     """Follow Drive or direct Markaz-upload links from the candidate's own text.
 
-    SMG submissions arrive this way, not as attachments (Rule 26). A
-    `markaz.taleemabad.com/uploads/...` link answers HTTP 200 even when the file
-    is gone, serving the SPA's index.html -- so `content-type` is checked on
-    every fetch, never the status code alone.
+    SMG submissions arrive this way, not as attachments (Rule 26), which makes
+    this the PRIMARY channel for those submissions -- a failure here is not a
+    minor best-effort miss, it is very often the whole submission going dark.
+    A `markaz.taleemabad.com/uploads/...` link answers HTTP 200 even when the
+    file is gone, serving the SPA's index.html -- so `content-type` is checked
+    on every fetch, never the status code alone.
+
+    Every failure branch (a Drive download exception, a network exception, a
+    non-200 response) is logged at WARNING and, when the caller passes
+    `diagnostics` (the same `corpus_for`-owned list `markaz_case_study_api`
+    writes into via `_bind_diagnostics` -- see that function), recorded there
+    too, so a total refusal names what actually went wrong on this channel
+    instead of the indistinguishable "found nothing". The fetcher itself
+    still returns whatever it DID find rather than raising -- one bad link
+    must never abort the rest.
     """
     get = http_get or _default_http_get
     out: list[RawAttachment] = []
@@ -186,7 +204,15 @@ def markaz_linked_documents(
         if drive_id:
             try:
                 filename, content = (drive_download or _default_drive_download)(drive_id)
-            except Exception:  # noqa: BLE001 - one bad link must not abort the rest
+            except Exception as exc:  # noqa: BLE001 - one bad link must not abort the rest
+                log.warning(
+                    "markaz_linked_documents: Drive download failed for %s: %s: %s",
+                    url, type(exc).__name__, exc,
+                )
+                if diagnostics is not None:
+                    diagnostics.append(
+                        f"Drive: {url}: download failed: {type(exc).__name__}: {exc}"
+                    )
                 continue
             if content:
                 out.append(RawAttachment(origin=f"Drive: {url}", filename=filename, content=content))
@@ -194,9 +220,19 @@ def markaz_linked_documents(
 
         try:
             resp = get(url, timeout=15)
-        except Exception:  # noqa: BLE001 - network error on a best-effort link
+        except Exception as exc:  # noqa: BLE001 - network error on a best-effort link
+            log.warning(
+                "markaz_linked_documents: request failed for %s: %s: %s",
+                url, type(exc).__name__, exc,
+            )
+            if diagnostics is not None:
+                diagnostics.append(f"URL: {url}: request failed: {type(exc).__name__}: {exc}")
             continue
-        if getattr(resp, "status_code", None) != 200:
+        status = getattr(resp, "status_code", None)
+        if status != 200:
+            log.warning("markaz_linked_documents: %s returned HTTP %s", url, status)
+            if diagnostics is not None:
+                diagnostics.append(f"URL: {url}: HTTP {status}")
             continue
         content_type = (resp.headers.get("content-type") or "").lower()
         if "text/html" in content_type:
@@ -404,13 +440,16 @@ def corpus_for(
 def _context_from_db(db: Session, application_id: int) -> SubmissionContext:
     from .reads import answer_texts  # reuse, don't reimplement the Markaz answers shape
 
+    # The JOINs to candidates/jobs are kept even though none of their columns
+    # are selected: they double as an existence check on this application's
+    # candidate/job references. The candidate name, email and job title
+    # themselves are read straight from `reads.get_application` by the
+    # router, never from here -- see SubmissionContext's docstring.
     row = db.execute(
         sql_text(
             """
             SELECT a.cover_letter, a.custom_answers, a.canned_answers,
-                   a.communication_history,
-                   c.first_name, c.last_name, c.email,
-                   j.title AS job_title
+                   a.communication_history
             FROM applications a
             JOIN candidates c ON c.id = a.candidate_id
             JOIN jobs j ON j.id = a.job_id
@@ -422,8 +461,6 @@ def _context_from_db(db: Session, application_id: int) -> SubmissionContext:
 
     if not row:
         raise SubmissionUnreadable(f"no application found for id {application_id}")
-
-    name = " ".join(p for p in (row["first_name"], row["last_name"]) if p).strip() or None
 
     blob_parts: list[str] = [row.get("cover_letter") or ""]
     blob_parts.extend(answer_texts(row.get("custom_answers")))
@@ -437,13 +474,7 @@ def _context_from_db(db: Session, application_id: int) -> SubmissionContext:
 
     links = tuple(dict.fromkeys(_extract_links("\n".join(blob_parts))))
 
-    return SubmissionContext(
-        application_id=application_id,
-        candidate_name=name,
-        candidate_email=row["email"],
-        job_title=row["job_title"],
-        links=links,
-    )
+    return SubmissionContext(application_id=application_id, links=links)
 
 
 def _extract_links(blob: str) -> list[str]:

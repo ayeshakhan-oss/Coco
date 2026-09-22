@@ -498,5 +498,7 @@ class CaseStudyEvaluationOut(_Base):
     band: str
     model: str
     sources: list[str]
+    rubric_sha256: str
+    corpus_chars: int
     created_by: str
     created_at: Optional[dt.datetime] = None
