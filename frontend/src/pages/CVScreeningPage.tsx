@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { ChevronDown, FileText, Loader2 } from 'lucide-react'
 import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
+import { runScreenAll } from '../lib/screenAll'
 import type {
   CVScreen,
   CVScreenApplication,
@@ -54,6 +55,13 @@ export function CVScreeningPage() {
   const [openId, setOpenId] = useState<number | null>(null)
   const [screening, setScreening] = useState<number | null>(null)
   const [screenError, setScreenError] = useState<{ id: number; message: string } | null>(null)
+  // The outcome of the last whole-position run, shown until the next one
+  // starts. The run's own failures used to be written into `screenError` with
+  // id -1, which is rendered only against a row whose application_id matches,
+  // so it matched nothing: a run that died showed the user no message at all.
+  const [runOutcome, setRunOutcome] = useState<
+    { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; message?: string } | null
+  >(null)
 
   // Bumped whenever the selected job changes, and read back by every response
   // before it is applied, so a slow response for a job the user has navigated
@@ -86,6 +94,7 @@ export function CVScreeningPage() {
     setSummary(null)
     setOpenId(null)
     setScreenError(null)
+    setRunOutcome(null)
     Promise.all([api.cvScreenJobSummary(jobId), api.cvScreenApplications(jobId)])
       .then(([s, a]) => {
         if (genRef.current !== gen) return
@@ -143,11 +152,17 @@ export function CVScreeningPage() {
   // model call of roughly 15 seconds, so 74 candidates is about 20 minutes
   // and no single HTTP request survives that. This loops, so progress is
   // visible and the run can be stopped.
+  //
+  // 🔴 The loop itself lives in lib/screenAll.ts and RETRIES. A fifty-minute
+  // run of this page died at 236 of 410 on 2026-09-23 because Railway
+  // redeployed underneath it and one dead request used to end the run.
   const [runAll, setRunAll] = useState<{
     done: number
     total: number
     skipped: number
     stopping: boolean
+    retrying: number
+    retryInSeconds: number
   } | null>(null)
   const stopRef = useRef(false)
 
@@ -156,48 +171,57 @@ export function CVScreeningPage() {
     const gen = genRef.current
     const total = summary?.unscreened ?? rows.filter((r) => !r.screen).length
     stopRef.current = false
-    setRunAll({ done: 0, total, skipped: 0, stopping: false })
+    setRunAll({ done: 0, total, skipped: 0, stopping: false, retrying: 0, retryInSeconds: 0 })
     setScreenError(null)
+    setRunOutcome(null)
 
-    let after: number | null = null
-    let done = 0
-    let skipped = 0
-    try {
-      for (;;) {
-        if (stopRef.current || genRef.current !== gen) break
-        const batch = await api.cvScreenBatch(jobId, after)
-        if (genRef.current !== gen) return
+    // The stat boxes are refreshed as the run goes, not only at the end. They
+    // used to be refreshed once, after the loop, INSIDE the try -- so a run
+    // that ended on an error left them frozen at whatever they read when the
+    // page was opened. Ayesha's page said 67 screened while the database held
+    // 236, which is why a run that had done most of the work looked like one
+    // that had barely started.
+    const refreshSummary = () => {
+      if (jobId === null) return
+      api
+        .cvScreenJobSummary(jobId)
+        .then((s) => genRef.current === gen && setSummary(s))
+        .catch(() => undefined)
+    }
 
-        done += batch.screened.length
-        skipped += batch.skipped.length
-        after = batch.last_application_id
-
+    const result = await runScreenAll({
+      runBatch: (after) => api.cvScreenBatch(jobId, after),
+      shouldStop: () => stopRef.current,
+      isAbandoned: () => genRef.current !== gen,
+      onBatch: (batch) => {
         const byId = new Map(batch.screened.map((x) => [x.application_id, x]))
         setRows((prev) =>
           prev.map((r) => (byId.has(r.application_id)
             ? { ...r, screen: byId.get(r.application_id)! }
             : r)),
         )
-        setRunAll({ done, total, skipped, stopping: stopRef.current })
+        refreshSummary()
+      },
+      onProgress: (p) =>
+        setRunAll({
+          done: p.done,
+          total,
+          skipped: p.skipped,
+          stopping: stopRef.current,
+          retrying: p.retrying,
+          retryInSeconds: p.retryInSeconds,
+        }),
+    })
 
-        if (batch.remaining === 0) break
-        // A batch that screened nothing and skipped nothing would spin.
-        if (batch.screened.length === 0 && batch.skipped.length === 0) break
-      }
-      const s = await api.cvScreenJobSummary(jobId)
-      if (genRef.current === gen) setSummary(s)
-    } catch (e) {
-      if (genRef.current !== gen) return
-      setScreenError({
-        id: -1,
-        message:
-          e instanceof ApiError
-            ? e.message.replace(/^\d+:\s*/, '')
-            : 'The run stopped unexpectedly. Anything already screened is saved.',
-      })
-    } finally {
-      if (genRef.current === gen) setRunAll(null)
-    }
+    if (genRef.current !== gen) return
+    setRunAll(null)
+    refreshSummary()
+    setRunOutcome({
+      kind: result.error ? 'error' : result.stopped ? 'stopped' : 'done',
+      done: result.done,
+      skipped: result.skipped,
+      message: result.error ?? undefined,
+    })
   }
 
   const boxes = summary
@@ -273,7 +297,9 @@ export function CVScreeningPage() {
 
           {/* Run the whole position. The per-row Screen button is for one
               candidate; this is how a position actually gets screened. */}
-          {!summary.jd_error && (summary.unscreened > 0 || runAll) && (
+          {/* `runOutcome` keeps the panel alive after a run that finished the
+              position, so the result is still readable once unscreened hits 0. */}
+          {!summary.jd_error && (summary.unscreened > 0 || runAll || runOutcome) && (
             <div className="mt-4 rounded-xl border border-hairline bg-surface p-4">
               {runAll ? (
                 <>
@@ -286,6 +312,14 @@ export function CVScreeningPage() {
                       {runAll.skipped > 0 && (
                         <span className="text-xs text-warning">
                           {runAll.skipped} could not be read
+                        </span>
+                      )}
+                      {/* A redeploy takes the server away for minutes. Say so,
+                          or a waiting run reads as a frozen page. */}
+                      {runAll.retrying > 0 && (
+                        <span className="text-xs text-warning">
+                          Lost the server. Retrying in {runAll.retryInSeconds}s (attempt{' '}
+                          {runAll.retrying})
                         </span>
                       )}
                     </div>
@@ -317,6 +351,10 @@ export function CVScreeningPage() {
                     from here.
                   </p>
                 </>
+              ) : summary.unscreened === 0 ? (
+                <div className="text-sm font-semibold text-ink">
+                  Every CV on this position has been read.
+                </div>
               ) : (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
@@ -337,6 +375,46 @@ export function CVScreeningPage() {
                   >
                     Screen all {summary.unscreened}
                   </button>
+                </div>
+              )}
+
+              {/* How the last run ended, said out loud. A run that failed used
+                  to leave nothing on screen at all. */}
+              {!runAll && runOutcome && (
+                <div
+                  className={`mt-3 rounded-lg border px-3 py-2 text-xs ${
+                    runOutcome.kind === 'error'
+                      ? 'border-danger/30 bg-danger/5 text-danger'
+                      : 'border-hairline bg-elevated text-ink-muted'
+                  }`}
+                >
+                  {runOutcome.kind === 'error' ? (
+                    <>
+                      <span className="font-semibold">
+                        The run stopped after {runOutcome.done} candidate
+                        {runOutcome.done === 1 ? '' : 's'}.
+                      </span>{' '}
+                      {runOutcome.message} Everything screened so far is saved. Starting again
+                      picks up from where it stopped.
+                    </>
+                  ) : (
+                    <>
+                      {runOutcome.kind === 'stopped' ? 'Stopped' : 'Finished'} after{' '}
+                      {runOutcome.done} candidate{runOutcome.done === 1 ? '' : 's'}.
+                      {runOutcome.skipped > 0 && (
+                        <>
+                          {' '}
+                          <span className="text-warning">
+                            {runOutcome.skipped} CV{runOutcome.skipped === 1 ? '' : 's'} could not
+                            be read and {runOutcome.skipped === 1 ? 'needs' : 'need'} a person.
+                          </span>{' '}
+                          A CV that will not open is a document problem, not a weak candidate, so
+                          {runOutcome.skipped === 1 ? ' it stays' : ' they stay'} counted as
+                          unscreened.
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </div>
