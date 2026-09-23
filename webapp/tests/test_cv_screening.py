@@ -20,6 +20,12 @@ from webapp.services.cv_screening import CVScreeningError
 
 ALL = {c["key"] for c in cs.CRITERIA}
 
+# Long enough to clear MIN_SCREENABLE_WORDS. Tests that are about the retry
+# path or the result shape must not also be accidentally testing the
+# extraction floor.
+A_READABLE_CV = "experience delivering teacher training across districts " * 60
+A_JOB_DESCRIPTION = "we need a coach who can run school visits and observations " * 20
+
 
 def _scores(**over) -> dict:
     base = {k: 3 for k in ALL}
@@ -201,9 +207,50 @@ def test_screen_refuses_without_a_cv():
         cs.screen_cv(cv_text="   ", job_description="JD", candidate_name="A", role="R")
 
 
+def test_screen_refuses_a_cv_that_did_not_extract():
+    """🔴 Measured against the 16 people actually hired or offered CPD Coach:
+    the three thinnest extracted CVs (117, 238 and 296 words) were all returned
+    as confident REJECTIONS. Hina Fatima Jafri was hired; her CV extracts to 788
+    characters and came back 36% no_hire, and a re-run on the same input gave
+    her 6.5 relevant years one time and 0.2 the next, because there was nothing
+    to read either time.
+
+    A CV that did not parse is an extraction failure, never a weak candidate --
+    the same distinction Nugget's UNUSABLE tier exists for."""
+    with pytest.raises(CVScreeningError, match="extraction failure"):
+        cs.screen_cv(cv_text="word " * 117, job_description=A_JOB_DESCRIPTION,
+                     candidate_name="A", role="R")
+
+
+def test_the_floor_is_counted_in_words_not_characters():
+    """The pypdf letter-spacing defect produced 20,089 characters carrying 15
+    words on 12% of one cohort. A character floor waves that straight through."""
+    with pytest.raises(CVScreeningError, match="only 1 words"):
+        cs.screen_cv(cv_text="x" * 20_089, job_description=A_JOB_DESCRIPTION,
+                     candidate_name="A", role="R")
+
+
+def test_the_screening_floor_sits_far_above_the_is_there_text_floor():
+    """cv_text.MIN_USABLE_CHARS asks "is this text at all". It is not, and was
+    never meant to be, the bar for screening somebody out."""
+    from webapp.services import cv_text as ct
+
+    assert cs.MIN_SCREENABLE_WORDS >= 250
+    assert cs.MIN_SCREENABLE_WORDS * 4 > ct.MIN_USABLE_CHARS
+
+
+def test_a_real_length_cv_is_not_refused(monkeypatch):
+    """The median hired candidate's CV extracted to 590 words; the floor must
+    not reject an ordinary one."""
+    monkeypatch.setattr(cs, "_call_model", lambda **kw: (_good_response(), "m", "sha", False))
+    out = cs.screen_cv(cv_text="word " * 590, job_description=A_JOB_DESCRIPTION,
+                       candidate_name="A", role="R")
+    assert out["tier"] == "maybe"
+
+
 def test_screen_refuses_without_a_job_description():
     with pytest.raises(CVScreeningError, match="no job description"):
-        cs.screen_cv(cv_text="a real CV", job_description="", candidate_name="A", role="R")
+        cs.screen_cv(cv_text=A_READABLE_CV, job_description="", candidate_name="A", role="R")
 
 
 def test_screen_computes_match_and_tier_in_code_and_ignores_the_models_own(monkeypatch):
@@ -215,7 +262,7 @@ def test_screen_computes_match_and_tier_in_code_and_ignores_the_models_own(monke
     )
     monkeypatch.setattr(cs, "_call_model", lambda **kw: (response, "m", "sha", False))
 
-    out = cs.screen_cv(cv_text="cv", job_description="jd", candidate_name="A", role="R")
+    out = cs.screen_cv(cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R")
     assert out["match"] == 20.0          # a fifth of every weight, honestly earned
     assert out["tier"] == "no_hire"
     assert "recommendation" not in out
@@ -231,7 +278,7 @@ def test_screen_retries_once_with_a_fresh_call_then_raises(monkeypatch):
 
     monkeypatch.setattr(cs, "_call_model", bad)
     with pytest.raises(CVScreeningError):
-        cs.screen_cv(cv_text="cv", job_description="jd", candidate_name="A", role="R")
+        cs.screen_cv(cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R")
     assert len(calls) == 2, "a malformed response is retried exactly once"
 
 
@@ -239,7 +286,7 @@ def test_screen_recovers_if_the_second_call_is_well_formed(monkeypatch):
     responses = [({"scores": {"skills": 3}}, "m", "sha", False),
                  (_good_response(), "m", "sha", False)]
     monkeypatch.setattr(cs, "_call_model", lambda **kw: responses.pop(0))
-    out = cs.screen_cv(cv_text="cv", job_description="jd", candidate_name="A", role="R")
+    out = cs.screen_cv(cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R")
     assert out["tier"] == "maybe" and out["match"] == 60.0
 
 
@@ -249,7 +296,7 @@ def test_unparseable_json_is_wrapped_not_leaked(monkeypatch):
 
     monkeypatch.setattr(cs, "_call_model", boom)
     with pytest.raises(CVScreeningError, match="not parseable JSON"):
-        cs.screen_cv(cv_text="cv", job_description="jd", candidate_name="A", role="R")
+        cs.screen_cv(cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R")
 
 
 def test_the_result_records_what_it_was_built_from(monkeypatch):
@@ -257,9 +304,9 @@ def test_the_result_records_what_it_was_built_from(monkeypatch):
         cs, "_call_model", lambda **kw: (_good_response(), "claude-x", "abc123", True)
     )
     out = cs.screen_cv(
-        cv_text="c" * 4321, job_description="jd", candidate_name="A", role="R"
+        cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R"
     )
-    assert out["cv_chars"] == 4321
+    assert out["cv_chars"] == len(A_READABLE_CV)
     assert out["cv_truncated"] is True
     assert out["model"] == "claude-x"
     assert out["sop_sha256"] == "abc123"

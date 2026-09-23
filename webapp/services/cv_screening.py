@@ -60,6 +60,30 @@ TIER_MAYBE_MIN = 50.0
 READ_LIMIT = 15_000
 TRUNCATION_FLOOR = 10_000
 
+# 🔴 THE FLOOR FOR MAKING A DECISION, measured not guessed.
+#
+# `cv_text.MIN_USABLE_CHARS` is 400: the bar that separates "there is text" from
+# "there is no text". It is NOT the bar for screening someone out. Measured
+# 2026-09-23 against the 16 people Taleemabad actually hired or made an offer to
+# for CPD Coach, their extracted CVs ran 117 to 1,389 words, median 590 -- and
+# the three thinnest (117, 238 and 296 words) were all scored as confident
+# rejections. Hina Fatima Jafri, who was HIRED, extracted to 788 characters and
+# came back 36% no_hire; re-run on the same input the model gave her 6.5 years
+# relevant experience one time and 0.2 the next, because there was nothing there
+# to read either time.
+#
+# A CV that did not parse is a scanning or extraction failure, never a weak
+# candidate. Nugget's engine learned the same thing and keeps a separate tier
+# for it (memory/nugget_technical_screening_adopted_2026_09_15.md): a candidate
+# whose CV would not open looks identical, in the tier column, to one who was
+# read and found unsuitable. Below this, screening REFUSES and asks for a human.
+#
+# Counted in WORDS, not characters: the pypdf letter-spacing defect produced
+# 20,089 characters carrying 15 words on 12% of one cohort
+# (memory/webapp_cv_grounding_audit_2026_09_11.md), which sails past any length
+# check in characters.
+MIN_SCREENABLE_WORDS = 250
+
 
 class CVScreeningError(ValueError):
     """The screening result does not match the locked shape."""
@@ -242,6 +266,14 @@ def screen_cv(
         raise CVScreeningError(
             "no CV text: refusing to screen. A CV screen must be grounded in the "
             "candidate's actual CV, never in a name and a role title."
+        )
+    words = len(cv_text.split())
+    if words < MIN_SCREENABLE_WORDS:
+        raise CVScreeningError(
+            f"only {words} words of CV text could be read (need "
+            f"{MIN_SCREENABLE_WORDS}+). This is an extraction failure, not a weak "
+            "candidate: a scanned or image-only CV, or one the parser could not "
+            "open. Refusing to screen -- it needs a human to read the original."
         )
     if not job_description or not job_description.strip():
         raise CVScreeningError(
