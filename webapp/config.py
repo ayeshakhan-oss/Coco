@@ -38,7 +38,17 @@ class Settings(BaseSettings):
     # are set. See services/drafting.get_drafter().
     anthropic_api_key: Optional[str] = None
     anthropic_auth_token: Optional[str] = None
-    anthropic_model: str = "claude-opus-4-8"
+    # Haiku 4.5, because that is what the production credential can actually
+    # serve. Probed 2026-09-23 against Railway's own ANTHROPIC_AUTH_TOKEN:
+    # claude-sonnet-5 and claude-opus-5 both return 429 rate_limit_error,
+    # claude-haiku-4-5 answers. The old default here was `claude-opus-4-8`, a
+    # retired id, so an unset ANTHROPIC_MODEL burned two failed calls falling
+    # back before landing on the model that works.
+    #
+    # ⚠️ CLAUDE.md Rule 30 says the model is "Now Sonnet 5". That is no longer
+    # true and Ayesha confirmed it on 2026-09-23: the plan behind this token
+    # does not give us Sonnet or Opus.
+    anthropic_model: str = "claude-haiku-4-5-20251001"
 
     # Choose the evidence in a separate pass before the letter is written, so
     # the writer is not selecting, judging what is safe to repeat, planning and

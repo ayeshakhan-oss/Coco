@@ -120,6 +120,7 @@ export function KCDEvaluationPage() {
           {jobs.map((j) => (
             <option key={j.job_pk} value={j.job_pk}>
               {j.title ?? `Job ${j.job_pk}`}
+              {j.job_status && j.job_status !== 'Active' ? ` (${j.job_status})` : ''}
             </option>
           ))}
         </select>

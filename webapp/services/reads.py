@@ -454,12 +454,23 @@ def hiring_manager_email(db: Session, job_pk: Optional[int]) -> Optional[str]:
     return row["email"] if row and row["email"] else None
 
 
-def list_jobs(db: Session, active_only: bool = True) -> list[dict]:
+def list_jobs(db: Session, active_only: bool = False) -> list[dict]:
+    """Every position ever posted on Markaz, live ones first.
+
+    Defaults to ALL jobs (Ayesha, 2026-09-23: "I want all the positions to be
+    live on Railway which were ever posted on Markaz or are still live").
+    Exactly 1 of 32 jobs carries job_status='Active' -- CPD Coach -- so an
+    active-only default gave every job picker in the app a one-item dropdown,
+    and screening, scoring and tracking all happen on CLOSED positions.
+
+    Ordered so the live ones sit at the top rather than alphabetically among
+    the closed; the caller shows job_status so the two are tellable apart.
+    """
     sql = """
     SELECT j.id AS job_pk, j.job_id AS job_code, j.title, j.job_status, j.department
     FROM jobs j
     {where}
-    ORDER BY j.title
+    ORDER BY (j.job_status = 'Active') DESC, j.title
     """.format(where="WHERE j.job_status = 'Active'" if active_only else "")
     rows = db.execute(text(sql)).mappings().all()
     return [dict(r) for r in rows]

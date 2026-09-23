@@ -278,7 +278,9 @@ class AnthropicDrafter:
     # id would otherwise turn every draft into an empty scaffold with only a
     # generic "unavailable" note - a confusing failure for the person clicking
     # Generate, and one they cannot diagnose.
-    _FALLBACK_MODELS = ("claude-sonnet-4-5", "claude-haiku-4-5-20251001")
+    # Current ids, ending on the one this account is known to serve. Probed
+    # 2026-09-23: sonnet-5 and opus-5 both 429 on the production credential.
+    _FALLBACK_MODELS = ("claude-sonnet-5", "claude-haiku-4-5-20251001")
 
     @staticmethod
     def _is_unknown_model(exc: Exception) -> bool:

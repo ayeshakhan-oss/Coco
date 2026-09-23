@@ -163,7 +163,7 @@ export function CVScreeningPage() {
       ) : !jobsLoaded ? (
         <Spinner label="Loading jobs…" />
       ) : jobs.length === 0 ? (
-        <p className="text-sm text-ink-dim">No active jobs found.</p>
+        <p className="text-sm text-ink-dim">No positions found.</p>
       ) : (
         <select
           value={jobId ?? ''}
@@ -173,6 +173,7 @@ export function CVScreeningPage() {
           {jobs.map((j) => (
             <option key={j.job_pk} value={j.job_pk}>
               {j.title ?? `Job ${j.job_pk}`}
+              {j.job_status && j.job_status !== 'Active' ? ` (${j.job_status})` : ''}
             </option>
           ))}
         </select>

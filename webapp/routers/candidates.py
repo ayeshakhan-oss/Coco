@@ -109,7 +109,9 @@ def candidate_scorecard(
 
 @router.get("/jobs", response_model=list[JobItem])
 def list_jobs(
-    active_only: bool = Query(True),
+    # All positions, not just active ones. Only CPD Coach is 'Active', so this
+    # picker (Case Study Scoring's benchmark job selector) showed one job.
+    active_only: bool = Query(False),
     db: Session = Depends(get_db),
     _user: dict = Depends(get_current_user),
 ):
