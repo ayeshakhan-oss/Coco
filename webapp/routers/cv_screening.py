@@ -74,7 +74,7 @@ _APPLICATIONS_FOR_JOB_SQL = text(
     """
     SELECT a.id                AS application_id,
            a.status            AS status,
-           a.created_at        AS applied_at,
+           a.applied_at        AS applied_at,
            a.custom_answers    AS custom_answers,
            a.canned_answers    AS canned_answers,
            c.first_name        AS first_name,
@@ -84,7 +84,10 @@ _APPLICATIONS_FOR_JOB_SQL = text(
     FROM applications a
     JOIN candidates c ON c.id = a.candidate_id
     WHERE a.job_id = :job_id
-    ORDER BY a.created_at DESC NULLS LAST, a.id DESC
+    -- applications has applied_at, NOT created_at. Ordering by a
+    -- non-existent column is a 500 on every request, and a fake-session
+    -- test cannot see it because the SQL is never executed.
+    ORDER BY a.applied_at DESC NULLS LAST, a.id DESC
     """
 )
 
@@ -182,7 +185,12 @@ def get_criteria(user: dict = Depends(get_current_user)):
 
 @router.get("/jobs")
 def list_jobs(
-    active_only: bool = Query(True),
+    # Defaults to ALL jobs, not just active ones. Exactly 1 of 32 jobs carries
+    # job_status='Active' (CPD Coach); every position anyone actually screens
+    # for -- SMG, both Growth Manager roles, Regional Manager -- is 'Closed'.
+    # An active-only default showed a one-item dropdown and made the page
+    # useless.
+    active_only: bool = Query(False),
     db: Session = Depends(get_db),
     user: dict = Depends(get_current_user),
 ):

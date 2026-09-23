@@ -30,7 +30,7 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 - Core philosophy (honesty of method, not outputs)
 - 12-step workflow
 - Prerequisites (assignment, datasets, framework, ideal answer)
-- Scoring scale (1-5 per criterion, fractional scores required)
+- Scoring scale (0-5 per criterion, fractional scores required, real zero)
 - Integrity checks (content dump, mirror problem, foundational misread)
 - Incomplete submission handling
 - Report format specification
@@ -62,8 +62,21 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 - 4 = Strong (correct and thoughtful, minor gaps)
 - 3 = Adequate (correct but surface-level)
 - 2 = Weak (missed key patterns, AI as content generator)
-- 1 = Absent or fundamentally wrong
-- 0 = Not submitted (incomplete submissions only)
+- 1 = Barely touched
+- 0 = Absent, or fundamentally wrong
+
+🔒 **UPDATED 2026-09-23 (Ayesha).** This scale used to bottom out at 1, with 0
+reserved for a non-submission. That put a **20% floor** under every criterion: an
+answer that was missing or simply wrong still banked a fifth of the marks, and across
+a whole scorecard that is free marks nobody earned. It is the defect in CLAUDE.md
+Rule 27 that put **all 25 RM case studies above the published 70% bar**. An absent or
+wrong answer now scores **0**.
+
+The worry that produced the old floor — that weak work would look identical to a
+non-submission — is handled **structurally instead**, and better: an incomplete
+submission is pulled out of the ranking entirely, marked with an asterisk, and never
+ranked against a complete one (see Incomplete Submission Handling below). A zero on a
+submitted case study and a candidate who submitted nothing are never in the same list.
 
 **Scoring Rules (Non-Negotiable):**
 - Use fractional scores (4.5, 3.5, 1.5) for candidates between whole numbers
@@ -116,13 +129,13 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 **Evaluate (Per Candidate):**
 1. Extract text from submission (preserve structure)
 2. Read FULL submission (no skimming)
-3. Score 1-5 per criterion (use fractional scores: 4.5, 3.5, etc.)
+3. Score 0-5 per criterion (use fractional scores: 4.5, 3.5, etc.)
    - 5: exceptional insight grounded in data
    - 4: strong, correct, thoughtful
    - 3: adequate, surface-level
    - 2: weak, missed patterns, AI content-gen
-   - 1: absent/wrong
-   - 0: not submitted (incomplete only)
+   - 1: barely touched
+   - 0: absent, or fundamentally wrong
 4. Apply weights from framework; calculate final %
 
 **Integrity Checks (Mandatory):**
@@ -188,7 +201,7 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 - Handle separately (see Incomplete Submission Handling above)
 
 **STEP 6: SCORE EACH CANDIDATE**
-- Apply scoring scale (1-5 per criterion)
+- Apply scoring scale (0-5 per criterion, with a real zero)
 - Use fractional scores (4.5, 3.5, etc.)
 - Strong reasoning + minor errors = high score
 - Weak reasoning + correct output = lower score
@@ -234,7 +247,7 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 | Didn't read ideal answer | Lack calibration on what good looks like | Read gold standard before candidates |
 | Didn't read datasets | Can't evaluate data honesty | Open CSVs, understand patterns yourself |
 | Whole numbers only (no fractions) | Compresses meaningful differences | Use 4.5, 3.5, fractional scores |
-| Score 0 for weak work | Looks identical to unsubmitted | Use 1 for weak; 0 only for missing |
+| Refusing to score 0 | A 1-out-of-5 floor gives every wrong answer 20% and inflates the whole cohort | Score 0 when the answer is absent or wrong. Incomplete SUBMISSIONS are handled separately, not by the scale |
 | Paraphrase instead of quote | Loses signal in exact wording | Quote exact lines when strong |
 | No transfer skill naming | Hidden sector-gap penalties | Explicitly name what transfers/doesn't |
 | Vague confidence levels | Verdict stands alone | Add "high confidence in X, uncertain on Y" |
@@ -268,7 +281,7 @@ This skill orchestrates the detailed procedure for KCD case study evaluation. Th
 - [ ] Read ideal/reference answer (calibration)
 - [ ] Read each candidate submission fully
 - [ ] Identified incomplete submissions (pulled out before scoring)
-- [ ] Scored each candidate (1-5 per criterion, fractional allowed)
+- [ ] Scored each candidate (0-5 per criterion, fractional allowed, real zero used where earned)
 - [ ] Integrity checks completed (content dump, mirror, misread)
 - [ ] Report built with verdict + score + confidence + tagline + narrative
 - [ ] Narratives tied to specific exercises (E1/E2/E3...)

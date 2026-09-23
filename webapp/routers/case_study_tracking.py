@@ -81,7 +81,8 @@ _APPLICATIONS_SQL = text(
     FROM applications a
     JOIN candidates c ON c.id = a.candidate_id
     WHERE a.job_id = :job_id
-    ORDER BY a.created_at DESC NULLS LAST, a.id DESC
+    -- applications has applied_at, NOT created_at.
+    ORDER BY a.applied_at DESC NULLS LAST, a.id DESC
     """
 )
 

@@ -6,8 +6,7 @@ tested directly.
 
 SOURCE OF TRUTH: .claude/skills/02_candidate-evaluation/kcd-evaluation.md.
 
-⚠️ TWO THINGS THE SOP DOES NOT SETTLE, IMPLEMENTED AND FLAGGED RATHER THAN
-   GUESSED SILENTLY:
+⚠️ ONE THING THE SOP STILL DOES NOT SETTLE, AND ONE NOW SETTLED:
 
    1. THE CRITERIA. The SOP names the framework "Knowledge, Capacity, Design"
       and then refers to a "default 6 criteria" that is enumerated nowhere in
@@ -17,13 +16,12 @@ SOURCE OF TRUTH: .claude/skills/02_candidate-evaluation/kcd-evaluation.md.
       override both. If Ayesha's six exist somewhere, they replace DIMENSIONS
       and nothing else changes.
 
-   2. THE BOTTOM OF THE SCALE. The SOP says "1 = Absent or fundamentally
-      wrong", reserves 0 for "not submitted", and its Common Mistakes table
-      says to "use 1 for weak; 0 only for missing". That is precisely the
-      anchor floor CLAUDE.md Rule 27 forbids: it puts a 20% floor under every
-      dimension, and on the RM round 20 free points per question put all 25
-      candidates above a published bar. The scale here therefore runs 0 to 5
-      WITH A REAL ZERO.
+   2. THE BOTTOM OF THE SCALE. ✅ SETTLED 2026-09-23 (Ayesha): the scale runs
+      0 to 5 WITH A REAL ZERO, and kcd-evaluation.md has been updated to match.
+      It previously bottomed out at 1 with 0 reserved for "not submitted",
+      which is the anchor floor CLAUDE.md Rule 27 forbids: a 20% floor under
+      every dimension, and on the RM round that put all 25 candidates above a
+      published bar.
 
       The SOP's underlying worry -- that weak work would "look identical to
       unsubmitted" -- is already answered structurally and not by the scale:
