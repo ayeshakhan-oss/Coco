@@ -5,7 +5,7 @@ from __future__ import annotations
 import datetime as dt
 from typing import Any, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class _Base(BaseModel):
@@ -771,3 +771,30 @@ class KCDCohortOut(_Base):
     note: Optional[str] = None
     gwc_threshold: float
     advancing: int
+
+
+class CVScreenSkippedOut(_Base):
+    """A candidate the batch could not screen. RETURNED, never dropped: a CV
+    that would not open must be visible as needing a human, not absent."""
+
+    application_id: int
+    reason: str
+
+
+class CVScreenBatchRequest(_Base):
+    job_id: int
+    # A small slice per request. Each CV is a model call of roughly 15 seconds,
+    # so a whole position in one request would exceed any HTTP timeout.
+    limit: int = Field(default=4, ge=1, le=10)
+    # Cursor: the highest application id already processed. It is what makes
+    # the loop terminate, since a candidate whose CV cannot be read never gets
+    # a screen row and would otherwise be handed back for ever.
+    after: Optional[int] = None
+
+
+class CVScreenBatchOut(_Base):
+    job_id: int
+    screened: list[CVScreenOut] = []
+    skipped: list[CVScreenSkippedOut] = []
+    last_application_id: Optional[int] = None
+    remaining: int

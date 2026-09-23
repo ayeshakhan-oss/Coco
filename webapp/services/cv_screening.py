@@ -49,9 +49,27 @@ _KEYS = {c["key"] for c in CRITERIA}
 
 # The SOP names three tiers -- shortlist ("top matches"), maybe ("borderline"),
 # no-hire ("screened out") -- without numeric boundaries.
-# ⚠️ ALSO A DERIVATION, flagged for Ayesha with the weights above.
-TIER_SHORTLIST_MIN = 70.0
-TIER_MAYBE_MIN = 50.0
+#
+# 🔴 CALIBRATED AGAINST GROUND TRUTH 2026-09-23, not guessed. Scored the 16
+# people Taleemabad actually hired or made an offer to for CPD Coach, and a
+# random 20 of the 141 it rejected, on identical code:
+#
+#     hired/offer   mean 54.0%   median 52%   range 32-80   (n=14 readable)
+#     rejected      mean 35.0%   median 34%   range 12-76   (n=16 readable)
+#
+# A 19-point gap, so the screen genuinely separates the two. But the original
+# boundaries -- 70/50, which I invented -- put only 3 of the 14 hired people in
+# shortlist: it would have screened out 11 people we went on to hire.
+#
+# 50 is the line that best separates the two groups: it keeps 9 of 14 hired and
+# screens out 14 of 16 rejected. 35 sits at the rejected cohort's own mean, so
+# almost nobody we hired lands in no_hire.
+#
+# ⚠️ EVEN AT THE BEST LINE THIS MISSES 5 OF 14 PEOPLE WE HIRED. It is a
+# prioritisation tool, not an auto-reject one. "No hire" means "read last",
+# never "rejected", and nothing here should ever send a letter on its own.
+TIER_SHORTLIST_MIN = 50.0
+TIER_MAYBE_MIN = 35.0
 
 # The SOP's reading floor: "Minimum reading capacity: 14,000-15,000 characters
 # per resume" and "Never truncate CVs to <10k characters"

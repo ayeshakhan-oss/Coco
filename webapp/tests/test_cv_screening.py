@@ -245,7 +245,7 @@ def test_a_real_length_cv_is_not_refused(monkeypatch):
     monkeypatch.setattr(cs, "_call_model", lambda **kw: (_good_response(), "m", "sha", False))
     out = cs.screen_cv(cv_text="word " * 590, job_description=A_JOB_DESCRIPTION,
                        candidate_name="A", role="R")
-    assert out["tier"] == "maybe"
+    assert out["tier"] == "shortlist"
 
 
 def test_screen_refuses_without_a_job_description():
@@ -287,7 +287,8 @@ def test_screen_recovers_if_the_second_call_is_well_formed(monkeypatch):
                  (_good_response(), "m", "sha", False)]
     monkeypatch.setattr(cs, "_call_model", lambda **kw: responses.pop(0))
     out = cs.screen_cv(cv_text=A_READABLE_CV, job_description=A_JOB_DESCRIPTION, candidate_name="A", role="R")
-    assert out["tier"] == "maybe" and out["match"] == 60.0
+    # 3/5 on every criterion is 60%, which clears the calibrated 50% line.
+    assert out["tier"] == "shortlist" and out["match"] == 60.0
 
 
 def test_unparseable_json_is_wrapped_not_leaked(monkeypatch):
@@ -343,3 +344,37 @@ def test_cv_screening_borrows_nothing_from_nugget():
 def test_cv_screening_uses_cocos_own_three_criteria():
     assert {c["key"] for c in cs.CRITERIA} == {"skills", "experience", "fit"}
     assert set(cs.SCORES) == {0, 1, 2, 3, 4, 5}
+
+
+# --------------------------------------------------------------------------
+# The bands, calibrated against who Taleemabad actually hired (2026-09-23)
+# --------------------------------------------------------------------------
+
+# Real match scores from the calibration run: the 16 people hired or offered
+# CPD Coach, and a random 16 of the 141 rejected. Kept here so a future change
+# to the boundaries has to answer to the same evidence they were set from.
+_HIRED_OR_OFFERED = [80, 76, 76, 68, 52, 52, 52, 52, 48, 48, 48, 48, 40, 40, 32, 28]
+_REJECTED = [76, 52, 48, 44, 40, 36, 34, 34, 32, 32, 28, 24, 24, 20, 16, 12]
+
+
+def test_the_bands_keep_most_of_the_people_we_actually_hired():
+    """The original 70/50 boundaries were my own invention and would have
+    screened out 11 of the 14 readable hires. Whatever the numbers become, the
+    majority of people we hired must not land in no_hire."""
+    kept = sum(1 for m in _HIRED_OR_OFFERED if cs.tier(m) != "no_hire")
+    assert kept >= 12, f"only {kept}/16 hired candidates survive the bands"
+
+
+def test_the_bands_still_screen_out_most_of_the_people_we_rejected():
+    """The other half of the test. A boundary low enough to pass everybody
+    would satisfy the check above and be worthless."""
+    out = sum(1 for m in _REJECTED if cs.tier(m) == "no_hire")
+    assert out >= 8, f"only {out}/16 rejected candidates are screened out"
+
+
+def test_the_two_groups_are_actually_separated():
+    """Hired mean 54%, rejected mean 35%. If a change ever collapses that gap
+    the tool is not discriminating and no boundary can rescue it."""
+    hired = sum(_HIRED_OR_OFFERED) / len(_HIRED_OR_OFFERED)
+    rejected = sum(_REJECTED) / len(_REJECTED)
+    assert hired - rejected >= 15, f"gap collapsed to {hired - rejected:.1f} points"

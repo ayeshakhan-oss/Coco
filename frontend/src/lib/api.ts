@@ -11,6 +11,7 @@ import type {
   CurrentUser,
   CVScreen,
   CVScreenApplication,
+  CVScreenBatch,
   CVScreenCriterion,
   CVScreenJobSummary,
   DraftContent,
@@ -223,6 +224,8 @@ export const api = {
     get<CVScreen[]>(`/api/cv-screening/screens?application_id=${applicationId}`),
   cvScreen: (application_id: number) =>
     post<CVScreen>('/api/cv-screening/screen', { application_id }),
+  cvScreenBatch: (job_id: number, after: number | null, limit = 4) =>
+    post<CVScreenBatch>('/api/cv-screening/screen-batch', { job_id, after, limit }),
 
 
   // --- Case-study tracking (who submitted, who has not, what the pool shares) ---

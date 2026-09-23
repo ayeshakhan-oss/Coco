@@ -138,6 +138,68 @@ export function CVScreeningPage() {
       })
   }
 
+  // --- Screen the whole position -------------------------------------
+  // The server does a few candidates per request on purpose: each CV is a
+  // model call of roughly 15 seconds, so 74 candidates is about 20 minutes
+  // and no single HTTP request survives that. This loops, so progress is
+  // visible and the run can be stopped.
+  const [runAll, setRunAll] = useState<{
+    done: number
+    total: number
+    skipped: number
+    stopping: boolean
+  } | null>(null)
+  const stopRef = useRef(false)
+
+  const screenWholePosition = async () => {
+    if (jobId === null || runAll) return
+    const gen = genRef.current
+    const total = summary?.unscreened ?? rows.filter((r) => !r.screen).length
+    stopRef.current = false
+    setRunAll({ done: 0, total, skipped: 0, stopping: false })
+    setScreenError(null)
+
+    let after: number | null = null
+    let done = 0
+    let skipped = 0
+    try {
+      for (;;) {
+        if (stopRef.current || genRef.current !== gen) break
+        const batch = await api.cvScreenBatch(jobId, after)
+        if (genRef.current !== gen) return
+
+        done += batch.screened.length
+        skipped += batch.skipped.length
+        after = batch.last_application_id
+
+        const byId = new Map(batch.screened.map((x) => [x.application_id, x]))
+        setRows((prev) =>
+          prev.map((r) => (byId.has(r.application_id)
+            ? { ...r, screen: byId.get(r.application_id)! }
+            : r)),
+        )
+        setRunAll({ done, total, skipped, stopping: stopRef.current })
+
+        if (batch.remaining === 0) break
+        // A batch that screened nothing and skipped nothing would spin.
+        if (batch.screened.length === 0 && batch.skipped.length === 0) break
+      }
+      const s = await api.cvScreenJobSummary(jobId)
+      if (genRef.current === gen) setSummary(s)
+    } catch (e) {
+      if (genRef.current !== gen) return
+      setScreenError({
+        id: -1,
+        message:
+          e instanceof ApiError
+            ? e.message.replace(/^\d+:\s*/, '')
+            : 'The run stopped unexpectedly. Anything already screened is saved.',
+      })
+    } finally {
+      if (genRef.current === gen) setRunAll(null)
+    }
+  }
+
   const boxes = summary
     ? [
         { label: 'Total applications', value: summary.total },
@@ -208,6 +270,78 @@ export function CVScreeningPage() {
               once every CV has been read.
             </p>
           )}
+
+          {/* Run the whole position. The per-row Screen button is for one
+              candidate; this is how a position actually gets screened. */}
+          {!summary.jd_error && (summary.unscreened > 0 || runAll) && (
+            <div className="mt-4 rounded-xl border border-hairline bg-surface p-4">
+              {runAll ? (
+                <>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2.5 text-sm text-ink">
+                      <Loader2 className="h-4 w-4 animate-spin text-blurple" />
+                      <span className="font-medium">
+                        Reading CVs: {runAll.done} of {runAll.total}
+                      </span>
+                      {runAll.skipped > 0 && (
+                        <span className="text-xs text-warning">
+                          {runAll.skipped} could not be read
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-secondary text-xs"
+                      disabled={runAll.stopping}
+                      onClick={() => {
+                        stopRef.current = true
+                        setRunAll((r) => (r ? { ...r, stopping: true } : r))
+                      }}
+                    >
+                      {runAll.stopping ? 'Stopping after this batch…' : 'Stop'}
+                    </button>
+                  </div>
+                  <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-elevated">
+                    <div
+                      className="h-full rounded-full bg-blurple transition-all"
+                      style={{
+                        width: `${runAll.total ? Math.round((runAll.done / runAll.total) * 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                  {/* Nothing is lost by stopping: each candidate is saved as
+                      they finish, and starting again picks up where it left off. */}
+                  <p className="mt-2 text-xs text-ink-dim">
+                    Each CV takes about 15 seconds. Every candidate is saved as they
+                    finish, so stopping loses nothing and starting again continues
+                    from here.
+                  </p>
+                </>
+              ) : (
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-ink">
+                      Screen this whole position
+                    </div>
+                    <p className="text-xs text-ink-muted">
+                      {summary.unscreened} candidate{summary.unscreened === 1 ? '' : 's'} still
+                      to read, roughly{' '}
+                      {Math.max(1, Math.round((summary.unscreened * 15) / 60))} minutes. You can
+                      stop at any point.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm"
+                    onClick={screenWholePosition}
+                  >
+                    Screen all {summary.unscreened}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
         </>
       )}
 

@@ -728,3 +728,17 @@ export interface KCDEvaluationInput {
   second_evaluator?: string | null
   second_total?: number | null
 }
+
+export interface CVScreenSkipped {
+  application_id: number
+  reason: string
+}
+
+export interface CVScreenBatch {
+  job_id: number
+  screened: CVScreen[]
+  // Candidates the batch could not screen. Shown, never dropped.
+  skipped: CVScreenSkipped[]
+  last_application_id: number | null
+  remaining: number
+}

@@ -49,10 +49,13 @@ from ..deps import get_current_user, require_editor
 from ..models import CVScreen
 from ..schemas import (
     CVScreenApplicationOut,
+    CVScreenBatchOut,
+    CVScreenBatchRequest,
     CVScreenCriterionOut,
     CVScreenJobSummaryOut,
     CVScreenOut,
     CVScreenRequest,
+    CVScreenSkippedOut,
 )
 from ..services import reads
 from ..services.cv_screening import CRITERIA, CVScreeningError, screen_cv
@@ -334,6 +337,102 @@ def list_screens(
     return [_screen_out(r) for r in rows]
 
 
+class _Skip(Exception):
+    """This candidate cannot be screened, and that is not a failure of the run."""
+
+    def __init__(self, reason: str):
+        super().__init__(reason)
+        self.reason = reason
+
+
+def _job_and_jd(db: Session, job_id: int):
+    job = db.execute(_JOB_SQL, {"job_id": job_id}).mappings().first()
+    if not job:
+        raise HTTPException(404, f"Job {job_id} not found")
+    try:
+        jd = to_text(job["description"], job_id=job_id)
+    except JobDescriptionUnreadable as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return job, jd, hashlib.sha256(jd.encode("utf-8")).hexdigest()
+
+
+def _screen_and_store(
+    db: Session, application_id: int, *, job_id: int, job, jd: str, jd_sha: str,
+    created_by: str,
+) -> CVScreen:
+    """Screen one application and persist it, superseding any earlier screen.
+
+    Shared by the single-candidate endpoint and the batch runner so the two can
+    never drift into scoring the same person differently. Raises `_Skip` for a
+    candidate who cannot be screened (no CV, or a CV that did not extract), so a
+    batch can record them and carry on instead of aborting.
+    """
+    app_row = reads.get_application(db, application_id)
+    if not app_row:
+        raise _Skip("application not found")
+
+    evidence = reads.get_cv_evidence(db, application_id)
+    cv = evidence.get("cv_text")
+    if not cv:
+        raise _Skip(evidence.get("cv_error") or "no CV on file")
+
+    candidate_name = " ".join(
+        p for p in (app_row.get("first_name"), app_row.get("last_name")) if p
+    ).strip() or "the candidate"
+    role = (app_row.get("job_title") or job["title"] or "the role").strip()
+
+    try:
+        result = screen_cv(
+            cv_text=cv, job_description=jd, candidate_name=candidate_name, role=role
+        )
+    except CVScreeningError as exc:
+        # A CV that did not extract is a document problem, not a weak candidate,
+        # and must never be stored as a low score.
+        if "extraction failure" in str(exc):
+            raise _Skip(str(exc)) from exc
+        raise
+
+    row = CVScreen(
+        application_id=application_id,
+        job_id=job_id,
+        candidate_name=candidate_name,
+        role=role,
+        scores=result["scores"],
+        evidence=result["evidence"],
+        strengths=result["strengths"],
+        gaps=result["gaps"],
+        total_experience_years=result["total_experience_years"],
+        relevant_experience_years=result["relevant_experience_years"],
+        relevant_experience_note=result["relevant_experience_note"],
+        match=result["match"],
+        tier=result["tier"],
+        model_name=result["model"],
+        sop_sha256=result["sop_sha256"],
+        jd_sha256=jd_sha,
+        cv_chars=result["cv_chars"],
+        cv_truncated=result["cv_truncated"],
+        # Set explicitly rather than left to the column default: the ORM applies
+        # that at flush time, so until then the attribute is None and anything
+        # reading the object back sees a row that is neither current nor
+        # superseded.
+        is_current=True,
+        created_by=created_by,
+    )
+    db.add(row)
+    db.flush()  # assigns row.id, which the superseded rows must point at
+
+    # Rule 25: retire the previous number in the same transaction that creates
+    # its replacement, so there is never a moment with two current screens.
+    db.execute(
+        text(
+            "UPDATE coco.cv_screens SET is_current = false, superseded_by = :new_id "
+            "WHERE application_id = :application_id AND is_current AND id <> :new_id"
+        ),
+        {"new_id": row.id, "application_id": application_id},
+    )
+    return row
+
+
 @router.post("/screen", response_model=CVScreenOut)
 def screen(
     body: CVScreenRequest,
@@ -350,34 +449,19 @@ def screen(
     if job_id is None:
         raise HTTPException(422, f"Application {body.application_id} has no job on record")
 
-    job = db.execute(_JOB_SQL, {"job_id": job_id}).mappings().first()
-    if not job:
-        raise HTTPException(404, f"Job {job_id} not found")
+    job, jd, jd_sha = _job_and_jd(db, job_id)
 
     try:
-        jd = to_text(job["description"], job_id=job_id)
-    except JobDescriptionUnreadable as exc:
-        raise HTTPException(422, str(exc)) from exc
-
-    evidence = reads.get_cv_evidence(db, body.application_id)
-    cv = evidence.get("cv_text")
-    if not cv:
+        row = _screen_and_store(
+            db, body.application_id, job_id=job_id, job=job, jd=jd, jd_sha=jd_sha,
+            created_by=user.get("id") or "",
+        )
+    except _Skip as exc:
         raise HTTPException(
             422,
-            "Cannot screen this candidate: "
-            + (evidence.get("cv_error") or "no CV on file")
-            + ". A CV screen must be grounded in the candidate's actual CV.",
-        )
-
-    candidate_name = " ".join(
-        p for p in (app_row.get("first_name"), app_row.get("last_name")) if p
-    ).strip() or "the candidate"
-    role = (app_row.get("job_title") or job["title"] or "the role").strip()
-
-    try:
-        result = screen_cv(
-            cv_text=cv, job_description=jd, candidate_name=candidate_name, role=role
-        )
+            f"Cannot screen this candidate: {exc.reason}. A CV screen must be "
+            "grounded in the candidate's actual CV.",
+        ) from exc
     except DraftingUnavailable as exc:
         raise HTTPException(503, f"Screening unavailable: {exc}") from exc
     except CVScreeningError as exc:
@@ -385,53 +469,116 @@ def screen(
     except Exception as exc:
         # An unexpected model/SDK failure is not a predictable input error.
         # The detail is LOGGED, never returned: it can carry SDK internals.
-        log.exception(
-            "screen: unexpected failure for application %s", body.application_id
-        )
+        log.exception("screen: unexpected failure for application %s", body.application_id)
         raise HTTPException(
             503,
             "Screening unavailable due to an unexpected error. Try again, or "
             "check the server logs for detail.",
         ) from exc
 
-    row = CVScreen(
-        application_id=body.application_id,
-        job_id=job_id,
-        candidate_name=candidate_name,
-        role=role,
-        scores=result["scores"],
-        evidence=result["evidence"],
-        strengths=result["strengths"],
-        gaps=result["gaps"],
-        total_experience_years=result["total_experience_years"],
-        relevant_experience_years=result["relevant_experience_years"],
-        relevant_experience_note=result["relevant_experience_note"],
-        match=result["match"],
-        tier=result["tier"],
-        model_name=result["model"],
-        sop_sha256=result["sop_sha256"],
-        jd_sha256=hashlib.sha256(jd.encode("utf-8")).hexdigest(),
-        cv_chars=result["cv_chars"],
-        cv_truncated=result["cv_truncated"],
-        # Set explicitly rather than left to the column default: the ORM
-        # applies that at flush time, so until then the attribute is None
-        # and anything reading the object back sees a row that is neither
-        # current nor superseded.
-        is_current=True,
-        created_by=user.get("id") or "",
-    )
-    db.add(row)
-    db.flush()  # assigns row.id, which the superseded rows must point at
-
-    # Rule 25: retire the previous number in the same transaction that creates
-    # its replacement, so there is never a moment with two current screens.
-    db.execute(
-        text(
-            "UPDATE coco.cv_screens SET is_current = false, superseded_by = :new_id "
-            "WHERE application_id = :application_id AND is_current AND id <> :new_id"
-        ),
-        {"new_id": row.id, "application_id": body.application_id},
-    )
     db.commit()
     db.refresh(row)
     return _screen_out(row)
+
+
+# Applications on a job that still have no current screen, after a cursor.
+# The CURSOR is what makes a batch terminate: a candidate whose CV cannot be
+# read never gets a screen row, so a "next unscreened" query alone would hand
+# back the same person for ever.
+_UNSCREENED_AFTER_SQL = text(
+    """
+    SELECT a.id
+    FROM applications a
+    WHERE a.job_id = :job_id
+      AND a.id > :after
+      AND NOT EXISTS (
+          SELECT 1 FROM coco.cv_screens s
+          WHERE s.application_id = a.id AND s.is_current
+      )
+    ORDER BY a.id
+    LIMIT :limit
+    """
+)
+
+_UNSCREENED_REMAINING_SQL = text(
+    """
+    SELECT COUNT(*) FROM applications a
+    WHERE a.job_id = :job_id
+      AND a.id > :after
+      AND NOT EXISTS (
+          SELECT 1 FROM coco.cv_screens s
+          WHERE s.application_id = a.id AND s.is_current
+      )
+    """
+)
+
+
+@router.post("/screen-batch", response_model=CVScreenBatchOut)
+def screen_batch(
+    body: CVScreenBatchRequest,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """Screen the next few unscreened candidates on a job.
+
+    Deliberately a SMALL slice per request rather than a whole position. Each CV
+    is a model call of roughly 15 seconds, so a 74-candidate position is about
+    20 minutes and a 367-candidate one is over an hour, far past any HTTP
+    timeout. The caller loops on `remaining`, which gives real progress instead
+    of a request that appears to hang and then dies.
+
+    Every candidate it could not screen is RETURNED, not silently dropped: a CV
+    that would not open must be visible as needing a human, never absent.
+    """
+    job, jd, jd_sha = _job_and_jd(db, body.job_id)
+    created_by = user.get("id") or ""
+    after = body.after or 0
+
+    ids = [
+        r[0] for r in db.execute(
+            _UNSCREENED_AFTER_SQL,
+            {"job_id": body.job_id, "after": after, "limit": body.limit},
+        ).all()
+    ]
+
+    screened, skipped = [], []
+    for application_id in ids:
+        try:
+            row = _screen_and_store(
+                db, application_id, job_id=body.job_id, job=job, jd=jd,
+                jd_sha=jd_sha, created_by=created_by,
+            )
+            db.commit()
+            db.refresh(row)
+            screened.append(_screen_out(row))
+        except _Skip as exc:
+            db.rollback()
+            skipped.append(CVScreenSkippedOut(
+                application_id=application_id, reason=exc.reason,
+            ))
+        except DraftingUnavailable as exc:
+            # No credential is not a per-candidate problem; stopping the whole
+            # batch is the honest response.
+            db.rollback()
+            raise HTTPException(503, f"Screening unavailable: {exc}") from exc
+        except Exception as exc:  # noqa: BLE001
+            # One candidate failing must not lose the ones already done.
+            db.rollback()
+            log.exception("screen_batch: failed on application %s", application_id)
+            skipped.append(CVScreenSkippedOut(
+                application_id=application_id,
+                reason=f"screening failed: {type(exc).__name__}",
+            ))
+
+    last = ids[-1] if ids else after
+    remaining = db.execute(
+        _UNSCREENED_REMAINING_SQL, {"job_id": body.job_id, "after": last}
+    ).scalar_one()
+
+    return CVScreenBatchOut(
+        job_id=body.job_id,
+        screened=screened,
+        skipped=skipped,
+        last_application_id=last,
+        remaining=remaining,
+    )
