@@ -145,33 +145,86 @@ def _screen_out(row) -> CVScreenOut:
 # candidate. Markaz stores them as free-text Q&A, so they are matched on the
 # QUESTION wording and returned as None when no question matches -- never
 # inferred from somewhere else, and never guessed.
-_PROFILE_FIELDS = {
-    "expected_salary": ("expected salary", "salary expectation", "current salary"),
-    "city": ("city", "current location", "where are you based", "location"),
-    "willing_to_relocate": ("relocate", "relocation", "willing to move"),
-}
+#
+# Priority order matters, and each field carries EXCLUDE terms as well as
+# match terms. Both were learned from the live data, not guessed:
+#
+#   * "Are you willing to relocate to another city?" contains both words, so
+#     without an order and a claim-once rule the answer "Yes" lands in City.
+#   * CPD Coach asks "Willingness to travel in your assigned region (regions
+#     may include certain city areas such as Subdivision City...)". A loose
+#     "city" match claimed that travel question for 332 of 410 candidates and
+#     printed "Yes I am willing to travel" as their city. It is not a city
+#     question, and this job HAS no city question -- the location field is
+#     "Address".
+#
+# A field with no matching question stays None. That is the honest answer and
+# the SOP's requirement is to CAPTURE what was asked, not to manufacture it.
+_PROFILE_FIELDS = (
+    ("expected_salary",
+     ("expected salary", "salary expectation", "current salary", "salary"),
+     ()),
+    ("willing_to_relocate",
+     ("relocat", "willing to move"),
+     ()),
+    ("city",
+     ("which city", "current city", "city of residence", "your city",
+      "current location", "where are you based", "based in", "address"),
+     # A travel or relocation question is never a statement of where someone
+     # lives, however many times it says the word "city".
+     ("travel", "willing", "relocat")),
+)
+
+
+def _answer_pairs(blob) -> list[tuple[str, str]]:
+    """Every (question, answer) pair in one of Markaz's answer columns.
+
+    🔴 THE REAL SHAPE IS NESTED. Measured across 800 live applications, the
+    ONLY shape either column ever takes is:
+
+        {"1763029445610": {"question": "...", "answer": "..."}}
+
+    a dict keyed by a timestamp id. The flat `{question: answer}` and
+    `[{question, answer}]` shapes this function also accepts were my own
+    invention and occur zero times; they are kept only as cheap defence if
+    Markaz ever changes. An earlier version handled ONLY those two, so it
+    returned nothing for every candidate on record while looking correct.
+    """
+    pairs: list[tuple[str, str]] = []
+
+    def add(question, answer) -> None:
+        if isinstance(question, str) and answer not in (None, ""):
+            text = str(answer).strip()
+            if text:
+                pairs.append((question.lower(), text))
+
+    if isinstance(blob, dict):
+        for key, value in blob.items():
+            if isinstance(value, dict):
+                add(value.get("question") or value.get("label"),
+                    value.get("answer") or value.get("value"))
+            else:
+                add(key, value)
+    elif isinstance(blob, list):
+        for item in blob:
+            if isinstance(item, dict):
+                add(item.get("question") or item.get("label") or item.get("title"),
+                    item.get("answer") or item.get("value") or item.get("response"))
+    return pairs
 
 
 def _profile_fields(custom_answers, canned_answers) -> dict[str, Optional[str]]:
-    pairs: list[tuple[str, str]] = []
-    for blob in (custom_answers, canned_answers):
-        if isinstance(blob, list):
-            for item in blob:
-                if isinstance(item, dict):
-                    q = item.get("question") or item.get("label") or item.get("title")
-                    a = item.get("answer") or item.get("value") or item.get("response")
-                    if isinstance(q, str) and a not in (None, ""):
-                        pairs.append((q.lower(), str(a).strip()))
-        elif isinstance(blob, dict):
-            for q, a in blob.items():
-                if isinstance(q, str) and a not in (None, ""):
-                    pairs.append((q.lower(), str(a).strip()))
+    pairs = _answer_pairs(custom_answers) + _answer_pairs(canned_answers)
 
-    out: dict[str, Optional[str]] = {k: None for k in _PROFILE_FIELDS}
-    for field, needles in _PROFILE_FIELDS.items():
-        for question, answer in pairs:
+    out: dict[str, Optional[str]] = {f: None for f, _, _ in _PROFILE_FIELDS}
+    claimed: set[int] = set()
+    for field, needles, excludes in _PROFILE_FIELDS:
+        for i, (question, answer) in enumerate(pairs):
+            if i in claimed or any(x in question for x in excludes):
+                continue
             if any(n in question for n in needles):
                 out[field] = answer
+                claimed.add(i)
                 break
     return out
 

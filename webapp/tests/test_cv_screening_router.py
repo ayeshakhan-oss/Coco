@@ -316,35 +316,93 @@ def test_the_screen_is_persisted_with_what_it_was_built_from(client, monkeypatch
 # --------------------------------------------------------------------------
 
 
-def test_profile_fields_are_matched_on_the_question_text():
-    out = router_mod._profile_fields(
-        [
-            {"question": "What is your Expected Salary?", "answer": "250,000 PKR"},
-            {"question": "Which city are you based in?", "answer": "Lahore"},
-            {"question": "Are you willing to relocate?", "answer": "Yes"},
-        ],
-        None,
-    )
-    assert out == {
-        "expected_salary": "250,000 PKR",
+def test_profile_fields_read_the_shape_markaz_actually_uses():
+    """🔴 Measured across 800 live applications, the ONLY shape either answers
+    column takes is a dict keyed by a timestamp id with {question, answer}
+    nested inside. An earlier version of this test used a list of dicts that I
+    invented; it passed while the extractor returned nothing for every real
+    candidate on record."""
+    real = {
+        "1763029445610": {"question": "Expected Salary (PKR)", "answer": "250,000"},
+        "1763029445611": {"question": "Which city are you currently based in?",
+                          "answer": "Lahore"},
+        "1763029445612": {"question": "Are you willing to relocate?", "answer": "Yes"},
+    }
+    assert router_mod._profile_fields(real, {}) == {
+        "expected_salary": "250,000",
         "city": "Lahore",
         "willing_to_relocate": "Yes",
     }
 
 
+def test_a_relocate_question_is_not_read_as_the_candidates_city():
+    """"Are you willing to relocate to another city?" contains both words.
+    Each question is claimed by at most one field, in priority order, so the
+    answer "Yes" can never end up in the City column."""
+    blob = {
+        "1": {"question": "Are you willing to relocate to another city?", "answer": "Yes"},
+        "2": {"question": "Which city do you live in?", "answer": "Karachi"},
+    }
+    out = router_mod._profile_fields(blob, {})
+    assert out["willing_to_relocate"] == "Yes"
+    assert out["city"] == "Karachi"
+
+
+def test_a_travel_question_is_not_read_as_the_candidates_city():
+    """The real question text from CPD Coach, verbatim. A loose "city" match
+    claimed this travel question for 332 of 410 candidates and printed "Yes I
+    am willing to travel" in the City column. That job has no city question at
+    all; its location field is "Address"."""
+    blob = {
+        "1": {"question": "Willingness to travel in your assigned region (regions "
+                          "may include certain city areas such as Subdivision City)",
+              "answer": "Yes I am willing to travel"},
+        "2": {"question": "Address", "answer": "17C, street 46, F-10/4, Islamabad"},
+    }
+    out = router_mod._profile_fields(blob, {})
+    assert out["city"] == "17C, street 46, F-10/4, Islamabad"
+
+
+def test_a_job_with_no_location_question_reports_none_rather_than_inventing_one():
+    blob = {
+        "1": {"question": "Willingness to travel in your assigned region (certain "
+                          "city areas)", "answer": "Yes"},
+        "2": {"question": "Expected Salary", "answer": "150,000"},
+    }
+    out = router_mod._profile_fields(blob, {})
+    assert out["city"] is None
+    assert out["expected_salary"] == "150,000"
+
+
 def test_a_field_nobody_was_asked_about_is_none_not_a_guess():
-    out = router_mod._profile_fields([{"question": "Why us?", "answer": "..."}], None)
+    out = router_mod._profile_fields({"1": {"question": "Why us?", "answer": "..."}}, {})
     assert out == {"expected_salary": None, "city": None, "willing_to_relocate": None}
 
 
-def test_profile_fields_survive_every_shape_markaz_stores():
+def test_both_answer_columns_are_read():
+    custom = {"1": {"question": "Expected salary", "answer": "200k"}}
+    canned = {"2": {"question": "Current city", "answer": "Islamabad"}}
+    out = router_mod._profile_fields(custom, canned)
+    assert out["expected_salary"] == "200k" and out["city"] == "Islamabad"
+
+
+def test_empty_and_missing_columns_are_survivable():
+    """263 of 800 applications carry an empty dict rather than null."""
+    assert router_mod._profile_fields({}, {})["city"] is None
     assert router_mod._profile_fields(None, None)["city"] is None
+
+
+def test_a_blank_answer_is_not_an_answer():
+    blob = {"1": {"question": "Which city?", "answer": "   "}}
+    assert router_mod._profile_fields(blob, {})["city"] is None
+
+
+def test_the_legacy_shapes_still_parse_if_markaz_ever_changes():
+    """Defensive only -- neither shape occurs in the live data today."""
     assert router_mod._profile_fields({"Current city": "Karachi"}, None)["city"] == "Karachi"
     assert router_mod._profile_fields(
         [{"label": "Expected salary", "value": "200k"}], None
     )["expected_salary"] == "200k"
-    # A blank answer is not an answer.
-    assert router_mod._profile_fields([{"question": "City", "answer": ""}], None)["city"] is None
 
 
 # --------------------------------------------------------------------------
