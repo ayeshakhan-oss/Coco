@@ -794,3 +794,46 @@ export interface AttendanceEntities {
   entities: { payroll_entity: string; n: number }[]
   default: string[]
 }
+
+// --- Hiring Operations: decision brief (Skill 03) ------------------------
+
+export interface DecisionBriefPerson {
+  application_id: number
+  name: string
+  cv_url: string
+  has_cv: boolean
+  status: string | null
+  // null means no values interview on record; false means interviewed and did
+  // not pass. The two must not be collapsed.
+  passed_values: boolean | null
+  values_disagreement: string | null
+  values_comments: string | null
+  submitted_case_study: boolean
+  case_study_band: string | null
+  case_study_total: number | null
+  cv_screen_tier: string | null
+  cv_screen_match: number | null
+  debrief_verdict: string
+  debrief_date: string | null
+  group: string
+}
+
+export interface DecisionBrief {
+  job_id: number | null
+  job_title: string | null
+  generated_on: string
+  total_applications: number
+  values_interviews: number
+  shortlisted: number
+  leading: DecisionBriefPerson[]
+  leading_note: string | null
+  groups: { key: string; title: string; people: DecisionBriefPerson[] }[]
+  debrief_schedule: DecisionBriefPerson[]
+  not_recorded: {
+    debrief_verdicts: number
+    case_study_scores: number
+    missing_cv: number
+  }
+  evidence_caveat: string
+  stat_boxes: { label: string; value: number; colour: string }[]
+}

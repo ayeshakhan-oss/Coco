@@ -6,6 +6,7 @@ import { CaseStudyPage } from './pages/CaseStudyPage'
 import { CaseStudyTrackingPage } from './pages/CaseStudyTrackingPage'
 import { CVScreeningPage } from './pages/CVScreeningPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
+import { DecisionBriefPage } from './pages/DecisionBriefPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
 import { EvaluationPage } from './pages/EvaluationPage'
 import { HistoryPage } from './pages/HistoryPage'
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/case-study-tracking" element={<CaseStudyTrackingPage />} />
           <Route path="/kcd-evaluations" element={<KCDEvaluationPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/decision-brief" element={<DecisionBriefPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

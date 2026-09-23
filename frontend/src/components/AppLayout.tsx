@@ -41,7 +41,7 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
   ],
   'hiring-operations': [
     { to: '/attendance', label: 'Attendance', icon: CalendarCheck, end: true, built: true },
-    { to: '', label: 'Decision Briefs', icon: FileBarChart, end: true, built: false },
+    { to: '/decision-brief', label: 'Decision Briefs', icon: FileBarChart, end: true, built: true },
     { to: '', label: 'Hiring Decision Brief', icon: ClipboardCheck, end: true, built: false },
   ],
 }

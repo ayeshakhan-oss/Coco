@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from ..db import get_db
@@ -116,3 +117,78 @@ def list_jobs(
     _user: dict = Depends(get_current_user),
 ):
     return reads.list_jobs(db, active_only=active_only)
+
+
+# The CV itself, so a candidate's name can be a link to it.
+#
+# The decision-brief SOP requires EVERY candidate name to be hyperlinked to
+# their CV, and calls it non-negotiable. It assumes the CV has been uploaded to
+# Google Drive by hand first. Serving it straight out of Markaz removes that
+# step entirely: the bytes are already in `candidates.resume_data`, and the link
+# is behind the same Google sign-in as the rest of the app, so a brief forwarded
+# to a hiring manager shows them the CV and shows a stranger nothing.
+_CV_SQL = text(
+    """
+    SELECT c.resume_data, c.resume_mime_type, c.resume_file_name,
+           c.first_name, c.last_name
+    FROM applications a
+    JOIN candidates c ON c.id = a.candidate_id
+    WHERE a.id = :application_id
+    """
+)
+
+
+@router.get("/candidates/{application_id}/cv")
+def candidate_cv(
+    application_id: int,
+    download: bool = Query(False, description="Force a download instead of inline"),
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user),
+):
+    """Stream this candidate's CV as it was uploaded.
+
+    Markaz stores it base64-encoded in a TEXT column. The stored
+    `resume_mime_type` is unreliable -- a .docx labelled application/pdf is
+    common -- so the real file signature decides what is sent, the same sniffing
+    `cv_text.extract` does before choosing a parser.
+    """
+    import base64
+    import binascii
+    import re as _re
+
+    from fastapi.responses import Response
+
+    row = db.execute(_CV_SQL, {"application_id": application_id}).mappings().first()
+    if not row:
+        raise HTTPException(404, "Application not found")
+    if not row["resume_data"]:
+        raise HTTPException(404, "No CV on file for this candidate")
+
+    try:
+        raw = base64.b64decode(_re.sub(r"\s+", "", row["resume_data"]), validate=False)
+    except (binascii.Error, ValueError) as exc:
+        raise HTTPException(422, f"The stored CV is not valid base64: {exc}") from exc
+
+    # Sniff, never trust the recorded mime type.
+    if raw[:5] == b"%PDF-":
+        media, ext = "application/pdf", "pdf"
+    elif raw[:2] == b"PK":
+        media, ext = (
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "docx",
+        )
+    else:
+        media, ext = "application/octet-stream", "bin"
+
+    name = " ".join(p for p in (row["first_name"], row["last_name"]) if p).strip()
+    safe = _re.sub(r"[^A-Za-z0-9 _-]", "", name) or f"application-{application_id}"
+    disposition = "attachment" if download else "inline"
+    return Response(
+        content=raw,
+        media_type=media,
+        headers={
+            "Content-Disposition": f'{disposition}; filename="CV - {safe}.{ext}"',
+            # A CV is personal data. Never let a shared cache hold it.
+            "Cache-Control": "private, no-store",
+        },
+    )

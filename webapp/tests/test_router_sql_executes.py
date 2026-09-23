@@ -79,14 +79,15 @@ def _statements():
     """Every module-level SQL constant on the evaluation routers, read from the
     modules themselves rather than copied -- a copy drifts and then guards a
     statement nobody runs."""
-    from webapp.routers import case_studies, case_study_tracking, cv_screening
+    from webapp.routers import candidates, case_studies, case_study_tracking
+    from webapp.routers import cv_screening
     from webapp.routers import evaluations, kcd_evaluations, operations
     from webapp.routers import values_scorecards
 
     out = []
     for module in (
         cv_screening, case_study_tracking, kcd_evaluations,
-        case_studies, evaluations, values_scorecards, operations,
+        case_studies, evaluations, values_scorecards, operations, candidates,
     ):
         for attr in dir(module):
             if not attr.startswith("_") or not attr.isupper() and not attr[1:].isupper():

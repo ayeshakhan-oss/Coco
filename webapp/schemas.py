@@ -850,3 +850,69 @@ class AttendanceReportOut(_Base):
     stat_boxes: list[AttendanceStatBoxOut] = []
     presence_caveat: str
     source: str
+
+
+# --------------------------------------------------------------------------
+# Hiring Operations: decision brief (Skill 03, decision-briefs)
+# --------------------------------------------------------------------------
+
+
+class DecisionBriefPersonOut(_Base):
+    application_id: int
+    name: str
+    # Served by this app from Markaz, so no manual Drive upload stands between
+    # the brief and a working link. The SOP calls this non-negotiable.
+    cv_url: str
+    has_cv: bool
+    status: Optional[str] = None
+    # None means no values interview on record. False means interviewed and did
+    # not pass. Collapsing the two puts people in the wrong group.
+    passed_values: Optional[bool] = None
+    values_disagreement: Optional[str] = None
+    values_comments: Optional[str] = None
+    submitted_case_study: bool = False
+    case_study_band: Optional[str] = None
+    case_study_total: Optional[float] = None
+    cv_screen_tier: Optional[str] = None
+    cv_screen_match: Optional[float] = None
+    debrief_verdict: str
+    debrief_date: Optional[str] = None
+    group: str
+
+
+class DecisionBriefGroupOut(_Base):
+    key: str
+    title: str
+    people: list[DecisionBriefPersonOut] = []
+
+
+class DecisionBriefNotRecordedOut(_Base):
+    """Counted and stated, never left as a blank for a reader to interpret."""
+
+    debrief_verdicts: int
+    case_study_scores: int
+    missing_cv: int
+
+
+class DecisionBriefStatBoxOut(_Base):
+    label: str
+    value: int
+    colour: str
+
+
+class DecisionBriefOut(_Base):
+    job_id: Optional[int] = None
+    job_title: Optional[str] = None
+    generated_on: str
+    total_applications: int
+    values_interviews: int
+    shortlisted: int
+    leading: list[DecisionBriefPersonOut] = []
+    # Set when nothing can separate the leading candidates, so their
+    # order is never mistaken for a ranking.
+    leading_note: Optional[str] = None
+    groups: list[DecisionBriefGroupOut] = []
+    debrief_schedule: list[DecisionBriefPersonOut] = []
+    not_recorded: DecisionBriefNotRecordedOut
+    evidence_caveat: str
+    stat_boxes: list[DecisionBriefStatBoxOut] = []

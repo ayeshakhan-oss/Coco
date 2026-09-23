@@ -29,8 +29,9 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..deps import get_current_user
-from ..schemas import AttendanceReportOut
+from ..schemas import AttendanceReportOut, DecisionBriefOut
 from ..services import attendance as att
+from ..services import decision_brief as brief_service
 
 log = logging.getLogger("webapp.routers.operations")
 
@@ -144,3 +145,75 @@ def attendance(
         stat_boxes=att.stat_boxes(report),
         source="Markaz employee_profiles and approved leave_requests",
     )
+
+
+# Everything the brief is allowed to claim, for one position.
+#
+# Joins Markaz to the two app-owned tables, LEFT and filtered on `is_current`,
+# so a candidate with no CV screen and no case-study score still appears with
+# those fields empty. The brief counts what is missing rather than hiding it.
+_BRIEF_SQL = text(
+    """
+    SELECT a.id                             AS application_id,
+           trim(coalesce(c.first_name,'') || ' ' || coalesce(c.last_name,'')) AS name,
+           a.status                         AS status,
+           a.values_interview_result        AS values_interview_result,
+           a.values_scorecard->>'proceedToRightSeat' AS proceed,
+           a.values_scorecard->>'finalComments'      AS final_comments,
+           a.case_study_status              AS case_study_status,
+           a.case_study_submission          AS case_study_submission,
+           a.case_study_word_file           AS case_study_word_file,
+           a.gwc_interview_result           AS gwc_interview_result,
+           a.gwc_interview_date             AS gwc_interview_date,
+           (c.resume_data IS NOT NULL AND length(c.resume_data) > 0) AS has_cv,
+           cs.tier                          AS cv_screen_tier,
+           cs.match                         AS cv_screen_match,
+           ev.band                          AS case_study_band,
+           ev.total                         AS case_study_total
+    FROM applications a
+    JOIN candidates c ON c.id = a.candidate_id
+    LEFT JOIN coco.cv_screens cs
+           ON cs.application_id = a.id AND cs.is_current
+    LEFT JOIN coco.case_study_evaluations ev
+           ON ev.application_id = a.id
+    WHERE a.job_id = :job_id
+    ORDER BY a.id
+    """
+)
+
+
+@router.get("/decision-brief/{job_id}", response_model=DecisionBriefOut)
+def decision_brief(
+    job_id: int,
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user),
+):
+    """The four-part decision brief for one position.
+
+    Read only, and it never converts an empty Markaz field into a finding: a
+    candidate with no debrief on record is reported as having no record, not as
+    overdue. What is missing is counted and stated.
+    """
+    job = db.execute(
+        text("SELECT id AS job_pk, title FROM jobs WHERE id = :job_id"),
+        {"job_id": job_id},
+    ).mappings().first()
+    if not job:
+        raise HTTPException(404, f"Job {job_id} not found")
+
+    rows = [dict(r) for r in db.execute(_BRIEF_SQL, {"job_id": job_id}).mappings()]
+    try:
+        brief = brief_service.build_brief(job=dict(job), rows=rows)
+    except brief_service.DecisionBriefError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+    # A brief that silently loses a candidate is worse than no brief.
+    if not brief_service.everyone_is_accounted_for(brief):
+        log.error("decision_brief: groups do not account for every candidate on job %s", job_id)
+        raise HTTPException(
+            500,
+            "The pipeline groups do not account for every candidate, so the "
+            "brief would be incomplete. This has been logged.",
+        )
+
+    return DecisionBriefOut(**brief, stat_boxes=brief_service.stat_boxes(brief))
