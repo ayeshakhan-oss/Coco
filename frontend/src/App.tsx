@@ -9,6 +9,7 @@ import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DecisionBriefPage } from './pages/DecisionBriefPage'
 import { DraftEditorPage } from './pages/DraftEditorPage'
 import { EvaluationPage } from './pages/EvaluationPage'
+import { HiringBriefPage } from './pages/HiringBriefPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { KCDEvaluationPage } from './pages/KCDEvaluationPage'
 import { HomePage } from './pages/HomePage'
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/kcd-evaluations" element={<KCDEvaluationPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/decision-brief" element={<DecisionBriefPage />} />
+          <Route path="/hiring-brief" element={<HiringBriefPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

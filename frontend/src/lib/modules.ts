@@ -15,7 +15,7 @@ export const ACTIVE_MODULE = 'candidate-communication'
 export const MODULES: ModuleDef[] = [
   { slug: 'candidate-communication', label: 'Candidate Communication', icon: Mail, status: 'live', route: '/queue', blurb: 'Draft, review, approve and send candidate rejection and feedback emails.' },
   { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'live', route: '/evaluations', blurb: 'Screen CVs, track and score case studies, run values scorecards, evaluate on KCD and read technical screening.' },
-  { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'live', route: '/attendance', blurb: 'Daily attendance and decision briefs, from Markaz. The hiring decision brief is on the way.' },
+  { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'live', route: '/attendance', blurb: 'Daily attendance, decision briefs and the hiring funnel, from Markaz and the mailbox.' },
   { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'soon', blurb: 'Reports, integrations and system infrastructure.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'soon', blurb: 'Find and track passive candidates across sources.' },
   { slug: 'candidate-invites', label: 'Candidate Invites', icon: Send, status: 'soon', blurb: 'Send interview and opportunity invites for every stage.' },
@@ -44,6 +44,7 @@ const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
   { prefix: '/kcd-evaluations', slug: 'candidate-evaluation' },
   { prefix: '/attendance', slug: 'hiring-operations' },
   { prefix: '/decision-brief', slug: 'hiring-operations' },
+  { prefix: '/hiring-brief', slug: 'hiring-operations' },
   { prefix: '/values-scorecards', slug: 'candidate-evaluation' },
   { prefix: '/case-studies', slug: 'candidate-evaluation' },
 ]

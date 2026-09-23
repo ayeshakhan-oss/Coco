@@ -29,9 +29,10 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..deps import get_current_user
-from ..schemas import AttendanceReportOut, DecisionBriefOut
+from ..schemas import AttendanceReportOut, DecisionBriefOut, HiringBriefOut
 from ..services import attendance as att
 from ..services import decision_brief as brief_service
+from ..services import hiring_funnel
 
 log = logging.getLogger("webapp.routers.operations")
 
@@ -217,3 +218,75 @@ def decision_brief(
         )
 
     return DecisionBriefOut(**brief, stat_boxes=brief_service.stat_boxes(brief))
+
+
+# What the mailbox saw, per application, for the funnel's Gmail-derived
+# stages. `comm_evidence` is one row per application by construction, so these
+# counts are a FLOOR and the service labels them as such.
+_FUNNEL_SQL = text(
+    """
+    SELECT a.id                             AS application_id,
+           a.status                         AS status,
+           a.values_interview_result        AS values_interview_result,
+           a.values_scorecard->>'proceedToRightSeat' AS proceed,
+           a.case_study_status              AS case_study_status,
+           a.case_study_submission          AS case_study_submission,
+           e.matched_subject                AS matched_subject
+    FROM applications a
+    LEFT JOIN coco.comm_evidence e ON e.application_id = a.id
+    WHERE a.job_id = :job_id
+    ORDER BY a.id
+    """
+)
+
+_SYNCED_AT_SQL = text(
+    "SELECT max(checked_at)::text AS synced FROM coco.comm_evidence WHERE job_id = :job_id"
+)
+
+
+@router.get("/hiring-brief/{job_id}", response_model=HiringBriefOut)
+def hiring_brief(
+    job_id: int,
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user),
+):
+    """The hiring decision brief: the funnel plus the recommendations.
+
+    The SOP reads the Calendar for bookings. That access is gone, and it turns
+    out not to be needed: the booking system emails a confirmation
+    ("Appointment booked: ...") and those are already in the synced mailbox
+    evidence. Every Gmail-derived count is reported as a floor.
+    """
+    job = db.execute(
+        text("SELECT id AS job_pk, title FROM jobs WHERE id = :job_id"),
+        {"job_id": job_id},
+    ).mappings().first()
+    if not job:
+        raise HTTPException(404, f"Job {job_id} not found")
+
+    rows = [dict(r) for r in db.execute(_FUNNEL_SQL, {"job_id": job_id}).mappings()]
+    if not rows:
+        raise HTTPException(404, f"No applications on {job['title']!r} to brief on")
+
+    synced = db.execute(_SYNCED_AT_SQL, {"job_id": job_id}).scalar()
+    funnel = hiring_funnel.build_funnel(
+        job=dict(job), rows=rows, evidence_synced_at=synced
+    )
+
+    # The recommendations half, from the same job.
+    brief_rows = [dict(r) for r in db.execute(_BRIEF_SQL, {"job_id": job_id}).mappings()]
+    brief = brief_service.build_brief(job=dict(job), rows=brief_rows)
+    if not brief_service.everyone_is_accounted_for(brief):
+        log.error("hiring_brief: groups do not account for every candidate on job %s", job_id)
+        raise HTTPException(
+            500,
+            "The pipeline groups do not account for every candidate, so the "
+            "brief would be incomplete. This has been logged.",
+        )
+
+    return HiringBriefOut(
+        **{k: v for k, v in funnel.items() if k != "stages"},
+        stages=funnel["stages"],
+        inconsistencies=hiring_funnel.narrows_monotonically(funnel),
+        brief=DecisionBriefOut(**brief, stat_boxes=brief_service.stat_boxes(brief)),
+    )

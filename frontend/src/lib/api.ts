@@ -3,6 +3,7 @@ import type {
   AttendanceEntities,
   AttendanceReport,
   DecisionBrief,
+  HiringBrief,
   CandidatePage,
   CaseStudyBenchmark,
   CaseStudyEvaluation,
@@ -255,6 +256,8 @@ export const api = {
   // --- Hiring Operations ---
   decisionBrief: (jobId: number) =>
     get<DecisionBrief>(`/api/operations/decision-brief/${jobId}`),
+  hiringBrief: (jobId: number) =>
+    get<HiringBrief>(`/api/operations/hiring-brief/${jobId}`),
   attendanceEntities: () => get<AttendanceEntities>('/api/operations/attendance/entities'),
   attendance: (on?: string, entities?: string[]) => {
     const qs = new URLSearchParams()

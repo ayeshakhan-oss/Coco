@@ -916,3 +916,32 @@ class DecisionBriefOut(_Base):
     not_recorded: DecisionBriefNotRecordedOut
     evidence_caveat: str
     stat_boxes: list[DecisionBriefStatBoxOut] = []
+
+
+# --------------------------------------------------------------------------
+# Hiring Operations: hiring decision brief (Skill 03, hiring-decision-brief)
+# The funnel PLUS the recommendations, which is what that SOP asks for.
+# --------------------------------------------------------------------------
+
+
+class FunnelStageOut(_Base):
+    key: str
+    title: str
+    # None means the stage could not be established, which the page renders as
+    # "not visible". Never 0, which would read as "nobody".
+    count: Optional[int] = None
+    source: str
+    is_floor: bool = False
+    note: Optional[str] = None
+
+
+class HiringBriefOut(_Base):
+    job_id: Optional[int] = None
+    job_title: Optional[str] = None
+    total_applications: int
+    stages: list[FunnelStageOut] = []
+    evidence_synced_at: Optional[str] = None
+    caveat: str
+    # Stages where the funnel widened instead of narrowing.
+    inconsistencies: list[str] = []
+    brief: DecisionBriefOut

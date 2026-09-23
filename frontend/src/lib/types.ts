@@ -837,3 +837,27 @@ export interface DecisionBrief {
   evidence_caveat: string
   stat_boxes: { label: string; value: number; colour: string }[]
 }
+
+// --- Hiring Operations: hiring decision brief (funnel + recommendations) ---
+
+export interface FunnelStage {
+  key: string
+  title: string
+  // null means the stage could not be established. Rendered as "not visible",
+  // never 0, which would read as "nobody".
+  count: number | null
+  source: string
+  is_floor: boolean
+  note: string | null
+}
+
+export interface HiringBrief {
+  job_id: number | null
+  job_title: string | null
+  total_applications: number
+  stages: FunnelStage[]
+  evidence_synced_at: string | null
+  caveat: string
+  inconsistencies: string[]
+  brief: DecisionBrief
+}
