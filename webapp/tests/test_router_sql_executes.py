@@ -1,4 +1,4 @@
-"""Every SQL statement the evaluation routers hold must actually run.
+"""Every SQL statement the evaluation and operations routers hold must run.
 
 THE BUG THIS EXISTS FOR. `cv_screening._APPLICATIONS_FOR_JOB_SQL` and
 `case_study_tracking._APPLICATIONS_SQL` both ordered by `a.created_at`.
@@ -64,9 +64,15 @@ _PARAM_LITERALS = {
     "name": "'none'",
     "tier": "'none'",
     "v": "'none'",
+    "after": "-1",
+    "limit": "1",
 }
 
-_PARAM = re.compile(r":([a-z_][a-z0-9_]*)", re.I)
+# A NEGATIVE LOOKBEHIND, because `lr.start_date::text` is a Postgres cast and
+# not a parameter called :text. Without it this test reports a missing
+# literal for every cast in every statement -- which is how it first
+# failed on operations._LEAVE_SQL.
+_PARAM = re.compile(r"(?<!:):([a-z_][a-z0-9_]*)", re.I)
 
 
 def _statements():
@@ -74,12 +80,13 @@ def _statements():
     modules themselves rather than copied -- a copy drifts and then guards a
     statement nobody runs."""
     from webapp.routers import case_studies, case_study_tracking, cv_screening
-    from webapp.routers import evaluations, kcd_evaluations, values_scorecards
+    from webapp.routers import evaluations, kcd_evaluations, operations
+    from webapp.routers import values_scorecards
 
     out = []
     for module in (
         cv_screening, case_study_tracking, kcd_evaluations,
-        case_studies, evaluations, values_scorecards,
+        case_studies, evaluations, values_scorecards, operations,
     ):
         for attr in dir(module):
             if not attr.startswith("_") or not attr.isupper() and not attr[1:].isupper():
@@ -95,7 +102,20 @@ STATEMENTS = _statements()
 
 
 def _run(sql: str) -> None:
-    probe = _PARAM.sub(lambda m: _PARAM_LITERALS.get(m.group(1), "'none'"), sql)
+    def literal(m):
+        name = m.group(1)
+        if name not in _PARAM_LITERALS:
+            # Guessing a string for an unknown parameter turns an INTEGER
+            # column into `a.id > 'none'` and reports a confusing type error
+            # instead of the real problem, which is that this map is missing a
+            # name. Say so.
+            raise AssertionError(
+                f"no test literal for parameter :{name}. Add it to "
+                "_PARAM_LITERALS with the right type."
+            )
+        return _PARAM_LITERALS[name]
+
+    probe = _PARAM.sub(literal, sql)
     r = requests.post(
         _endpoint(),
         headers={"Neon-Connection-String": _DATABASE_URL, "Content-Type": "application/json"},
@@ -115,6 +135,7 @@ def test_there_are_statements_to_check():
     assert any("cv_screening" in n for n in names)
     assert any("case_study_tracking" in n for n in names)
     assert any("kcd_evaluations" in n for n in names)
+    assert any("operations" in n for n in names)
 
 
 @pytest.mark.parametrize("name,sql", STATEMENTS, ids=[n for n, _ in STATEMENTS])
@@ -145,3 +166,10 @@ def test_applications_has_applied_at_and_not_created_at():
         _run("SELECT a.applied_at FROM applications a")
     except requests.RequestException as exc:
         pytest.skip(f"database unreachable: {exc}")
+
+
+def test_a_postgres_cast_is_not_mistaken_for_a_parameter():
+    """`lr.start_date::text` is a cast. Reading it as a parameter named :text
+    made this test fail on a statement that was perfectly fine."""
+    found = _PARAM.findall("SELECT lr.start_date::text FROM x WHERE id = :job_id")
+    assert found == ["job_id"]

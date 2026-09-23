@@ -1,5 +1,7 @@
 import type {
   ApplicationDetail,
+  AttendanceEntities,
+  AttendanceReport,
   CandidatePage,
   CaseStudyBenchmark,
   CaseStudyEvaluation,
@@ -247,5 +249,16 @@ export const api = {
     get<KCDEvaluation[]>(`/api/kcd-evaluations/evaluations?application_id=${applicationId}`),
   kcdEvaluate: (input: KCDEvaluationInput) =>
     post<KCDEvaluation>('/api/kcd-evaluations/evaluations', input),
+
+
+  // --- Hiring Operations ---
+  attendanceEntities: () => get<AttendanceEntities>('/api/operations/attendance/entities'),
+  attendance: (on?: string, entities?: string[]) => {
+    const qs = new URLSearchParams()
+    if (on) qs.set('on', on)
+    if (entities?.length) qs.set('entities', entities.join(','))
+    const q = qs.toString()
+    return get<AttendanceReport>(`/api/operations/attendance${q ? `?${q}` : ''}`)
+  },
 
 }

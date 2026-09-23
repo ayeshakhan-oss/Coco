@@ -798,3 +798,55 @@ class CVScreenBatchOut(_Base):
     skipped: list[CVScreenSkippedOut] = []
     last_application_id: Optional[int] = None
     remaining: int
+
+
+# --------------------------------------------------------------------------
+# Hiring Operations: daily attendance (Skill 03, attendance-reports)
+# --------------------------------------------------------------------------
+
+
+class AttendancePersonOut(_Base):
+    user_id: int
+    name: Optional[str] = None
+    payroll_entity: Optional[str] = None
+    department: Optional[str] = None
+    job_title: Optional[str] = None
+    category: str
+    leave_type: Optional[str] = None
+    sub_category: Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    is_half_day: bool = False
+
+
+class AttendanceCorrectionOut(_Base):
+    """A leave record whose dates cannot be true. Shown so somebody fixes it in
+    Markaz: excluding it silently leaves tomorrow's report wrong too."""
+
+    user_id: Optional[int] = None
+    name: Optional[str] = None
+    leave_type: Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    problem: str
+
+
+class AttendanceStatBoxOut(_Base):
+    label: str
+    value: int
+    colour: str
+
+
+class AttendanceReportOut(_Base):
+    date: str
+    weekday: str
+    entities: list[str]
+    total_on_payroll: int
+    # 🔴 Never "onsite" or "present". Markaz records absence, not attendance.
+    no_absence_recorded: int
+    on_leave: list[AttendancePersonOut] = []
+    working_from_home: list[AttendancePersonOut] = []
+    needs_correction: list[AttendanceCorrectionOut] = []
+    stat_boxes: list[AttendanceStatBoxOut] = []
+    presence_caveat: str
+    source: str

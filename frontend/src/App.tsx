@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/AppLayout'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
+import { AttendancePage } from './pages/AttendancePage'
 import { CaseStudyPage } from './pages/CaseStudyPage'
 import { CaseStudyTrackingPage } from './pages/CaseStudyTrackingPage'
 import { CVScreeningPage } from './pages/CVScreeningPage'
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/cv-screening" element={<CVScreeningPage />} />
           <Route path="/case-study-tracking" element={<CaseStudyTrackingPage />} />
           <Route path="/kcd-evaluations" element={<KCDEvaluationPage />} />
+          <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

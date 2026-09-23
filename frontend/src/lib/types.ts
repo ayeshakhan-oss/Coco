@@ -742,3 +742,55 @@ export interface CVScreenBatch {
   last_application_id: number | null
   remaining: number
 }
+
+// --- Hiring Operations: attendance (Skill 03) ----------------------------
+// 🔴 Markaz records ABSENCE, not attendance. There is deliberately no
+// "onsite" or "present" field: a leave system cannot see who walked in.
+
+export interface AttendancePerson {
+  user_id: number
+  name: string | null
+  payroll_entity: string | null
+  department: string | null
+  job_title: string | null
+  category: string
+  leave_type: string | null
+  sub_category: string | null
+  start_date: string | null
+  end_date: string | null
+  is_half_day: boolean
+}
+
+export interface AttendanceCorrection {
+  user_id: number | null
+  name: string | null
+  leave_type: string | null
+  start_date: string | null
+  end_date: string | null
+  problem: string
+}
+
+export interface AttendanceStatBox {
+  label: string
+  value: number
+  colour: string
+}
+
+export interface AttendanceReport {
+  date: string
+  weekday: string
+  entities: string[]
+  total_on_payroll: number
+  no_absence_recorded: number
+  on_leave: AttendancePerson[]
+  working_from_home: AttendancePerson[]
+  needs_correction: AttendanceCorrection[]
+  stat_boxes: AttendanceStatBox[]
+  presence_caveat: string
+  source: string
+}
+
+export interface AttendanceEntities {
+  entities: { payroll_entity: string; n: number }[]
+  default: string[]
+}

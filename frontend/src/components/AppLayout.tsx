@@ -1,6 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import type { LucideIcon } from 'lucide-react'
-import { CheckSquare, ChevronDown, ClipboardCheck, ClipboardList, FileSearch, FileText, Gauge, History, Inbox, ListChecks, LogOut, Users } from 'lucide-react'
+import {
+  CalendarCheck,
+  CheckSquare,
+  ChevronDown,
+  ClipboardCheck,
+  ClipboardList,
+  FileBarChart,
+  FileSearch,
+  FileText,
+  Gauge,
+  History,
+  Inbox,
+  ListChecks,
+  LogOut,
+  Users,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { api } from '../lib/api'
@@ -23,6 +38,11 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
     { to: '/case-studies', label: 'Case Study Scoring', icon: ClipboardCheck, end: true, built: true },
     { to: '/kcd-evaluations', label: 'KCD Evaluation', icon: Gauge, end: true, built: true },
     { to: '/values-scorecards', label: 'Values Scorecards', icon: CheckSquare, end: true, built: true },
+  ],
+  'hiring-operations': [
+    { to: '/attendance', label: 'Attendance', icon: CalendarCheck, end: true, built: true },
+    { to: '', label: 'Decision Briefs', icon: FileBarChart, end: true, built: false },
+    { to: '', label: 'Hiring Decision Brief', icon: ClipboardCheck, end: true, built: false },
   ],
 }
 
