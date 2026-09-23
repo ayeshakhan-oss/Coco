@@ -1,6 +1,6 @@
 ---
 name: Candidate Evaluation — all six sub-skills live (2026-09-23)
-description: CV screening, case-study tracking and KCD built and deployed, completing the module. Records the two data traps that shaped them (jobs.jd_text is empty on 31 of 32 jobs; Markaz records no case-study SEND at all) and the two places a locked SOP had to be overruled by CLAUDE.md Rule 27.
+description: CV screening, case-study tracking and KCD built and deployed, completing the module. Records the CALIBRATION that stopped a 367-candidate run (the screen would have rejected 8 of the 16 people we actually hired, so never set a threshold from one class), that an extraction failure is not a weak candidate, the four production defects a green suite let through, the data traps (jobs.jd_text empty on 31 of 32 jobs; Markaz records no case-study SEND), and that production can only reach Haiku 4.5.
 type: project
 ---
 
@@ -86,9 +86,12 @@ on a submitted case study and a candidate who submitted nothing are never in the
 list. `rank_results` returns **two lists, not one sorted list**, because a single list
 breaks the rule the first time a strong partial outscores a weak complete.
 
-⚠️ **The SOP files themselves are unchanged.** The code and the SOP now disagree on
-the scale, deliberately: rewriting a locked SOP is Ayesha's call. This needs her
-decision — see the open questions below.
+✅ **SETTLED 2026-09-23.** Ayesha chose "update the document", so
+`kcd-evaluation.md` now bottoms out at a real 0 in all seven places it stated the
+scale, with the reasoning and the structural answer recorded in the file. The
+code and the SOP agree again. I did NOT edit it until she said so: rewriting a
+locked SOP is her call, and the code carrying the correct behaviour while the
+document is wrong is the safer of the two states to sit in meanwhile.
 
 **`kcd-evaluation.md` also refers to a "default 6 criteria" that is enumerated
 nowhere in the repository.** I used the framework's own three named components
@@ -99,7 +102,10 @@ and nothing else changes.
 
 **`cv-screening.md`** ranks its three criteria (skills and experience top, fit
 supporting) but never weights them, and names three tiers without numeric
-boundaries. 40/40/20 and 70/50 are single named constants, flagged as derivations.
+boundaries. 40/40/20 was flagged as a derivation and Ayesha confirmed it ("fine
+as is"). The tier boundaries started as an invented 70/50 and are now **50/35,
+calibrated against real hiring outcomes** — see the calibration section below,
+which is the part of this file worth reading twice.
 
 ---
 
@@ -150,13 +156,136 @@ planted violation.
 
 ## Still open, needing Ayesha
 
-1. **The KCD scale.** Code says 0-5 with a real zero; `kcd-evaluation.md` still says
-   1-5. One of them should change.
-2. **The "default 6 criteria"** for KCD — do they exist?
-3. **CV screening's weights (40/40/20) and tier boundaries (70/50)** — derivations,
-   not quotes.
-4. `memory/REPORT_FORMAT_LOCKED.md` is referenced by the CV-screening SOP and
-   `MEMORY.md` and **does not exist in the repo**.
+1. **KCD's "default 6 criteria"** -- do they exist? I used the framework's own
+   three named components and said so.
+2. `memory/REPORT_FORMAT_LOCKED.md` is referenced by the CV-screening SOP and
+   by MEMORY.md and **does not exist in the repo**.
+3. **35 candidate letters drafted since 2026-09-14** are still unreviewed. She
+   asked to regenerate them "once the model is fixed"; the model cannot be
+   fixed (Haiku is all we have), so regenerating would produce different output
+   from the same model at real cost. Raised, not acted on.
+4. **The whole-position run has not happened yet.** The button exists and the
+   bands are calibrated; nobody has pressed it.
 
-See [lesson_tests_must_not_touch_production_2026_09_22.md](lesson_tests_must_not_touch_production_2026_09_22.md)
-for the DDL hazard fixed at the start of this session.
+SETTLED since this file was written: the KCD scale (0-5 real zero, SOP updated
+2026-09-23), the CV-screening bands (calibrated, below), and the CV-screening
+weights (Ayesha: "fine as is").
+
+---
+
+## 🔴 THE CALIBRATION, AND WHY A THRESHOLD IS NEVER A GUESS (2026-09-23)
+
+Ayesha asked for a whole position to be screened. Before running 367 candidates
+I scored the **16 people Taleemabad actually hired or made an offer to** for CPD
+Coach. **The screen would have rejected 8 of them.** That stopped the run.
+
+Then the half I had not done: a random **20 of the 141 rejected**, on identical
+code, because a line drawn from successes alone can pass everybody and you
+would not find out until a whole position had been screened.
+
+| | hired / offered | rejected |
+|---|---|---|
+| mean | **54.0%** | **35.0%** |
+| median | 52% | 34% |
+| range | 32-80 | 12-76 |
+| at or above 70% (my original line) | **3 of 14** | 1 of 16 |
+| at or above 50% | **9 of 14** | 2 of 16 |
+
+**A 19-point gap: the screen genuinely separates the two groups.** What was
+wrong was the boundary I invented. At 70% it would have screened out **11 of
+the 14 people we hired**. 50 is the line that best separates them; 35 sits at
+the rejected cohort's own mean, so almost nobody we hired lands in `no_hire`.
+
+Both cohorts' real scores are now **regression tests** in
+`webapp/tests/test_cv_screening.py`, including one asserting the 19-point gap
+has not collapsed, because a line low enough to pass everyone would satisfy
+"keeps the hires" and be worthless.
+
+🔑 **The rule: never set a scoring threshold from one class.** Score the people
+who succeeded AND the people who were rejected, on the same code, and look at
+the gap before touching a boundary.
+
+⚠️ **Even at the best possible line this misses 5 of 14 people we hired.** It is
+a PRIORITISATION tool. `no_hire` means "read last", never "rejected", and that
+is written into the code rather than left as an understanding.
+
+## 🔴 AN EXTRACTION FAILURE IS NOT A WEAK CANDIDATE
+
+Three of the eight misses were CVs that barely parsed: **117, 238 and 296
+words**. Hina Fatima Jafri was HIRED; her CV extracts to 788 characters and came
+back 36% `no_hire`, and re-running the identical input gave her 6.5 relevant
+years one time and 0.2 the next. **A model asked to judge an empty page still
+answers.**
+
+`cv_text.MIN_USABLE_CHARS = 400` asks "is there text at all" and was never the
+bar for screening somebody out. `cv_screening.MIN_SCREENABLE_WORDS = 250` now
+REFUSES below it and says plainly it is an extraction failure needing a human.
+
+**Counted in WORDS, not characters** — the pypdf letter-spacing defect produces
+20,089 characters carrying 15 words and sails past any character floor. Roughly
+**1 CV in 6 cannot be read at all** (2 of 16 hired, 4 of 20 rejected).
+
+## Screening a whole position
+
+`POST /api/cv-screening/screen-batch` does a few candidates per request; the
+page loops on `remaining` with a progress bar and a Stop. One request cannot do
+a position: each CV is a ~15 second model call, so 74 candidates is ~20 minutes
+and 367 is over an hour.
+
+🔑 **The batch is driven by a CURSOR (`after`), not by "next unscreened".** A
+candidate whose CV cannot be read never gets a screen row, so a next-unscreened
+query hands back the same person for ever. Skipped candidates are RETURNED and
+counted, never silently dropped. Each candidate commits as it finishes, so
+stopping loses nothing and resuming continues from there.
+
+## 🔴 Four production defects Ayesha found or that her screenshot exposed
+
+All four shipped past a green suite. All four are the same root mistake: **I
+wrote the tests from what I assumed the data looked like instead of from the
+data.**
+
+1. **`applications.created_at` does not exist** (the column is `applied_at`).
+   Both new pages returned a 500 on every request. **19 router tests passed
+   anyway, because a fake session never sends SQL to Postgres.**
+   `webapp/tests/test_router_sql_executes.py` now wraps every module-level SQL
+   constant on all six evaluation routers in `SELECT * FROM (...) LIMIT 0` and
+   executes it against the real schema, and is proven to fail on the exact
+   broken statement.
+2. **Every job picker showed ONE job.** `reads.list_jobs` defaulted to
+   `active_only=True` and exactly 1 of 32 jobs is `Active` (CPD Coach). Every
+   position anyone screens, scores or tracks is `Closed`. Now all positions,
+   live ones first, with the status shown.
+3. **Salary / City / Relocate were blank for every candidate.** I handled a list
+   of dicts and a flat `{question: answer}` dict; the ONLY shape Markaz uses is
+   `{"1763029445610": {"question": ..., "answer": ...}}`. 0/410 before, 367/410
+   after.
+4. **A travel question was being read as the candidate's city.** CPD Coach asks
+   "Willingness to travel in your assigned region (regions may include certain
+   city areas...)"; a loose `city` match claimed it for 332 of 410 and printed
+   "Yes I am willing to travel" as their city. That job has no city question at
+   all -- its location field is **Address**. Each profile field now carries
+   EXCLUDE terms and each question is claimed by at most one field.
+
+## ⚠️ Production runs on Haiku 4.5, and cannot run on anything else
+
+CLAUDE.md Rule 30 said "Now Sonnet 5". Probed against Railway's own credential
+with 1-token calls: **`claude-sonnet-5` and `claude-opus-5` both return 429
+`rate_limit_error`; only `claude-haiku-4-5-20251001` answers.** Ayesha confirmed
+the plan does not give us Sonnet or Opus. Rule 30 is corrected in place.
+
+The code default was `claude-opus-4-8`, a **retired id**, so an unset
+`ANTHROPIC_MODEL` burned two failed calls before landing on the model that
+works. It is now Haiku 4.5, with `claude-sonnet-5` first in the fallback chain.
+
+🔴 **The consequence that matters: the semantic tone reviewer -- the thing that
+enforces the candidate-letter tone rules by meaning rather than by word list --
+runs on the smallest model we have. Read every letter yourself.**
+
+## Two smaller things worth keeping
+
+- **The model inferred gender from a name.** The first live screen wrote "she
+  has secondary teaching experience" with nothing in the CV saying so. The
+  prompt now forbids it and requires "they" or the candidate's name.
+- **A `_Skip` exception, not a return code**, is what lets one unscreenable
+  candidate be recorded and skipped without aborting a batch of 74, while the
+  single-candidate endpoint turns the same thing into a clear 422.

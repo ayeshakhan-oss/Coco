@@ -1,6 +1,6 @@
 ---
 name: Running pytest could create tables in PRODUCTION (2026-09-22)
-description: coco.eval_benchmarks and coco.case_study_evaluations appeared in the live database created by a test run, not a migration, which is how alembic and the real schema drifted twice in one day. Six paths reach ensure_app_tables(), one of them the READ path. conftest.py now blocks DDL against any non-SQLite database. Also: the integration suite had been silently dead for months on a 2.5s probe.
+description: "coco.eval_benchmarks and coco.case_study_evaluations appeared in the live database created by a test run, not a migration, which is how alembic and the real schema drifted twice in one day. Six paths reach ensure_app_tables(), one of them the READ path. conftest.py now blocks DDL against any non-SQLite database. Also: the integration suite had been silently dead on a 2.5s probe against a 3.4-7.4s connect, because a skip that always fires is a deleted test that still shows in the count."
 type: feedback
 ---
 
