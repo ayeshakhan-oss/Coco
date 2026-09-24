@@ -1,6 +1,6 @@
 ---
-name: A long run must survive a redeploy, and its progress must never be stale (2026-09-23)
-description: CV screening stopped at 236 of 410 because Railway redeployed under it and the loop had no retry; the page then said 67, because the stat boxes were only refreshed on the success path.
+name: Why CV screening kept looking like it stopped midway (2026-09-23 / 2026-09-25)
+description: Two causes behind one complaint. A Railway redeploy killed a fifty-minute run because the loop had no retry, and the page then showed a stale 67 for a real 236. Then a SILENT REFUSAL read as work undone: 81 unreadable CVs counted as unscreened for ever. A refusal is a result; write it down.
 type: project
 ---
 
@@ -83,3 +83,66 @@ did 58% of the work should never look like one that did 16%.
 - Unreadable CVs keep a position from ever reaching zero unscreened. That is
   correct (Rule 32) but it must be *said*, or the leftover count looks like a
   bug.
+
+---
+
+# Part 2 (2026-09-25): the same complaint, a different cause
+
+Ayesha ran the position again and asked why **81 of 411 were "still to be
+screened"**. They were not. The run of 08:56-09:14 UTC attempted all 174 that
+were left, screened 93 and refused 81. The position was finished.
+
+## Refusing was right. Refusing SILENTLY was the defect.
+
+A candidate whose CV cannot be read gets no `cv_screens` row, deliberately
+(Rule 32: a model asked to judge an empty page still answers). But with **no
+row of any kind**, "could not be read" and "not looked at yet" were the same
+state to every reader. So a finished position reported 81 outstanding for ever
+and offered a button that would re-read 81 unreadable files and change nothing.
+
+🔑 **A refusal is a RESULT. If you do not write it down, it reads as work you
+have not done.** Any code that declines to act on an input needs somewhere to
+say so, or the absence gets interpreted as a backlog. This is the general form
+and it is worth looking for elsewhere in the app.
+
+## What the 81 actually were
+
+Checked with the server's own extractor, then confirmed a second time by the
+backfill running through `_screen_and_store` itself. Both agreed exactly:
+
+| | |
+|---|---|
+| **43** | no resume stored in Markaz at all |
+| **26** | file extracts to under 250 words (one was 117) |
+| **12** | extraction fails outright: JPEG, PNG, legacy `.doc` (OLE2 header `\xd0\xcf\x11\xe0`) |
+
+~20% of the position, close to the 1-in-6 Rule 32 already records.
+
+## Rules
+
+- **Record a refusal** (`coco.cv_screen_skips`, migration 0015) with the
+  reason verbatim, a coarse `kind` for grouping, and **the Markaz filename** —
+  what somebody chasing a missing CV actually needs.
+- **A skip is DELETED, never superseded**, when the candidate later screens.
+  `cv_screens` keeps history because a retired score still says what we once
+  believed; a skip says only what is true now.
+- **Do not record an UNEXPECTED failure as a skip.** That is a bug, not a
+  statement about someone's document, and parking it as "could not be read"
+  launders it into a candidate-facing state where nobody looks again.
+- **Known-unreadable leaves the run.** `retry_skipped` is the only way back in,
+  for after the files are fixed. Re-reading a JPEG costs real time and changes
+  nothing.
+- **Backfill through the real code path** (`_screen_and_store`), never by
+  copying the message strings into a script — that guarantees drift.
+- ⚠️ **`MIN_SCREENABLE_WORDS` is checked BEFORE the model call**, so a re-run
+  over unreadable CVs costs zero model spend. Worth knowing before worrying
+  about the cost of a retry.
+
+## Notes
+
+- The SQL probe suite (`test_router_sql_executes.py`) **caught the new table
+  not existing** before anything shipped. It earns its keep.
+- ⚠️ Two network-dependent nugget tests (`test_nugget_writes`,
+  `test_screening_runs_sql`) each failed **once** and passed on every re-run.
+  They probe the live Neon HTTPS endpoint; a transient error trips them. Not a
+  regression, but they are flaky under a full-suite run.
