@@ -101,6 +101,10 @@ def _cv_screen_id() -> str:
     return "cvs-" + uuid4().hex
 
 
+def _cv_screen_skip_id() -> str:
+    return "cvk-" + uuid4().hex
+
+
 def _case_study_probe_id() -> str:
     return "csp-" + uuid4().hex
 
@@ -720,6 +724,66 @@ class CVScreen(Base):
         Index("ix_cv_screen_job_id", "job_id"),
         # `coco`, never `public`: Markaz's Replit per-deploy schema push prunes
         # tables it does not recognise there.
+        {"schema": "coco"},
+    )
+
+
+# The three reasons a CV cannot be screened, in the order the screener meets
+# them. `kind` is derived from the reason text at write time so the UI can
+# group and count without parsing prose.
+CV_SKIP_KINDS = ("no_cv", "unreadable", "too_short")
+
+
+class CVScreenSkip(Base):
+    """A candidate whose CV could not be read, kept instead of forgotten.
+
+    🔴 THIS IS NOT A LOW SCORE, AND MUST NEVER BECOME ONE. A CV that will not
+    open is a document problem needing a human; a model asked to judge an empty
+    page still answers, which is why `cv_screening` REFUSES below 250 words
+    rather than scoring what it could not read (CLAUDE.md Rule 32).
+
+    It exists because refusing silently is its own defect. A refused candidate
+    gets no `cv_screens` row, so "could not be read" and "not looked at yet"
+    were the same state to every reader, and the page counted them as unscreened
+    for ever. On CPD Coach that was 81 of 411 -- 43 with no resume stored at
+    all, 26 extracting to under 250 words, 12 failing outright as JPEGs, PNGs
+    and legacy .doc files -- and it read as a screener that kept stopping.
+
+    A skip is DELETED, never superseded, once that application screens
+    successfully. CVScreen keeps its history because a retired score still says
+    what we once believed; a skip says only what is true right now, and a stale
+    one is worth nothing to anybody.
+    """
+
+    __tablename__ = "cv_screen_skips"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_cv_screen_skip_id)
+
+    # Unique: a skip is the current state of one candidate's CV, so a second
+    # attempt replaces the first rather than stacking up.
+    application_id: Mapped[int] = mapped_column(Integer, nullable=False, unique=True)
+    job_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    candidate_name: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # The screener's own words, verbatim, so the page can say WHY.
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    kind: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # What the file was called in Markaz: what somebody chasing a missing CV
+    # actually needs in order to go and look for it.
+    cv_file_name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False, server_default="")
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "kind IN (" + ",".join(f"'{k}'" for k in CV_SKIP_KINDS) + ")",
+            name="ck_cv_screen_skip_kind",
+        ),
+        Index("ix_cv_screen_skip_job_id", "job_id"),
         {"schema": "coco"},
     )
 

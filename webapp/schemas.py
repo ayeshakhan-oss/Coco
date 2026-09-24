@@ -565,6 +565,26 @@ class CVScreenOut(_Base):
     criteria: list[CVScreenCriterionOut] = []
 
 
+class CVScreenSkipOut(_Base):
+    """Why a candidate has no screen, when the reason is their CV.
+
+    🔴 NOT A RESULT AND NOT A LOW SCORE. A CV that will not open is a
+    document problem needing a person; scoring what could not be read is the
+    failure mode `cv_screening` refuses in order to avoid (CLAUDE.md Rule 32).
+    Surfaced so "could not be read" stops reading as "not looked at yet".
+    """
+
+    application_id: int
+    # no_cv | unreadable | too_short
+    kind: str
+    # The screener's own words, kept verbatim.
+    reason: str
+    # What the file was called in Markaz, which is what somebody chasing a
+    # missing CV actually needs.
+    cv_file_name: Optional[str] = None
+    recorded_at: Optional[dt.datetime] = None
+
+
 class CVScreenApplicationOut(_Base):
     """One application in a job's screening list: who they are, the profile
     fields the SOP requires captured, and their CURRENT screen if there is one."""
@@ -582,6 +602,9 @@ class CVScreenApplicationOut(_Base):
     cv_available: bool = False
     cv_error: Optional[str] = None
     screen: Optional[CVScreenOut] = None
+    # Set when the CV could not be read. A row carries a screen or a skip,
+    # never both: a successful screen deletes the skip.
+    skip: Optional[CVScreenSkipOut] = None
 
 
 class CVScreenJobSummaryOut(_Base):
@@ -593,7 +616,13 @@ class CVScreenJobSummaryOut(_Base):
     shortlist: int
     maybe: int
     no_hire: int
+    # Work REMAINING. Excludes candidates whose CV cannot be read, which is not
+    # work anyone can do by screening again.
     unscreened: int
+    # Attempted and refused: no resume stored, an unreadable file, or too few
+    # words to screen on. shortlist + maybe + no_hire + unreadable + unscreened
+    # == total.
+    unreadable: int = 0
     jd_chars: int
     jd_error: Optional[str] = None
 
@@ -790,6 +819,11 @@ class CVScreenBatchRequest(_Base):
     # the loop terminate, since a candidate whose CV cannot be read never gets
     # a screen row and would otherwise be handed back for ever.
     after: Optional[int] = None
+    # Deliberately try the CVs already recorded as unreadable, after the files
+    # have been fixed in Markaz. Off by default: re-reading a JPEG costs real
+    # time and changes nothing, and a run that keeps retrying them never ends
+    # in a state anyone can act on.
+    retry_skipped: bool = False
 
 
 class CVScreenBatchOut(_Base):
@@ -945,3 +979,182 @@ class HiringBriefOut(_Base):
     # Stages where the funnel widened instead of narrowing.
     inconsistencies: list[str] = []
     brief: DecisionBriefOut
+
+
+# --------------------------------------------------------------------------
+# Technical screening (Skill 02, technical-screening). These are NUGGET's
+# tiers and rubric vocabulary, deliberately distinct from Coco's own CV
+# screening, which uses shortlist/maybe/no_hire and must never borrow P1-P4
+# (Ayesha, 2026-09-15). The two remain separate systems that now share one
+# engine for launching runs.
+# --------------------------------------------------------------------------
+
+
+class TechJobOut(_Base):
+    job_pk: int
+    job_code: Optional[str] = None
+    title: str
+    department: Optional[str] = None
+    job_status: Optional[str] = None
+    applications: int = 0
+    scored: int = 0
+    has_rubric: bool = False
+    rubric_version: Optional[int] = None
+    # Set when a run is already live for this job, so Confirm can be disabled
+    # with the reason rather than failing on uq_nsrun_one_active_per_job.
+    live_run_id: Optional[str] = None
+    live_run_status: Optional[str] = None
+
+
+class TechDimensionOut(_Base):
+    key: str
+    label: str
+    weight: Optional[float] = None
+    core: Optional[bool] = None
+
+
+class TechHardFilterOut(_Base):
+    key: Optional[str] = None
+    label: Optional[str] = None
+    action: Optional[str] = None
+
+
+class TechRubricOut(_Base):
+    id: str
+    version: int
+    title: Optional[str] = None
+    seniority: Optional[str] = None
+    min_years: Optional[float] = None
+    dimensions: list[TechDimensionOut] = []
+    max_score: float = 100
+    thresholds: dict[str, Any] = {}
+    hard_filters: list[TechHardFilterOut] = []
+    source: Optional[str] = None
+    created_by: Optional[str] = None
+    activated_at: Optional[dt.datetime] = None
+
+
+class TechRubricStepOut(_Base):
+    job_id: int
+    job_title: Optional[str] = None
+    department: Optional[str] = None
+    jd_source: Optional[str] = None
+    rubric: Optional[TechRubricOut] = None
+    # Why a rubric cannot be drafted, when it cannot.
+    blocked_reason: Optional[str] = None
+
+
+class TechRubricDraftRequest(_Base):
+    job_id: int
+
+
+class TechRubricPublishRequest(_Base):
+    job_id: int
+    draft: dict[str, Any]
+
+
+class TechPlanRequest(_Base):
+    job_id: int
+    mode: str = "new_only"
+    since_days: Optional[int] = None
+    max_candidates: Optional[int] = None
+    model: str
+    use_batch: bool = False
+
+
+class TechPlanOut(_Base):
+    job_id: int
+    mode: str
+    model: str
+    use_batch: bool = False
+    rubric_version: int
+    people: int
+    duplicates_merged: int
+    no_cv: int
+    already_scored_in_pool: int = 0
+    newest_application: Optional[str] = None
+    oldest_application: Optional[str] = None
+    est_input_tokens: int = 0
+    est_cached_tokens: int = 0
+    est_output_tokens: int = 0
+    est_cost_usd: float = 0
+    cache_saving_usd: float = 0
+    batch_saving_usd: float = 0
+    live_run_id: Optional[str] = None
+
+
+class TechCreateRunRequest(_Base):
+    job_id: int
+    mode: str = "new_only"
+    since_days: Optional[int] = None
+    max_candidates: Optional[int] = None
+    model: str
+    use_batch: bool = False
+    effort: str = "medium"
+    cost_cap_usd: Optional[float] = None
+
+
+class TechRunOut(_Base):
+    id: str
+    job_id: int
+    job_title: Optional[str] = None
+    status: str
+    mode: str
+    model: str
+    rubric_version: int
+    pause_reason: Optional[str] = None
+    total: int = 0
+    done: int = 0
+    scored: int = 0
+    failed: int = 0
+    skipped: int = 0
+    unusable: int = 0
+    percent: float = 0
+    est_cost_usd: float = 0
+    actual_cost_usd: float = 0
+    cost_cap_usd: Optional[float] = None
+    requested_by: Optional[str] = None
+    created_at: Optional[dt.datetime] = None
+    started_at: Optional[dt.datetime] = None
+    finished_at: Optional[dt.datetime] = None
+    error: Optional[str] = None
+    last_warning: Optional[str] = None
+
+
+class TechScreenedOut(_Base):
+    application_id: int
+    candidate_name: Optional[str] = None
+    tier: Optional[str] = None
+    score_pct: Optional[float] = None
+
+
+class TechSkippedOut(_Base):
+    application_id: int
+    reason: str
+    candidate_name: Optional[str] = None
+    tier: Optional[str] = None
+
+
+class TechWorkRequest(_Base):
+    # Small on purpose: each candidate is a model call of roughly twelve
+    # seconds, so a big slice risks the platform's request timeout.
+    limit: int = Field(default=3, ge=1, le=8)
+
+
+class TechWorkOut(_Base):
+    run_id: str
+    screened: list[TechScreenedOut] = []
+    skipped: list[TechSkippedOut] = []
+    # Named to match what frontend/src/lib/screenAll.ts already consumes, so
+    # that tested retry loop is reused rather than reimplemented.
+    last_application_id: Optional[int] = None
+    remaining: int = 0
+    status: str
+    run: Optional[TechRunOut] = None
+
+
+class TechModelOut(_Base):
+    model: str
+    label: str
+    input_per_mtok: float
+    output_per_mtok: float

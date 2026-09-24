@@ -546,6 +546,17 @@ export interface CVScreen {
   criteria: CVScreenCriterion[]
 }
 
+/** Why a candidate has no screen, when the reason is their CV.
+ *  Not a result and not a low score: a CV that will not open is a document
+ *  problem needing a person. */
+export interface CVScreenSkip {
+  application_id: number
+  kind: 'no_cv' | 'unreadable' | 'too_short'
+  reason: string
+  cv_file_name: string | null
+  recorded_at: string | null
+}
+
 export interface CVScreenApplication {
   application_id: number
   candidate_name: string
@@ -558,6 +569,8 @@ export interface CVScreenApplication {
   cv_available: boolean
   cv_error: string | null
   screen: CVScreen | null
+  // A row carries a screen or a skip, never both.
+  skip: CVScreenSkip | null
 }
 
 export interface CVScreenJobSummary {
@@ -567,7 +580,12 @@ export interface CVScreenJobSummary {
   shortlist: number
   maybe: number
   no_hire: number
+  // Work remaining. Excludes CVs that cannot be read, which no amount of
+  // screening again will resolve.
   unscreened: number
+  // Attempted and refused. shortlist + maybe + no_hire + unreadable +
+  // unscreened === total.
+  unreadable: number
   jd_chars: number
   jd_error: string | null
 }

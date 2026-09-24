@@ -46,7 +46,7 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..deps import get_current_user, require_editor
-from ..models import CVScreen
+from ..models import CVScreen, CVScreenSkip
 from ..schemas import (
     CVScreenApplicationOut,
     CVScreenBatchOut,
@@ -55,6 +55,7 @@ from ..schemas import (
     CVScreenJobSummaryOut,
     CVScreenOut,
     CVScreenRequest,
+    CVScreenSkipOut,
     CVScreenSkippedOut,
 )
 from ..services import reads
@@ -274,6 +275,15 @@ def job_summary(
     for row in db.execute(_CURRENT_SCREENS_FOR_JOB_SQL, {"job_id": job_id}).mappings():
         counts[row["tier"]] = counts.get(row["tier"], 0) + 1
 
+    # 🔴 A CV THAT CANNOT BE READ IS NOT WORK LEFT TO DO. Counting refusals as
+    # "not yet screened" made a fully-read position look like one that kept
+    # stopping: CPD Coach read 81 of 411 unscreened when all 411 had been
+    # attempted and those 81 had no readable CV between them.
+    unreadable = db.execute(
+        text("SELECT COUNT(*) FROM coco.cv_screen_skips WHERE job_id = :job_id"),
+        {"job_id": job_id},
+    ).scalar_one()
+
     jd_chars, jd_error = 0, None
     try:
         jd_chars = len(to_text(job["description"], job_id=job_id))
@@ -284,7 +294,11 @@ def job_summary(
         job_id=job_id,
         title=job["title"],
         total=total,
-        unscreened=total - sum(counts.values()),
+        # `unscreened` is work REMAINING, so refusals come out of it. The four
+        # stat boxes still account for everyone: shortlist + maybe + no_hire +
+        # unreadable + unscreened == total.
+        unscreened=total - sum(counts.values()) - unreadable,
+        unreadable=unreadable,
         jd_chars=jd_chars,
         jd_error=jd_error,
         **counts,
@@ -304,6 +318,23 @@ def list_applications(
             _CURRENT_SCREENS_FOR_JOB_SQL, {"job_id": job_id}
         ).mappings()
     }
+    # Why a candidate has no screen, when the reason is that their CV could not
+    # be read. Without this the row says "not screened", which is indis-
+    # tinguishable from "not looked at yet" and is how 81 fully-attempted
+    # candidates read as outstanding work.
+    skips = {
+        r["application_id"]: CVScreenSkipOut(
+            application_id=r["application_id"],
+            kind=r["kind"],
+            reason=r["reason"],
+            cv_file_name=r["cv_file_name"],
+            recorded_at=r["created_at"],
+        )
+        for r in db.execute(
+            text("SELECT * FROM coco.cv_screen_skips WHERE job_id = :job_id"),
+            {"job_id": job_id},
+        ).mappings()
+    }
 
     out = []
     for r in rows:
@@ -317,6 +348,7 @@ def list_applications(
                 applied_at=r["applied_at"],
                 cv_available=bool(r["has_resume"]),
                 screen=screens.get(r["application_id"]),
+                skip=skips.get(r["application_id"]),
                 **_profile_fields(r["custom_answers"], r["canned_answers"]),
             )
         )
@@ -340,9 +372,63 @@ def list_screens(
 class _Skip(Exception):
     """This candidate cannot be screened, and that is not a failure of the run."""
 
-    def __init__(self, reason: str):
+    def __init__(
+        self, reason: str, *, candidate_name: str = "",
+        cv_file_name: Optional[str] = None,
+    ):
         super().__init__(reason)
         self.reason = reason
+        # Carried so the skip can be RECORDED usefully. A person chasing a
+        # missing CV needs the candidate's name and what the file was called
+        # in Markaz, not an application id.
+        self.candidate_name = candidate_name
+        self.cv_file_name = cv_file_name
+
+
+def _skip_kind(reason: str) -> str:
+    """Bucket a refusal so the UI can count and group without parsing prose.
+
+    Matched on the wording the two refusing code paths actually produce:
+    `reads.get_cv_evidence` -> "no resume on file for this candidate", and
+    `cv_screening.screen_cv` -> "...only N words (needs 250+). This is an
+    extraction failure...".
+    """
+    low = reason.lower()
+    if "no resume" in low or "no cv" in low:
+        return "no_cv"
+    if "words" in low:
+        return "too_short"
+    return "unreadable"
+
+
+def _record_skip(
+    db: Session, application_id: int, *, job_id: int, candidate_name: str,
+    reason: str, cv_file_name: Optional[str], created_by: str,
+) -> None:
+    """Remember that this CV could not be read.
+
+    Refusing silently is its own defect: with no row of any kind, "could not be
+    read" and "not looked at yet" are the same state to every reader, and the
+    page counts a fully-read position as permanently unfinished.
+
+    One row per application, so a fresh attempt replaces the old statement
+    rather than stacking up.
+    """
+    db.execute(
+        text("DELETE FROM coco.cv_screen_skips WHERE application_id = :application_id"),
+        {"application_id": application_id},
+    )
+    db.add(
+        CVScreenSkip(
+            application_id=application_id,
+            job_id=job_id,
+            candidate_name=candidate_name or "(no name on record)",
+            reason=reason,
+            kind=_skip_kind(reason),
+            cv_file_name=cv_file_name,
+            created_by=created_by,
+        )
+    )
 
 
 def _job_and_jd(db: Session, job_id: int):
@@ -371,15 +457,19 @@ def _screen_and_store(
     if not app_row:
         raise _Skip("application not found")
 
-    evidence = reads.get_cv_evidence(db, application_id)
-    cv = evidence.get("cv_text")
-    if not cv:
-        raise _Skip(evidence.get("cv_error") or "no CV on file")
-
     candidate_name = " ".join(
         p for p in (app_row.get("first_name"), app_row.get("last_name")) if p
     ).strip() or "the candidate"
     role = (app_row.get("job_title") or job["title"] or "the role").strip()
+
+    evidence = reads.get_cv_evidence(db, application_id)
+    cv = evidence.get("cv_text")
+    if not cv:
+        raise _Skip(
+            evidence.get("cv_error") or "no resume on file for this candidate",
+            candidate_name=candidate_name,
+            cv_file_name=evidence.get("cv_file_name"),
+        )
 
     try:
         result = screen_cv(
@@ -389,7 +479,10 @@ def _screen_and_store(
         # A CV that did not extract is a document problem, not a weak candidate,
         # and must never be stored as a low score.
         if "extraction failure" in str(exc):
-            raise _Skip(str(exc)) from exc
+            raise _Skip(
+                str(exc), candidate_name=candidate_name,
+                cv_file_name=evidence.get("cv_file_name"),
+            ) from exc
         raise
 
     row = CVScreen(
@@ -420,6 +513,14 @@ def _screen_and_store(
     )
     db.add(row)
     db.flush()  # assigns row.id, which the superseded rows must point at
+
+    # This CV can be read after all, so the statement that it could not is no
+    # longer true. Deleted, not kept: a skip describes right now, and a stale
+    # one would hold the candidate in the "needs a human" list for ever.
+    db.execute(
+        text("DELETE FROM coco.cv_screen_skips WHERE application_id = :application_id"),
+        {"application_id": application_id},
+    )
 
     # Rule 25: retire the previous number in the same transaction that creates
     # its replacement, so there is never a moment with two current screens.
@@ -482,33 +583,44 @@ def screen(
 
 
 # Applications on a job that still have no current screen, after a cursor.
+#
 # The CURSOR is what makes a batch terminate: a candidate whose CV cannot be
 # read never gets a screen row, so a "next unscreened" query alone would hand
 # back the same person for ever.
-_UNSCREENED_AFTER_SQL = text(
-    """
-    SELECT a.id
-    FROM applications a
-    WHERE a.job_id = :job_id
-      AND a.id > :after
+#
+# 🔴 AND A KNOWN-UNREADABLE CV IS NOT WORK. Once a skip is recorded, the run
+# leaves that candidate alone: re-reading 81 CVs that are JPEGs, legacy .doc
+# files or absent entirely costs real time and changes nothing. `:retry_skipped`
+# is how somebody deliberately tries them again after the files are fixed in
+# Markaz, and it is the ONLY way they come back into a run.
+_UNSCREENED_PREDICATE = """
       AND NOT EXISTS (
           SELECT 1 FROM coco.cv_screens s
           WHERE s.application_id = a.id AND s.is_current
       )
+      AND (:retry_skipped OR NOT EXISTS (
+          SELECT 1 FROM coco.cv_screen_skips k WHERE k.application_id = a.id
+      ))
+"""
+
+_UNSCREENED_AFTER_SQL = text(
+    f"""
+    SELECT a.id
+    FROM applications a
+    WHERE a.job_id = :job_id
+      AND a.id > :after
+      {_UNSCREENED_PREDICATE}
     ORDER BY a.id
     LIMIT :limit
     """
 )
 
 _UNSCREENED_REMAINING_SQL = text(
-    """
+    f"""
     SELECT COUNT(*) FROM applications a
     WHERE a.job_id = :job_id
       AND a.id > :after
-      AND NOT EXISTS (
-          SELECT 1 FROM coco.cv_screens s
-          WHERE s.application_id = a.id AND s.is_current
-      )
+      {_UNSCREENED_PREDICATE}
     """
 )
 
@@ -533,11 +645,13 @@ def screen_batch(
     job, jd, jd_sha = _job_and_jd(db, body.job_id)
     created_by = user.get("id") or ""
     after = body.after or 0
+    retry_skipped = bool(body.retry_skipped)
 
     ids = [
         r[0] for r in db.execute(
             _UNSCREENED_AFTER_SQL,
-            {"job_id": body.job_id, "after": after, "limit": body.limit},
+            {"job_id": body.job_id, "after": after, "limit": body.limit,
+             "retry_skipped": retry_skipped},
         ).all()
     ]
 
@@ -552,7 +666,16 @@ def screen_batch(
             db.refresh(row)
             screened.append(_screen_out(row))
         except _Skip as exc:
+            # Roll back the failed attempt FIRST, then record the skip in a
+            # transaction of its own. Recording it inside the rolled-back one
+            # would throw the record away with the failure.
             db.rollback()
+            _record_skip(
+                db, application_id, job_id=body.job_id,
+                candidate_name=exc.candidate_name, reason=exc.reason,
+                cv_file_name=exc.cv_file_name, created_by=created_by,
+            )
+            db.commit()
             skipped.append(CVScreenSkippedOut(
                 application_id=application_id, reason=exc.reason,
             ))
@@ -563,6 +686,12 @@ def screen_batch(
             raise HTTPException(503, f"Screening unavailable: {exc}") from exc
         except Exception as exc:  # noqa: BLE001
             # One candidate failing must not lose the ones already done.
+            #
+            # Deliberately NOT recorded as a skip. A skip is a statement about
+            # the candidate's document; this is an unexpected failure, which
+            # means a bug. Parking it as "could not be read" would launder a
+            # bug into a candidate-facing state and stop anyone noticing. It
+            # stays outstanding and gets retried, which is the right signal.
             db.rollback()
             log.exception("screen_batch: failed on application %s", application_id)
             skipped.append(CVScreenSkippedOut(
@@ -572,7 +701,8 @@ def screen_batch(
 
     last = ids[-1] if ids else after
     remaining = db.execute(
-        _UNSCREENED_REMAINING_SQL, {"job_id": body.job_id, "after": last}
+        _UNSCREENED_REMAINING_SQL,
+        {"job_id": body.job_id, "after": last, "retry_skipped": retry_skipped},
     ).scalar_one()
 
     return CVScreenBatchOut(

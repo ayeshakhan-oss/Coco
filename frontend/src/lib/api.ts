@@ -228,8 +228,12 @@ export const api = {
     get<CVScreen[]>(`/api/cv-screening/screens?application_id=${applicationId}`),
   cvScreen: (application_id: number) =>
     post<CVScreen>('/api/cv-screening/screen', { application_id }),
-  cvScreenBatch: (job_id: number, after: number | null, limit = 4) =>
-    post<CVScreenBatch>('/api/cv-screening/screen-batch', { job_id, after, limit }),
+  // `retry_skipped` deliberately re-reads the CVs already recorded as
+  // unreadable, for after the files have been fixed in Markaz.
+  cvScreenBatch: (job_id: number, after: number | null, retry_skipped = false, limit = 4) =>
+    post<CVScreenBatch>('/api/cv-screening/screen-batch', {
+      job_id, after, limit, retry_skipped,
+    }),
 
 
   // --- Case-study tracking (who submitted, who has not, what the pool shares) ---

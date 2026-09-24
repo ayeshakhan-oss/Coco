@@ -37,6 +37,15 @@ function TierBadge({ tier }: { tier: CVScreenTier }) {
   )
 }
 
+// Why a candidate has no screen, in the words of what somebody would have to
+// do about it. Never a tier, never a score: a CV that will not open is a
+// document problem, not a weak candidate.
+const SKIP_LABEL: Record<string, string> = {
+  no_cv: 'No CV on file',
+  unreadable: 'CV would not open',
+  too_short: 'CV barely extracted',
+}
+
 function years(n: number) {
   return `${n % 1 === 0 ? n.toFixed(0) : n.toFixed(1)}y`
 }
@@ -166,10 +175,12 @@ export function CVScreeningPage() {
   } | null>(null)
   const stopRef = useRef(false)
 
-  const screenWholePosition = async () => {
+  const screenWholePosition = async (retrySkipped = false) => {
     if (jobId === null || runAll) return
     const gen = genRef.current
-    const total = summary?.unscreened ?? rows.filter((r) => !r.screen).length
+    const total = retrySkipped
+      ? (summary?.unreadable ?? 0)
+      : (summary?.unscreened ?? rows.filter((r) => !r.screen).length)
     stopRef.current = false
     setRunAll({ done: 0, total, skipped: 0, stopping: false, retrying: 0, retryInSeconds: 0 })
     setScreenError(null)
@@ -190,15 +201,40 @@ export function CVScreeningPage() {
     }
 
     const result = await runScreenAll({
-      runBatch: (after) => api.cvScreenBatch(jobId, after),
+      runBatch: (after) => api.cvScreenBatch(jobId, after, retrySkipped),
       shouldStop: () => stopRef.current,
       isAbandoned: () => genRef.current !== gen,
       onBatch: (batch) => {
         const byId = new Map(batch.screened.map((x) => [x.application_id, x]))
+        const skippedIds = new Set(batch.skipped.map((x) => x.application_id))
         setRows((prev) =>
-          prev.map((r) => (byId.has(r.application_id)
-            ? { ...r, screen: byId.get(r.application_id)! }
-            : r)),
+          prev.map((r) => {
+            const screen = byId.get(r.application_id)
+            // A screen clears any earlier skip, exactly as the server does.
+            if (screen) return { ...r, screen, skip: null }
+            // The full skip record arrives with the next list refresh; this
+            // is enough for the row to stop claiming it was never looked at.
+            if (skippedIds.has(r.application_id) && !r.skip) {
+              const reason = batch.skipped.find(
+                (x) => x.application_id === r.application_id,
+              )!.reason
+              return {
+                ...r,
+                skip: {
+                  application_id: r.application_id,
+                  kind: /no resume|no cv/i.test(reason)
+                    ? ('no_cv' as const)
+                    : /words/i.test(reason)
+                      ? ('too_short' as const)
+                      : ('unreadable' as const),
+                  reason,
+                  cv_file_name: null,
+                  recorded_at: null,
+                },
+              }
+            }
+            return r
+          }),
         )
         refreshSummary()
       },
@@ -287,11 +323,22 @@ export function CVScreeningPage() {
             ))}
           </div>
 
-          {summary.unscreened > 0 && (
+          {/* 🔴 "Not yet screened" and "cannot be read" are different things,
+              and conflating them told Ayesha a fully-read position still had
+              81 candidates outstanding. They are counted separately now. */}
+          {(summary.unscreened > 0 || summary.unreadable > 0) && (
             <p className="mt-2 text-xs text-ink-dim">
-              {summary.unscreened} of {summary.total} not yet screened. The three tiers sum to{' '}
-              {summary.shortlist + summary.maybe + summary.no_hire}; the stat boxes only balance
-              once every CV has been read.
+              {summary.unscreened > 0 && <>{summary.unscreened} of {summary.total} not yet read. </>}
+              {summary.unreadable > 0 && (
+                <>
+                  <span className="text-warning">
+                    {summary.unreadable} CV{summary.unreadable === 1 ? '' : 's'} could not be read
+                  </span>{' '}
+                  and {summary.unreadable === 1 ? 'needs' : 'need'} a person, so{' '}
+                  {summary.unreadable === 1 ? 'it is' : 'they are'} not counted as work left.{' '}
+                </>
+              )}
+              The three tiers sum to {summary.shortlist + summary.maybe + summary.no_hire}.
             </p>
           )}
 
@@ -352,8 +399,31 @@ export function CVScreeningPage() {
                   </p>
                 </>
               ) : summary.unscreened === 0 ? (
-                <div className="text-sm font-semibold text-ink">
-                  Every CV on this position has been read.
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-semibold text-ink">
+                      Every CV on this position has been read.
+                    </div>
+                    {summary.unreadable > 0 && (
+                      <p className="text-xs text-ink-muted">
+                        {summary.unreadable} could not be opened at all. Screening them again
+                        reads the same unreadable files, so try it only once the CVs have been
+                        fixed or re-uploaded in Markaz.
+                      </p>
+                    )}
+                  </div>
+                  {/* The ONLY way a recorded skip re-enters a run. Off by
+                      default: re-reading a JPEG costs real time and changes
+                      nothing. */}
+                  {summary.unreadable > 0 && (
+                    <button
+                      type="button"
+                      className="btn-secondary text-sm"
+                      onClick={() => screenWholePosition(true)}
+                    >
+                      Retry the {summary.unreadable} we could not read
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="flex flex-wrap items-center justify-between gap-3">
@@ -371,7 +441,7 @@ export function CVScreeningPage() {
                   <button
                     type="button"
                     className="btn-primary text-sm"
-                    onClick={screenWholePosition}
+                    onClick={() => screenWholePosition()}
                   >
                     Screen all {summary.unscreened}
                   </button>
@@ -408,9 +478,9 @@ export function CVScreeningPage() {
                             {runOutcome.skipped} CV{runOutcome.skipped === 1 ? '' : 's'} could not
                             be read and {runOutcome.skipped === 1 ? 'needs' : 'need'} a person.
                           </span>{' '}
-                          A CV that will not open is a document problem, not a weak candidate, so
-                          {runOutcome.skipped === 1 ? ' it stays' : ' they stay'} counted as
-                          unscreened.
+                          A CV that will not open is a document problem, not a weak candidate.
+                          Each one is listed below with the reason, and none of them counts as
+                          work still to do.
                         </>
                       )}
                     </>
@@ -461,8 +531,33 @@ export function CVScreeningPage() {
                         <div className="text-xs text-ink-dim">
                           {r.email ?? 'no email'} · app {r.application_id}
                         </div>
+                        {/* The reason in full, plus what the file was called
+                            in Markaz: what somebody chasing it needs. */}
+                        {!s && r.skip && (
+                          <div className="mt-0.5 text-xs text-warning">
+                            {r.skip.reason}
+                            {r.skip.cv_file_name && <> · {r.skip.cv_file_name}</>}
+                          </div>
+                        )}
                       </td>
-                      <td className="px-4 py-2.5">{s ? <TierBadge tier={s.tier} /> : <span className="text-xs text-ink-dim">not screened</span>}</td>
+                      <td className="px-4 py-2.5">
+                        {s ? (
+                          <TierBadge tier={s.tier} />
+                        ) : r.skip ? (
+                          // 🔴 NOT A TIER AND NOT A SCORE. This candidate was
+                          // read for, and their CV would not open. Saying
+                          // "not screened" here is what made 81 fully-attempted
+                          // candidates look like outstanding work.
+                          <span
+                            className="inline-block rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 text-xs font-semibold text-warning"
+                            title={r.skip.reason}
+                          >
+                            {SKIP_LABEL[r.skip.kind] ?? 'Could not read CV'}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-ink-dim">not screened</span>
+                        )}
+                      </td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-ink">{s ? `${s.match}%` : '—'}</td>
                       <td className="px-4 py-2.5 text-right tabular-nums text-ink">
                         {s ? years(s.total_experience_years) : '—'}

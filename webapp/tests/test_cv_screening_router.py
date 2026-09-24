@@ -65,6 +65,7 @@ class _FakeSession:
         self.added: list = []
         self.committed = False
         self.flushed = False
+        self.rollbacks = 0
 
     def execute(self, stmt, params=None):
         sql = " ".join(str(stmt).split())
@@ -85,6 +86,14 @@ class _FakeSession:
 
     def commit(self):
         self.committed = True
+
+    def rollback(self):
+        # Faithful to SQLAlchemy: a rollback discards what was pending. That
+        # makes `added` prove ORDER, not just presence -- a skip recorded
+        # BEFORE the rollback of the attempt that produced it would be thrown
+        # away here and the test would fail, which is the point.
+        self.rollbacks += 1
+        self.added = []
 
     def refresh(self, obj):
         pass
@@ -417,3 +426,142 @@ def test_criteria_are_served_from_the_service_not_a_frontend_constant(client):
     keys = [c["key"] for c in r.json()]
     assert keys == ["skills", "experience", "fit"]
     assert sum(c["weight"] for c in r.json()) == 100
+
+
+# --------------------------------------------------------------------------
+# A CV that cannot be read is RECORDED, not forgotten
+#
+# THE BUG THESE EXIST FOR. A refused candidate gets no `cv_screens` row, which
+# is correct: a model asked to judge an empty page still answers. But "could
+# not be read" and "not looked at yet" were then the same state to every
+# reader, so the page counted refusals as work outstanding for ever.
+#
+# On CPD Coach that was 81 of 411 -- 43 with no resume stored in Markaz at all,
+# 26 extracting to under 250 words, 12 failing outright as JPEGs, PNGs and
+# legacy .doc files. The position had been read end to end. Ayesha ran it
+# twice and asked why 81 were "still to be screened", which is precisely what
+# the page said.
+# --------------------------------------------------------------------------
+
+
+def test_a_skip_is_bucketed_by_what_somebody_would_have_to_do_about_it():
+    """`kind` is derived from the reason the refusing code path actually
+    produces, so the UI can group without parsing prose."""
+    assert router_mod._skip_kind("no resume on file for this candidate") == "no_cv"
+    assert router_mod._skip_kind(
+        "extracted only 172 words (needs 250+). This is an extraction failure, "
+        "not a weak candidate."
+    ) == "too_short"
+    assert router_mod._skip_kind(
+        "could not extract usable text from download.jpg (needs 400+ chars)"
+    ) == "unreadable"
+
+
+def test_the_batch_records_the_skip_instead_of_dropping_it(client, monkeypatch):
+    session = _FakeSession({
+        "FROM jobs WHERE id": [
+            {"id": 39, "title": "Growth Manager",
+             "description": "<p>" + ("Real job description text. " * 30) + "</p>"}
+        ],
+        "SELECT a.id FROM applications": [(4242,)],
+    })
+    monkeypatch.setattr(router_mod.reads, "get_application", lambda db, i: _application_row())
+    monkeypatch.setattr(
+        router_mod.reads, "get_cv_evidence",
+        lambda db, i: {"cv_text": None,
+                       "cv_error": "could not extract usable text from download.jpg",
+                       "cv_file_name": "download.jpg"},
+    )
+    _as("editor", session)
+    r = client.post(f"{PREFIX}/screen-batch", json={"job_id": 39, "limit": 1})
+    assert r.status_code == 200
+    assert [s["application_id"] for s in r.json()["skipped"]] == [4242]
+
+    # The refusal was PERSISTED, with the detail a person chasing the file needs.
+    skips = [o for o in session.added if isinstance(o, router_mod.CVScreenSkip)]
+    assert len(skips) == 1, "the batch dropped the skip instead of recording it"
+    assert skips[0].application_id == 4242
+    assert skips[0].kind == "unreadable"
+    assert skips[0].cv_file_name == "download.jpg"
+    assert skips[0].candidate_name == "Aa Bb"
+
+
+def test_a_recorded_skip_is_not_offered_as_work_again(client, monkeypatch):
+    """Re-reading a JPEG costs real time and changes nothing, so a known
+    unreadable CV leaves the run unless somebody asks for it by name."""
+    session = _FakeSession({"FROM jobs WHERE id": [
+        {"id": 39, "title": "Growth Manager",
+         "description": "<p>" + ("Real job description text. " * 30) + "</p>"}
+    ]})
+    _as("editor", session)
+    client.post(f"{PREFIX}/screen-batch", json={"job_id": 39})
+
+    selects = [sql for sql, _ in session.executed if "SELECT a.id FROM applications" in sql]
+    assert selects, "the batch never asked for work"
+    assert "cv_screen_skips" in selects[0], "a known-unreadable CV is still being handed back"
+    assert session.executed[[s for s, _ in session.executed].index(selects[0])][1][
+        "retry_skipped"
+    ] is False
+
+
+def test_retry_skipped_is_the_one_way_they_come_back(client, monkeypatch):
+    session = _FakeSession({"FROM jobs WHERE id": [
+        {"id": 39, "title": "Growth Manager",
+         "description": "<p>" + ("Real job description text. " * 30) + "</p>"}
+    ]})
+    _as("editor", session)
+    client.post(f"{PREFIX}/screen-batch", json={"job_id": 39, "retry_skipped": True})
+
+    params = [p for sql, p in session.executed if "SELECT a.id FROM applications" in sql]
+    assert params and params[0]["retry_skipped"] is True
+
+
+def test_a_successful_screen_clears_the_skip(client, monkeypatch):
+    """The CV opens after all, so the statement that it could not is no longer
+    true. Deleted, not kept: a stale skip would hold the candidate in the
+    needs-a-person list for ever."""
+    session = _FakeSession({"FROM jobs WHERE id": [
+        {"id": 39, "title": "Growth Manager",
+         "description": "<p>" + ("Real job description text. " * 30) + "</p>"}
+    ]})
+    monkeypatch.setattr(router_mod.reads, "get_application", lambda db, i: _application_row())
+    monkeypatch.setattr(
+        router_mod.reads, "get_cv_evidence",
+        lambda db, i: {"cv_text": "word " * 600, "cv_file_name": "cv.pdf"},
+    )
+    monkeypatch.setattr(router_mod, "screen_cv", lambda **kw: _screen_result())
+    _as("editor", session)
+    r = client.post(f"{PREFIX}/screen", json={"application_id": 1})
+    assert r.status_code == 200
+
+    deletes = [sql for sql, _ in session.executed
+               if "DELETE FROM coco.cv_screen_skips" in sql]
+    assert deletes, "a successful screen left the old skip standing"
+
+
+def test_the_summary_does_not_count_unreadable_cvs_as_work_left(client, monkeypatch):
+    """411 applications, 330 screened, 81 refused: the position is FINISHED.
+    Reporting 81 unscreened is what made a completed run look like a stall."""
+    session = _FakeSession({
+        "FROM jobs WHERE id": [
+            {"id": 17, "title": "CPD Coach",
+             "description": "<p>" + ("Real job description text. " * 30) + "</p>"}
+        ],
+        "SELECT COUNT(*) FROM applications WHERE job_id": [411],
+        "FROM coco.cv_screens WHERE job_id": [
+            {"tier": "shortlist"}] * 113 + [{"tier": "maybe"}] * 86
+        + [{"tier": "no_hire"}] * 131,
+        "SELECT COUNT(*) FROM coco.cv_screen_skips": [81],
+    })
+    _as("viewer", session)
+    r = client.get(f"{PREFIX}/jobs/17/summary")
+    assert r.status_code == 200
+    body = r.json()
+
+    assert body["unreadable"] == 81
+    assert body["unscreened"] == 0, "a fully-read position still reports work outstanding"
+    # Everyone is still accounted for.
+    assert (
+        body["shortlist"] + body["maybe"] + body["no_hire"]
+        + body["unreadable"] + body["unscreened"]
+    ) == body["total"]

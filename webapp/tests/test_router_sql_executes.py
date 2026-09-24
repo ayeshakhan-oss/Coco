@@ -66,6 +66,7 @@ _PARAM_LITERALS = {
     "v": "'none'",
     "after": "-1",
     "limit": "1",
+    "retry_skipped": "false",
 }
 
 # A NEGATIVE LOOKBEHIND, because `lr.start_date::text` is a Postgres cast and
