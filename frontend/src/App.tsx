@@ -4,6 +4,7 @@ import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
 import { AttendancePage } from './pages/AttendancePage'
 import { CaseStudyPage } from './pages/CaseStudyPage'
 import { CaseStudyTrackingPage } from './pages/CaseStudyTrackingPage'
+import { ContractsPage } from './pages/ContractsPage'
 import { CVScreeningPage } from './pages/CVScreeningPage'
 import { ComingSoonPage } from './pages/ComingSoonPage'
 import { DecisionBriefPage } from './pages/DecisionBriefPage'
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/invites" element={<InvitesPage />} />
           <Route path="/system" element={<SystemPage />} />
           <Route path="/skills" element={<SkillsPage />} />
+          <Route path="/contracts" element={<ContractsPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

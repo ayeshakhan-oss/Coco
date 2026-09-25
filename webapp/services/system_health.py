@@ -51,6 +51,10 @@ COCO_TABLES = {
     "sourced_candidates": "the passive sourcing pool and outreach state",
     "invite_links": "booking links and the page titles they were proved against",
     "invite_sends": "every invite that actually left, pilot and live",
+    "contract_masters": "the approved contract and NDA masters, kept out of git",
+    # Deliberately holds no document and no field values: the values are the
+    # PII. It records that a document was issued, and for whom.
+    "contract_builds": "which contracts were generated, for whom, and whether they passed",
 }
 
 _TABLES_SQL = text(

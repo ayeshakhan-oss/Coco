@@ -86,6 +86,8 @@ def ensure_app_tables() -> None:
         CaseStudyEvaluation,
         CaseStudyProbe,
         CommEvidence,
+        ContractBuild,
+        ContractMaster,
         CVScreen,
         CVScreenSkip,
         EvalBenchmark,
@@ -117,6 +119,8 @@ def ensure_app_tables() -> None:
             SourcedCandidate.__table__,
             InviteLink.__table__,
             InviteSend.__table__,
+            ContractMaster.__table__,
+            ContractBuild.__table__,
         ],
         checkfirst=True,
     )

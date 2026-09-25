@@ -209,6 +209,82 @@ def _segments(paragraph):
     return highlighted_segments(paragraph)
 
 
+#: Placeholder strings that appear in these masters WITHOUT highlighting.
+#: Discovered on the NIETE compensation cell, which reads "Total Earnings PKR
+#: XYZ / Base Salary: PKR XYZ / Medical: PKR XYZ / Others: PKR XYZ" with only
+#: ONE of the four highlighted. Filling the highlighted runs alone leaves
+#: "PKR XYZ" printed on a real contract, in the salary line.
+#: Ordered longest-first so "X Y Z" is matched before "XYZ".
+TEXT_PLACEHOLDERS = (
+    "EMPLOYEE'S NAME", "EMPLOYEE'S CNIC", "EMPLOYEE NAME", "EMPLOYER NAME",
+    "EFFECTIVE DATE OF JOINING", "JOINING DATE", "CURRENT DATE",
+    "DATE, MONTH, YEAR", "FELLOW NAME", "X Y Z", "XYZ",
+)
+
+
+def _placeholder_hits(text: str) -> list[str]:
+    """Which placeholder strings are still literally present in `text`.
+
+    Longest-first with the matched span blanked out, so "X Y Z" is not also
+    reported as "XYZ" and one occurrence is never counted twice.
+    """
+    remaining = text or ""
+    hits = []
+    for token in TEXT_PLACEHOLDERS:
+        while True:
+            at = remaining.upper().find(token.upper())
+            if at < 0:
+                break
+            hits.append(token)
+            remaining = remaining[:at] + (" " * len(token)) + remaining[at + len(token):]
+    return hits
+
+
+def all_paragraphs(doc):
+    """Every paragraph in the document, including headers and footers.
+
+    `discover_fields` walks body then tables to match the fill order. This one
+    is for CHECKING, where missing a header would mean shipping a contract
+    with a placeholder printed at the top of every page.
+    """
+    for paragraph in doc.paragraphs:
+        yield paragraph, "body"
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    yield paragraph, "table"
+    for section in doc.sections:
+        for part, label in ((section.header, "header"), (section.footer, "footer")):
+            for paragraph in part.paragraphs:
+                yield paragraph, label
+            for table in part.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        for paragraph in cell.paragraphs:
+                            yield paragraph, label
+
+
+def unresolved_placeholders(data: bytes) -> list[dict]:
+    """Placeholder text still present in a document, anywhere.
+
+    This is the check that a fill actually finished. It looks at headers and
+    footers too, which the fill walk deliberately does not.
+    """
+    from docx import Document
+
+    out = []
+    doc = Document(io.BytesIO(data))
+    for paragraph, where in all_paragraphs(doc):
+        for token in _placeholder_hits(paragraph.text):
+            out.append({
+                "token": token,
+                "where": where,
+                "context": _norm(paragraph.text)[:240],
+            })
+    return out
+
+
 def discover_fields(data: bytes) -> list[dict]:
     """Every fill field in a master, in document order.
 
@@ -239,7 +315,61 @@ def discover_fields(data: bytes) -> list[dict]:
             for cell in row.cells:
                 for paragraph in cell.paragraphs:
                     take(paragraph, "table")
+
+    # 🔴 AND THE ONES NOBODY HIGHLIGHTED. The NIETE compensation cell reads
+    # "Total Earnings PKR XYZ / Base Salary: PKR XYZ / Medical: PKR XYZ /
+    # Others: PKR XYZ" with only ONE of the four highlighted, and the
+    # acceptance line carries an unhighlighted JOINING DATE. Filling only the
+    # highlighted runs leaves "PKR XYZ" printed in the salary line of a real
+    # contract. These are appended AFTER the highlighted fields so the
+    # highlighted indexes stay stable.
+    fields.extend(_text_fields(doc, start=len(fields)))
     return fields
+
+
+def _highlighted_tokens(paragraph) -> list[str]:
+    """Which placeholder tokens the highlighted runs of this paragraph cover."""
+    covered: list[str] = []
+    for segment in _segments(paragraph):
+        covered.extend(_placeholder_hits("".join(r.text for r in segment)))
+    return covered
+
+
+def _text_fields(doc, start: int) -> list[dict]:
+    """Placeholder strings present as plain text rather than highlighting.
+
+    🔴 OCCURRENCES ALREADY COVERED BY HIGHLIGHTING ARE SUBTRACTED. "EMPLOYEE
+    NAME" in the parties clause is highlighted and is already field 4; listing
+    it again here would ask for the same value twice and make the field count
+    meaningless. Only the SURPLUS occurrences in a paragraph are new fields.
+    """
+    out: list[dict] = []
+    for ordinal, (paragraph, where) in enumerate(all_paragraphs(doc)):
+        seen: dict[str, int] = {}
+        already = _highlighted_tokens(paragraph)
+        skip: dict[str, int] = {}
+        for token in already:
+            skip[token] = skip.get(token, 0) + 1
+        for token in _placeholder_hits(paragraph.text):
+            if skip.get(token):
+                # This occurrence is the highlighted one; it is filled already.
+                skip[token] -= 1
+                seen[token] = seen.get(token, 0) + 1
+                continue
+            occurrence = seen.get(token, 0)
+            seen[token] = occurrence + 1
+            out.append({
+                "index": start + len(out),
+                "placeholder": token,
+                "context": _norm(paragraph.text)[:240],
+                "location": f"{where} (not highlighted)",
+                "opaque": is_opaque(token),
+                # How the filler finds this exact spot again.
+                "para_ordinal": ordinal,
+                "occurrence": occurrence,
+                "text_token": token,
+            })
+    return out
 
 
 def group_fields(fields: list[dict]) -> list[dict]:

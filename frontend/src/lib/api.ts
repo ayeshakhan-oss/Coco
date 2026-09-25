@@ -12,6 +12,9 @@ import type {
   CaseStudyTrackingRow,
   CaseStudyTrackingSummary,
   Communication,
+  ContractMasters,
+  ContractOptions,
+  ContractPlan,
   CurrentUser,
   CVScreen,
   CVScreenApplication,
@@ -64,6 +67,19 @@ export class ApiError extends Error {
     super(message)
     this.status = status
     this.detail = detail
+  }
+}
+
+/** The server's `detail` string, so a refusal reads as prose rather than JSON.
+ *  Contract refusals are written for a person ("these are still blank, and a
+ *  contract never ships a blank: ..."), and must survive to the screen. */
+async function detailOf(res: Response): Promise<string> {
+  try {
+    const body = await res.json()
+    const inner = typeof body === 'object' && body && 'detail' in body ? body.detail : body
+    return typeof inner === 'string' ? inner : JSON.stringify(inner)
+  } catch {
+    return res.statusText || `${res.status}`
   }
 }
 
@@ -388,6 +404,46 @@ export const api = {
     if (p.live_only) qs.set('live_only', 'true')
     const q = qs.toString()
     return get<InviteSendRecord[]>(`/api/invites/sends${q ? `?${q}` : ''}`)
+  },
+
+  // --- Contract drafting (Skill 07) ---
+  contractOptions: () => get<ContractOptions>('/api/contracts/options'),
+  contractMasters: () => get<ContractMasters>('/api/contracts/masters'),
+  contractPlan: (engagement: string, entity: string) =>
+    get<ContractPlan>(
+      `/api/contracts/plan?engagement=${encodeURIComponent(engagement)}&entity=${encodeURIComponent(entity)}`,
+    ),
+  contractUploadMaster: async (relPath: string, file: File) => {
+    const form = new FormData()
+    form.append('rel_path', relPath)
+    form.append('file', file)
+    const r = await fetch('/api/contracts/masters', {
+      method: 'POST', body: form, credentials: 'include',
+    })
+    if (!r.ok) throw new ApiError(r.status, await detailOf(r))
+    return (await r.json()) as { rel_path: string; sha256: string; field_count: number; warning: string | null }
+  },
+  // Streams the .docx straight back; nothing is stored, because the filled
+  // document carries a CNIC and a salary.
+  contractBuild: async (body: Record<string, unknown>) => {
+    const r = await fetch('/api/contracts/build', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      credentials: 'include',
+    })
+    if (!r.ok) throw new ApiError(r.status, await detailOf(r))
+    const blob = await r.blob()
+    const name =
+      /filename="([^"]+)"/.exec(r.headers.get('Content-Disposition') ?? '')?.[1] ??
+      'contract.docx'
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = name
+    a.click()
+    URL.revokeObjectURL(url)
+    return name
   },
 
   // --- Skill library ---

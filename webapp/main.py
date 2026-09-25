@@ -23,6 +23,7 @@ from .routers import candidates as candidates_router
 from .routers import case_studies as case_studies_router
 from .routers import case_study_tracking as case_study_tracking_router
 from .routers import communications as communications_router
+from .routers import contracts as contracts_router
 from .routers import cv_screening as cv_screening_router
 from .routers import evaluations as evaluations_router
 from .routers import gmail_sync as gmail_sync_router
@@ -214,6 +215,7 @@ app.include_router(candidates_router.router)
 app.include_router(case_studies_router.router)
 app.include_router(case_study_tracking_router.router)
 app.include_router(communications_router.router)
+app.include_router(contracts_router.router)
 app.include_router(communications_router.asset_router)
 app.include_router(cv_screening_router.router)
 app.include_router(evaluations_router.router)

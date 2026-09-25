@@ -83,6 +83,17 @@ IMPLEMENTED_BY: dict[str, tuple[str, str]] = {
     "05_talent-sourcing/talent-sourcing.md": ("/sourcing", "The sourcing pool"),
     # 06
     "06_candidate-invites/SKILL.md": ("/invites", "All seven invite types"),
+    # 07 — the routing rules and the masters are what the page runs on.
+    "07_contract-drafting/SKILL.md": ("/contracts", "Contract drafting"),
+    "07_contract-drafting/TEMPLATE_MAP.md": ("/contracts", "Which master, which document"),
+    "07_contract-drafting/ndas.md": ("/contracts", "NDAs"),
+    "07_contract-drafting/fellow-contracts.md": ("/contracts", "Fellow contracts"),
+    "07_contract-drafting/niete-contracts.md": ("/contracts", "NIETE contracts"),
+    "07_contract-drafting/opl-contracts.md": ("/contracts", "OPL contracts"),
+    "07_contract-drafting/owt-contracts.md": ("/contracts", "OWT contracts"),
+    "07_contract-drafting/inc-contracts.md": ("/contracts", "Inc. contracts"),
+    "07_contract-drafting/addendum-promotion.md": ("/contracts", "Addendums"),
+    "07_contract-drafting/team-move-new-contract.md": ("/contracts", "Team moves"),
 }
 
 #: Deliberately NOT on the server, with the reason. Being explicit stops each

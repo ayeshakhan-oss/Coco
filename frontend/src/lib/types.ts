@@ -1231,3 +1231,54 @@ export interface SkillLibrary {
   // fault rather than an empty library.
   error: string | null
 }
+
+// --- Contract drafting (Skill 07) ---
+
+export interface ContractOptions {
+  entities: string[]
+  engagements: { key: string; label: string }[]
+  doc_types: { key: string; label: string }[]
+}
+
+export interface ContractMasters {
+  masters: {
+    id: string
+    rel_path: string
+    filename: string
+    size_bytes: number
+    sha256: string
+    field_count: number | null
+    uploaded_at: string
+  }[]
+  missing: string[]
+  note: string
+}
+
+export interface ContractField {
+  key: string
+  placeholder: string
+  label: string
+  contexts: string[]
+  indexes: number[]
+  // True when the placeholder text says nothing about what belongs in it
+  // ("XYZ"). The sentence it sits in is shown instead, and it is never merged
+  // with another field of the same text.
+  opaque: boolean
+  // True when one typed value is written into several different sentences.
+  spans_contexts: boolean
+}
+
+export interface ContractPlan {
+  engagement: string
+  engagement_label: string
+  entity: string
+  documents: {
+    doc_type: string
+    label: string
+    master: string | null
+    uploaded: boolean
+    fields: ContractField[]
+  }[]
+  blockers: string[]
+  caveat: string
+}

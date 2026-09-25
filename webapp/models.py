@@ -25,6 +25,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    LargeBinary,
     String,
     Text,
     UniqueConstraint,
@@ -124,6 +125,14 @@ def _invite_link_id() -> str:
 
 def _invite_send_id() -> str:
     return "isnd-" + uuid4().hex
+
+
+def _contract_master_id() -> str:
+    return "cmst-" + uuid4().hex
+
+
+def _contract_build_id() -> str:
+    return "cbld-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -1191,5 +1200,77 @@ class InviteSend(Base):
               unique=True,
               postgresql_where=text("is_live AND application_id IS NOT NULL")),
         Index("ix_invite_sends_sent_at", "sent_at"),
+        {"schema": "coco"},
+    )
+
+
+class ContractMaster(Base):
+    """An approved master contract, NDA or addendum, stored as bytes.
+
+    🔴 THESE DO NOT GO IN GIT. the Contracts folder is gitignored and stays that way:
+       a commit is permanent and these are legal documents. They are uploaded
+       once through the app, so the repository never carries them and a master
+       can be replaced without a deploy.
+
+    `sha256` identifies the exact file a document was built from, and
+    `field_count` records how many highlighted fill fields it had on upload. A
+    changed count on re-upload is the signal that the master was re-issued and
+    the field mapping needs looking at again.
+    """
+
+    __tablename__ = "contract_masters"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_contract_master_id)
+    rel_path: Mapped[str] = mapped_column(Text, nullable=False)
+    filename: Mapped[str] = mapped_column(Text, nullable=False)
+    content: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
+    size_bytes: Mapped[int] = mapped_column(Integer, nullable=False)
+    sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    field_count: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    uploaded_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    uploaded_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    __table_args__ = (
+        Index("uq_contract_masters_rel_path", "rel_path", unique=True),
+        {"schema": "coco"},
+    )
+
+
+class ContractBuild(Base):
+    """A record that a document was generated. NOT the document itself.
+
+    🔴 THE GENERATED FILE IS NEVER STORED. A filled contract carries a CNIC, a
+       salary and sometimes an address. It is streamed to whoever asked for it
+       and not written down. This row keeps who built what, for whom, and
+       whether the validator passed, which answers "was a contract issued for
+       this person" without turning the database into a store of identity
+       documents.
+
+    For the same reason the field VALUES are not a column: the values are the
+    PII.
+    """
+
+    __tablename__ = "contract_builds"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_contract_build_id)
+    entity: Mapped[str] = mapped_column(Text, nullable=False)
+    engagement: Mapped[str] = mapped_column(Text, nullable=False)
+    doc_type: Mapped[str] = mapped_column(Text, nullable=False)
+    master_sha256: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    person_name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    candidate_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    application_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    validator_passed: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True)
+    validator_report: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    built_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    built_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    __table_args__ = (
+        Index("ix_contract_builds_built_at", "built_at"),
         {"schema": "coco"},
     )

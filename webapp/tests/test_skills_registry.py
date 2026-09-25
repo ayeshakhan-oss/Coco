@@ -177,12 +177,25 @@ def test_a_file_is_never_both_wired_and_excluded():
     assert not (set(svc.IMPLEMENTED_BY) & set(svc.NOT_ON_SERVER))
 
 
-def test_contract_drafting_is_reported_as_reference_not_as_a_feature():
-    """Skill 07 has 12 files and no page in this app. Reporting it as wired
-    would be exactly the overclaim this work is fixing."""
+def test_contract_drafting_is_wired_now_that_it_has_a_page():
+    """Skill 07 had 12 files and no page until 2026-09-26, and was reported as
+    reference for exactly that reason. It now has /contracts, so the registry
+    must say so -- and the entity-specific guidance files must point at it
+    rather than sitting unreachable."""
     skill = next(s for s in svc.discover() if s["id"] == "07_contract-drafting")
-    assert skill["counts"]["wired"] == 0
     assert skill["counts"]["total"] >= 11
+    assert skill["counts"]["wired"] >= 8, skill["counts"]
+    assert skill["counts"]["claude_code_only"] == 0
+
+
+def test_the_wired_and_reference_split_is_still_honest():
+    """The point of the three states is that they are not all the same word.
+    If everything became `wired`, the distinction would have stopped meaning
+    anything."""
+    summary = svc.summarise(svc.discover())
+    assert summary["reference"] > 0, "nothing is reference-only any more, which is suspicious"
+    assert summary["claude_code_only"] > 0
+    assert summary["wired"] < summary["sub_skills"]
 
 
 def test_the_summary_counts_add_up():

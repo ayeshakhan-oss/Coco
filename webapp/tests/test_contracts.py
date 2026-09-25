@@ -121,10 +121,13 @@ def test_owt_project_based_is_refused_because_there_is_only_owt_full_time():
 # Field discovery, against the real masters
 # --------------------------------------------------------------------------
 
+# Highlighted fill fields PLUS the placeholders nobody highlighted. The NIETE
+# contract has 15 highlighted and 5 plain-text (the acceptance joining date and
+# the four salary lines), so 20. The NDAs are fully highlighted, so 4 each.
 REAL = {
     "Promotion/Template - NDA Full Time Permanent Employee.docx": 4,
     "Fellow/Template - NDA Fellow Employee.docx": 4,
-    "NIETE/NIETE - Project-based Employment Contract.docx": 15,
+    "NIETE/NIETE - Project-based Employment Contract.docx": 20,
 }
 
 
@@ -208,3 +211,130 @@ def test_one_typed_value_reaches_every_place_it_fills():
     assert by_index[3] == "Hajra Noor"   # the printed-name line
     assert by_index[1] == "1 October 2026"
     assert by_index[2] == "25 September 2026"
+
+
+# --------------------------------------------------------------------------
+# The placeholders nobody highlighted
+# --------------------------------------------------------------------------
+
+# On the first real build of a NIETE contract, filling every HIGHLIGHTED field
+# still left five placeholders printed in the document: the acceptance-line
+# joining date, and all four salary lines, because only ONE of
+# "Total Earnings PKR XYZ / Base Salary: PKR XYZ / Medical: PKR XYZ /
+# Others: PKR XYZ" carries highlighting. The validator called them WARNINGs and
+# the wrapper reported passed=True. A contract reading "PKR XYZ" would have
+# been offered for download.
+
+NIETE_MASTER = "NIETE/NIETE - Project-based Employment Contract.docx"
+
+
+def test_the_unhighlighted_salary_lines_are_discovered_as_fields():
+    from webapp.services import contracts as svc
+
+    fields = svc.discover_fields(_master(NIETE_MASTER))
+    text_fields = [f for f in fields if f.get("text_token")]
+    assert len(text_fields) == 5, [f["context"][:60] for f in text_fields]
+    salary = [f for f in text_fields if "PKR" in f["context"]]
+    assert len(salary) == 4, "all four salary lines must be fillable"
+
+
+def test_a_highlighted_placeholder_is_not_also_listed_as_a_text_field():
+    """Otherwise the same value is asked for twice and the count is
+    meaningless."""
+    from webapp.services import contracts as svc
+
+    fields = svc.discover_fields(_master(NIETE_MASTER))
+    assert len(fields) == 20, len(fields)          # 15 highlighted + 5 plain
+    assert len([f for f in fields if not f.get("text_token")]) == 15
+
+
+def test_a_fully_filled_contract_has_no_placeholders_left():
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    data = _master(NIETE_MASTER)
+    fields = svc.discover_fields(data)
+    groups = svc.group_fields(fields)
+    out = build.fill(
+        data, svc.values_by_index(groups, {g["key"]: "FILLED" for g in groups}),
+        fields=fields,
+    )
+    assert svc.unresolved_placeholders(out) == []
+
+
+def test_an_unfilled_salary_line_is_a_hard_block_not_a_warning():
+    """Proof the gate bites, against a deliberately broken document. A gate
+    that has only ever passed proves nothing."""
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    data = _master(NIETE_MASTER)
+    fields = svc.discover_fields(data)
+    groups = svc.group_fields(fields)
+    keep = {g["key"]: "FILLED" for g in groups
+            if not (g["opaque"] and "PKR" in g["contexts"][0])}
+    by_index = {k: v for k, v in svc.values_by_index(groups, keep).items() if v}
+    broken = build.fill(data, by_index, fields=fields)
+
+    report = build.validate(broken, svc.PROJECT_CONTRACT)
+    assert report["passed"] is False
+    hard = [f for f in report["findings"] if f["severity"] == "HARD_BLOCK"]
+    assert len(hard) == 4, hard
+    assert all("PKR" in f["message"] for f in hard)
+
+
+def test_the_nda_still_builds_and_passes():
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    data = _master("Promotion/Template - NDA Full Time Permanent Employee.docx")
+    fields = svc.discover_fields(data)
+    groups = svc.group_fields(fields)
+    out = build.fill(data, svc.values_by_index(groups, {
+        "EMPLOYEE NAME": "Hajra Noor",
+        "JOINING DATE": "1 October 2026",
+        "CURRENT DATE": "25 September 2026",
+    }), fields=fields)
+    assert svc.unresolved_placeholders(out) == []
+    text = "\n".join(p.text for p in _open(out).paragraphs)
+    assert "Hajra Noor" in text and "EMPLOYEE NAME" not in text
+
+
+def _open(data: bytes):
+    import io
+
+    from docx import Document
+
+    return Document(io.BytesIO(data))
+
+
+def test_values_for_fields_that_do_not_exist_are_refused():
+    """A master re-issued with fewer fields must fail loudly rather than
+    shifting every value one place along."""
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    data = _master("Promotion/Template - NDA Full Time Permanent Employee.docx")
+    with pytest.raises(build.BuildError, match="re-issued"):
+        build.fill(data, {0: "a", 1: "b", 2: "c", 3: "d", 99: "nowhere"})
+
+
+def test_the_validator_type_is_never_guessed():
+    """contract_docx_eval --type defaults to `fellow`, and a project contract
+    checked as a fellow one throws 11 false hard blocks (Rule 19)."""
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    assert build._VALIDATOR_TYPE[svc.PROJECT_CONTRACT] == "project"
+    assert build._VALIDATOR_TYPE[svc.FELLOW_CONTRACT] == "fellow"
+    with pytest.raises(build.BuildError, match="No validator profile"):
+        build.validate(b"", "something_new")
+
+
+def test_the_generated_filename_carries_no_identity_number():
+    from webapp.services import contract_build as build
+    from webapp.services import contracts as svc
+
+    name = build.filename_for(svc.PERMANENT_NDA, "Hajra Noor")
+    assert name == "Permanent Employee NDA - Hajra Noor.docx"
+    assert "/" not in name and "\\" not in name

@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { Building2, Database, FileSearch, Mail, Search, Send } from 'lucide-react'
+import { Building2, Database, FileSearch, FileSignature, Mail, Search, Send } from 'lucide-react'
 
 export interface ModuleDef {
   slug: string
@@ -19,6 +19,7 @@ export const MODULES: ModuleDef[] = [
   { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'live', route: '/system', blurb: 'What is configured, what exists in the database, and what is known to be broken.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'live', route: '/sourcing', blurb: 'The passive candidate pool and who has been approached. Searching still runs in Claude Code.' },
   { slug: 'candidate-invites', label: 'Candidate Invites', icon: Send, status: 'live', route: '/invites', blurb: 'Send interview and opportunity invites for every stage, in the locked design.' },
+  { slug: 'contract-drafting', label: 'Contract Drafting', icon: FileSignature, status: 'live', route: '/contracts', blurb: 'Contracts, NDAs and addendums built from the approved masters.' },
 ]
 
 export const activeModule = () => MODULES.find((m) => m.slug === ACTIVE_MODULE)!
@@ -48,6 +49,7 @@ const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
   { prefix: '/sourcing', slug: 'talent-sourcing' },
   { prefix: '/invites', slug: 'candidate-invites' },
   { prefix: '/system', slug: 'data-systems' },
+  { prefix: '/contracts', slug: 'contract-drafting' },
   { prefix: '/values-scorecards', slug: 'candidate-evaluation' },
   { prefix: '/case-studies', slug: 'candidate-evaluation' },
 ]
@@ -69,6 +71,7 @@ export const MODULE_SKILL_DIR: Record<string, string> = {
   'data-systems': '04_data-and-systems',
   'talent-sourcing': '05_talent-sourcing',
   'candidate-invites': '06_candidate-invites',
+  'contract-drafting': '07_contract-drafting',
 }
 
 export const SKILL_FOR_MODULE: Record<string, string> = {
@@ -78,4 +81,5 @@ export const SKILL_FOR_MODULE: Record<string, string> = {
   'data-systems': '6 systems skills',
   'talent-sourcing': 'sourcing workflow',
   'candidate-invites': '7 invite types',
+  'contract-drafting': '6 document types',
 }
