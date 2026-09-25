@@ -123,3 +123,70 @@ test silently compared against nothing. It reads `db.py` from disk instead.
 — ignore them for a fast loop, run them before shipping router SQL.
 
 Related: [[lesson_untracked_module_outage_2026_09_25]]
+
+---
+
+## The sub-skills were NOT live, only the module titles were (same day)
+
+Ayesha, looking at the skills tree in her editor: *"you have to ensure that all
+these sub skills of the main skills are made live on Railway. I don't want you
+to just make the main skill live over there as a title and not make the sub
+skills live."* She was right, and it was worse than a UI gap.
+
+### 🔴 The image copied 2 of the 7 skill folders
+
+`Dockerfile` carried only `01_candidate-communication` and
+`02_candidate-evaluation`. **29 of the 46 sub-skill files did not exist on
+Railway at all** — everything in `03_operations`, `04_data-and-systems`,
+`05_talent-sourcing`, `06_candidate-invites` and `07_contract-drafting`.
+
+Several of those files are named **SOURCE OF TRUTH** in the docstring of the
+service that implements them (`attendance.py`, `decision_brief.py`,
+`hiring_funnel.py`, `invites.py`, `sourcing.py`), so the citation pointed at a
+file the server did not have. Six module tiles read "live" while most of the
+method behind them was absent.
+
+**Nothing caught it because the app never asked for those files at runtime, so
+nothing failed. Absence is silent unless something counts it.**
+
+### The fix
+
+- All seven folders ship. `ui-ux-pro-max` is the deliberate exception:
+  vendored third-party design guidance, and Rule 9 bars it from the locked
+  candidate layouts.
+- `webapp/services/skills.py` **walks** the directory instead of holding a
+  list, because a hardcoded inventory drifts the moment somebody adds a file,
+  which is the failure being fixed.
+- `GET /api/skills` + a `/skills` page: every sub-skill listed, readable in
+  place, each with an honest status.
+
+### 🔒 Status is per file, and "live" is not one word
+
+**21 wired** (a page here does the work, and the route is carried) ·
+**20 reference** (the guidance ships and is readable; Claude Code follows it) ·
+**5 Claude-Code-only**, each with its reason recorded in `NOT_ON_SERVER`.
+Marking all 46 as features would be the same overclaim in a new place.
+
+### 🔑 `/healthz` now answers "did the method ship?"
+
+`{"skills": 7, "sub_skills": 46}`, verified live on `98eaf320`. **A route probe
+proves a router mounted and says nothing about the files behind it** — that is
+precisely how this went unnoticed. Counts only: the endpoint is
+unauthenticated and skill files carry internal hiring method. A zero is the
+alarm, so the helper swallows everything rather than throwing.
+
+### Still open, deliberately
+
+- **Skill 07 (12 files) has no page at all.** Contract drafting reads the
+  approved masters in `Contracts\`, which is gitignored and cannot ship, so
+  it is reference-only until Ayesha decides otherwise.
+- **Letter types 05, 06 and 07 are not webapp draft types** — `EMAIL_TYPES`
+  holds five. They are Claude Code scripts.
+- `03_operations/meeting-notes-tracker-sheet.md` and
+  `hiring-pipeline-weekly-report.md` stay off the server by her own earlier
+  decisions.
+
+🔑 **No Docker on this machine**, so the image cannot be built locally. The
+`.dockerignore` mechanism is proven instead by 01/02 already working in
+production and by the build failing loudly on a missing re-include
+(`failed to compute cache key`), plus the healthz counts measured after deploy.
