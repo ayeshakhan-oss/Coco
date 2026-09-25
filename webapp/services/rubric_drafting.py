@@ -280,10 +280,34 @@ def compose_system_prompt(
     return "\n".join(lines)
 
 
+def _strict(node):
+    """Recursively set `additionalProperties: false` on every object node.
+
+    Delegates to the drafter's implementation so the send-time normaliser and
+    the generator can never disagree about what "strict" means.
+    """
+    from .drafting import AnthropicDrafter
+
+    return AnthropicDrafter._strict_schema(node)
+
+
 def output_schema(draft: dict) -> dict:
-    """The JSON schema stored alongside the prompt, matching the contract."""
+    """The JSON schema stored alongside the prompt, matching the contract.
+
+    🔴 EVERY `object` CARRIES `additionalProperties: false`. The API refuses a
+    tool schema without it -- "For 'object' type, 'additionalProperties' must
+    be explicitly set to false" -- on every nested object, not just the root.
+    A rubric drafted without it dies on every candidate with a 400: run
+    4b3a144f lost 66 of 76 that way, and the rubric that broke was the first
+    one a model had written, because the hand-edited ones already had the flag.
+
+    `drafting.AnthropicDrafter._strict_schema` also applies this at send time,
+    so rubrics already published stay screenable without a migration. Both
+    exist on purpose: this one makes new rubrics correct at birth, that one
+    makes old ones safe. Neither is sufficient alone.
+    """
     keys = [d["key"] for d in draft["dimensions"]]
-    return {
+    return _strict({
         "type": "object",
         "required": ["dimensions", "extracted", "strengths", "gaps",
                      "hard_filters", "verdict", "confidence"],
@@ -311,7 +335,7 @@ def output_schema(draft: dict) -> dict:
             "verdict": {"type": "string", "maxLength": 400},
             "confidence": {"enum": ["high", "medium", "low"]},
         },
-    }
+    })
 
 
 def draft_rubric(

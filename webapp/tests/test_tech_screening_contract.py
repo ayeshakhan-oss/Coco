@@ -265,8 +265,12 @@ def test_the_schema_is_forced_rather_than_merely_offered():
 
     sent = d.client.kwargs
     assert sent["tool_choice"] == {"type": "tool", "name": "submit_screening"}
-    assert sent["tools"][0]["input_schema"] == schema
     assert sent["tools"][0]["name"] == "submit_screening"
+    # The rubric's own schema, plus the `additionalProperties: false` the API
+    # demands on every object. Equality with the STORED schema is not the
+    # contract: repairing it at send time is what keeps rubrics published
+    # before that fix screenable without a migration.
+    assert sent["tools"][0]["input_schema"] == {**schema, "additionalProperties": False}
 
 
 def test_a_reply_cut_off_at_the_ceiling_is_refused_not_scored():
@@ -353,3 +357,115 @@ def test_a_rubric_without_its_schema_refuses_rather_than_scoring_in_prose(monkey
 
     assert "output_schema" in str(exc.value)
     assert called == [], "it fell back to the unconstrained path instead of refusing"
+
+
+# --------------------------------------------------------------------------
+# additionalProperties: the API refuses a schema without it
+#
+# 🔴 Run 4b3a144f, 66 of 76 candidates lost to a 400 on every single one:
+# "output_config.format.schema: For 'object' type, 'additionalProperties' must
+# be explicitly set to false".
+#
+# The forced-schema fix had been verified against job 38's rubric, which is
+# hand-edited and already carried the flag. Job 24's was the first rubric a
+# MODEL had written, and it was missing the flag on nine nodes including the
+# root. Verifying against one sample of a population is not verifying.
+# --------------------------------------------------------------------------
+
+
+def _missing_additional_properties(node, path="$"):
+    bad = []
+    if isinstance(node, dict):
+        if node.get("type") == "object" and "additionalProperties" not in node:
+            bad.append(path)
+        for k, v in node.items():
+            bad += _missing_additional_properties(v, f"{path}.{k}")
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            bad += _missing_additional_properties(v, f"{path}[{i}]")
+    return bad
+
+
+# The shape job 24's rubric actually had: no flag at the root, on `extracted`,
+# on `dimensions`, or on any dimension inside it.
+LOOSE_SCHEMA = {
+    "type": "object",
+    "required": ["dimensions", "extracted"],
+    "properties": {
+        "dimensions": {
+            "type": "object",
+            "required": ["frontend_craft"],
+            "properties": {
+                "frontend_craft": {
+                    "type": "object",
+                    "required": ["raw"],
+                    "properties": {
+                        "raw": {"type": "integer", "minimum": 0, "maximum": 5},
+                        "evidence": {"type": "array", "items": {"type": "string"}},
+                    },
+                },
+            },
+        },
+        "extracted": {"type": "object"},
+        "confidence": {"enum": ["high", "medium", "low"]},
+    },
+}
+
+
+def test_the_real_rejected_schema_is_repaired():
+    assert _missing_additional_properties(LOOSE_SCHEMA), "fixture is not loose"
+    strict = drafting.AnthropicDrafter._strict_schema(LOOSE_SCHEMA)
+    assert _missing_additional_properties(strict) == []
+    assert strict["additionalProperties"] is False
+    assert strict["properties"]["dimensions"]["additionalProperties"] is False
+    assert (strict["properties"]["dimensions"]["properties"]
+            ["frontend_craft"]["additionalProperties"] is False)
+
+
+def test_the_properties_map_itself_is_never_given_the_flag():
+    """`properties` is a MAP of names to schemas, not a schema. Setting the
+    flag on it would invent a property called additionalProperties."""
+    strict = drafting.AnthropicDrafter._strict_schema(LOOSE_SCHEMA)
+    assert "additionalProperties" not in strict["properties"]
+    assert "additionalProperties" not in strict["properties"]["dimensions"]["properties"]
+
+
+def test_a_property_literally_named_type_does_not_confuse_it():
+    loose = {"type": "object", "properties": {"type": {"type": "string"}}}
+    strict = drafting.AnthropicDrafter._strict_schema(loose)
+    assert strict["additionalProperties"] is False
+    assert "additionalProperties" not in strict["properties"]["type"]
+
+
+def test_an_already_strict_schema_is_unchanged():
+    """Three of the four live rubrics are hand-edited and already correct;
+    repairing them must be a no-op, not a rewrite."""
+    strict_once = drafting.AnthropicDrafter._strict_schema(LOOSE_SCHEMA)
+    assert drafting.AnthropicDrafter._strict_schema(strict_once) == strict_once
+
+
+def test_an_explicit_true_is_respected_not_overwritten():
+    loose = {"type": "object", "additionalProperties": True, "properties": {}}
+    assert drafting.AnthropicDrafter._strict_schema(loose)["additionalProperties"] is True
+
+
+def test_the_schema_sent_to_the_api_is_the_repaired_one():
+    """The whole point: repair happens at SEND time, so a rubric published
+    before this fix is screenable without a migration."""
+    msg = _Msg([_Block("tool_use", input={"dimensions": {}})])
+    d = _drafter_with(msg)
+    d.structured(system="s", user="u", schema=LOOSE_SCHEMA, tool_name="submit_screening")
+    sent = d.client.kwargs["tools"][0]["input_schema"]
+    assert _missing_additional_properties(sent) == []
+
+
+def test_a_newly_drafted_rubric_is_born_strict():
+    """The other half. Repairing at send time keeps old rubrics working;
+    this stops new ones being written wrong in the first place."""
+    from webapp.services import rubric_drafting
+
+    schema = rubric_drafting.output_schema(
+        {"dimensions": [{"key": "alpha"}, {"key": "beta"}]}
+    )
+    assert _missing_additional_properties(schema) == []
+    assert schema["additionalProperties"] is False

@@ -386,6 +386,36 @@ class AnthropicDrafter:
             return _parse_json(text)
         raise DraftingUnavailable(f"No servable model among {tried}")
 
+    @staticmethod
+    def _strict_schema(node):
+        """Every `object` in a JSON schema, with `additionalProperties: false`.
+
+        🔴 THE API REQUIRES IT, ON EVERY NESTED OBJECT, NOT JUST THE ROOT:
+        "output_config.format.schema: For 'object' type, 'additionalProperties'
+        must be explicitly set to false". A schema missing it anywhere is a 400,
+        and the whole run dies on every candidate.
+
+        Found the hard way on run 4b3a144f: 66 of 76 candidates failed. Three of
+        the four live rubrics are hand-edited and already carry the flag, so the
+        fix verified clean against one of those. The fourth was `llm_drafted`
+        and missing it on NINE nodes, including the root -- so the very first
+        rubric a model wrote was the one that broke.
+
+        Applied at send time rather than only at rubric-drafting time, because
+        rubrics already published carry whatever shape they were stored with
+        and must not need a migration to be screenable.
+        """
+        if isinstance(node, dict):
+            out = {k: AnthropicDrafter._strict_schema(v) for k, v in node.items()}
+            # Guarded on `type == "object"`, so the `properties` MAP itself --
+            # which has no `type` -- is never given the flag by mistake.
+            if out.get("type") == "object" and "additionalProperties" not in out:
+                out["additionalProperties"] = False
+            return out
+        if isinstance(node, list):
+            return [AnthropicDrafter._strict_schema(v) for v in node]
+        return node
+
     def structured(self, *, system: str, user: str, schema: dict,
                    tool_name: str = "submit", max_tokens: int = 8192) -> dict:
         """One call whose reply MUST match `schema`, returned as a dict.
@@ -421,7 +451,7 @@ class AnthropicDrafter:
                     tools=[{
                         "name": tool_name,
                         "description": "Return the completed result.",
-                        "input_schema": schema,
+                        "input_schema": self._strict_schema(schema),
                     }],
                     # Not "auto": the model must answer THIS way or not at all.
                     tool_choice={"type": "tool", "name": tool_name},
