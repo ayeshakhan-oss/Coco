@@ -63,6 +63,8 @@ export interface ScreenAllProgress {
    *  extract. Rule 32: an unreadable CV is a document problem needing a
    *  human, never a weak candidate. Counted and reported, never hidden. */
   skipped: number
+  /** Candidates the screener FAILED on. Our defect, not their document. */
+  failed: number
   /** Consecutive failures right now, 0 when healthy. Shown to the user so a
    *  five-minute wait reads as "reconnecting", not as a frozen page. */
   retrying: number
@@ -73,6 +75,7 @@ export interface ScreenAllProgress {
 export interface ScreenAllResult {
   done: number
   skipped: number
+  failed: number
   /** Set when the run ended on an error rather than finishing or stopping. */
   error: string | null
   /** True when the caller's stop flag ended it. */
@@ -90,7 +93,12 @@ export interface ScreenAllResult {
  *  here precisely so neither side's vocabulary can leak into the other. */
 export interface BatchLike {
   screened: unknown[]
+  /** Could not be read: a person must open the document. */
   skipped: unknown[]
+  /** The screener broke on these. A DIFFERENT fact from `skipped`, counted
+   *  separately because one needs somebody to open a CV and the other needs an
+   *  engineer. Optional: CV screening's batch has no such list. */
+  failed?: unknown[]
   last_application_id: number | null
   remaining: number
 }
@@ -139,24 +147,25 @@ export async function runScreenAll<B extends BatchLike = CVScreenBatch>(
   let after: number | null = null
   let done = 0
   let skipped = 0
+  let failed = 0
   let failures = 0
 
   const report = (retryInSeconds = 0) =>
-    onProgress?.({ done, skipped, retrying: failures, retryInSeconds })
+    onProgress?.({ done, skipped, failed, retrying: failures, retryInSeconds })
 
   for (;;) {
-    if (isAbandoned()) return { done, skipped, error: null, stopped: true }
-    if (shouldStop()) return { done, skipped, error: null, stopped: true }
+    if (isAbandoned()) return { done, skipped, failed, error: null, stopped: true }
+    if (shouldStop()) return { done, skipped, failed, error: null, stopped: true }
 
     let batch: B
     try {
       batch = await runBatch(after)
     } catch (error) {
-      if (isAbandoned()) return { done, skipped, error: null, stopped: true }
+      if (isAbandoned()) return { done, skipped, failed, error: null, stopped: true }
 
       // A failure that will not fix itself, or a retry budget spent.
       if (!isTransient(error) || failures >= RETRY_BACKOFF_SECONDS.length) {
-        return { done, skipped, error: message(error), stopped: false }
+        return { done, skipped, failed, error: message(error), stopped: false }
       }
 
       const wait = RETRY_BACKOFF_SECONDS[failures]
@@ -169,11 +178,12 @@ export async function runScreenAll<B extends BatchLike = CVScreenBatch>(
       continue
     }
 
-    if (isAbandoned()) return { done, skipped, error: null, stopped: true }
+    if (isAbandoned()) return { done, skipped, failed, error: null, stopped: true }
 
     failures = 0
     done += batch.screened.length
     skipped += batch.skipped.length
+    failed += batch.failed?.length ?? 0
     // A batch that returned nothing advances the cursor to where it looked,
     // so the next pass cannot ask the same question again.
     after = batch.last_application_id ?? after
@@ -183,8 +193,9 @@ export async function runScreenAll<B extends BatchLike = CVScreenBatch>(
     if (batch.remaining === 0) break
     // Belt and braces against a server that reports work remaining but hands
     // back nothing to do: without this the loop would spin at full speed.
-    if (batch.screened.length === 0 && batch.skipped.length === 0) break
+    if (batch.screened.length === 0 && batch.skipped.length === 0
+        && (batch.failed?.length ?? 0) === 0) break
   }
 
-  return { done, skipped, error: null, stopped: false }
+  return { done, skipped, failed, error: null, stopped: false }
 }

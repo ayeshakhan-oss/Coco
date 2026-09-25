@@ -274,10 +274,10 @@ function Wizard({
   const [starting, setStarting] = useState(false)
   const [runError, setRunError] = useState<string | null>(null)
   const [progress, setProgress] = useState<
-    { done: number; skipped: number; retrying: number; retryInSeconds: number } | null
+    { done: number; skipped: number; failed: number; retrying: number; retryInSeconds: number } | null
   >(null)
   const [outcome, setOutcome] = useState<
-    { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; message?: string } | null
+    { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; failed: number; message?: string } | null
   >(null)
   const stopRef = useRef(false)
   const abandoned = useRef(false)
@@ -355,7 +355,7 @@ function Wizard({
       })
       const started = await api.techRun(created.run_id)
       setRun(started)
-      setProgress({ done: 0, skipped: 0, retrying: 0, retryInSeconds: 0 })
+      setProgress({ done: 0, skipped: 0, failed: 0, retrying: 0, retryInSeconds: 0 })
       await drive(created.run_id)
     } catch (e) {
       setRunError(errorText(e, 'Could not start the run.'))
@@ -382,6 +382,7 @@ function Wizard({
       kind: result.error ? 'error' : result.stopped ? 'stopped' : 'done',
       done: result.done,
       skipped: result.skipped,
+      failed: result.failed,
       message: result.error ?? undefined,
     })
   }
@@ -393,7 +394,7 @@ function Wizard({
     stopRef.current = false
     try {
       setRun(await api.techRun(job.live_run_id))
-      setProgress({ done: 0, skipped: 0, retrying: 0, retryInSeconds: 0 })
+      setProgress({ done: 0, skipped: 0, failed: 0, retrying: 0, retryInSeconds: 0 })
       await drive(job.live_run_id)
     } catch (e) {
       setRunError(errorText(e, 'Could not resume the run.'))
@@ -858,8 +859,8 @@ function ConfirmStep({
   setCostCap: (v: number | null) => void
   starting: boolean
   run: TechRun | null
-  progress: { done: number; skipped: number; retrying: number; retryInSeconds: number } | null
-  outcome: { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; message?: string } | null
+  progress: { done: number; skipped: number; failed: number; retrying: number; retryInSeconds: number } | null
+  outcome: { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; failed: number; message?: string } | null
   error: string | null
   onStart: () => void
   onResume: () => void
@@ -941,8 +942,8 @@ function RunPanel({
   run, progress, outcome, error, onStop,
 }: {
   run: TechRun | null
-  progress: { done: number; skipped: number; retrying: number; retryInSeconds: number } | null
-  outcome: { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; message?: string } | null
+  progress: { done: number; skipped: number; failed: number; retrying: number; retryInSeconds: number } | null
+  outcome: { kind: 'done' | 'stopped' | 'error'; done: number; skipped: number; failed: number; message?: string } | null
   error: string | null
   onStop: () => void
 }) {
@@ -1037,6 +1038,20 @@ function RunPanel({
                   </span>{' '}
                   A CV that will not open is a document problem, not a weak candidate, so they are
                   not scored at all.
+                </>
+              )}
+              {/* 🔴 NOT the same sentence, and never merged into it. These
+                  candidates' CVs may be perfectly fine: the screener broke.
+                  Saying "could not be read" here sent Ayesha to chase twenty
+                  documents while the defect was ours. */}
+              {outcome.failed > 0 && (
+                <>
+                  {' '}
+                  <span className="text-danger">
+                    {outcome.failed} failed to score.
+                  </span>{' '}
+                  That is a fault in the screener, not in their CVs, and it needs an engineer
+                  rather than a person opening documents. Nothing was written for them.
                 </>
               )}
             </>

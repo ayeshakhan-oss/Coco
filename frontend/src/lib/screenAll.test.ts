@@ -11,8 +11,12 @@ import { ApiError } from './api'
 import { RETRY_BACKOFF_SECONDS, isTransient, runScreenAll } from './screenAll'
 import type { CVScreen, CVScreenBatch } from './types'
 
-/** A batch response. Only the fields the runner reads need to be real. */
-function batch(over: Partial<CVScreenBatch> = {}): CVScreenBatch {
+/** A batch response. Only the fields the runner reads need to be real.
+ *  `failed` is optional on BatchLike (CV screening has no such list), so the
+ *  override type admits it explicitly. */
+function batch(
+  over: Partial<CVScreenBatch> & { failed?: unknown[] } = {},
+): CVScreenBatch {
   return {
     job_id: 17,
     screened: [],
@@ -61,7 +65,7 @@ describe('runScreenAll', () => {
       sleep: noSleep,
     })
 
-    expect(result).toEqual({ done: 410, skipped: 0, error: null, stopped: false })
+    expect(result).toEqual({ done: 410, skipped: 0, failed: 0, error: null, stopped: false })
     expect(server.screened.size).toBe(410)
   })
 
@@ -255,5 +259,46 @@ describe('runScreenAll', () => {
 
     expect(retrying).toContain(1) // the UI was told a retry was in progress
     expect(retrying[retrying.length - 1]).toBe(0) // and that it recovered
+  })
+
+  // 🔴 A screener that broke is NOT a CV that would not open. Technical
+  // screening merged the two, so a run where all 20 candidates failed on a
+  // schema mismatch reported 20 unreadable CVs that were perfectly readable,
+  // and sent Ayesha to chase documents instead of an engineer.
+  it('counts a screener failure apart from an unreadable CV', async () => {
+    const server = fakeServer(12)
+    const result = await runScreenAll({
+      runBatch: async (after) => {
+        const b = server.run(after) as CVScreenBatch & { failed?: unknown[] }
+        const moved = b.screened.pop()!
+        b.skipped.push({ application_id: moved.application_id, reason: 'no CV on file' })
+        const broke = b.screened.pop()!
+        b.failed = [{ application_id: broke.application_id, reason: 'ValueError: bad shape' }]
+        return b
+      },
+      sleep: noSleep,
+    })
+
+    expect(result.skipped).toBeGreaterThan(0)
+    expect(result.failed).toBeGreaterThan(0)
+    expect(result.done + result.skipped + result.failed).toBe(12)
+    expect(result.error).toBeNull() // per-candidate failures do not end the run
+  })
+
+  it('a batch of nothing but failures still terminates', async () => {
+    let calls = 0
+    const result = await runScreenAll({
+      runBatch: async () => {
+        calls += 1
+        return batch({
+          failed: [{ application_id: 1, reason: 'boom' }],
+          remaining: 0,
+          last_application_id: 1,
+        }) as CVScreenBatch
+      },
+      sleep: noSleep,
+    })
+    expect(calls).toBe(1)
+    expect(result.failed).toBe(1)
   })
 })

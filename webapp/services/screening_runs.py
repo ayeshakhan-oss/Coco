@@ -719,7 +719,9 @@ def _is_fatal_api_error(exc: Exception) -> Optional[str]:
     return None
 
 
-def _call_model(*, system_prompt: str, user_prompt: str) -> tuple[dict, str, dict, int]:
+def _call_model(
+    *, system_prompt: str, user_prompt: str, output_schema: Optional[dict] = None,
+) -> tuple[dict, str, dict, int]:
     """One scoring call. Module-level so tests monkeypatch it and never spend
     money. Reuses drafting.get_drafter() rather than building a second client,
     the same way cv_screening, values_scoring and case_study_scoring do.
@@ -727,6 +729,16 @@ def _call_model(*, system_prompt: str, user_prompt: str) -> tuple[dict, str, dic
     The rubric's system prompt is identical for every candidate in a run and
     goes through `_cacheable_system`, so after the first call it bills at the
     cache-read rate. That is where the estimate's cache saving comes from.
+
+    🔴 THE SCHEMA IS SENT, NOT MERELY STORED. This used to call `draft()`, the
+    candidate-letter path, passing the system prompt and nothing else. The
+    rubric's `output_schema` was loaded, hashed and written to the run, and
+    never transmitted to the model. On 2026-09-25 the model duly answered in a
+    shape of its own -- every rubric dimension present but TOP-LEVEL rather
+    than under `dimensions` -- and all twenty candidates failed on a reader
+    that found an empty object. Forcing the schema as a tool makes the shape a
+    fact. `output_schema=None` keeps the old prose path for any caller that
+    genuinely has no contract.
     """
     from . import drafting
 
@@ -739,19 +751,55 @@ def _call_model(*, system_prompt: str, user_prompt: str) -> tuple[dict, str, dic
             "ANTHROPIC_AUTH_TOKEN."
         )
     started = time.monotonic()
-    parsed = drafter.draft(
-        system=system_prompt,
-        user=user_prompt,
-        email_type="technical_screening",
-        first_name="",
-        role="",
-        prior_violations=None,
-        attempt=0,
-    )
+    if output_schema:
+        parsed = drafter.structured(
+            system=system_prompt, user=user_prompt, schema=output_schema,
+            tool_name="submit_screening",
+        )
+    else:
+        parsed = drafter.draft(
+            system=system_prompt,
+            user=user_prompt,
+            email_type="technical_screening",
+            first_name="",
+            role="",
+            prior_violations=None,
+            attempt=0,
+        )
     latency_ms = int((time.monotonic() - started) * 1000)
     usage = (drafter.calls or [{}])[-1]
     model_name = getattr(drafter, "model", None) or "unknown"
     return parsed, model_name, usage, latency_ms
+
+
+def normalise_dimensions(parsed: dict, rubric: dict) -> dict:
+    """The dimension scores, wherever the model put them.
+
+    Defence in depth behind the forced schema, and a direct record of the
+    2026-09-25 failure: the model returned `must_have_skills`,
+    `responsibility_alignment`, `stack_match`, `technical_breadth` and
+    `experience_depth` as top-level keys, so `parsed["dimensions"]` was empty
+    and the run reported that it had not scored the first one.
+
+    Nothing is invented here. A key is lifted only when the rubric names it and
+    the nested object does not already carry it, and lifting is logged, because
+    a shape drifting back is worth knowing about rather than papering over.
+    """
+    dims = parsed.get("dimensions")
+    dims = dict(dims) if isinstance(dims, dict) else {}
+    lifted = []
+    for spec in rubric.get("dimensions") or []:
+        key = spec.get("key")
+        if key and key not in dims and key in parsed:
+            dims[key] = parsed[key]
+            lifted.append(key)
+    if lifted:
+        log.warning(
+            "Model returned %d dimension(s) at the top level instead of under "
+            "'dimensions': %s. Lifted them; the output schema should have "
+            "prevented this.", len(lifted), ", ".join(lifted),
+        )
+    return dims
 
 
 def build_user_prompt(*, cv: str, row: dict, rubric: dict) -> str:
@@ -779,6 +827,23 @@ def build_user_prompt(*, cv: str, row: dict, rubric: dict) -> str:
         f"for your reference only: {json.dumps(name)}.",
     ]
     return "\n".join(parts)
+
+
+def _strip_nul(text: Optional[str]) -> Optional[str]:
+    """Remove NUL (0x00) bytes from extracted CV text.
+
+    PostgreSQL `text` cannot hold 0x00 at all, so a single stray NUL from a PDF
+    parser makes the resume-cache INSERT raise DataError and takes that
+    candidate down with it. One of the twenty in run aef6ed75 died exactly this
+    way, and it was reported to Ayesha as a CV that could not be read.
+
+    Stripping is safe: a NUL carries no meaning in extracted prose, it is
+    parser debris. It is removed rather than replaced so character offsets in
+    quoted evidence do not shift.
+    """
+    if text is None:
+        return None
+    return text.replace("\x00", "")
 
 
 def _resume_for(db: Session, row: dict) -> tuple[Optional[str], dict]:
@@ -821,10 +886,12 @@ def _resume_for(db: Session, row: dict) -> tuple[Optional[str], dict]:
     text_value: Optional[str] = None
     parse_error: Optional[str] = None
     try:
-        text_value = cv_text.extract(
-            data,
-            mime_type=row.get("resume_mime_type"),
-            file_name=row.get("resume_file_name"),
+        text_value = _strip_nul(
+            cv_text.extract(
+                data,
+                mime_type=row.get("resume_mime_type"),
+                file_name=row.get("resume_file_name"),
+            )
         )
     except cv_text.CVUnreadable as exc:
         parse_error = str(exc)
@@ -947,10 +1014,11 @@ def score_one(db: Session, *, run: dict, rubric: dict, application_id: int) -> d
     parsed, model_name, usage, latency_ms = _call_model(
         system_prompt=rubric["system_prompt"],
         user_prompt=build_user_prompt(cv=cv, row=row, rubric=rubric),
+        output_schema=rubric.get("output_schema"),
     )
 
     dimension_scores, total, max_score = tech_tiering.score_dimensions(
-        rubric, parsed.get("dimensions") or {}
+        rubric, normalise_dimensions(parsed, rubric)
     )
     weight_total = sum(float(d.get("weight") or 0) for d in rubric["dimensions"]) * 5
     pct = tech_tiering.score_percent(total, max_score, weight_total=weight_total)
@@ -1056,6 +1124,9 @@ def work(
 
     screened: list[dict] = []
     skipped: list[dict] = []
+    # Kept apart from `skipped` all the way to the screen. A skip is a document
+    # problem; a failure is ours.
+    failed: list[dict] = []
     last_app: Optional[int] = None
     consecutive_fatal = 0
     fatal_reason: Optional[str] = None
@@ -1085,12 +1156,25 @@ def work(
                 eval_id=None, skip_reason=None,
                 error=f"{type(exc).__name__}: {exc}"[:500],
             )
+            # The counter, and the money. Neither used to be recorded here, so
+            # a run in which every candidate failed displayed FAILED 0 and
+            # SPENT $0.00 while twenty model calls had been made and billed.
+            # A cost of zero for work we paid for is the kind of number people
+            # trust.
+            _bump(db, run_id, failed=1,
+                  usage=getattr(exc, "usage", None) or {},
+                  cost=float(getattr(exc, "cost_usd", 0.0) or 0.0))
             log_event(db, run_id, "item_failed",
                       {"application_id": app_id, "error": str(exc)[:300]},
                       level="error")
             db.commit()
-            skipped.append({"application_id": app_id,
-                            "reason": f"screening failed: {type(exc).__name__}"})
+            # 🔴 FAILED, NEVER "could not be read". These are two different
+            # facts about two different people's work: one needs somebody to
+            # open a document, the other needs an engineer. Merging them into
+            # `skipped` sent Ayesha to chase twenty CVs that were perfectly
+            # readable while the actual defect was ours.
+            failed.append({"application_id": app_id,
+                           "reason": f"{type(exc).__name__}: {exc}"[:200]})
             continue
 
         consecutive_fatal = 0
@@ -1136,11 +1220,11 @@ def work(
                   {"reason": fatal_reason, "consecutive": consecutive_fatal},
                   level="error")
         db.commit()
-        return _slice_result(db, run_id, screened, skipped, last_app)
+        return _slice_result(db, run_id, screened, skipped, last_app, failed)
 
     _check_cap_and_finish(db, run_id)
     db.commit()
-    return _slice_result(db, run_id, screened, skipped, last_app)
+    return _slice_result(db, run_id, screened, skipped, last_app, failed)
 
 
 def _bump(db, run_id, *, ok=0, unusable=0, failed=0, skipped=0, usage=None, cost=0.0):
@@ -1180,12 +1264,15 @@ def _check_cap_and_finish(db: Session, run_id: str) -> None:
         _set_status(db, run_id, "completed", terminal=True)
 
 
-def _slice_result(db, run_id, screened, skipped, last_app) -> dict:
+def _slice_result(db, run_id, screened, skipped, last_app, failed=None) -> dict:
     run = get_run(db, run_id)
     return {
         "run_id": str(run_id),
         "screened": screened,
+        # Could not be read: a person must open the document.
         "skipped": skipped,
+        # Failed: the screener broke. An engineer must look.
+        "failed": failed or [],
         "last_application_id": last_app,
         "remaining": remaining_items(db, run_id),
         "status": run["status"] if run else "unknown",

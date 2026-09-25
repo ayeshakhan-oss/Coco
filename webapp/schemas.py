@@ -1144,7 +1144,13 @@ class TechWorkRequest(_Base):
 class TechWorkOut(_Base):
     run_id: str
     screened: list[TechScreenedOut] = []
+    # Could not be read: a person must open the document. Rule 32.
     skipped: list[TechSkippedOut] = []
+    # 🔴 A SEPARATE FACT. The screener broke on this candidate, which is our
+    # defect and needs an engineer, not somebody chasing a CV. These used to
+    # arrive inside `skipped`, so a run in which every candidate failed on a
+    # schema mismatch reported twenty unreadable CVs that were perfectly fine.
+    failed: list[TechSkippedOut] = []
     # Named to match what frontend/src/lib/screenAll.ts already consumes, so
     # that tested retry loop is reused rather than reimplemented.
     last_application_id: Optional[int] = None

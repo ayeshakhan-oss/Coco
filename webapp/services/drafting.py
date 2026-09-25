@@ -188,6 +188,22 @@ class StubDrafter:
             ),
         }
 
+    def structured(self, *, system, user, schema, tool_name="submit", max_tokens=8192) -> dict:
+        """Refuses, deliberately.
+
+        The offline stub can fake a letter because a letter that reads oddly is
+        obviously filler. It must never fake a SCORE: a screening evaluation
+        that looks real and means nothing would be written to
+        nugget_screening_evals and read back as a judgement about a person.
+        Callers already treat a StubDrafter as "no credential"; this makes that
+        true for scoring rather than leaving it to each caller to remember.
+        """
+        raise DraftingUnavailable(
+            "No Anthropic credential configured, so there is no scoring model. "
+            "The offline stub writes placeholder prose and must never produce a "
+            "score."
+        )
+
 
 # Haiku's minimum cacheable prefix is 2,048 tokens (1,024 on the larger models);
 # below that a breakpoint is silently ignored. At roughly 4 chars per token this
@@ -368,6 +384,89 @@ class AnthropicDrafter:
             self._record(model, started, msg, system)
             text = "".join(b.text for b in msg.content if getattr(b, "type", None) == "text")
             return _parse_json(text)
+        raise DraftingUnavailable(f"No servable model among {tried}")
+
+    def structured(self, *, system: str, user: str, schema: dict,
+                   tool_name: str = "submit", max_tokens: int = 8192) -> dict:
+        """One call whose reply MUST match `schema`, returned as a dict.
+
+        🔴 WHY THIS EXISTS RATHER THAN `draft()`. Technical screening asked the
+        model for a scoring object and sent it nothing but prose: the rubric's
+        `output_schema` was loaded, hashed and stored, and never transmitted.
+        A hash of a contract nobody sent looks exactly like enforcement. The
+        model then answered in a shape of its own -- on 2026-09-25 it returned
+        all five rubric dimensions as TOP-LEVEL keys instead of nested under
+        `dimensions`, so the reader saw an empty object and reported that the
+        model had not scored the first dimension. Every candidate in the run
+        failed, and the page told Ayesha their CVs could not be read.
+
+        Forcing a tool is what makes the shape a fact rather than a hope: the
+        model must answer by calling `tool_name`, and the SDK returns its input
+        already parsed, so there is no prose to strip and no JSON to salvage.
+        `draft()` is left exactly as it was -- candidate letters are prose and
+        must not be squeezed through a schema.
+        """
+        tried: list[str] = []
+        for model in (self.model, *self._FALLBACK_MODELS):
+            if model in tried:
+                continue
+            tried.append(model)
+            started = time.monotonic()
+            try:
+                msg = self.client.messages.create(
+                    model=model,
+                    max_tokens=max_tokens,
+                    system=_cacheable_system(system),
+                    messages=[{"role": "user", "content": user}],
+                    tools=[{
+                        "name": tool_name,
+                        "description": "Return the completed result.",
+                        "input_schema": schema,
+                    }],
+                    # Not "auto": the model must answer THIS way or not at all.
+                    tool_choice={"type": "tool", "name": tool_name},
+                )
+            except Exception as exc:  # noqa: BLE001
+                if self._should_fall_back(exc) and model != self._FALLBACK_MODELS[-1]:
+                    log.error("Model %r unusable (%s); falling back.", model, exc)
+                    type(self)._unusable.add(model)
+                    continue
+                raise
+            if model != self.model:
+                log.error("Scoring on FALLBACK model %r; configured %r was unusable.",
+                          model, self.model)
+                self.degraded_from = self.model
+                self.model = model
+            self._record(model, started, msg, system)
+
+            # A reply cut off at the token ceiling is a partial answer, and
+            # nothing downstream could tell it from a complete one: the old
+            # path handed the truncated text to a regex that salvaged the
+            # outermost braces and produced a plausible, wrong object.
+            if msg.stop_reason == "max_tokens":
+                raise DraftingUnavailable(
+                    f"The model hit the {max_tokens}-token ceiling before "
+                    "finishing. The reply is incomplete and must not be scored."
+                )
+            # 🔴 MERGE EVERY tool_use BLOCK, never just the first. Measured on
+            # Haiku 4.5 against a real screening schema, the model answers with
+            # SEVEN separate tool_use blocks -- one per top-level property:
+            # extracted, then dimensions, then strengths, gaps, hard_filters,
+            # confidence, verdict. Taking `content[0].input` yields a dict with
+            # a single key, which reads downstream exactly like a model that
+            # refused to score.
+            merged: dict = {}
+            found = False
+            for block in msg.content:
+                if getattr(block, "type", None) == "tool_use":
+                    found = True
+                    merged.update(dict(block.input))
+            if found:
+                return merged
+            raise ValueError(
+                f"Model answered without calling {tool_name!r} "
+                f"(stop_reason={msg.stop_reason!r})."
+            )
         raise DraftingUnavailable(f"No servable model among {tried}")
 
     def _record(self, model: str, started: float, msg, system: str) -> None:
