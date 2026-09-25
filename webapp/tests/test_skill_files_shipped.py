@@ -51,6 +51,10 @@ def test_expected_skill_dirs_are_reincluded_in_dockerignore():
 SOP_FILES_READ_AT_RUNTIME = [
     ".claude/skills/02_candidate-evaluation/cv-screening.md",
     ".claude/skills/02_candidate-evaluation/case-study-scoring-rubric.md",
+    # Read verbatim into the rubric-drafting prompt. A rubric drafted without
+    # it loses the wording that protects candidates (an absent skill scores 0;
+    # silence in a CV is never a refusal; university tier never fails anyone).
+    ".claude/skills/02_candidate-evaluation/technical-screening.md",
 ]
 
 
@@ -64,6 +68,19 @@ def test_sop_files_read_at_runtime_exist_and_are_inside_a_copied_dir():
         assert f"COPY {parent}/ {parent}/" in dockerfile, (
             f"{rel} would not reach the image: no COPY for {parent}/"
         )
+
+
+def test_the_rubric_drafting_prompt_actually_resolves_its_sop():
+    """Same '..' hop trap as the CV screening prompt below: a wrong number of
+    hops resolves to a real-looking path that does not exist, and the failure
+    only shows up the first time someone drafts a rubric."""
+    from webapp.prompts import rubric_drafting_prompt
+
+    system = rubric_drafting_prompt.system_prompt()
+    assert "# The screening SOP, verbatim" in system
+    # A line that only exists in the SOP file, so a silently empty read fails.
+    assert "Silence is not a refusal" in system, "the SOP body did not make it in"
+    assert len(rubric_drafting_prompt.sop_sha256()) == 64
 
 
 def test_the_cv_screening_prompt_actually_resolves_its_sop():
