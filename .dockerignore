@@ -26,6 +26,14 @@ logs/
 .claude/skills/*
 !.claude/skills/01_candidate-communication
 !.claude/skills/02_candidate-evaluation
+!.claude/skills/03_operations
+!.claude/skills/04_data-and-systems
+!.claude/skills/05_talent-sourcing
+!.claude/skills/06_candidate-invites
+!.claude/skills/07_contract-drafting
+# ui-ux-pro-max is deliberately NOT shipped: it is vendored third-party design
+# guidance, local-only, and Rule 9 bars it from the locked candidate layouts.
+# It is the one skill folder that is not part of Coco's own method.
 archive/
 *.bak
 C:/tmp

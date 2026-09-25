@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { LucideIcon } from 'lucide-react'
 import {
+  BookOpen,
   CalendarCheck,
   CheckSquare,
   ChevronDown,
@@ -149,6 +150,22 @@ export function AppLayout() {
             )
           })}
         </nav>
+
+        {/* Skills — every sub-skill in this build, open to everyone. Sits
+            outside the module list because it spans all of them. */}
+        <div className="border-t border-hairline px-3 py-2">
+          <NavLink
+            to="/skills"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                isActive ? 'bg-blurple text-white' : 'text-ink-muted hover:bg-elevated hover:text-ink'
+              }`
+            }
+          >
+            <BookOpen className="h-4 w-4" />
+            Skills
+          </NavLink>
+        </div>
 
         {/* Users — admin, sits just above the account block */}
         {isSuperAdmin && (

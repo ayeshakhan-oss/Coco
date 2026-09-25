@@ -1186,3 +1186,48 @@ export interface SystemActivity {
     found_count: number
   } | null
 }
+
+// --- Skill library (every skill + sub-skill in this build) ---
+
+// "wired" = a page here does the work. "reference" = the guidance ships and is
+// readable, and Claude Code follows it. "claude_code_only" = deliberately not
+// on the server, with the reason in `note`.
+export type SkillStatus = 'wired' | 'reference' | 'claude_code_only'
+
+export interface SkillSubSkill {
+  path: string
+  filename: string
+  title: string
+  summary: string
+  is_overview: boolean
+  status: SkillStatus
+  route: string | null
+  note: string | null
+  words: number
+  has_frontmatter: boolean
+}
+
+export interface SkillEntry {
+  id: string
+  number: string | null
+  label: string
+  summary: string
+  sub_skills: SkillSubSkill[]
+  overview: SkillSubSkill | null
+  counts: { total: number; wired: number; reference: number; claude_code_only: number }
+}
+
+export interface SkillLibrary {
+  summary: {
+    skills: number
+    sub_skills: number
+    wired: number
+    reference: number
+    claude_code_only: number
+    shipped: boolean
+  }
+  skills: SkillEntry[]
+  // Set when the image carries no skill files at all, which is a deployment
+  // fault rather than an empty library.
+  error: string | null
+}

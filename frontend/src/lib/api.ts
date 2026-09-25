@@ -40,6 +40,7 @@ import type {
   QueueStats,
   ScorecardResponse,
   ScreenedJob,
+  SkillLibrary,
   SourcedCandidate,
   SourcingSummary,
   SystemActivity,
@@ -388,6 +389,13 @@ export const api = {
     const q = qs.toString()
     return get<InviteSendRecord[]>(`/api/invites/sends${q ? `?${q}` : ''}`)
   },
+
+  // --- Skill library ---
+  skills: () => get<SkillLibrary>('/api/skills'),
+  skillFile: (path: string) =>
+    get<{ path: string; body: string; words: number }>(
+      `/api/skills/file?path=${encodeURIComponent(path)}`,
+    ),
 
   // --- System health (Skill 04) ---
   systemHealth: () => get<SystemHealth>('/api/system/health'),

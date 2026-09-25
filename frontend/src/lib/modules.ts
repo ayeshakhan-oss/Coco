@@ -58,3 +58,24 @@ export const moduleForPath = (pathname: string): ModuleDef => {
   const best = matches.reduce((a, b) => (b.prefix.length > a.prefix.length ? b : a))
   return moduleBySlug(best.slug) ?? activeModule()
 }
+
+// Which skill folder backs each module, so a card can say what sits behind it
+// rather than only its title. The live counts come from /api/skills; this is
+// just the label, and `/skills` is where the files themselves are listed.
+export const MODULE_SKILL_DIR: Record<string, string> = {
+  'candidate-communication': '01_candidate-communication',
+  'candidate-evaluation': '02_candidate-evaluation',
+  'hiring-operations': '03_operations',
+  'data-systems': '04_data-and-systems',
+  'talent-sourcing': '05_talent-sourcing',
+  'candidate-invites': '06_candidate-invites',
+}
+
+export const SKILL_FOR_MODULE: Record<string, string> = {
+  'candidate-communication': '8 letter types',
+  'candidate-evaluation': '6 evaluation skills',
+  'hiring-operations': '5 operations skills',
+  'data-systems': '6 systems skills',
+  'talent-sourcing': 'sourcing workflow',
+  'candidate-invites': '7 invite types',
+}

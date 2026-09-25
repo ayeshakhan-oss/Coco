@@ -30,6 +30,7 @@ from .routers import invites as invites_router
 from .routers import kcd_evaluations as kcd_evaluations_router
 from .routers import operations as operations_router
 from .routers import tech_screening as tech_screening_router
+from .routers import skills as skills_router
 from .routers import sourcing as sourcing_router
 from .routers import system as system_router
 from .routers import users as users_router
@@ -194,6 +195,7 @@ app.include_router(invites_router.router)
 app.include_router(kcd_evaluations_router.router)
 app.include_router(operations_router.router)
 app.include_router(tech_screening_router.router)
+app.include_router(skills_router.router)
 app.include_router(sourcing_router.router)
 app.include_router(system_router.router)
 app.include_router(users_router.router)

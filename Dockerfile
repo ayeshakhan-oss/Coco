@@ -48,8 +48,20 @@ COPY memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md memory/CANDIDATE_C
 # other 17,366 that define how each letter is actually written: the specific
 # interview moment, company vulnerability, timestamps, the P.S., the subject
 # line. Editing a skill file changed nothing in production. Now it does.
+#
+# 🔴 EVERY skill folder ships, not just the two the drafter reads. Until
+# 2026-09-25 only 01 and 02 were copied, so 29 of the 46 sub-skill files did
+# not exist in production at all -- including the ones whose services name them
+# as SOURCE OF TRUTH in a docstring. `webapp/services/skills.py` enumerates
+# these directories at runtime, so a folder that is not copied is a sub-skill
+# that silently does not exist on Railway.
 COPY .claude/skills/01_candidate-communication/ .claude/skills/01_candidate-communication/
 COPY .claude/skills/02_candidate-evaluation/ .claude/skills/02_candidate-evaluation/
+COPY .claude/skills/03_operations/ .claude/skills/03_operations/
+COPY .claude/skills/04_data-and-systems/ .claude/skills/04_data-and-systems/
+COPY .claude/skills/05_talent-sourcing/ .claude/skills/05_talent-sourcing/
+COPY .claude/skills/06_candidate-invites/ .claude/skills/06_candidate-invites/
+COPY .claude/skills/07_contract-drafting/ .claude/skills/07_contract-drafting/
 COPY memory/warm_bench_final_locked_approach.md memory/warm_bench_final_locked_approach.md
 COPY memory/gwc_rejection_locked_approach_2026_06_08.md memory/gwc_rejection_locked_approach_2026_06_08.md
 COPY memory/v8_candidate_comms_layout_LOCKED.md memory/v8_candidate_comms_layout_LOCKED.md

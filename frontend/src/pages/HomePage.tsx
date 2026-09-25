@@ -5,7 +5,7 @@ import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StatCard } from '../components/StatCard'
 import { api } from '../lib/api'
-import { MODULES } from '../lib/modules'
+import { MODULES, SKILL_FOR_MODULE } from '../lib/modules'
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -102,6 +102,13 @@ export function HomePage() {
                   )}
                 </div>
                 <p className="mt-3 text-sm leading-snug text-ink-muted">{skill.blurb}</p>
+                {/* The sub-skills behind the tile. A module is not one thing;
+                    saying so on the card is the point of this line. */}
+                {SKILL_FOR_MODULE[skill.slug] && (
+                  <span className="mt-2 text-xs text-ink-dim">
+                    {SKILL_FOR_MODULE[skill.slug]}
+                  </span>
+                )}
               </Link>
             )
           })}
