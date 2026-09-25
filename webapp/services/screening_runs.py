@@ -772,6 +772,31 @@ def _call_model(
     return parsed, model_name, usage, latency_ms
 
 
+# Every column `score_one` reads off the rubric while scoring a run.
+#
+# 🔴 `output_schema` WAS MISSING FROM THIS LIST, and that is the whole reason
+# the 2026-09-25 fix did nothing in production. `_call_model` falls back to the
+# prose path when the rubric carries no schema, so omitting one column here
+# silently reverted the forced-tool contract for every run, on every job, while
+# the column sat populated in the database the entire time. Run 1b44a642
+# scored 67 candidates through the OLD path and survived only because
+# `normalise_dimensions` lifted the flattened dimensions; the one candidate
+# whose prose was malformed JSON failed, which is what surfaced it.
+#
+# `RUBRIC_COLUMNS_SCORING_NEEDS` below is asserted against this statement, so a
+# column cannot be dropped from it again without a test failing.
+_RUBRIC_FOR_RUN_SQL = """
+    SELECT id, job_id, version, dimensions, max_score, hard_filters,
+           thresholds, manual_review_rules, system_prompt, output_schema
+    FROM {schema}.nugget_screening_rubrics WHERE id = :rid
+"""
+
+RUBRIC_COLUMNS_SCORING_NEEDS = (
+    "id", "job_id", "version", "dimensions", "max_score", "hard_filters",
+    "thresholds", "manual_review_rules", "system_prompt", "output_schema",
+)
+
+
 def normalise_dimensions(parsed: dict, rubric: dict) -> dict:
     """The dimension scores, wherever the model put them.
 
@@ -1011,10 +1036,25 @@ def score_one(db: Session, *, run: dict, rubric: dict, application_id: int) -> d
                 "candidate_name": name, "reason": reason, "cost_usd": 0.0,
                 "usage": {}}
 
+    # 🔴 REFUSE RATHER THAN DEGRADE. `_call_model` will happily score through
+    # the prose path when handed no schema, and that fallback is invisible: it
+    # produces plausible evaluations that are written to the database. It is
+    # how the forced-tool contract was reverted for every run by one column
+    # missing from a SELECT, and nothing in the output said so. A rubric
+    # reaching here without its schema is a bug in the caller, so it stops the
+    # candidate loudly instead of quietly scoring them a different way.
+    if not rubric.get("output_schema"):
+        raise RunError(
+            f"rubric {rubric.get('id')} v{rubric.get('version')} reached scoring "
+            "without its output_schema. Scoring will not fall back to the "
+            "unconstrained path: that silently changes how every candidate in "
+            "the run is judged. Check the rubric SELECT includes output_schema."
+        )
+
     parsed, model_name, usage, latency_ms = _call_model(
         system_prompt=rubric["system_prompt"],
         user_prompt=build_user_prompt(cv=cv, row=row, rubric=rubric),
-        output_schema=rubric.get("output_schema"),
+        output_schema=rubric["output_schema"],
     )
 
     dimension_scores, total, max_score = tech_tiering.score_dimensions(
@@ -1090,13 +1130,8 @@ def work(
         db.commit()
         return _slice_result(db, run_id, [], [], None)
 
-    rubric = _one(
-        db,
-        f"""SELECT id, job_id, version, dimensions, max_score, hard_filters,
-                   thresholds, manual_review_rules, system_prompt
-            FROM {schema()}.nugget_screening_rubrics WHERE id = :rid""",
-        rid=run["rubric_id"],
-    )
+    rubric = _one(db, _RUBRIC_FOR_RUN_SQL.format(schema=schema()),
+                  rid=run["rubric_id"])
     if not rubric:
         _set_status(db, run_id, "failed", error="the run's rubric is missing",
                     terminal=True)

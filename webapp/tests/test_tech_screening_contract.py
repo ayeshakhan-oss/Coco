@@ -283,3 +283,73 @@ def test_a_model_that_answers_in_prose_is_an_error_not_an_empty_score():
     msg = _Msg([_Block("text", text="Here is my assessment...")], stop_reason="end_turn")
     with pytest.raises(ValueError):
         _drafter_with(msg).structured(system="s", user="u", schema={"type": "object"})
+
+
+# --------------------------------------------------------------------------
+# The CALLER must actually supply the schema
+#
+# 🔴 THE SECOND-ORDER BUG, and the sharper lesson of the two. The forced-tool
+# fix was verified by calling `_call_model` with a schema and watching it work.
+# Nobody checked that `work()` SUPPLIES one. Its rubric SELECT did not include
+# `output_schema`, so `rubric.get("output_schema")` was None on every real run
+# and scoring fell straight back to the prose path -- for every job, while the
+# column sat populated in the database the whole time.
+#
+# Run 1b44a642 scored 67 candidates that way and looked fine, because
+# `normalise_dimensions` lifted the flattened dimensions. Only the one
+# candidate whose prose happened to be malformed JSON failed, which is the
+# single thread that surfaced it.
+#
+# A function that works when called correctly proves nothing about the code
+# that calls it.
+# --------------------------------------------------------------------------
+
+
+def test_the_run_selects_every_column_scoring_reads():
+    """The contract between the rubric query and `score_one`, asserted as a
+    column set rather than a string match, so it survives reformatting."""
+    sql = screening_runs._RUBRIC_FOR_RUN_SQL.lower()
+    selected = sql.split("select", 1)[1].split("from", 1)[0]
+    columns = {c.strip() for c in selected.split(",")}
+    for needed in screening_runs.RUBRIC_COLUMNS_SCORING_NEEDS:
+        assert needed in columns, (
+            f"the run's rubric SELECT is missing {needed!r}; scoring reads it"
+        )
+
+
+def test_output_schema_is_among_them():
+    """Named on its own, because this is the one that went missing and the
+    column set above would pass if somebody removed it from BOTH places."""
+    assert "output_schema" in screening_runs.RUBRIC_COLUMNS_SCORING_NEEDS
+    assert "output_schema" in screening_runs._RUBRIC_FOR_RUN_SQL
+
+
+def test_a_rubric_without_its_schema_refuses_rather_than_scoring_in_prose(monkeypatch):
+    """Refuse, do not degrade. The prose fallback produces plausible
+    evaluations that get written to the database, so a silent switch changes
+    how every candidate is judged with nothing in the output saying so."""
+    called = []
+    monkeypatch.setattr(screening_runs, "_call_model",
+                        lambda **kw: called.append(kw) or ({}, "m", {}, 1))
+    monkeypatch.setattr(screening_runs, "_one", lambda db, sql, **kw: {
+        "candidate_id": 1, "first_name": "A", "last_name": "B", "email": "a@b.c",
+        "applied_at": None, "cover_letter": None, "custom_answers": None,
+        "canned_answers": None, "resume_data": None,
+    })
+    monkeypatch.setattr(screening_runs, "_resume_for",
+                        lambda db, row: ("a cv " * 200, {
+                            "chars": 1000, "health": 100, "issues": [],
+                            "type": "pdf", "truncated": False,
+                            "parse_success": True, "parse_error": None}))
+    monkeypatch.setattr(screening_runs.tech_tiering, "route_unscorable",
+                        lambda **kw: None)
+
+    rubric = {"id": "r1", "version": 1, "system_prompt": "rules",
+              "dimensions": [{"key": "a", "weight": 1}], "max_score": 100}
+    run = {"id": "run1", "job_id": 24, "model": "m", "effort": "medium"}
+
+    with pytest.raises(screening_runs.RunError) as exc:
+        screening_runs.score_one(None, run=run, rubric=rubric, application_id=1)
+
+    assert "output_schema" in str(exc.value)
+    assert called == [], "it fell back to the unconstrained path instead of refusing"
