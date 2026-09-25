@@ -84,14 +84,14 @@ def _statements():
     from webapp.routers import candidates, case_studies, case_study_tracking
     from webapp.routers import cv_screening, invites
     from webapp.routers import evaluations, kcd_evaluations, operations
-    from webapp.routers import sourcing
+    from webapp.routers import sourcing, system
     from webapp.routers import values_scorecards
 
     out = []
     for module in (
         cv_screening, case_study_tracking, kcd_evaluations,
         case_studies, evaluations, values_scorecards, operations, candidates,
-        sourcing, invites,
+        sourcing, invites, system,
     ):
         for attr in dir(module):
             if not attr.startswith("_") or not attr.isupper() and not attr[1:].isupper():
@@ -142,6 +142,7 @@ def test_there_are_statements_to_check():
     assert any("kcd_evaluations" in n for n in names)
     assert any("operations" in n for n in names)
     assert any("invites" in n for n in names)
+    assert any("system" in n for n in names)
 
 
 @pytest.mark.parametrize("name,sql", STATEMENTS, ids=[n for n, _ in STATEMENTS])

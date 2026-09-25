@@ -1128,3 +1128,61 @@ export interface InviteSendRecord {
   sent_at: string
   sent_by: string | null
 }
+
+// --- System health (Skill 04) ---
+
+export interface SystemIntegration {
+  key: string
+  label: string
+  // Whether the app COULD use it. Not a liveness check: a token can be
+  // present and expired.
+  configured: boolean
+  detail: string
+}
+
+export interface SystemTable {
+  name: string
+  purpose: string
+  exists: boolean
+  // Null means the table exists but the count failed, which is not the same
+  // as zero rows.
+  rows: number | null
+}
+
+export interface SystemGap {
+  key: string
+  severity: 'high' | 'medium' | 'low'
+  title: string
+  detail: string
+}
+
+export interface SystemHealth {
+  summary: {
+    status: 'ok' | 'degraded'
+    headline: string
+    known_gaps: number
+    checked_at: string
+  }
+  tables: {
+    status: string
+    error: string | null
+    tables: SystemTable[]
+    missing: string[]
+    note?: string
+  }
+  integrations: SystemIntegration[]
+  known_gaps: SystemGap[]
+}
+
+export interface SystemActivity {
+  items: { kind: string; what: string; who: string | null; at: string; is_live: boolean }[]
+  error: string | null
+  last_sync: {
+    started_at: string
+    finished_at: string | null
+    status: string
+    messages_scanned: number
+    candidates_evaluated: number
+    found_count: number
+  } | null
+}

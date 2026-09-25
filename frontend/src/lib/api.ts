@@ -42,6 +42,8 @@ import type {
   ScreenedJob,
   SourcedCandidate,
   SourcingSummary,
+  SystemActivity,
+  SystemHealth,
   SendResponse,
   TechJob,
   TechModel,
@@ -386,4 +388,8 @@ export const api = {
     const q = qs.toString()
     return get<InviteSendRecord[]>(`/api/invites/sends${q ? `?${q}` : ''}`)
   },
+
+  // --- System health (Skill 04) ---
+  systemHealth: () => get<SystemHealth>('/api/system/health'),
+  systemActivity: () => get<SystemActivity>('/api/system/activity'),
 }

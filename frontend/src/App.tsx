@@ -19,6 +19,7 @@ import { LoginPage } from './pages/LoginPage'
 import { QueuePage } from './pages/QueuePage'
 import { ReviewInboxPage } from './pages/ReviewInboxPage'
 import { SourcingPage } from './pages/SourcingPage'
+import { SystemPage } from './pages/SystemPage'
 import { UsersPage } from './pages/UsersPage'
 import { ValuesScorecardPage } from './pages/ValuesScorecardPage'
 
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/hiring-brief" element={<HiringBriefPage />} />
           <Route path="/sourcing" element={<SourcingPage />} />
           <Route path="/invites" element={<InvitesPage />} />
+          <Route path="/system" element={<SystemPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

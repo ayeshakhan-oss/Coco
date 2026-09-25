@@ -90,6 +90,8 @@ def ensure_app_tables() -> None:
         CVScreenSkip,
         EvalBenchmark,
         GmailSyncRun,
+        InviteLink,
+        InviteSend,
         KCDEvaluation,
         SourcedCandidate,
         ValuesScorecardDraft,
@@ -113,6 +115,8 @@ def ensure_app_tables() -> None:
             CaseStudyProbe.__table__,
             KCDEvaluation.__table__,
             SourcedCandidate.__table__,
+            InviteLink.__table__,
+            InviteSend.__table__,
         ],
         checkfirst=True,
     )

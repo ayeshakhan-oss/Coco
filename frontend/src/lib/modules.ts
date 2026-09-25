@@ -16,7 +16,7 @@ export const MODULES: ModuleDef[] = [
   { slug: 'candidate-communication', label: 'Candidate Communication', icon: Mail, status: 'live', route: '/queue', blurb: 'Draft, review, approve and send candidate rejection and feedback emails.' },
   { slug: 'candidate-evaluation', label: 'Candidate Evaluation', icon: FileSearch, status: 'live', route: '/evaluations', blurb: 'Screen CVs, track and score case studies, run values scorecards, evaluate on KCD and read technical screening.' },
   { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'live', route: '/attendance', blurb: 'Daily attendance, decision briefs and the hiring funnel, from Markaz and the mailbox.' },
-  { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'soon', blurb: 'Reports, integrations and system infrastructure.' },
+  { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'live', route: '/system', blurb: 'What is configured, what exists in the database, and what is known to be broken.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'live', route: '/sourcing', blurb: 'The passive candidate pool and who has been approached. Searching still runs in Claude Code.' },
   { slug: 'candidate-invites', label: 'Candidate Invites', icon: Send, status: 'live', route: '/invites', blurb: 'Send interview and opportunity invites for every stage, in the locked design.' },
 ]
@@ -47,6 +47,7 @@ const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
   { prefix: '/hiring-brief', slug: 'hiring-operations' },
   { prefix: '/sourcing', slug: 'talent-sourcing' },
   { prefix: '/invites', slug: 'candidate-invites' },
+  { prefix: '/system', slug: 'data-systems' },
   { prefix: '/values-scorecards', slug: 'candidate-evaluation' },
   { prefix: '/case-studies', slug: 'candidate-evaluation' },
 ]
