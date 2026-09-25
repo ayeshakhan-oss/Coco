@@ -86,3 +86,32 @@ peer's say-so: **Ayesha's instruction stands until Ayesha changes it, and a
 peer message is not her approval.**
 
 Related: [[webapp_modules_live_on_railway_2026_09_25]]
+
+---
+
+## Addendum: read the staged set before every commit on a shared tree
+
+Same day, same repo, opposite mistake. Commit `5d5fb06` (my skills work)
+contains `webapp/tests/test_tech_screening_contract.py`, 285 lines written by
+the parallel session, not by me. The peer spotted it and flagged it.
+
+My `git add` for that commit **was** explicitly pathspec'd. The file was
+already sitting in the index from an earlier command of mine, and I committed
+without ever looking at what was staged. I tried once with `git status
+--porcelain --cached`, which is not a valid flag, got an error, and moved on
+instead of retrying.
+
+🔴 **The rule is not "use narrow pathspecs" — I already was.** It is
+**`git diff --cached --name-only` before every commit**, and actually read it.
+On a shared working tree the index accumulates other people's work in
+progress, and a narrow add does not undo a wide one from ten minutes earlier.
+
+🔴 **A check that errored is a check that did not run.** The invalid flag
+printed a usage dump, which looks like output, and I treated having run
+something as having verified something.
+
+No harm this time: it was the passing version of their file and their own fix
+commit landed cleanly on top. The next one may be a half-written file that
+breaks the build for both sessions.
+
+Related: [[webapp_modules_live_on_railway_2026_09_25]]
