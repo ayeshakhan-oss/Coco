@@ -163,7 +163,34 @@ def healthz() -> dict:
         # truncating it to 8 broke the script's own served-vs-deployed match and
         # made a successful deploy report as a timeout.
         "commit": (sha if len(sha) <= 20 else sha[:8]) if sha else "unknown",
+        # 🔴 DID THE METHOD SHIP? On 2026-09-25 the image copied 2 of the 7
+        # skill folders, so 29 sub-skill files were absent from production and
+        # nothing failed, because nothing asked for them. A route probe proves
+        # a router mounted; it says nothing about the files behind it. These
+        # two counts make that checkable on every deploy WITHOUT a login, which
+        # is the only reason they sit on an unauthenticated endpoint. Counts
+        # only: no titles, no paths, no content.
+        "skills": _skill_counts(),
     }
+
+
+def _skill_counts() -> dict:
+    """{"skills": 7, "sub_skills": 46} — or zeros if the folders did not ship.
+
+    Never raises: a health endpoint that can fail is worse than one that
+    reports a zero, and a zero here IS the alarm.
+    """
+    try:
+        from .services import skills as _skills
+
+        found = _skills.discover()
+        return {
+            "skills": len(found),
+            "sub_skills": sum(len(s["sub_skills"]) + (1 if s.get("overview") else 0)
+                              for s in found),
+        }
+    except Exception:  # pragma: no cover - defensive on a health path
+        return {"skills": 0, "sub_skills": 0}
 
 
 @app.get("/readyz", tags=["health"])

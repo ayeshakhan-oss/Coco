@@ -307,3 +307,39 @@ def test_the_count_check_bites():
     """Proof: a wrong claim must fail. 02 has 6 components, never 99."""
     actual = len(_files_in("02_candidate-evaluation")) - 1
     assert actual != 99 and _count_in("99 evaluation skills") == 99
+
+
+# --------------------------------------------------------------------------
+# The deploy is checkable without a login
+# --------------------------------------------------------------------------
+
+
+def test_healthz_reports_how_many_skill_files_shipped():
+    """A route probe proves a router mounted and says nothing about the files
+    behind it, which is exactly how 29 missing sub-skills went unnoticed.
+    /healthz carries the counts so a deploy can be checked from outside."""
+    from webapp.main import _skill_counts
+
+    counts = _skill_counts()
+    assert counts["skills"] == len(_skill_dirs())
+    assert counts["sub_skills"] == len(_md_files())
+
+
+def test_the_health_counts_never_raise():
+    """A health endpoint that can throw is worse than one reporting a zero,
+    and a zero here is the alarm rather than an error."""
+    import webapp.main as main
+
+    original = main.__dict__.get("_skill_counts")
+    assert original is not None
+    # The real guard: the helper swallows everything and returns zeros.
+    src = __import__("inspect").getsource(original)
+    assert "except Exception" in src and '"skills": 0' in src
+
+
+def test_healthz_exposes_no_file_names_or_content():
+    """Counts only. The endpoint is unauthenticated, and skill files carry
+    internal hiring method."""
+    from webapp.main import _skill_counts
+
+    assert set(_skill_counts()) == {"skills", "sub_skills"}
