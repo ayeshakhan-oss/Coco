@@ -283,3 +283,84 @@ def send_communication(
         "full_html": full_html,
         "eval": result,
     }
+
+
+def send_invite(
+    *,
+    invite_type: str,
+    subject: str,
+    body_html: str,
+    live: bool,
+    candidate_email: Optional[str],
+    cc: Optional[list[str]] = None,
+    booking_url: Optional[str] = None,
+    booking_verified_title: Optional[str] = None,
+    context: str,
+    transport: Optional[Transport] = None,
+) -> dict:
+    """Send one candidate invite, through the same transport as everything else.
+
+    🔴 `evaluate_email` IS DELIBERATELY NOT CALLED HERE. That harness validates
+       800-word decision letters -- word floors, the "This is not a yes for
+       now." opening, the section headings -- and an invite is a 200-word note
+       with a booking button. Running it would HARD_BLOCK every invite for
+       failing rules that were never written for this kind of email. Invites
+       have their own gate, `invites.check_before_send`, which the router
+       applies before calling this.
+
+    The recipient list is built by `invites.recipients_for`, which constructs a
+    pilot's list from nothing rather than filtering the live one, so a CC
+    cannot survive into a pilot by being forgotten.
+    """
+    from . import invites as inv
+
+    settings = get_settings()
+    problems = inv.check_before_send(
+        invite_type=invite_type,
+        live=live,
+        subject=subject,
+        candidate_email=candidate_email,
+        booking_url=booking_url,
+        booking_verified_title=booking_verified_title,
+        # A pilot's CC is DROPPED here rather than refused. The router already
+        # tells the operator a pilot has no CC; this layer's job is narrower
+        # and absolute, which is that a candidate cannot receive a draft.
+        cc=cc if live else None,
+    )
+    # Re-checked here as well as in the router. This is the last code that runs
+    # before SMTP, and the Layer 3 hook that was supposed to be the final net
+    # is inert (it matches on `tool_name`, always literally "Bash").
+    if problems:
+        raise SendBlocked([
+            {"severity": "HARD_BLOCK", "rule": "invite_send_gate", "message": p}
+            for p in problems
+        ])
+
+    resolved = inv.recipients_for(live=live, candidate_email=candidate_email, cc=cc)
+    to, cc_final = resolved["to"], resolved["cc"]
+    all_recipients = to + cc_final
+
+    msg, message_id = _build_message(
+        full_html=body_html, subject=subject, sender=settings.email_sender,
+        to=to, cc=cc_final,
+    )
+
+    tx = transport or get_transport()
+    with _send_lock:
+        if live:
+            allow_candidate_addresses(to)
+        tx.send(
+            sender=settings.email_sender,
+            recipients=all_recipients,
+            message=msg.as_string(),
+            context=context,
+        )
+
+    return {
+        "live": live,
+        "subject": subject,
+        "to": to,
+        "cc": cc_final,
+        "recipients": all_recipients,
+        "message_id": message_id,
+    }

@@ -118,6 +118,14 @@ def _sourced_candidate_id() -> str:
     return "src-" + uuid4().hex
 
 
+def _invite_link_id() -> str:
+    return "ilnk-" + uuid4().hex
+
+
+def _invite_send_id() -> str:
+    return "isnd-" + uuid4().hex
+
+
 class AppUser(Base):
     __tablename__ = "app_users"
 
@@ -1076,5 +1084,112 @@ class SourcedCandidate(Base):
         Index("ix_sourced_candidate_slug", "linkedin_slug"),
         Index("ix_sourced_candidate_job_id", "job_id"),
         Index("ix_sourced_candidate_outreach", "outreach_state"),
+        {"schema": "coco"},
+    )
+
+
+class InviteLink(Base):
+    """The booking / JD links for one invite type, and PROOF of where they go.
+
+    🔴 THIS TABLE EXISTS BECAUSE A REPO CONSTANT IS NOT EVIDENCE. Growth Manager
+       runs as two live roles, Job 39 Lahore and Job 41 Karachi, with separate
+       JDs and separate booking schedules.
+       `scripts/jobs/job39/send_growth_manager_invites_batch.py` sits in the
+       job39 folder and its constants are Job 41 / Karachi; copying it for a
+       Lahore candidate books them into the Karachi schedule and nothing
+       complains (CLAUDE.md Rule 24).
+
+    So `verified_title` is the title the page ACTUALLY returned when somebody
+    fetched it, `verified_at` is when, and a live send refuses while they are
+    null. `expected_title` is what the role should be, so the fetched title is
+    compared against something rather than merely stored.
+
+    A row with a `job_id` beats the type-level default. That is how two cities
+    keep two schedules without either inheriting the other's.
+    """
+
+    __tablename__ = "invite_links"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_invite_link_id)
+    job_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    invite_type: Mapped[str] = mapped_column(Text, nullable=False)
+    label: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    booking_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    jd_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    prep_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    expected_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    verified_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    verified_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    verified_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    verify_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    cc_list: Mapped[Optional[list]] = mapped_column(JSONB, nullable=True)
+
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+    __table_args__ = (
+        Index("uq_invite_links_job_type", "job_id", "invite_type",
+              unique=True, postgresql_where=text("job_id IS NOT NULL")),
+        Index("uq_invite_links_default_type", "invite_type",
+              unique=True, postgresql_where=text("job_id IS NULL")),
+        {"schema": "coco"},
+    )
+
+
+class InviteSend(Base):
+    """One invite that actually left, pilot or live.
+
+    🔴 `uq_invite_sends_live_once` IS THE BATCH DISCIPLINE AS A CONSTRAINT. The
+       rule from 2026-08-24 is to scan Sent Mail per recipient for the invite's
+       own subject BEFORE drafting and again AFTER sending, because a send
+       loop's console output reports what it TRIED, not what left, and catches
+       neither a duplicate nor a silent omission. Postgres now refuses a second
+       live invite of the same type to the same application.
+
+    Pilots sit outside that index on purpose: a pilot is redrafted and re-sent
+    to Ayesha as many times as it takes.
+
+    `booking_url` and `booking_verified_title` are copied in at send time, so
+    editing the configuration later cannot rewrite history about which
+    schedule somebody was actually booked into.
+    """
+
+    __tablename__ = "invite_sends"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_invite_send_id)
+    application_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    candidate_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    job_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    invite_type: Mapped[str] = mapped_column(Text, nullable=False)
+    candidate_name: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    to_address: Mapped[str] = mapped_column(Text, nullable=False)
+    cc_list: Mapped[Optional[list]] = mapped_column(JSONB, nullable=True)
+    subject: Mapped[str] = mapped_column(Text, nullable=False)
+    body_html: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    is_live: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+    booking_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    booking_verified_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    sent_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    sent_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    __table_args__ = (
+        Index("uq_invite_sends_live_once", "application_id", "invite_type",
+              unique=True,
+              postgresql_where=text("is_live AND application_id IS NOT NULL")),
+        Index("ix_invite_sends_sent_at", "sent_at"),
         {"schema": "coco"},
     )

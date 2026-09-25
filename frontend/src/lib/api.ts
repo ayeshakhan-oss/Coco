@@ -25,6 +25,10 @@ import type {
   GenerateResponse,
   GmailMatch,
   GmailSyncStatus,
+  InviteLink,
+  InvitePreview,
+  InviteSendRecord,
+  InviteType,
   JobItem,
   KCDCohort,
   KCDEvaluation,
@@ -340,4 +344,46 @@ export const api = {
   sourcingUpdate: (id: string, body: { outreach_state?: string; reply_note?: string; notes?: string }) =>
     patch<SourcedCandidate>(`/api/sourcing/${id}`, body),
 
+  // --- Candidate invites ---
+  inviteTypes: () => get<InviteType[]>('/api/invites/types'),
+  inviteLinks: (jobId?: number) =>
+    get<InviteLink[]>(`/api/invites/links${jobId != null ? `?job_id=${jobId}` : ''}`),
+  inviteLinkSave: (body: {
+    job_id?: number | null
+    invite_type: string
+    label?: string | null
+    booking_url?: string | null
+    jd_url?: string | null
+    prep_url?: string | null
+    expected_title?: string | null
+    cc_list?: string[] | null
+  }) => post<InviteLink>('/api/invites/links', body),
+  // Fetches the page and stores the title it actually returned. This is the
+  // Rule 24 check; a live send refuses until it has run.
+  inviteLinkVerify: (id: string) => post<InviteLink>(`/api/invites/links/${id}/verify`, {}),
+  invitePreview: (body: {
+    invite_type: string
+    application_id?: number | null
+    job_id?: number | null
+    fields?: Record<string, string>
+  }) => post<InvitePreview>('/api/invites/preview', body),
+  inviteSend: (body: {
+    invite_type: string
+    application_id?: number | null
+    job_id?: number | null
+    candidate_email?: string | null
+    candidate_name?: string | null
+    subject?: string | null
+    live: boolean
+    fields?: Record<string, string>
+    cc?: string[] | null
+  }) => post<InviteSendRecord>('/api/invites/send', body),
+  inviteSends: (p: { application_id?: number; invite_type?: string; live_only?: boolean } = {}) => {
+    const qs = new URLSearchParams()
+    if (p.application_id != null) qs.set('application_id', String(p.application_id))
+    if (p.invite_type) qs.set('invite_type', p.invite_type)
+    if (p.live_only) qs.set('live_only', 'true')
+    const q = qs.toString()
+    return get<InviteSendRecord[]>(`/api/invites/sends${q ? `?${q}` : ''}`)
+  },
 }

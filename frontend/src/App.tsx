@@ -14,6 +14,7 @@ import { HiringBriefPage } from './pages/HiringBriefPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { KCDEvaluationPage } from './pages/KCDEvaluationPage'
 import { HomePage } from './pages/HomePage'
+import { InvitesPage } from './pages/InvitesPage'
 import { LoginPage } from './pages/LoginPage'
 import { QueuePage } from './pages/QueuePage'
 import { ReviewInboxPage } from './pages/ReviewInboxPage'
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/decision-brief" element={<DecisionBriefPage />} />
           <Route path="/hiring-brief" element={<HiringBriefPage />} />
           <Route path="/sourcing" element={<SourcingPage />} />
+          <Route path="/invites" element={<InvitesPage />} />
           <Route path="/applications/:id" element={<ApplicationDetailPage />} />
           <Route path="/drafts/:commId" element={<DraftEditorPage />} />
           <Route path="/review" element={<ReviewInboxPage />} />

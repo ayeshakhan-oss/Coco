@@ -1221,3 +1221,97 @@ class SourcingSummaryOut(_Base):
     in_markaz: int
     ready_for_markaz: int
     caveat: str
+
+
+# --------------------------------------------------------------------------
+# Candidate invites (Skill 06)
+# --------------------------------------------------------------------------
+
+
+class InviteTypeOut(_Base):
+    key: str
+    label: str
+    # "booking" needs a verified link, "reply" confirms by replying, "none" has
+    # nothing to arrange. Carried to the client so the form can refuse to show
+    # a booking field on a type that forbids one.
+    confirm: str
+    note: str
+    required: list[str]
+
+
+class InviteLinkOut(_Base):
+    id: str
+    job_id: Optional[int] = None
+    invite_type: str
+    label: Optional[str] = None
+    booking_url: Optional[str] = None
+    jd_url: Optional[str] = None
+    prep_url: Optional[str] = None
+    expected_title: Optional[str] = None
+    # The title the page ACTUALLY returned, and when. Null means unproven, and
+    # a live send refuses while it is null.
+    verified_title: Optional[str] = None
+    verified_at: Optional[dt.datetime] = None
+    verify_error: Optional[str] = None
+    # Whether the fetched title matches expected_title. Null when there is
+    # nothing to compare against, which is not the same as a match.
+    title_matches_expected: Optional[bool] = None
+    cc_list: Optional[list[str]] = None
+
+
+class InviteLinkUpsert(_Base):
+    job_id: Optional[int] = None
+    invite_type: str
+    label: Optional[str] = None
+    booking_url: Optional[str] = None
+    jd_url: Optional[str] = None
+    prep_url: Optional[str] = None
+    expected_title: Optional[str] = None
+    cc_list: Optional[list[str]] = None
+
+
+class InvitePreviewRequest(_Base):
+    invite_type: str
+    application_id: Optional[int] = None
+    job_id: Optional[int] = None
+    # Everything the chosen type declares in invite_render.REQUIRED, plus the
+    # optional extras (meet_url, maps_url, context, previous_role).
+    fields: dict = {}
+
+
+class InvitePreviewOut(_Base):
+    invite_type: str
+    subject: str
+    body_html: str
+    missing: list[str] = []
+    # Reasons a LIVE send would be refused right now, so the operator sees them
+    # before drafting rather than at the moment of sending.
+    blockers: list[str] = []
+    warnings: list[str] = []
+
+
+class InviteSendRequest(_Base):
+    invite_type: str
+    application_id: Optional[int] = None
+    job_id: Optional[int] = None
+    candidate_email: Optional[str] = None
+    candidate_name: Optional[str] = None
+    subject: Optional[str] = None
+    live: bool = False
+    fields: dict = {}
+    cc: Optional[list[str]] = None
+
+
+class InviteSendOut(_Base):
+    id: str
+    invite_type: str
+    application_id: Optional[int] = None
+    candidate_name: Optional[str] = None
+    to_address: str
+    cc_list: Optional[list[str]] = None
+    subject: str
+    is_live: bool
+    booking_url: Optional[str] = None
+    booking_verified_title: Optional[str] = None
+    sent_at: dt.datetime
+    sent_by: Optional[str] = None

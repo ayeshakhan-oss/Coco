@@ -18,7 +18,7 @@ export const MODULES: ModuleDef[] = [
   { slug: 'hiring-operations', label: 'Hiring Operations', icon: Building2, status: 'live', route: '/attendance', blurb: 'Daily attendance, decision briefs and the hiring funnel, from Markaz and the mailbox.' },
   { slug: 'data-systems', label: 'Data & Systems', icon: Database, status: 'soon', blurb: 'Reports, integrations and system infrastructure.' },
   { slug: 'talent-sourcing', label: 'Talent Sourcing', icon: Search, status: 'live', route: '/sourcing', blurb: 'The passive candidate pool and who has been approached. Searching still runs in Claude Code.' },
-  { slug: 'candidate-invites', label: 'Candidate Invites', icon: Send, status: 'soon', blurb: 'Send interview and opportunity invites for every stage.' },
+  { slug: 'candidate-invites', label: 'Candidate Invites', icon: Send, status: 'live', route: '/invites', blurb: 'Send interview and opportunity invites for every stage, in the locked design.' },
 ]
 
 export const activeModule = () => MODULES.find((m) => m.slug === ACTIVE_MODULE)!
@@ -46,6 +46,7 @@ const ROUTE_OWNERS: { prefix: string; slug: string }[] = [
   { prefix: '/decision-brief', slug: 'hiring-operations' },
   { prefix: '/hiring-brief', slug: 'hiring-operations' },
   { prefix: '/sourcing', slug: 'talent-sourcing' },
+  { prefix: '/invites', slug: 'candidate-invites' },
   { prefix: '/values-scorecards', slug: 'candidate-evaluation' },
   { prefix: '/case-studies', slug: 'candidate-evaluation' },
 ]

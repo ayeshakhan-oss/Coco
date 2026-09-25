@@ -82,7 +82,7 @@ def _statements():
     modules themselves rather than copied -- a copy drifts and then guards a
     statement nobody runs."""
     from webapp.routers import candidates, case_studies, case_study_tracking
-    from webapp.routers import cv_screening
+    from webapp.routers import cv_screening, invites
     from webapp.routers import evaluations, kcd_evaluations, operations
     from webapp.routers import sourcing
     from webapp.routers import values_scorecards
@@ -91,7 +91,7 @@ def _statements():
     for module in (
         cv_screening, case_study_tracking, kcd_evaluations,
         case_studies, evaluations, values_scorecards, operations, candidates,
-        sourcing,
+        sourcing, invites,
     ):
         for attr in dir(module):
             if not attr.startswith("_") or not attr.isupper() and not attr[1:].isupper():
@@ -141,6 +141,7 @@ def test_there_are_statements_to_check():
     assert any("case_study_tracking" in n for n in names)
     assert any("kcd_evaluations" in n for n in names)
     assert any("operations" in n for n in names)
+    assert any("invites" in n for n in names)
 
 
 @pytest.mark.parametrize("name,sql", STATEMENTS, ids=[n for n, _ in STATEMENTS])

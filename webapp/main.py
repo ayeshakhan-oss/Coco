@@ -26,6 +26,7 @@ from .routers import communications as communications_router
 from .routers import cv_screening as cv_screening_router
 from .routers import evaluations as evaluations_router
 from .routers import gmail_sync as gmail_sync_router
+from .routers import invites as invites_router
 from .routers import kcd_evaluations as kcd_evaluations_router
 from .routers import operations as operations_router
 from .routers import tech_screening as tech_screening_router
@@ -188,6 +189,7 @@ app.include_router(communications_router.asset_router)
 app.include_router(cv_screening_router.router)
 app.include_router(evaluations_router.router)
 app.include_router(gmail_sync_router.router)
+app.include_router(invites_router.router)
 app.include_router(kcd_evaluations_router.router)
 app.include_router(operations_router.router)
 app.include_router(tech_screening_router.router)

@@ -1071,3 +1071,60 @@ export interface SourcingSummary {
   ready_for_markaz: number
   caveat: string
 }
+
+// --- Candidate invites (Skill 06) ---
+
+// "booking" needs a verified link before a live send, "reply" confirms by
+// replying and must NOT carry a booking button, "none" has nothing to arrange.
+export type InviteConfirm = 'booking' | 'reply' | 'none'
+
+export interface InviteType {
+  key: string
+  label: string
+  confirm: InviteConfirm
+  note: string
+  required: string[]
+}
+
+export interface InviteLink {
+  id: string
+  job_id: number | null
+  invite_type: string
+  label: string | null
+  booking_url: string | null
+  jd_url: string | null
+  prep_url: string | null
+  expected_title: string | null
+  // The title the page ACTUALLY returned. Null means unproven, and a live
+  // send refuses while it is null.
+  verified_title: string | null
+  verified_at: string | null
+  verify_error: string | null
+  // Null when there is nothing to compare against, which is not a match.
+  title_matches_expected: boolean | null
+  cc_list: string[] | null
+}
+
+export interface InvitePreview {
+  invite_type: string
+  subject: string
+  body_html: string
+  missing: string[]
+  blockers: string[]
+  warnings: string[]
+}
+
+export interface InviteSendRecord {
+  id: string
+  invite_type: string
+  application_id: number | null
+  candidate_name: string | null
+  to_address: string
+  cc_list: string[] | null
+  subject: string
+  is_live: boolean
+  booking_url: string | null
+  booking_verified_title: string | null
+  sent_at: string
+  sent_by: string | null
+}
