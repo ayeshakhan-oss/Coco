@@ -79,11 +79,28 @@ export interface ScreenAllResult {
   stopped: boolean
 }
 
-export interface ScreenAllDeps {
-  /** One slice of work. `after` is the cursor; null starts from the top. */
-  runBatch: (after: number | null) => Promise<CVScreenBatch>
+/** The minimum a batch response must carry for this loop to drive it.
+ *
+ *  Generic on purpose. Technical screening runs the same shape of loop for the
+ *  same reason (a model call per candidate, far longer than one request), and
+ *  its `/runs/{id}/work` response was named to match these four fields. The
+ *  loop is transport, not judgement: it knows nothing about criteria, tiers or
+ *  rubrics, so sharing it does NOT couple the two screening skills, which stay
+ *  separate under CLAUDE.md Rule 33. `screened` and `skipped` are `unknown[]`
+ *  here precisely so neither side's vocabulary can leak into the other. */
+export interface BatchLike {
+  screened: unknown[]
+  skipped: unknown[]
+  last_application_id: number | null
+  remaining: number
+}
+
+export interface ScreenAllDeps<B extends BatchLike = CVScreenBatch> {
+  /** One slice of work. `after` is the cursor; null starts from the top.
+   *  Technical screening ignores it: the server claims its own items. */
+  runBatch: (after: number | null) => Promise<B>
   /** Called once per successful batch, before progress is reported. */
-  onBatch?: (batch: CVScreenBatch) => void
+  onBatch?: (batch: B) => void
   onProgress?: (progress: ScreenAllProgress) => void
   /** The Stop button. Checked before every attempt. */
   shouldStop?: () => boolean
@@ -107,7 +124,9 @@ function message(error: unknown): string {
  * Returns rather than throws: a run that ends badly still reports how many
  * candidates it got through, because those are committed and real.
  */
-export async function runScreenAll(deps: ScreenAllDeps): Promise<ScreenAllResult> {
+export async function runScreenAll<B extends BatchLike = CVScreenBatch>(
+  deps: ScreenAllDeps<B>,
+): Promise<ScreenAllResult> {
   const {
     runBatch,
     onBatch,
@@ -129,7 +148,7 @@ export async function runScreenAll(deps: ScreenAllDeps): Promise<ScreenAllResult
     if (isAbandoned()) return { done, skipped, error: null, stopped: true }
     if (shouldStop()) return { done, skipped, error: null, stopped: true }
 
-    let batch: CVScreenBatch
+    let batch: B
     try {
       batch = await runBatch(after)
     } catch (error) {
