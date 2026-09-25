@@ -28,6 +28,8 @@ from .routers import evaluations as evaluations_router
 from .routers import gmail_sync as gmail_sync_router
 from .routers import kcd_evaluations as kcd_evaluations_router
 from .routers import operations as operations_router
+from .routers import tech_screening as tech_screening_router
+from .routers import sourcing as sourcing_router
 from .routers import users as users_router
 from .routers import values_scorecards as values_scorecards_router
 from .schemas import CurrentUserOut
@@ -188,6 +190,8 @@ app.include_router(evaluations_router.router)
 app.include_router(gmail_sync_router.router)
 app.include_router(kcd_evaluations_router.router)
 app.include_router(operations_router.router)
+app.include_router(tech_screening_router.router)
+app.include_router(sourcing_router.router)
 app.include_router(users_router.router)
 app.include_router(values_scorecards_router.router)
 

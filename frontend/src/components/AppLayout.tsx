@@ -14,6 +14,7 @@ import {
   Inbox,
   ListChecks,
   LogOut,
+  Search,
   Users,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -32,7 +33,12 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
     { to: '/history', label: 'History', icon: History, end: false, built: true },
   ],
   'candidate-evaluation': [
-    { to: '/evaluations', label: 'Technical Screening', icon: FileSearch, end: true, built: true },
+    // Technical Screening is what you DO (the wizard that launches a run);
+    // Screening Results is what you READ (the read-only view of what a run
+    // produced). Both are Nugget's rubric. CV Screening below is a separate
+    // skill and never merges with either (CLAUDE.md Rule 33).
+    { to: '/tech-screening', label: 'Technical Screening', icon: FileSearch, end: true, built: true },
+    { to: '/evaluations', label: 'Screening Results', icon: ClipboardCheck, end: true, built: true },
     { to: '/cv-screening', label: 'CV Screening', icon: FileText, end: true, built: true },
     { to: '/case-study-tracking', label: 'Case Study Evaluation', icon: ListChecks, end: true, built: true },
     { to: '/case-studies', label: 'Case Study Scoring', icon: ClipboardCheck, end: true, built: true },
@@ -43,6 +49,9 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
     { to: '/attendance', label: 'Attendance', icon: CalendarCheck, end: true, built: true },
     { to: '/decision-brief', label: 'Decision Briefs', icon: FileBarChart, end: true, built: true },
     { to: '/hiring-brief', label: 'Hiring Decision Brief', icon: ClipboardCheck, end: true, built: true },
+  ],
+  'talent-sourcing': [
+    { to: '/sourcing', label: 'Candidate Pool', icon: Search, end: true, built: true },
   ],
 }
 

@@ -67,6 +67,7 @@ _PARAM_LITERALS = {
     "after": "-1",
     "limit": "1",
     "retry_skipped": "false",
+    "email": "'none@example.com'",
 }
 
 # A NEGATIVE LOOKBEHIND, because `lr.start_date::text` is a Postgres cast and
@@ -83,12 +84,14 @@ def _statements():
     from webapp.routers import candidates, case_studies, case_study_tracking
     from webapp.routers import cv_screening
     from webapp.routers import evaluations, kcd_evaluations, operations
+    from webapp.routers import sourcing
     from webapp.routers import values_scorecards
 
     out = []
     for module in (
         cv_screening, case_study_tracking, kcd_evaluations,
         case_studies, evaluations, values_scorecards, operations, candidates,
+        sourcing,
     ):
         for attr in dir(module):
             if not attr.startswith("_") or not attr.isupper() and not attr[1:].isupper():

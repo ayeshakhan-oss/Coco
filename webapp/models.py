@@ -67,6 +67,7 @@ CV_SCREEN_TIERS = ("shortlist", "maybe", "no_hire")
 # Markaz records no case-study send, so we can never assert one did not happen.
 from .services.case_study_tracking import STATUSES as CASE_STUDY_PROBE_STATUSES  # noqa: E402
 from .services.kcd_evaluation import VERDICTS as KCD_VERDICTS  # noqa: E402
+from .services.sourcing import OUTREACH_STATES, VERIFICATION_STATES  # noqa: E402
 
 
 def _appuser_id() -> str:
@@ -111,6 +112,10 @@ def _case_study_probe_id() -> str:
 
 def _kcd_evaluation_id() -> str:
     return "kcd-" + uuid4().hex
+
+
+def _sourced_candidate_id() -> str:
+    return "src-" + uuid4().hex
 
 
 class AppUser(Base):
@@ -964,5 +969,112 @@ class KCDEvaluation(Base):
         ),
         Index("ix_kcd_evaluation_application_id", "application_id"),
         Index("ix_kcd_evaluation_job_id", "job_id"),
+        {"schema": "coco"},
+    )
+
+
+class SourcedCandidate(Base):
+    """A passive candidate found by sourcing, and what has happened to them.
+
+    The 3-layer web search stays in Claude Code (it drives a local headless
+    browser against a SearXNG instance answering an anti-bot proof-of-work, and
+    the built-in search is blind to Pakistani LinkedIn). This table owns
+    everything downstream: the pool, who has been contacted, who replied, and
+    who may be put into Markaz.
+
+    🔴 THE CORE RULE IS A DATABASE CONSTRAINT, not a convention. "Markaz is ONLY
+       touched after confirmed interest. Never speculatively."
+       `ck_sourced_markaz_needs_confirmed_interest` makes it impossible to
+       record a Markaz application against somebody who has not said yes, even
+       through a bug. A sourced person who has not agreed is not an applicant,
+       and putting them in the pipeline makes them look like one to every
+       report that counts applications.
+
+    🔴 VERIFICATION IS FOUR STATES, NEVER A BOOLEAN. On 2026-09-08 a subagent
+       invented twelve people with plausible LinkedIn slugs and then falsely
+       retracted six real ones. `not_found` means the check did not come back;
+       it is NOT evidence of invention, because the verifier has known false
+       negatives. A boolean would force that into "unverified" and lose the
+       distinction.
+
+    `years` is nullable ON PURPOSE and `years_note` keeps the original text. A
+    column that admits it does not know beats one that quietly invents a
+    number: the first Band classifier read "26 connections" as 8+ years.
+    """
+
+    __tablename__ = "sourced_candidates"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_sourced_candidate_id)
+
+    name: Mapped[str] = mapped_column(Text, nullable=False)
+    organization: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    location: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    linkedin_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # The identifying part, lowercased. Country subdomains vary for one person
+    # (pk.linkedin.com vs www.linkedin.com), so the slug identifies them and
+    # the URL does not.
+    linkedin_slug: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    years: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    years_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    verification_state: Mapped[str] = mapped_column(Text, nullable=False)
+    verification_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    verified_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    tier: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    confidence: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    outreach_state: Mapped[str] = mapped_column(Text, nullable=False)
+    contacted_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    contacted_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    reply_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # Set ONLY after confirmed interest -- see the CHECK constraint below.
+    markaz_application_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    pushed_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    pushed_by: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # Which role they were sourced for, and where the row came from.
+    job_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    role_label: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    source: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    created_by: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[dt.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[Optional[dt.datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "verification_state IN ("
+            + ",".join(f"'{v}'" for v in VERIFICATION_STATES) + ")",
+            name="ck_sourced_verification_state",
+        ),
+        CheckConstraint(
+            "outreach_state IN (" + ",".join(f"'{v}'" for v in OUTREACH_STATES) + ")",
+            name="ck_sourced_outreach_state",
+        ),
+        # The core rule, at the database level.
+        CheckConstraint(
+            "markaz_application_id IS NULL "
+            "OR outreach_state = 'replied_interested'",
+            name="ck_sourced_markaz_needs_confirmed_interest",
+        ),
+        Index("ix_sourced_candidate_slug", "linkedin_slug"),
+        Index("ix_sourced_candidate_job_id", "job_id"),
+        Index("ix_sourced_candidate_outreach", "outreach_state"),
         {"schema": "coco"},
     )

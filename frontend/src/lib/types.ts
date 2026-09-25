@@ -879,3 +879,195 @@ export interface HiringBrief {
   inconsistencies: string[]
   brief: DecisionBrief
 }
+
+// --- Technical screening wizard (Skill 02) -------------------------------
+// 🔒 NOT CV screening. Nugget's rubric, Nugget's tables, tiers P1-P4 /
+// MANUAL_REVIEW / UNUSABLE. The two skills never merge (CLAUDE.md Rule 33),
+// so nothing here reuses a CVScreen* type and nothing there reuses these.
+
+export interface TechJob {
+  job_pk: number
+  job_code?: string | null
+  title: string
+  department?: string | null
+  job_status?: string | null
+  applications: number
+  scored: number
+  has_rubric: boolean
+  rubric_version?: number | null
+  // Set when a run is already live, so Confirm can be disabled with a reason
+  // rather than failing on the one-active-run-per-job constraint.
+  live_run_id?: string | null
+  live_run_status?: string | null
+}
+
+export interface TechDimension {
+  key: string
+  label: string
+  weight?: number | null
+  core?: boolean | null
+}
+
+export interface TechHardFilter {
+  key?: string | null
+  label?: string | null
+  action?: string | null
+}
+
+export interface TechRubric {
+  id: string
+  version: number
+  title?: string | null
+  seniority?: string | null
+  min_years?: number | null
+  dimensions: TechDimension[]
+  max_score: number
+  thresholds: Record<string, unknown>
+  hard_filters: TechHardFilter[]
+  source?: string | null
+  created_by?: string | null
+  activated_at?: string | null
+}
+
+export interface TechRubricStep {
+  job_id: number
+  job_title?: string | null
+  department?: string | null
+  jd_source?: string | null
+  rubric?: TechRubric | null
+  // Why a rubric cannot be drafted, when it cannot.
+  blocked_reason?: string | null
+}
+
+export interface TechPlan {
+  job_id: number
+  mode: string
+  model: string
+  use_batch: boolean
+  rubric_version: number
+  people: number
+  duplicates_merged: number
+  // 🔴 "No file on record", NOT "unreadable". A CV that will not extract is
+  // only discovered during the run and comes back as skipped.
+  no_cv: number
+  already_scored_in_pool: number
+  newest_application?: string | null
+  oldest_application?: string | null
+  est_input_tokens: number
+  est_cached_tokens: number
+  est_output_tokens: number
+  est_cost_usd: number
+  cache_saving_usd: number
+  batch_saving_usd: number
+  live_run_id?: string | null
+}
+
+export interface TechRun {
+  id: string
+  job_id: number
+  job_title?: string | null
+  status: string
+  mode: string
+  model: string
+  rubric_version: number
+  pause_reason?: string | null
+  total: number
+  done: number
+  scored: number
+  failed: number
+  skipped: number
+  unusable: number
+  percent: number
+  est_cost_usd: number
+  actual_cost_usd: number
+  cost_cap_usd?: number | null
+  requested_by?: string | null
+  created_at?: string | null
+  started_at?: string | null
+  finished_at?: string | null
+  error?: string | null
+  last_warning?: string | null
+}
+
+export interface TechScreened {
+  application_id: number
+  candidate_name?: string | null
+  tier?: string | null
+  score_pct?: number | null
+}
+
+export interface TechSkipped {
+  application_id: number
+  reason: string
+  candidate_name?: string | null
+  tier?: string | null
+}
+
+// Field names match BatchLike in screenAll.ts so the tested retry loop drives
+// this run too, without either screening skill learning the other's types.
+export interface TechWork {
+  run_id: string
+  screened: TechScreened[]
+  skipped: TechSkipped[]
+  last_application_id: number | null
+  remaining: number
+  status: string
+  run?: TechRun | null
+}
+
+export interface TechModel {
+  model: string
+  label: string
+  input_per_mtok: number
+  output_per_mtok: number
+}
+
+// --- Talent sourcing (Skill 05) ------------------------------------------
+// The 3-layer web search stays in Claude Code. This is the pool, the outreach
+// state, and the gate into Markaz.
+
+export type SourcingVerification = 'confirmed' | 'unconfirmed' | 'not_found' | 'no_url'
+export type SourcingOutreach =
+  | 'not_contacted'
+  | 'contacted'
+  | 'replied_interested'
+  | 'replied_not_interested'
+  | 'no_reply'
+
+export interface SourcedCandidate {
+  id: string
+  name: string
+  organization: string | null
+  title: string | null
+  location: string | null
+  linkedin_url: string | null
+  // Null on purpose where the note did not actually say. The original text is
+  // kept so a person can read it themselves.
+  years: number | null
+  years_note: string | null
+  verification_state: SourcingVerification
+  verification_note: string | null
+  is_verified: boolean
+  tier: string | null
+  confidence: string | null
+  outreach_state: SourcingOutreach
+  contacted_at: string | null
+  contacted_by: string | null
+  reply_note: string | null
+  markaz_application_id: number | null
+  job_id: number | null
+  role_label: string | null
+  source: string | null
+  notes: string | null
+  // Why they may not enter Markaz yet, or null if they may.
+  blocked_from_markaz: string | null
+}
+
+export interface SourcingSummary {
+  total: number
+  verification: Record<string, number>
+  outreach: Record<string, number>
+  in_markaz: number
+  ready_for_markaz: number
+  caveat: string
+}

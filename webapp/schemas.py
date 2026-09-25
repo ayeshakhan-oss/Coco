@@ -1158,3 +1158,66 @@ class TechModelOut(_Base):
     label: str
     input_per_mtok: float
     output_per_mtok: float
+
+
+# --------------------------------------------------------------------------
+# Talent sourcing (Skill 05). The web search stays in Claude Code; the pool,
+# the outreach state and the Markaz gate live here.
+# --------------------------------------------------------------------------
+
+
+class SourcedCandidateOut(_Base):
+    id: str
+    name: str
+    organization: Optional[str] = None
+    title: Optional[str] = None
+    location: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    # Nullable on purpose, with the original text kept: a column that admits it
+    # does not know beats one that invents a number.
+    years: Optional[int] = None
+    years_note: Optional[str] = None
+    # Four states, never a boolean. "not_found" is not evidence of invention.
+    verification_state: str
+    verification_note: Optional[str] = None
+    is_verified: bool
+    tier: Optional[str] = None
+    confidence: Optional[str] = None
+    outreach_state: str
+    contacted_at: Optional[dt.datetime] = None
+    contacted_by: Optional[str] = None
+    reply_note: Optional[str] = None
+    markaz_application_id: Optional[int] = None
+    job_id: Optional[int] = None
+    role_label: Optional[str] = None
+    source: Optional[str] = None
+    notes: Optional[str] = None
+    # Why they may not enter Markaz yet, or null if they may.
+    blocked_from_markaz: Optional[str] = None
+
+
+class SourcingOutreachUpdate(_Base):
+    outreach_state: Optional[str] = None
+    reply_note: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class SourcingPushRequest(_Base):
+    """Links a sourced person to a Markaz application created by hand.
+
+    Not a create: Markaz already holds 298 duplicate (candidate, job) pairs and
+    adding more from here, usually without an email, would make that worse in
+    somebody else's system.
+    """
+
+    application_id: int
+    email: Optional[str] = None
+
+
+class SourcingSummaryOut(_Base):
+    total: int
+    verification: dict[str, int]
+    outreach: dict[str, int]
+    in_markaz: int
+    ready_for_markaz: int
+    caveat: str

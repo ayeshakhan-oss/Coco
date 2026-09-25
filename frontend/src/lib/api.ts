@@ -36,7 +36,15 @@ import type {
   QueueStats,
   ScorecardResponse,
   ScreenedJob,
+  SourcedCandidate,
+  SourcingSummary,
   SendResponse,
+  TechJob,
+  TechModel,
+  TechPlan,
+  TechRubricStep,
+  TechRun,
+  TechWork,
   TimelineItem,
   ValuesScorecardDraft,
   ValuesScorecardDraftValue,
@@ -270,5 +278,66 @@ export const api = {
     const q = qs.toString()
     return get<AttendanceReport>(`/api/operations/attendance${q ? `?${q}` : ''}`)
   },
+
+  // --- Technical screening wizard (Nugget's rubric; NOT Coco's CV screening) ---
+  // 🔒 These write to public.nugget_screening_*. /api/evaluations above stays
+  // read-only and is untouched. The two screening skills never merge (Rule 33).
+  techJobs: () => get<TechJob[]>('/api/tech-screening/jobs'),
+  techModels: () => get<TechModel[]>('/api/tech-screening/models'),
+  techRubric: (jobId: number) =>
+    get<TechRubricStep>(`/api/tech-screening/jobs/${jobId}/rubric`),
+  // Drafts a rubric from the JD and WRITES NOTHING. Publishing is a separate,
+  // deliberate call because a rubric decides how everyone on the role is judged.
+  techDraftRubric: (job_id: number) =>
+    post<{ job_id: number; draft: Record<string, unknown> }>(
+      '/api/tech-screening/rubric/draft', { job_id },
+    ),
+  techPublishRubric: (job_id: number, draft: Record<string, unknown>) =>
+    post<{ job_id: number; id: string; version: number }>(
+      '/api/tech-screening/rubric', { job_id, draft },
+    ),
+  techPlan: (payload: {
+    job_id: number
+    mode?: string
+    since_days?: number | null
+    max_candidates?: number | null
+    model: string
+    use_batch?: boolean
+  }) => post<TechPlan>('/api/tech-screening/runs/plan', payload),
+  techCreateRun: (payload: {
+    job_id: number
+    mode?: string
+    since_days?: number | null
+    max_candidates?: number | null
+    model: string
+    use_batch?: boolean
+    effort?: string
+    cost_cap_usd?: number | null
+  }) => post<{ run_id: string; job_id: number; total_items: number }>(
+    '/api/tech-screening/runs', payload,
+  ),
+  techRun: (runId: string) => get<TechRun>(`/api/tech-screening/runs/${runId}`),
+  techJobRuns: (jobId: number) =>
+    get<TechRun[]>(`/api/tech-screening/jobs/${jobId}/runs`),
+  // One slice. The page loops on `remaining` via runScreenAll, which retries
+  // through a redeploy rather than losing the run.
+  techWork: (runId: string, limit = 3) =>
+    post<TechWork>(`/api/tech-screening/runs/${runId}/work`, { limit }),
+  techCancelRun: (runId: string) =>
+    post<TechRun>(`/api/tech-screening/runs/${runId}/cancel`),
+
+
+  // --- Talent sourcing ---
+  sourcingPool: (p: { job_id?: number; outreach_state?: string; verification_state?: string } = {}) => {
+    const qs = new URLSearchParams()
+    if (p.job_id != null) qs.set('job_id', String(p.job_id))
+    if (p.outreach_state) qs.set('outreach_state', p.outreach_state)
+    if (p.verification_state) qs.set('verification_state', p.verification_state)
+    const q = qs.toString()
+    return get<SourcedCandidate[]>(`/api/sourcing/pool${q ? `?${q}` : ''}`)
+  },
+  sourcingSummary: () => get<SourcingSummary>('/api/sourcing/summary'),
+  sourcingUpdate: (id: string, body: { outreach_state?: string; reply_note?: string; notes?: string }) =>
+    patch<SourcedCandidate>(`/api/sourcing/${id}`, body),
 
 }
