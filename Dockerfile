@@ -36,6 +36,12 @@ COPY scripts/utils/__init__.py scripts/utils/__init__.py
 COPY scripts/utils/v8_template.py scripts/utils/v8_template.py
 COPY scripts/utils/safe_send.py scripts/utils/safe_send.py
 COPY scripts/utils/feedback_widget.py scripts/utils/feedback_widget.py
+# Contract drafting (Skill 07). `contract_builder` holds the docx mechanics
+# (highlighted-run discovery and fill); `contract_docx_eval` is the validator
+# that every generated document is checked against before anyone downloads it.
+# Both are stdlib + python-docx, which is already a dependency.
+COPY scripts/utils/contract_builder.py scripts/utils/contract_builder.py
+COPY scripts/evals/contract_docx_eval.py scripts/evals/contract_docx_eval.py
 COPY scripts/evals/__init__.py scripts/evals/__init__.py
 COPY scripts/evals/candidate_communication_eval.py scripts/evals/candidate_communication_eval.py
 COPY scripts/evals/fetch_submission_corpora.py scripts/evals/fetch_submission_corpora.py
