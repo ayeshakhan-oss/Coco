@@ -356,3 +356,77 @@ def test_healthz_exposes_no_file_names_or_content():
     from webapp.main import _skill_counts
 
     assert set(_skill_counts()) == {"skills", "sub_skills"}
+
+
+# --------------------------------------------------------------------------
+# A live module must be reachable from the sidebar
+# --------------------------------------------------------------------------
+
+# THE DEFECT (2026-09-28, found by Ayesha). Data & Systems, Candidate Invites
+# and Contract Drafting each had a working page, a route and a home-page tile,
+# and all three were dead from the sidebar: `MODULE_PAGES` in AppLayout.tsx had
+# no entry for them, so expanding the module fell through to a "Learn more"
+# link pointing at /modules/<slug>, the Coming Soon page. Her words: "theres
+# nothing when i click these skills". Three separate lists have to agree
+# (MODULES, MODULE_PAGES, the App.tsx routes) and nothing checked that.
+
+
+def _module_pages() -> dict[str, list[str]]:
+    """slug -> the routes its sidebar sub-menu offers."""
+    body = (REPO / "frontend" / "src" / "components" / "AppLayout.tsx").read_text(
+        encoding="utf-8"
+    )
+    block = body.split("const MODULE_PAGES", 1)[1].split("\nexport function", 1)[0]
+    out: dict[str, list[str]] = {}
+    for slug, entries in re.findall(r"'([a-z-]+)':\s*\[(.*?)\],\n", block, re.S):
+        out[slug] = re.findall(r"to:\s*'([^']+)'", entries)
+    return out
+
+
+def _live_modules() -> dict[str, str]:
+    """slug -> route, for every module marked live."""
+    body = (REPO / "frontend" / "src" / "lib" / "modules.ts").read_text(encoding="utf-8")
+    out = {}
+    for line in body.splitlines():
+        m = re.search(r"slug:\s*'([a-z-]+)'.*status:\s*'live'.*route:\s*'([^']+)'", line)
+        if m:
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def test_the_sidebar_parser_finds_something():
+    """A regex that matched nothing would make the checks below vacuous."""
+    pages = _module_pages()
+    assert len(pages) >= 5, pages
+    assert len(_live_modules()) >= 6, _live_modules()
+
+
+@pytest.mark.parametrize("slug", sorted(_live_modules()))
+def test_every_live_module_has_a_sidebar_entry(slug):
+    pages = _module_pages()
+    assert pages.get(slug), (
+        f"{slug} is live but has no MODULE_PAGES entry, so expanding it in the "
+        "sidebar shows a 'Learn more' link to the Coming Soon page instead of "
+        "its actual pages. This is the 2026-09-28 defect."
+    )
+
+
+@pytest.mark.parametrize("slug", sorted(_live_modules()))
+def test_a_live_modules_own_route_is_offered_in_its_sidebar_entry(slug):
+    """The tile and the sidebar must lead to the same place."""
+    route = _live_modules()[slug]
+    assert route in _module_pages().get(slug, []), (
+        f"{slug}'s tile goes to {route}, which its sidebar sub-menu does not offer"
+    )
+
+
+def test_every_sidebar_route_is_one_the_app_serves():
+    routes = _spa_routes()
+    for slug, tos in _module_pages().items():
+        for to in tos:
+            assert to in routes, f"{slug} sidebar links to {to}, which App.tsx does not serve"
+
+
+def test_the_sidebar_check_bites():
+    """Proof: a module absent from the map must be reported."""
+    assert "not-a-real-module" not in _module_pages()

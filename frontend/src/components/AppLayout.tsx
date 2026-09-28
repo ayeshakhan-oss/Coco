@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-react'
 import {
   BookOpen,
   CalendarCheck,
+  Database,
   CheckSquare,
   ChevronDown,
   ClipboardCheck,
@@ -16,6 +17,8 @@ import {
   ListChecks,
   LogOut,
   Search,
+  Send,
+  Signature,
   Users,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -53,6 +56,21 @@ const MODULE_PAGES: Record<string, { to: string; label: string; icon: LucideIcon
   ],
   'talent-sourcing': [
     { to: '/sourcing', label: 'Candidate Pool', icon: Search, end: true, built: true },
+  ],
+  // 🔴 A LIVE MODULE MISSING FROM THIS MAP LOOKS BROKEN. The sidebar falls
+  // back to a "Learn more" link pointing at /modules/<slug>, which is the
+  // Coming Soon page, so expanding the module appears to do nothing. That is
+  // exactly what happened to these three: they shipped with a tile, a route
+  // and a working page, and were invisible from the sidebar.
+  // `test_sidebar_covers_every_live_module.ts` now fails if one is missing.
+  'data-systems': [
+    { to: '/system', label: 'System Health', icon: Database, end: true, built: true },
+  ],
+  'candidate-invites': [
+    { to: '/invites', label: 'Send an Invite', icon: Send, end: true, built: true },
+  ],
+  'contract-drafting': [
+    { to: '/contracts', label: 'Build a Contract', icon: Signature, end: true, built: true },
   ],
 }
 
