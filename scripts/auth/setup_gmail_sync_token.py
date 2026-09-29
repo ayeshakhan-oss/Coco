@@ -3,8 +3,10 @@ authorized-user JSON to paste into Railway as GMAIL_OAUTH_TOKEN_JSON.
 
 Scopes: gmail.readonly (the Markaz<->Gmail evidence sync) + gmail.send (so the
 webapp can send candidate emails from ayesha.khan@ over HTTPS — required because
-Railway blocks outbound SMTP). An older readonly-only token is NOT reused; the
-consent window re-opens to add the send scope.
+Railway blocks outbound SMTP) + drive.file (contract attachments must be PDF and
+Drive is the only converter; `drive.file` reaches ONLY files this app creates,
+never anything already in her Drive). A token missing any of these is NOT
+reused; the consent window re-opens to add what is missing.
 
 Run locally (Ayesha's machine, signed into ayesha.khan@taleemabad.com):
 
@@ -26,6 +28,14 @@ import sys
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly",  # evidence sync (read Sent/inbox)
     "https://www.googleapis.com/auth/gmail.send",       # send candidate emails from the webapp
+    # 🔒 drive.FILE, never plain `drive`. Contract attachments must be PDF and
+    # never .docx (Skill 07 joining-emails rule 10, harness-blocked), and Drive
+    # is the only converter available. `drive.file` grants access ONLY to files
+    # this app itself creates — it uploads the .docx, converts, downloads the
+    # PDF and deletes the temporary copy. It cannot see, read or change
+    # anything already in Ayesha's Drive. The broad `drive` scope on
+    # token_sheets_broad.json stays local and off the server.
+    "https://www.googleapis.com/auth/drive.file",
 ]
 TOKEN_PATH = os.path.join(".claude", "config", "token_gmail.json")
 CLIENT_SECRETS = os.path.join("data", "credentials.json")
