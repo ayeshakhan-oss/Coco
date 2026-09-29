@@ -1282,3 +1282,44 @@ export interface ContractPlan {
   blockers: string[]
   caveat: string
 }
+
+// --- Contract drafting: naming the person instead of typing their details ---
+
+export interface ContractPerson {
+  application_id: number
+  job_id: number | null
+  // The legal name they typed on the onboarding form, when they have.
+  name: string
+  markaz_name: string
+  // True when the legal name differs from the one stored in Markaz. It does
+  // for 8 of the 17 who have submitted so far, and the contract needs the
+  // legal one.
+  name_differs: boolean
+  position: string | null
+  hiring_manager: string | null
+  status: string | null
+  // Presence only. A person picker never shows a national identity number.
+  has_cnic: boolean
+  submitted_at: string | null
+}
+
+export interface ContractPeople {
+  people: ContractPerson[]
+  note: string
+}
+
+export interface ContractPrefill {
+  values: Record<string, string>
+  sources: Record<string, string>
+  filled: number
+  total_fields: number
+  still_needed: string[]
+  warnings: string[]
+  caveat: string
+}
+
+export interface ContractPlanFilled extends ContractPlan {
+  person?: { application_id: number; name: string; email: string | null; position: string | null }
+  offer_warnings?: string[]
+  documents: (ContractPlan['documents'][number] & { prefill?: ContractPrefill })[]
+}

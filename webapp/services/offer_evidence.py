@@ -308,3 +308,87 @@ def read_thread(messages: list[dict]) -> dict:
         "warnings": warnings,
         "messages_read": len(ordered),
     }
+
+
+# --------------------------------------------------------------------------
+# Getting the thread out of the mailbox
+# --------------------------------------------------------------------------
+
+
+def _plain_text(payload) -> str:
+    """The readable text of a Gmail message payload, preferring text/plain.
+
+    Falls back to stripping the HTML part, because plenty of offer letters
+    are sent as HTML only and the salary is in there either way.
+    """
+    import base64
+
+    def decode(data: str) -> str:
+        return base64.urlsafe_b64decode(data.encode()).decode("utf-8", "replace")
+
+    plain, html_parts = [], []
+
+    def walk(part):
+        mime = part.get("mimeType", "")
+        body = part.get("body") or {}
+        if body.get("data"):
+            if mime == "text/plain":
+                plain.append(decode(body["data"]))
+            elif mime == "text/html":
+                html_parts.append(decode(body["data"]))
+        for sub in part.get("parts") or []:
+            walk(sub)
+
+    walk(payload or {})
+    if plain:
+        return "\n".join(plain)
+    if not html_parts:
+        return ""
+    import html as H
+
+    text = "\n".join(html_parts)
+    text = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", text, flags=re.S | re.I)
+    # Keep the line structure: the salary breakdown is one figure per line and
+    # the label is read from its own line.
+    text = re.sub(r"<br\s*/?>|</p>|</tr>|</div>|</li>", "\n", text, flags=re.I)
+    return H.unescape(re.sub(r"<[^>]+>", " ", text))
+
+
+def read_for_candidate(email: str, limit: int = 25) -> dict:
+    """Find and read this candidate's offer thread from the mailbox.
+
+    Searched by ADDRESS, not by subject. A real offer email here is titled
+    "Congratulations Mariam on Your Selection as a Coach for the NIETE
+    Project!" and contains the word "offer" nowhere at all.
+    """
+    from .gmail_evidence import _build_service
+
+    address = (email or "").strip()
+    if not address:
+        return read_thread([])
+
+    svc = _build_service()
+    query = f"(to:{address} OR from:{address} OR cc:{address})"
+    listed = svc.users().messages().list(
+        userId="me", q=query, maxResults=limit).execute()
+    ids = [m["id"] for m in listed.get("messages", [])]
+
+    messages = []
+    for message_id in ids:
+        full = svc.users().messages().get(
+            userId="me", id=message_id, format="full").execute()
+        headers = {
+            h["name"].lower(): h["value"]
+            for h in (full.get("payload", {}).get("headers") or [])
+        }
+        sent_at = ""
+        if full.get("internalDate"):
+            sent_at = dt.datetime.fromtimestamp(
+                int(full["internalDate"]) / 1000, dt.timezone.utc).isoformat()
+        messages.append({
+            "from_me": "taleemabad.com" in (headers.get("from") or "").lower(),
+            "date": sent_at,
+            "subject": headers.get("subject", ""),
+            "body": _plain_text(full.get("payload")),
+        })
+    return read_thread(messages)

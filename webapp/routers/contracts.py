@@ -33,13 +33,16 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import StreamingResponse
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..deps import get_current_user, require_approver, require_editor
 from ..models import ContractBuild, ContractMaster
 from ..services import contract_build as build
+from ..services import contract_prefill as prefill_svc
 from ..services import contracts as spec
+from ..services import offer_evidence as offers
 
 log = logging.getLogger("webapp.routers.contracts")
 
@@ -333,3 +336,168 @@ def recent_builds(
         }
         for r in rows
     ]
+
+
+# --------------------------------------------------------------------------
+# Naming the person, instead of typing their details
+# --------------------------------------------------------------------------
+
+# 🔴 THE ONBOARDING SUBMISSION IS THE SIGNAL, NOT THE STATUS. Hafiza's
+#    application still reads `shortlisted` and she submitted her CNIC and was
+#    issued a contract. Markaz status fields go stale after real events
+#    (CLAUDE.md Rule 18), so this lists anyone who has submitted the form OR
+#    reached offer/hired, and says which.
+_PEOPLE_SQL = text(
+    """
+    SELECT a.id                                   AS application_id,
+           a.job_id                               AS job_id,
+           c.id                                   AS candidate_id,
+           c.email                                AS email,
+           trim(coalesce(c.first_name,'') || ' ' || coalesce(c.last_name,''))
+                                                  AS markaz_name,
+           a.contract_drafting_full_legal_name    AS legal_name,
+           a.contract_drafting_cnic_number        AS cnic,
+           a.contract_drafting_submitted_at       AS submitted_at,
+           a.status                               AS status,
+           j.title                                AS position,
+           j.hiring_manager                       AS hiring_manager
+    FROM applications a
+    JOIN candidates c ON c.id = a.candidate_id
+    LEFT JOIN jobs j ON j.id = a.job_id
+    WHERE (a.contract_drafting_cnic_number IS NOT NULL
+           OR a.status IN ('offer', 'hired'))
+      AND (:job_id IS NULL OR a.job_id = :job_id)
+    ORDER BY a.contract_drafting_submitted_at DESC NULLS LAST, a.id DESC
+    LIMIT 200
+    """
+)
+
+
+@router.get("/people")
+def people(
+    job_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """Who a contract could be drafted for. Editor-gated: it carries CNICs.
+
+    The CNIC is reported as present or absent, never returned. A person
+    picker does not need to show national identity numbers on screen, and
+    this endpoint is the easiest place for one to leak into a screenshot.
+    """
+    rows = db.execute(_PEOPLE_SQL, {"job_id": job_id}).mappings().all()
+    out = []
+    for r in rows:
+        legal = (r["legal_name"] or "").strip()
+        stored = (r["markaz_name"] or "").strip()
+        out.append({
+            "application_id": r["application_id"],
+            "job_id": r["job_id"],
+            "name": legal or stored,
+            "markaz_name": stored,
+            # Shown because a contract carries the legal name, and on 8 of the
+            # 17 submissions so far the two differ.
+            "name_differs": bool(legal and stored and legal.lower() != stored.lower()),
+            "position": r["position"],
+            "hiring_manager": r["hiring_manager"],
+            "status": r["status"],
+            "has_cnic": bool(r["cnic"]),
+            "submitted_at": r["submitted_at"],
+        })
+    return {
+        "people": out,
+        "note": (
+            "Anyone who has submitted the onboarding form, plus anyone at offer "
+            "or hired. The submission is what matters: a Markaz status can say "
+            "shortlisted for somebody who already has a contract."
+        ),
+    }
+
+
+@router.get("/prefill")
+def prefill(
+    application_id: int = Query(...),
+    engagement: str = Query(...),
+    entity: str = Query(...),
+    read_offer: bool = Query(True),
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """The plan, with every field this app can fill already filled in.
+
+    Editor-gated because the response carries a CNIC and a salary.
+    """
+    try:
+        result = spec.plan(engagement, entity)
+    except spec.ContractError as exc:
+        raise HTTPException(400, str(exc))
+
+    row = db.execute(
+        _ONE_PERSON_SQL, {"application_id": application_id},
+    ).mappings().one_or_none()
+    if row is None:
+        raise HTTPException(404, f"Application {application_id} not found")
+
+    markaz = {
+        "legal_name": row["legal_name"],
+        "markaz_name": row["markaz_name"],
+        "cnic": row["cnic"],
+        "position": row["position"],
+        "hiring_manager": row["hiring_manager"],
+    }
+
+    offer = None
+    offer_error = None
+    if read_offer and row["email"]:
+        try:
+            offer = offers.read_for_candidate(row["email"])
+        except Exception as exc:
+            # A mailbox that cannot be read is a missing prefill, never a
+            # failed page: the fields stay empty and say why.
+            offer_error = f"Could not read the offer thread ({type(exc).__name__})."
+
+    for item in result["documents"]:
+        rel = item["master"]
+        item["fields"], item["uploaded"] = [], False
+        item["prefill"] = {"values": {}, "sources": {}}
+        if not rel:
+            continue
+        master = db.query(ContractMaster).filter(
+            ContractMaster.rel_path == rel).one_or_none()
+        if master is None:
+            result["blockers"].append(
+                f"The master for {item['label']} has not been uploaded yet ({rel}).")
+            continue
+        item["uploaded"] = True
+        groups = spec.group_fields(spec.discover_fields(master.content))
+        item["fields"] = groups
+        item["prefill"] = prefill_svc.build_prefill(
+            groups=groups, markaz=markaz, offer=offer)
+
+    result["person"] = {
+        "application_id": application_id,
+        "name": (row["legal_name"] or row["markaz_name"] or "").strip(),
+        "email": row["email"],
+        "position": row["position"],
+    }
+    result["offer_warnings"] = list((offer or {}).get("warnings") or [])
+    if offer_error:
+        result["offer_warnings"].append(offer_error)
+    return result
+
+
+_ONE_PERSON_SQL = text(
+    """
+    SELECT a.id AS application_id, c.email AS email,
+           trim(coalesce(c.first_name,'') || ' ' || coalesce(c.last_name,''))
+                                               AS markaz_name,
+           a.contract_drafting_full_legal_name  AS legal_name,
+           a.contract_drafting_cnic_number      AS cnic,
+           j.title                              AS position,
+           j.hiring_manager                     AS hiring_manager
+    FROM applications a
+    JOIN candidates c ON c.id = a.candidate_id
+    LEFT JOIN jobs j ON j.id = a.job_id
+    WHERE a.id = :application_id
+    """
+)

@@ -14,7 +14,9 @@ import type {
   Communication,
   ContractMasters,
   ContractOptions,
+  ContractPeople,
   ContractPlan,
+  ContractPlanFilled,
   CurrentUser,
   CVScreen,
   CVScreenApplication,
@@ -445,6 +447,16 @@ export const api = {
     URL.revokeObjectURL(url)
     return name
   },
+
+  contractPeople: (jobId?: number) =>
+    get<ContractPeople>(`/api/contracts/people${jobId != null ? `?job_id=${jobId}` : ''}`),
+  // The plan with every field this app can fill already filled, each with the
+  // source it came from.
+  contractPrefill: (applicationId: number, engagement: string, entity: string) =>
+    get<ContractPlanFilled>(
+      `/api/contracts/prefill?application_id=${applicationId}` +
+        `&engagement=${encodeURIComponent(engagement)}&entity=${encodeURIComponent(entity)}`,
+    ),
 
   // --- Skill library ---
   skills: () => get<SkillLibrary>('/api/skills'),

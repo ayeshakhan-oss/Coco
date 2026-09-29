@@ -1,25 +1,37 @@
 import { useEffect, useState } from 'react'
-import { AlertTriangle, Download, FileText, Info, Loader2, Upload } from 'lucide-react'
+import { AlertTriangle, Download, FileText, Info, Loader2, Upload, Wand2 } from 'lucide-react'
 import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
-import type { ContractMasters, ContractOptions, ContractPlan } from '../lib/types'
+import type {
+  ContractMasters,
+  ContractOptions,
+  ContractPerson,
+  ContractPlanFilled,
+  JobItem,
+} from '../lib/types'
 
-// 🔴 The two things this page must never let happen:
-//    - a volunteer Fellow offered an employment contract (the engagement
-//      simply does not produce one, and the server refuses it too)
-//    - a document downloaded with a placeholder still printed in it, which is
-//      why an unfilled field blocks the build rather than warning about it.
+// 🔴 The things this page must never let happen:
+//    - a volunteer Fellow offered an employment contract (the engagement does
+//      not produce one, and the server refuses it too)
+//    - a document downloaded with a placeholder still printed in it
+//    - a pre-filled value used as though somebody had checked it
 //
-// Nothing here can see a page. The checks are structural, so the caveat is
-// shown on screen rather than left to memory.
+// Every filled box shows where its value came from, because a figure with no
+// source is a figure nobody can check. Nothing here can see a page, so the
+// caveat stays on screen rather than in anyone's memory.
 
 export function ContractsPage() {
   const [options, setOptions] = useState<ContractOptions | null>(null)
   const [masters, setMasters] = useState<ContractMasters | null>(null)
+  const [jobs, setJobs] = useState<JobItem[]>([])
+  const [people, setPeople] = useState<ContractPerson[]>([])
+
+  const [jobId, setJobId] = useState<string>('')
+  const [applicationId, setApplicationId] = useState<string>('')
   const [entity, setEntity] = useState('')
   const [engagement, setEngagement] = useState('')
-  const [plan, setPlan] = useState<ContractPlan | null>(null)
-  const [person, setPerson] = useState('')
+
+  const [plan, setPlan] = useState<ContractPlanFilled | null>(null)
   const [values, setValues] = useState<Record<string, Record<string, string>>>({})
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -27,10 +39,11 @@ export function ContractsPage() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    Promise.all([api.contractOptions(), api.contractMasters()])
-      .then(([o, m]) => {
+    Promise.all([api.contractOptions(), api.contractMasters(), api.jobs()])
+      .then(([o, m, j]) => {
         setOptions(o)
         setMasters(m)
+        setJobs(j)
         if (o.entities.length) setEntity(o.entities[0])
         if (o.engagements.length) setEngagement(o.engagements[0].key)
       })
@@ -38,33 +51,49 @@ export function ContractsPage() {
       .finally(() => setLoaded(true))
   }, [])
 
+  // Who a contract could be drafted for on this job.
   useEffect(() => {
-    if (!entity || !engagement) return
+    setApplicationId('')
     setPlan(null)
+    api
+      .contractPeople(jobId ? Number(jobId) : undefined)
+      .then((r) => setPeople(r.people))
+      .catch(() => setPeople([]))
+  }, [jobId])
+
+  const person = people.find((p) => String(p.application_id) === applicationId)
+
+  const loadPrefill = () => {
+    if (!applicationId || !entity || !engagement) return
+    setBusy('prefill')
+    setError(null)
     setNotice(null)
     api
-      .contractPlan(engagement, entity)
-      .then(setPlan)
+      .contractPrefill(Number(applicationId), engagement, entity)
+      .then((p) => {
+        setPlan(p)
+        // Seed every box from the prefill; each stays editable.
+        const seeded: Record<string, Record<string, string>> = {}
+        for (const doc of p.documents) {
+          seeded[doc.doc_type] = { ...(doc.prefill?.values ?? {}) }
+        }
+        setValues(seeded)
+      })
       .catch((e) =>
-        setError(e instanceof ApiError ? e.message.replace(/^\d+:\s*/, '') : 'Could not plan that.'),
+        setError(
+          e instanceof ApiError ? e.message.replace(/^\d+:\s*/, '') : 'Could not prepare that.',
+        ),
       )
-  }, [entity, engagement])
-
-  const refreshMasters = () => api.contractMasters().then(setMasters)
+      .finally(() => setBusy(null))
+  }
 
   const upload = (relPath: string, file: File) => {
     setBusy(`upload:${relPath}`)
-    setError(null)
     api
       .contractUploadMaster(relPath, file)
       .then((r) => {
-        setNotice(
-          r.warning ??
-            `Stored. It has ${r.field_count} fields to fill.`,
-        )
-        return refreshMasters().then(() =>
-          entity && engagement ? api.contractPlan(engagement, entity).then(setPlan) : null,
-        )
+        setNotice(r.warning ?? `Stored. It has ${r.field_count} fields.`)
+        return api.contractMasters().then(setMasters)
       })
       .catch((e) =>
         setError(e instanceof ApiError ? e.message.replace(/^\d+:\s*/, '') : 'Upload failed.'),
@@ -80,7 +109,8 @@ export function ContractsPage() {
         entity,
         engagement,
         doc_type: docType,
-        person_name: person,
+        person_name: person?.name ?? '',
+        application_id: Number(applicationId) || null,
         values: values[docType] ?? {},
       })
       .then(() => setNotice('Downloaded. Open it and look at the page before it goes anywhere.'))
@@ -108,7 +138,7 @@ export function ContractsPage() {
       <header className="mb-5">
         <h1 className="font-display text-2xl font-bold text-ink">Contract Drafting</h1>
         <p className="mt-1 text-sm text-ink-muted">
-          Contracts, NDAs and addendums built from the approved masters.
+          Name the person and the job. Everything we already know fills itself in.
         </p>
       </header>
 
@@ -123,17 +153,12 @@ export function ContractsPage() {
         </p>
       )}
 
-      {/* Masters. Shown first because nothing works until they are here. */}
       {masters && masters.missing.length > 0 && (
         <section className="mb-5 rounded-2xl border border-warning/40 bg-warning/5 p-4">
           <div className="flex items-center gap-2 text-sm font-semibold text-warning">
             <Upload className="h-4 w-4" />
             {masters.missing.length} master{masters.missing.length === 1 ? '' : 's'} still to upload
           </div>
-          <p className="mt-1 text-xs text-ink-muted">
-            The masters are stored here rather than in the code, so no approved legal
-            document ends up in the repository. Upload each one once.
-          </p>
           <div className="mt-3 space-y-2">
             {masters.missing.map((m) => (
               <label
@@ -162,51 +187,115 @@ export function ContractsPage() {
         </section>
       )}
 
-      {/* What is being issued */}
-      <section className="grid gap-3 rounded-2xl border border-hairline bg-surface p-4 sm:grid-cols-3">
-        <div>
-          <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
-            Entity
-          </label>
-          <select
-            className="input mt-1 w-full text-sm"
-            value={entity}
-            onChange={(e) => setEntity(e.target.value)}
-          >
-            {options?.entities.map((e) => (
-              <option key={e} value={e}>
-                {e}
-              </option>
-            ))}
-          </select>
+      {/* Who and what */}
+      <section className="rounded-2xl border border-hairline bg-surface p-4">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
+              Job
+            </label>
+            <select
+              className="input mt-1 w-full text-sm"
+              value={jobId}
+              onChange={(e) => setJobId(e.target.value)}
+            >
+              <option value="">Every job</option>
+              {jobs.map((j) => (
+                <option key={j.job_pk} value={j.job_pk}>
+                  {j.title ?? `Job ${j.job_pk}`}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
+              Person
+            </label>
+            <select
+              className="input mt-1 w-full text-sm"
+              value={applicationId}
+              onChange={(e) => setApplicationId(e.target.value)}
+            >
+              <option value="">Choose someone…</option>
+              {people.map((p) => (
+                <option key={p.application_id} value={p.application_id}>
+                  {p.name}
+                  {p.has_cnic ? '' : '  (no onboarding form yet)'}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
+              Entity
+            </label>
+            <select
+              className="input mt-1 w-full text-sm"
+              value={entity}
+              onChange={(e) => setEntity(e.target.value)}
+            >
+              {options?.entities.map((e) => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
+              Engagement
+            </label>
+            <select
+              className="input mt-1 w-full text-sm"
+              value={engagement}
+              onChange={(e) => setEngagement(e.target.value)}
+            >
+              {options?.engagements.map((e) => (
+                <option key={e.key} value={e.key}>
+                  {e.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div>
-          <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
-            Engagement
-          </label>
-          <select
-            className="input mt-1 w-full text-sm"
-            value={engagement}
-            onChange={(e) => setEngagement(e.target.value)}
-          >
-            {options?.engagements.map((e) => (
-              <option key={e.key} value={e.key}>
-                {e.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="text-xs font-semibold uppercase tracking-wide text-ink-dim">
-            Name
-          </label>
-          <input
-            className="input mt-1 w-full text-sm"
-            placeholder="Full name"
-            value={person}
-            onChange={(e) => setPerson(e.target.value)}
-          />
-        </div>
+
+        {/* The legal name is not always the stored name, and the contract
+            needs the legal one. */}
+        {person?.name_differs && (
+          <p className="mt-3 flex gap-2 rounded-lg border border-blurple/30 bg-blurple/5 px-3 py-2 text-xs text-blurple">
+            <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span>
+              Markaz stores them as <strong>{person.markaz_name}</strong>, but on the
+              onboarding form they wrote <strong>{person.name}</strong>. The contract
+              will use the name they typed.
+            </span>
+          </p>
+        )}
+        {person && !person.has_cnic && (
+          <p className="mt-3 flex gap-2 rounded-lg border border-warning/40 bg-warning/5 px-3 py-2 text-xs text-warning">
+            <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            <span>
+              They have not submitted the onboarding form, so there is no CNIC and no
+              legal name to fill in. You would be typing both.
+            </span>
+          </p>
+        )}
+
+        <button
+          type="button"
+          className="btn-primary mt-4 text-sm"
+          onClick={loadPrefill}
+          disabled={!applicationId || busy === 'prefill'}
+        >
+          {busy === 'prefill' ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <>
+              <Wand2 className="mr-1.5 inline h-3.5 w-3.5" />
+              Fill it in
+            </>
+          )}
+        </button>
       </section>
 
       {plan && (
@@ -215,12 +304,11 @@ export function ContractsPage() {
             <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-dim" />
             <span>
               <strong className="text-ink">{plan.engagement_label}</strong> at {plan.entity}{' '}
-              produces {plan.documents.map((d) => d.label).join(' and ')}.{' '}
-              {plan.caveat}
+              produces {plan.documents.map((d) => d.label).join(' and ')}. {plan.caveat}
             </span>
           </p>
 
-          {plan.blockers.map((b) => (
+          {[...plan.blockers].map((b) => (
             <p
               key={b}
               className="mt-2 flex gap-2 rounded-xl border border-danger/30 bg-danger/5 px-4 py-2.5 text-xs text-danger"
@@ -230,78 +318,100 @@ export function ContractsPage() {
             </p>
           ))}
 
-          {/* One card per document, with its own fields */}
-          <div className="mt-4 space-y-4">
-            {plan.documents.map((doc) => (
-              <section
-                key={doc.doc_type}
-                className="overflow-hidden rounded-2xl border border-hairline bg-surface"
-              >
-                <div className="flex items-center gap-2 border-b border-hairline bg-elevated px-4 py-2.5">
-                  <FileText className="h-4 w-4 text-ink-dim" />
-                  <span className="text-sm font-semibold text-ink">{doc.label}</span>
-                  <span className="ml-auto text-xs text-ink-dim">
-                    {doc.uploaded ? `${doc.fields.length} fields` : 'master not uploaded'}
-                  </span>
-                </div>
+          {/* Anything the offer thread could not settle. The salary is the
+              field most likely to be wrong and most expensive to get wrong. */}
+          {(plan.offer_warnings ?? []).map((w) => (
+            <p
+              key={w}
+              className="mt-2 flex gap-2 rounded-xl border border-warning/40 bg-warning/5 px-4 py-2.5 text-xs text-warning"
+            >
+              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              {w}
+            </p>
+          ))}
 
-                {doc.uploaded ? (
-                  <>
-                    <div className="grid gap-3 p-4 sm:grid-cols-2">
-                      {doc.fields.map((f) => (
-                        <div key={f.key}>
-                          <label className="text-xs font-medium text-ink-muted">
-                            {f.opaque ? 'Unlabelled field' : f.placeholder}
-                          </label>
-                          {/* An opaque placeholder says nothing about what
-                              belongs in it. The sentence it sits in does. */}
-                          {f.opaque && (
-                            <p className="mt-0.5 text-[11px] italic text-ink-dim">
-                              “{f.contexts[0]}”
-                            </p>
+          <div className="mt-4 space-y-4">
+            {plan.documents.map((doc) => {
+              const pf = doc.prefill
+              return (
+                <section
+                  key={doc.doc_type}
+                  className="overflow-hidden rounded-2xl border border-hairline bg-surface"
+                >
+                  <div className="flex items-center gap-2 border-b border-hairline bg-elevated px-4 py-2.5">
+                    <FileText className="h-4 w-4 text-ink-dim" />
+                    <span className="text-sm font-semibold text-ink">{doc.label}</span>
+                    <span className="ml-auto text-xs text-ink-dim">
+                      {doc.uploaded && pf
+                        ? `${pf.filled} of ${pf.total_fields} filled for you`
+                        : 'master not uploaded'}
+                    </span>
+                  </div>
+
+                  {doc.uploaded ? (
+                    <>
+                      <div className="grid gap-3 p-4 sm:grid-cols-2">
+                        {doc.fields.map((f) => {
+                          const source = pf?.sources[f.key]
+                          return (
+                            <div key={f.key}>
+                              <label className="text-xs font-medium text-ink-muted">
+                                {f.opaque ? 'Unlabelled field' : f.placeholder}
+                              </label>
+                              {f.opaque && (
+                                <p className="mt-0.5 text-[11px] italic text-ink-dim">
+                                  “{f.contexts[0]}”
+                                </p>
+                              )}
+                              {f.spans_contexts && (
+                                <p className="mt-0.5 text-[11px] text-warning">
+                                  Written into {f.indexes.length} places.
+                                </p>
+                              )}
+                              <input
+                                className="input mt-1 w-full text-sm"
+                                value={values[doc.doc_type]?.[f.key] ?? ''}
+                                onChange={(e) => setValue(doc.doc_type, f.key, e.target.value)}
+                              />
+                              {/* Where the value came from. A figure with no
+                                  source is a figure nobody can check. */}
+                              {source && (
+                                <p className="mt-0.5 text-[11px] text-ink-dim">from {source}</p>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <div className="flex items-center gap-3 border-t border-hairline px-4 py-3">
+                        <button
+                          type="button"
+                          className="btn-primary text-sm"
+                          disabled={blocked || !person || busy === `build:${doc.doc_type}`}
+                          onClick={() => download(doc.doc_type)}
+                        >
+                          {busy === `build:${doc.doc_type}` ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <>
+                              <Download className="mr-1.5 inline h-3.5 w-3.5" />
+                              Build and download
+                            </>
                           )}
-                          {f.spans_contexts && (
-                            <p className="mt-0.5 text-[11px] text-warning">
-                              This one value is written into {f.indexes.length} places.
-                            </p>
-                          )}
-                          <input
-                            className="input mt-1 w-full text-sm"
-                            value={values[doc.doc_type]?.[f.key] ?? ''}
-                            onChange={(e) => setValue(doc.doc_type, f.key, e.target.value)}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-3 border-t border-hairline px-4 py-3">
-                      <button
-                        type="button"
-                        className="btn-primary text-sm"
-                        disabled={blocked || !person.trim() || busy === `build:${doc.doc_type}`}
-                        onClick={() => download(doc.doc_type)}
-                      >
-                        {busy === `build:${doc.doc_type}` ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <>
-                            <Download className="mr-1.5 inline h-3.5 w-3.5" />
-                            Build and download
-                          </>
-                        )}
-                      </button>
-                      <span className="text-[11px] text-ink-dim">
-                        Word file. PDF conversion still runs in Claude Code.
-                      </span>
-                    </div>
-                  </>
-                ) : (
-                  <p className="px-4 py-4 text-sm text-ink-dim">
-                    Upload <span className="font-mono text-xs">{doc.master}</span> above
-                    before this can be built.
-                  </p>
-                )}
-              </section>
-            ))}
+                        </button>
+                        <span className="text-[11px] text-ink-dim">
+                          Word file. The email and the pilot are still being built.
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="px-4 py-4 text-sm text-ink-dim">
+                      Upload <span className="font-mono text-xs">{doc.master}</span> above
+                      before this can be built.
+                    </p>
+                  )}
+                </section>
+              )
+            })}
           </div>
         </>
       )}
