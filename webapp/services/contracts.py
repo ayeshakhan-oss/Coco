@@ -298,12 +298,24 @@ def discover_fields(data: bytes) -> list[dict]:
     fields: list[dict] = []
 
     def take(paragraph, where: str):
+        # Where each run starts in the paragraph, so a segment can report the
+        # words immediately BEFORE it. For an opaque placeholder that is the
+        # only honest clue to what belongs there: "bearing CNIC No: X Y Z"
+        # says CNIC, while the placeholder itself says nothing at all.
+        offsets, at = {}, 0
+        for run in paragraph.runs:
+            offsets[id(run)] = at
+            at += len(run.text)
+
         for seg in _segments(paragraph):
             placeholder = "".join(r.text for r in seg)
+            start = offsets.get(id(seg[0]), 0) if seg else 0
             fields.append({
                 "index": len(fields),
                 "placeholder": _norm(placeholder),
                 "context": _norm(paragraph.text)[:240],
+                # The 60 characters that run up to this field, untouched.
+                "before": _norm(paragraph.text[max(0, start - 60): start]),
                 "location": where,
                 "opaque": is_opaque(placeholder),
             })
@@ -358,10 +370,21 @@ def _text_fields(doc, start: int) -> list[dict]:
                 continue
             occurrence = seen.get(token, 0)
             seen[token] = occurrence + 1
+            # Where this occurrence sits, so the words before it can be
+            # reported like they are for a highlighted field. The salary lines
+            # are table text with no highlighting, and "Total Earnings PKR" is
+            # the only thing that says which figure belongs there.
+            at, scan = -1, 0
+            for _ in range(occurrence + 1):
+                at = paragraph.text.upper().find(token.upper(), scan)
+                if at < 0:
+                    break
+                scan = at + len(token)
             out.append({
                 "index": start + len(out),
                 "placeholder": token,
                 "context": _norm(paragraph.text)[:240],
+                "before": _norm(paragraph.text[max(0, at - 60): at]) if at >= 0 else "",
                 "location": f"{where} (not highlighted)",
                 "opaque": is_opaque(token),
                 # How the filler finds this exact spot again.
@@ -396,6 +419,9 @@ def group_fields(fields: list[dict]) -> list[dict]:
                 "placeholder": f["placeholder"],
                 "label": f["placeholder"] if not f["opaque"] else "",
                 "contexts": [f["context"]],
+                # The words immediately before the first occurrence. For an
+                # opaque field this is the only thing that says what it is.
+                "before": f.get("before", ""),
                 "indexes": [f["index"]],
                 "opaque": f["opaque"],
             }
