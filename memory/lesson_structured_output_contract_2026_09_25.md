@@ -108,3 +108,86 @@ shift.
   --name-only` before every commit while two agents are in here.**
 - The three Neon-over-HTTPS test files take ~26 min; the other 949 run in under
   4 seconds. See [[lesson_untracked_module_outage_2026_09_25]].
+
+---
+
+# Part 2: the fix was verified at the wrong boundary, twice
+
+Both of these were found AFTER the note above was written, and both are sharper
+than the original bug.
+
+## (a) The caller never supplied the schema
+
+`d53c216` forced the schema as a tool, and I proved it by calling `_call_model`
+with a schema and watching it work. **Nobody checked that `work()` SUPPLIES
+one.** Its rubric SELECT listed nine columns and `output_schema` was not among
+them, so `rubric.get("output_schema")` was `None` on every real run, for every
+job, and scoring fell straight back to the prose path — while the column sat
+populated in the database the whole time.
+
+Run `1b44a642` then scored **67 candidates that way and looked healthy**,
+because `normalise_dimensions` lifted the flattened dimensions exactly as
+designed. **The defence in depth hid the thing it was defending against.** One
+candidate whose prose happened to be malformed JSON failed, and that single
+thread is the only reason any of it surfaced.
+
+🔑 **A function that works when called correctly proves nothing about the code
+that calls it.** Verify at the boundary the production path actually crosses.
+
+Fixed in `1105e81`: the SELECT became `_RUBRIC_FOR_RUN_SQL` with
+`RUBRIC_COLUMNS_SCORING_NEEDS` asserted against it as a column set, and
+`score_one` now **REFUSES** a rubric arriving without its schema rather than
+scoring it in prose. That fallback is invisible by construction — it produces
+plausible evaluations, writes them to `nugget_screening_evals`, and nothing in
+the output says the contract changed.
+
+## (b) Verified against a sample that could not show the defect
+
+The API requires `additionalProperties: false` on **every** object in a tool
+schema, not just the root:
+
+```
+400 invalid_request_error
+output_config.format.schema: For 'object' type,
+'additionalProperties' must be explicitly set to false
+```
+
+Run `4b3a144f` lost **66 of 76 candidates**, every one to that 400.
+
+🔴 **Why my verification missed it.** I proved the forced-schema fix end to end
+against job 38's rubric. Jobs 13, 37 and 38 are all `human_edited` and already
+carried the flag. **Job 24's was the only rubric a MODEL had written**, and it
+was missing the flag on nine nodes including the root. Three of four rubrics
+would have passed my check; the fourth is the one she ran. **One sample of a
+population is not a sample.** When a population has a distinguishing attribute
+(here: `source = human_edited` vs `llm_drafted`), test one of EACH.
+
+Fixed in `cba5408`, in both places on purpose:
+- `AnthropicDrafter._strict_schema` repairs at **send** time, so rubrics already
+  published stay screenable without a migration. Guarded on `type == "object"`
+  so the `properties` MAP never gets the flag by mistake; an explicit `true` is
+  respected, not overwritten.
+- `rubric_drafting.output_schema` emits it, so new rubrics are correct at birth,
+  delegating to the same implementation so the two cannot drift.
+
+Neither alone is enough: one fixes history, the other fixes the future.
+
+## Also fixed in this pass
+
+- **`failed` is its own channel**, separate from "could not be read", all the
+  way from the service through `screenAll.ts` to the page. They were merged, so
+  a run where every candidate failed on OUR defect told Ayesha that 20 CVs were
+  unreadable and sent her to chase perfectly good documents.
+- The failure path now **bumps `failed_count` and records cost**. It did
+  neither, so a fully-failing run displayed `FAILED 0` and `SPENT $0.00` for 20
+  calls we were billed for.
+- `_strip_nul` — PostgreSQL `text` cannot hold `0x00`, and one stray NUL from a
+  PDF parser made the resume-cache INSERT raise `DataError` and took that
+  candidate down as "could not be read".
+
+## Where the results are read
+
+Scored candidates are at **`/evaluations`** ("Screening Results" in the sidebar,
+under Technical Screening) — tier filter, candidate list, per-candidate detail.
+⚠️ The wizard's finish screen does **not** link to it, which is why Ayesha asked
+four times where to look. Worth adding.
