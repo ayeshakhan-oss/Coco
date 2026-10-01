@@ -5,6 +5,13 @@
 
 ---
 
+## 🔒 Contract Drafting on Railway (2026-10-01)
+
+- [Name the person, not the fields](contract_drafting_webapp_2026_10_01.md) — Skill 07 live at `/contracts`; 16 of 19 fields fill from Markaz + the offer thread, 3 of 3 on an NDA. Masters live in `coco.contract_masters`, never git; builds store no document and no field values.
+- 🔴 **Filling every HIGHLIGHTED field is not enough.** The NIETE salary cell has four `PKR XYZ` lines and only ONE is highlighted; the validator called the rest WARNINGs and reported passed. A leftover placeholder is now a HARD BLOCK across body, tables, headers and footers.
+- 🔴 **`EMPLOYER NAME DESIGNATION` is the signatory**, and a plain `name` rule filled it with the candidate's name. Employer matches first; the signatory is never guessed.
+- 🔴 **Never take the salary from the first offer** — Mariam's thread labels 116k but holds 118k/130k/145k; Hafiza's base (135k) exceeds her total (108k). Offer emails do not say "offer": search by address.
+
 ## 🔒 Webapp on Railway — all six modules live (2026-09-25)
 
 - [All six modules live](webapp_modules_live_on_railway_2026_09_25.md) — Candidate Invites (Skill 06) + Data & Systems (Skill 04) shipped. Booking links PROVED by fetching the page title (Rule 24 made mechanical); `uq_invite_sends_live_once` makes a duplicate live invite a database error; a pilot's recipient list is built from nothing so a CC cannot leak. ⚠️ Nothing has been sent through invites yet, and the locked shell's `width="775"` conflicts with Rule 16 — Ayesha's call.
