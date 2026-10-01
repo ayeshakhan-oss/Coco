@@ -221,12 +221,23 @@ def check_body(html: str, *, compensation: Optional[str],
 
 
 def _bolded(html: str) -> str:
-    """Everything inside a bold tag, concatenated."""
-    return " ".join(
-        re.sub(r"<[^>]+>", "", block)
-        for block in re.findall(r"<b[ >].*?</b>|<strong[ >].*?</strong>", html or "",
-                                re.S | re.I)
-    )
+    """Everything that actually renders bold, concatenated.
+
+    🔴 BOTH WAYS OF BEING BOLD COUNT. Design 3 bolds the detail rows with
+    `font-weight:bold` in the cell style, not with a <b> tag, so a check that
+    only looked for tags reported the compensation figure and the joining date
+    as unbolded on an email where both are plainly bold. A rule enforced by a
+    check that misreads the layout gets switched off.
+    """
+    source = html or ""
+    blocks = re.findall(r"<b[ >].*?</b>|<strong[ >].*?</strong>", source, re.S | re.I)
+    # The backreference is BUILT, not written literally: a heredoc eats a
+    # backslash-one into a control character and every check then reports
+    # clean (CLAUDE.md Rule 31, hit three times in this session).
+    styled = ("<(" + chr(92) + "w+)[^>]*font-weight:" + chr(92) + "s*bold"
+              "[^>]*>(.*?)</" + chr(92) + "1>")
+    blocks += [m.group(2) for m in re.finditer(styled, source, re.S | re.I)]
+    return " ".join(re.sub(r"<[^>]+>", "", block) for block in blocks)
 
 
 def attachments_ok(filenames: list[str], engagement: str) -> list[str]:

@@ -245,3 +245,85 @@ def test_a_live_send_keeps_its_cc():
 def test_a_live_send_without_an_address_raises():
     with pytest.raises(je.JoiningEmailError):
         je.recipients_for(live=True, candidate_email=None)
+
+
+# --------------------------------------------------------------------------
+# Bold: both ways of being bold count, and the check still bites
+# --------------------------------------------------------------------------
+
+# Design 3 bolds its detail rows with `font-weight:bold` in the cell style,
+# not with a <b> tag. A check that only looked for tags reported the
+# compensation figure and the joining date as unbolded on an email where both
+# are plainly bold, and a rule enforced by a check that misreads the layout
+# gets switched off.
+
+
+def test_a_css_bolded_value_counts_as_bold():
+    html = (
+        '<td style="font-family:Arial;font-size:14.5px;color:#111827;'
+        'font-weight:bold;">PKR 108,000</td>'
+    )
+    assert "PKR 108,000" in je._bolded(html)
+
+
+def test_a_tag_bolded_value_still_counts():
+    assert "PKR 108,000" in je._bolded("<b>PKR 108,000</b>")
+    assert "PKR 108,000" in je._bolded("<strong>PKR 108,000</strong>")
+
+
+def test_an_unbolded_value_is_still_caught():
+    """Proof the widened check did not simply stop biting."""
+    html = '<td style="font-family:Arial;color:#111827;">PKR 108,000</td>'
+    assert "PKR 108,000" not in je._bolded(html)
+    problems = je.check_body(html, compensation="PKR 108,000", start_date=None)
+    assert any("not bold" in p for p in problems)
+
+
+def test_the_real_design_3_render_passes_every_body_check():
+    """The whole point: the locked layout must satisfy the locked rules."""
+    from webapp.services import contracts as spec
+    from webapp.services import joining_render as jr
+
+    html = jr.render(
+        engagement=spec.PROJECT_HIRE, entity=spec.NIETE, first_name="Zia",
+        role="CPD - Coach", start_date="7th September 2026",
+        end_date="31st December 2026", compensation="PKR 108,000",
+    )
+    assert je.check_body(
+        html, compensation="PKR 108,000", start_date="7th September 2026",
+        entity=spec.NIETE,
+    ) == []
+
+
+def test_an_unpaid_fellowship_renders_without_a_compensation_row():
+    from webapp.services import contracts as spec
+    from webapp.services import joining_render as jr
+
+    html = jr.render(
+        engagement=spec.VOLUNTEER_FELLOW, entity=spec.OPL, first_name="Ali",
+        role="Research", start_date="1st October 2026",
+    )
+    assert "Monthly compensation" not in html
+    assert je.check_body(html, compensation=None,
+                         start_date="1st October 2026", entity=spec.OPL) == []
+
+
+def test_a_paid_engagement_with_no_salary_refuses_to_render():
+    """An empty compensation row looks finished and is not."""
+    from webapp.services import contracts as spec
+    from webapp.services import joining_render as jr
+
+    with pytest.raises(jr.RenderError, match="compensation"):
+        jr.render(engagement=spec.PROJECT_HIRE, entity=spec.NIETE,
+                  first_name="Zia", role="CPD - Coach",
+                  start_date="7th September 2026")
+
+
+def test_an_entity_with_no_form_refuses_rather_than_borrowing_one():
+    from webapp.services import contracts as spec
+    from webapp.services import joining_render as jr
+
+    with pytest.raises(Exception, match="no submission form"):
+        jr.render(engagement=spec.PERMANENT_HIRE, entity=spec.INC,
+                  first_name="Ali", role="Manager",
+                  start_date="1st October 2026", compensation="PKR 200,000")

@@ -364,3 +364,74 @@ def send_invite(
         "recipients": all_recipients,
         "message_id": message_id,
     }
+
+
+def send_joining_email(
+    *,
+    subject: str,
+    html: str,
+    attachments: list,
+    to: list,
+    cc: list,
+    live: bool,
+    context: str,
+    transport: "Optional[Transport]" = None,
+) -> dict:
+    """Send a joining email with its PDF attachments, pilot or live.
+
+    `attachments` is a list of (filename, bytes). They are PDFs: a candidate
+    must never receive an editable contract, and this refuses anything else
+    rather than trusting the caller to have checked.
+
+    `evaluate_email` is NOT run here. That harness validates 800-word
+    candidate decision letters; a joining email is a short Design 3 note with
+    attachments, and running it would block every one for failing rules never
+    written for this kind of email. The joining rules are enforced in
+    `joining_email.check_body` and `attachments_ok` before this is reached.
+    """
+    from email.mime.application import MIMEApplication
+
+    settings = get_settings()
+
+    if not to:
+        raise ValueError("a joining email needs a recipient")
+    for name, data in attachments:
+        if not name.lower().endswith(".pdf"):
+            raise ValueError(
+                f"{name} is not a PDF. Candidates receive PDF, never Word."
+            )
+        if not data.startswith(b"%PDF-"):
+            raise ValueError(f"{name} does not contain a PDF.")
+
+    msg, message_id = _build_message(
+        full_html=html, subject=subject, sender=settings.email_sender,
+        to=to, cc=cc,
+    )
+    for name, data in attachments:
+        part = MIMEApplication(data, _subtype="pdf")
+        part.add_header("Content-Disposition", "attachment", filename=name)
+        msg.attach(part)
+
+    recipients = list(to) + list(cc or [])
+    tx = transport or get_transport()
+    with _send_lock:
+        if live:
+            # safe_sendmail refuses an external address that was not allowed
+            # first. A pilot goes to Ayesha and needs no exemption.
+            allow_candidate_addresses(list(to))
+        tx.send(
+            sender=settings.email_sender,
+            recipients=recipients,
+            message=msg.as_string(),
+            context=context,
+        )
+
+    return {
+        "live": live,
+        "subject": subject,
+        "to": list(to),
+        "cc": list(cc or []),
+        "recipients": recipients,
+        "message_id": message_id,
+        "attachments": [name for name, _ in attachments],
+    }

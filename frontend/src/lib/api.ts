@@ -14,9 +14,11 @@ import type {
   Communication,
   ContractMasters,
   ContractOptions,
+  ContractPackage,
   ContractPeople,
   ContractPlan,
   ContractPlanFilled,
+  ContractSendResult,
   CurrentUser,
   CVScreen,
   CVScreenApplication,
@@ -457,6 +459,13 @@ export const api = {
       `/api/contracts/prefill?application_id=${applicationId}` +
         `&engagement=${encodeURIComponent(engagement)}&entity=${encodeURIComponent(entity)}`,
     ),
+
+  // Everything that would be sent, without sending it.
+  contractPackage: (body: Record<string, unknown>) =>
+    post<ContractPackage>('/api/contracts/package', body),
+  // live: false sends the pilot to Ayesha alone. live: true needs an approver.
+  contractSend: (body: Record<string, unknown>) =>
+    post<ContractSendResult>('/api/contracts/send', body),
 
   // --- Skill library ---
   skills: () => get<SkillLibrary>('/api/skills'),

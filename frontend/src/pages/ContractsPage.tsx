@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { AlertTriangle, Download, FileText, Info, Loader2, Upload, Wand2 } from 'lucide-react'
+import { AlertTriangle, Download, FileText, Info, Loader2, Mail, Send, Upload, Wand2 } from 'lucide-react'
 import { Spinner } from '../components/Spinner'
 import { ApiError, api } from '../lib/api'
 import type {
   ContractMasters,
+  ContractPackage,
   ContractOptions,
   ContractPerson,
   ContractPlanFilled,
@@ -33,6 +34,13 @@ export function ContractsPage() {
 
   const [plan, setPlan] = useState<ContractPlanFilled | null>(null)
   const [values, setValues] = useState<Record<string, Record<string, string>>>({})
+  // The three details the EMAIL needs, which are not contract fields.
+  const [emailStart, setEmailStart] = useState('')
+  const [emailEnd, setEmailEnd] = useState('')
+  const [emailPay, setEmailPay] = useState('')
+  const [pack, setPack] = useState<ContractPackage | null>(null)
+  // A live send is only offered after the pilot has actually been sent.
+  const [pilotSent, setPilotSent] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
@@ -78,6 +86,17 @@ export function ContractsPage() {
           seeded[doc.doc_type] = { ...(doc.prefill?.values ?? {}) }
         }
         setValues(seeded)
+        setPack(null)
+        setPilotSent(false)
+        // The email needs the same dates and figure the contract
+        // does, so seed them from whatever the offer thread gave.
+        const first = p.documents[0]?.prefill
+        const pick = (needle: string) =>
+          Object.entries(first?.values ?? {}).find(([k]) =>
+            k.toUpperCase().includes(needle))?.[1] ?? ''
+        setEmailStart(pick('JOINING') || pick('EFFECTIVE'))
+        setEmailEnd('')
+        setEmailPay('')
       })
       .catch((e) =>
         setError(
@@ -120,8 +139,64 @@ export function ContractsPage() {
       .finally(() => setBusy(null))
   }
 
-  const setValue = (docType: string, key: string, v: string) =>
+  const setValue = (docType: string, key: string, v: string) => {
+    // Any edit invalidates a pilot that was sent from the old values.
+    setPilotSent(false)
+    setPack(null)
     setValues((prev) => ({ ...prev, [docType]: { ...(prev[docType] ?? {}), [key]: v } }))
+  }
+
+  // What the package endpoints need, built once so preview and send cannot
+  // disagree about what is being produced.
+  const packageBody = () => ({
+    entity,
+    engagement,
+    first_name: (person?.name ?? '').split(' ')[0],
+    person_name: person?.name ?? '',
+    role: person?.position ?? '',
+    application_id: Number(applicationId) || null,
+    candidate_email: plan?.person?.email ?? null,
+    start_date: emailStart,
+    end_date: emailEnd,
+    compensation: emailPay,
+    values,
+  })
+
+  const buildPackage = () => {
+    setBusy('package')
+    setError(null)
+    api
+      .contractPackage(packageBody())
+      .then((p) => {
+        setPack(p)
+        setNotice(null)
+      })
+      .catch((e) =>
+        setError(
+          e instanceof ApiError ? e.message.replace(/^\d+:\s*/, '') : 'Could not build the package.',
+        ),
+      )
+      .finally(() => setBusy(null))
+  }
+
+  const sendPackage = (live: boolean) => {
+    setBusy(live ? 'live' : 'pilot')
+    setError(null)
+    api
+      .contractSend({ ...packageBody(), live })
+      .then((r) => {
+        if (!live) setPilotSent(true)
+        setNotice(
+          live
+            ? `Sent to ${r.to.join(', ')} with ${r.attachments.length} attachments.`
+            : `Pilot sent to ${r.to.join(', ')}. Nobody else received it. ${r.caveat}`,
+        )
+      })
+      .catch((e) =>
+        setError(e instanceof ApiError ? e.message.replace(/^\d+:\s*/, '') : 'Not sent.'),
+      )
+      .finally(() => setBusy(null))
+  }
 
   const blocked = (plan?.blockers.length ?? 0) > 0
 
@@ -413,6 +488,122 @@ export function ContractsPage() {
               )
             })}
           </div>
+
+          {/* The joining email. Its dates and figure are separate from the
+              contract fields because the email words them differently. */}
+          <section className="mt-5 rounded-2xl border border-hairline bg-surface">
+            <div className="flex items-center gap-2 border-b border-hairline bg-elevated px-4 py-2.5">
+              <Mail className="h-4 w-4 text-ink-dim" />
+              <span className="text-sm font-semibold text-ink">The joining email</span>
+            </div>
+            <div className="grid gap-3 p-4 sm:grid-cols-3">
+              <div>
+                <label className="text-xs font-medium text-ink-muted">Start date</label>
+                <input
+                  className="input mt-1 w-full text-sm"
+                  placeholder="7th September 2026"
+                  value={emailStart}
+                  onChange={(e) => { setEmailStart(e.target.value); setPilotSent(false) }}
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-ink-muted">Contract runs to</label>
+                <input
+                  className="input mt-1 w-full text-sm"
+                  placeholder="31st December 2026"
+                  value={emailEnd}
+                  onChange={(e) => { setEmailEnd(e.target.value); setPilotSent(false) }}
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-ink-muted">Monthly compensation</label>
+                <input
+                  className="input mt-1 w-full text-sm"
+                  placeholder="PKR 108,000"
+                  value={emailPay}
+                  onChange={(e) => { setEmailPay(e.target.value); setPilotSent(false) }}
+                />
+              </div>
+            </div>
+            <p className="px-4 pb-2 text-[11px] text-ink-dim">
+              Never name the weekday in a date. Write 7th September 2026.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 border-t border-hairline px-4 py-3">
+              <button
+                type="button"
+                className="btn btn-secondary text-sm"
+                onClick={buildPackage}
+                disabled={blocked || !person || busy === 'package'}
+              >
+                {busy === 'package' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Preview the package'
+                )}
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary text-sm"
+                onClick={() => sendPackage(false)}
+                disabled={blocked || !person || busy === 'pilot'}
+              >
+                {busy === 'pilot' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="mr-1.5 inline h-3.5 w-3.5" />
+                    Pilot to Ayesha
+                  </>
+                )}
+              </button>
+              {/* 🔴 The live send only appears after a pilot has actually been
+                  sent, and any edit withdraws it again. */}
+              <button
+                type="button"
+                className="btn btn-green text-sm"
+                onClick={() => sendPackage(true)}
+                disabled={!pilotSent || busy === 'live'}
+                title={pilotSent ? undefined : 'Send the pilot and look at it first'}
+              >
+                {busy === 'live' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Send to the candidate'
+                )}
+              </button>
+              <span className="text-[11px] text-ink-dim">
+                The pilot goes to ayesha.khan@taleemabad.com alone, with no CC, and is
+                identical to what the candidate would receive.
+              </span>
+            </div>
+
+            {pack && (
+              <div className="border-t border-hairline p-4">
+                <div className="text-xs text-ink-muted">
+                  <strong className="text-ink">{pack.subject}</strong>
+                  <div className="mt-1">
+                    {pack.attachments.map((a) => (
+                      <span key={a.filename} className="mr-3 font-mono text-[11px]">
+                        {a.filename} ({Math.round(a.size_bytes / 1024)} KB)
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {pack.problems.map((pr) => (
+                  <p key={pr} className="mt-2 text-xs text-danger">{pr}</p>
+                ))}
+                <p className="mt-2 text-[11px] text-ink-dim">{pack.caveat}</p>
+                {/* Sandboxed: this is email HTML and must not run anything. */}
+                <iframe
+                  title="Joining email preview"
+                  sandbox=""
+                  className="mt-3 h-[40rem] w-full rounded-xl border border-hairline bg-white"
+                  srcDoc={pack.html}
+                />
+              </div>
+            )}
+          </section>
         </>
       )}
     </div>

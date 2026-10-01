@@ -42,7 +42,11 @@ from ..models import ContractBuild, ContractMaster
 from ..services import contract_build as build
 from ..services import contract_prefill as prefill_svc
 from ..services import contracts as spec
+from ..services import joining_email as joining
+from ..services import joining_render as render
 from ..services import offer_evidence as offers
+from ..services import pdf_convert
+from ..services import sending
 
 log = logging.getLogger("webapp.routers.contracts")
 
@@ -501,3 +505,227 @@ _ONE_PERSON_SQL = text(
     WHERE a.id = :application_id
     """
 )
+
+
+# --------------------------------------------------------------------------
+# The package: documents, the email, the pilot, the send
+# --------------------------------------------------------------------------
+
+
+def _build_package(db: Session, body: dict) -> dict:
+    """Build every document the engagement needs, as PDFs, plus the email.
+
+    Shared by the preview and the send, so the pilot cannot be assembled by
+    one code path and the live email by another. A pilot built differently
+    proves nothing about the live send.
+    """
+    entity = str(body.get("entity") or "")
+    engagement = str(body.get("engagement") or "")
+    values = dict(body.get("values") or {})
+    first_name = str(body.get("first_name") or "").strip()
+    person_name = str(body.get("person_name") or "").strip()
+
+    try:
+        doc_types = spec.documents_for(engagement, entity)
+        situation = joining.situation_for(engagement)
+    except (spec.ContractError, joining.JoiningEmailError) as exc:
+        raise HTTPException(400, str(exc))
+
+    if not person_name or not first_name:
+        raise HTTPException(400, "A first name and a full name are both needed.")
+
+    attachments: list[dict] = []
+    for doc_type in doc_types:
+        rel = spec.master_for(entity, doc_type)
+        master = (
+            db.query(ContractMaster).filter(ContractMaster.rel_path == rel).one_or_none()
+            if rel else None
+        )
+        if master is None:
+            raise HTTPException(
+                400, f"The master for {spec.DOC_TYPES[doc_type]} is not uploaded.")
+
+        fields = spec.discover_fields(master.content)
+        groups = spec.group_fields(fields)
+        per_doc = dict(values.get(doc_type) or {})
+        missing = spec.missing_values(groups, per_doc)
+        if missing:
+            raise HTTPException(
+                400,
+                f"{spec.DOC_TYPES[doc_type]} still has blanks: " + ", ".join(missing),
+            )
+        try:
+            docx = build.fill(
+                master.content, spec.values_by_index(groups, per_doc), fields=fields)
+        except build.BuildError as exc:
+            raise HTTPException(400, str(exc))
+
+        report = build.validate(docx, doc_type)
+        if report.get("passed") is False:
+            hard = [f["message"] for f in report["findings"]
+                    if f["severity"] == "HARD_BLOCK"]
+            raise HTTPException(
+                400,
+                f"{spec.DOC_TYPES[doc_type]} did not pass its checks: "
+                + "; ".join(hard[:5]),
+            )
+
+        # PDF, never .docx. The rule exists because a candidate must not
+        # receive an editable contract, and the harness blocks a Word file.
+        try:
+            pdf = pdf_convert.to_pdf(docx, name=f"{doc_type}-{person_name}")
+        except pdf_convert.PdfUnavailable as exc:
+            raise HTTPException(503, str(exc))
+
+        attachments.append({
+            "doc_type": doc_type,
+            "filename": build.filename_for(doc_type, person_name).replace(
+                ".docx", ".pdf"),
+            "bytes": pdf,
+            "master_sha256": master.sha256,
+        })
+
+    try:
+        html = render.render(
+            engagement=engagement, entity=entity, first_name=first_name,
+            role=str(body.get("role") or ""),
+            start_date=str(body.get("start_date") or ""),
+            end_date=str(body.get("end_date") or "") or None,
+            compensation=str(body.get("compensation") or "") or None,
+            returning=bool(body.get("returning")),
+        )
+    except (render.RenderError, joining.JoiningEmailError) as exc:
+        raise HTTPException(400, str(exc))
+
+    problems = joining.check_body(
+        html,
+        compensation=str(body.get("compensation") or "") or None,
+        start_date=str(body.get("start_date") or "") or None,
+        entity=entity,
+    )
+    problems += joining.attachments_ok(
+        [a["filename"] for a in attachments], engagement)
+    subject = joining.subject_for(
+        engagement, first_name=first_name, role=str(body.get("role") or ""))
+
+    return {
+        "situation": situation["label"],
+        "subject": subject,
+        "html": html,
+        "attachments": attachments,
+        "problems": problems,
+        "caveat": pdf_convert.CAVEAT,
+    }
+
+
+@router.post("/package")
+def preview_package(
+    body: dict,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """Everything that would be sent, without sending it.
+
+    Attachment BYTES are not returned, only names and sizes. The PDFs carry a
+    CNIC and a salary and do not belong in a JSON response a browser caches.
+    """
+    pack = _build_package(db, body)
+    return {
+        "situation": pack["situation"],
+        "subject": pack["subject"],
+        "html": pack["html"],
+        "attachments": [
+            {"filename": a["filename"], "size_bytes": len(a["bytes"])}
+            for a in pack["attachments"]
+        ],
+        "problems": pack["problems"],
+        "caveat": pack["caveat"],
+    }
+
+
+@router.post("/send")
+def send_package(
+    body: dict,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_editor),
+):
+    """Pilot to Ayesha, or the live send to the candidate.
+
+    A LIVE SEND NEEDS AN APPROVER; a pilot does not. One route serves both, so
+    the pilot goes through exactly the code that builds the live email.
+
+    THE PILOT IS BYTE-IDENTICAL. No banner and no note about the send:
+    `check_body` refuses one, and the recipient list is built from nothing
+    rather than filtered, so a CC cannot survive into it.
+    """
+    live = bool(body.get("live"))
+    if live and user.get("role") not in ("approver", "super_admin"):
+        raise HTTPException(
+            403,
+            "Sending a contract to a candidate needs approver rights. You can "
+            "send a pilot to Ayesha.",
+        )
+
+    pack = _build_package(db, body)
+    if pack["problems"]:
+        raise HTTPException(
+            400, "This package cannot be sent: " + "; ".join(pack["problems"][:6]))
+
+    candidate_email = str(body.get("candidate_email") or "").strip() or None
+    cc = list(body.get("cc") or []) if live else None
+    try:
+        recipients = joining.recipients_for(
+            live=live, candidate_email=candidate_email, cc=cc)
+    except joining.JoiningEmailError as exc:
+        raise HTTPException(400, str(exc))
+
+    subject = pack["subject"]
+    if not subject:
+        raise HTTPException(
+            400,
+            "This situation is a reply inside an existing thread and carries no "
+            "subject of its own. This page cannot thread yet, so send it from "
+            "Claude Code, where the original can be matched.",
+        )
+
+    result = sending.send_joining_email(
+        subject=subject,
+        html=pack["html"],
+        attachments=[(a["filename"], a["bytes"]) for a in pack["attachments"]],
+        to=recipients["to"],
+        cc=recipients["cc"],
+        live=live,
+        context=f"joining_{body.get('engagement')}_{'live' if live else 'pilot'}",
+    )
+
+    for a in pack["attachments"]:
+        db.add(ContractBuild(
+            entity=str(body.get("entity") or ""),
+            engagement=str(body.get("engagement") or ""),
+            doc_type=a["doc_type"],
+            master_sha256=a["master_sha256"],
+            person_name=str(body.get("person_name") or ""),
+            application_id=body.get("application_id"),
+            validator_passed=True,
+            validator_report=(
+                f"sent {'live' if live else 'pilot'} to "
+                + ", ".join(recipients["to"])
+            ),
+            built_by=user.get("id") or "",
+        ))
+    db.commit()
+
+    log.info(
+        "contracts: %s package for %s -> %s by %s",
+        "LIVE" if live else "pilot", body.get("person_name"),
+        recipients["to"], user.get("email"),
+    )
+    return {
+        "live": live,
+        "subject": subject,
+        "to": recipients["to"],
+        "cc": recipients["cc"],
+        "attachments": [a["filename"] for a in pack["attachments"]],
+        "message_id": result.get("message_id"),
+        "caveat": pack["caveat"],
+    }

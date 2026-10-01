@@ -1323,3 +1323,26 @@ export interface ContractPlanFilled extends ContractPlan {
   offer_warnings?: string[]
   documents: (ContractPlan['documents'][number] & { prefill?: ContractPrefill })[]
 }
+
+// --- The joining package: documents + the email ---
+
+export interface ContractPackage {
+  situation: string
+  subject: string | null
+  html: string
+  // Names and sizes only. The PDFs carry a CNIC and a salary and never come
+  // back in a JSON response.
+  attachments: { filename: string; size_bytes: number }[]
+  problems: string[]
+  caveat: string
+}
+
+export interface ContractSendResult {
+  live: boolean
+  subject: string
+  to: string[]
+  cc: string[]
+  attachments: string[]
+  message_id: string | null
+  caveat: string
+}
