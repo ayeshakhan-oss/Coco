@@ -67,10 +67,17 @@ follows Template 4 as closely as a permanent hire allows.
 - Template `templates/permanent_joining_design3.html` - the locked Design 3 layout with ONLY the
   project-specific prose parameterised (no `PROJECT_NAME`/`PARTNER_NAME`, buttons block optional).
   Derived from the NIETE file by anchored replacement so the layout is byte-identical.
-- 🔴 **No onboarding form exists for a permanent hire.** Only Fellow and NIETE forms exist and the
-  skill is explicit that the form differs by programme. Buttons omitted rather than sending a
-  Growth Manager to the Fellow form. The WhatsApp link went with it, because the harness requires
-  a form link whenever "Click here" appears. **Still owed by Ayesha.**
+- 🔴 ~~No onboarding form exists for a permanent hire~~ **SUPERSEDED 2026-10-01 — see CLAUDE.md
+  Rule 35 and [[joining_email_two_links_by_entity_2026_10_01]].** At the time only the Fellow and
+  NIETE forms existed and the skill said the form varied by programme, so I omitted the buttons
+  rather than point a Growth Manager at the Fellow form, and the WhatsApp link went with them
+  (the harness demanded a form link whenever "Click here" appeared). **The consequence: both
+  12 Sep permanent sends, Ahmad and Marzia, went out with NEITHER link.** The rule is now
+  **form by ENTITY, not programme** - OPL/OWT, including permanent hires, use the OPL/OWT form -
+  and `evaluate_joining_email` HARD BLOCKS a missing form or WhatsApp link on every joining
+  email, not just ones containing "click here". Omitting a link to avoid using a wrong one was
+  the right call on the evidence; **escalating it as a blocker rather than shipping without it
+  would have been better.**
 - 🔴 **Say the CITY.** Growth Manager runs as two live roles; the offer letter said "Growth
   Manager Lahore", so the joining email says it too - subject, hero line, opening sentence and
   the details card. `role_display()` = position + city.
@@ -136,15 +143,25 @@ name none of them have. **Always surface the conflict in the pilot.**
 ⚠️ Ayesha sends account credentials herself as a reply on the joining thread, minutes after the
 joining email (Google + Markaz logins). Not part of the joining email; do not duplicate it.
 
+## Closed since
+1. ~~Marzia's CNIC~~ - submitted 2026-09-11, package built and sent live the next day.
+2. ~~CC list~~ - Ayesha gave it per candidate; ali.sipra added for Karachi only.
+3. ~~Onboarding form~~ - resolved by CLAUDE.md Rule 35, form by ENTITY (see above).
+
 ## Still open
-1. **Marzia Hasnain (GM Karachi, app 3819)** - `contract_drafting_full_legal_name` and CNIC are
-   BOTH NULL in Markaz and were never emailed. Joins **16 September**. Her `reports_to` is
-   deliberately null: Ayesha named Zeest for Lahore only, so the build fails loudly until confirmed.
-2. **CC list for the live send.** Ahmad's offer thread carried hiring@ + zeest.qureshi@.
-   Never add recipients silently (joining-emails.md rule 9).
-3. **What was promised to Ahmad on fuel** - his acceptance cites "as discussed" on a call.
-4. Name conflict: CNIC form "Ahmad Wajahat" vs interview doc "Ahmad Wajahat **Sheikh**" vs Gmail
-   display name "Wajahat Sheikh Official". Used the CNIC-form value. See [[project_smg_case_study_round2_2026_08_24]].
+1. **What was promised to Ahmad on fuel.** His acceptance cites "as discussed" on a call and
+   nothing is in writing anywhere; the contract carries only the general reimbursement clause.
+2. **Both Markaz records are still `offer`** (apps 3635, 3819). Update by explicit application
+   ID, never a status filter (Rule 13).
+3. 🔴 **`scripts/contracts/` is STILL untracked by git** - re-confirmed 2026-10-01, 0 files.
+   `.gitignore` `Contracts/` (meant for the HR masters) also matches `scripts/contracts/` because
+   `core.ignorecase=true` on Windows. Every contract builder, this one included, has no history
+   and no backup. Same family as [[lesson_untracked_module_outage_2026_09_25]], where an
+   un-`git add`ed module took the app down for 29 minutes: **a file on disk is not a file in
+   the repo.** Fix is a narrower ignore rule (`/Contracts/`), which needs a deliberate decision
+   because the masters must stay out.
+4. Both GM JDs still open with a stray "Chief Operating Officer - Taleemabad" line - excluded
+   from Annexure-A here, but candidates get the live Doc link, so fix it at source.
 
 ## Related
 [[contract_docx_build_rules_2026_08_13]] · [[contract_docx_defects_and_harness_2026_08_13]] ·
