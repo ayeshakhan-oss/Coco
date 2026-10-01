@@ -446,6 +446,31 @@ def missing_values(groups: list[dict], values: dict) -> list[str]:
     return [g["key"] for g in groups if not str(values.get(g["key"]) or "").strip()]
 
 
+def describe(group: dict) -> str:
+    """A field named the way a person would name it.
+
+    🔴 "f12, f13, f16, f17, f18" is not a sentence anybody can act on, and
+       that is exactly what the blank-field refusal used to say. An opaque
+       field has no label of its own, so it is described by the words running
+       up to it: "the one after Base Salary: PKR".
+    """
+    if not group.get("opaque"):
+        return str(group.get("placeholder") or group.get("key"))
+    before = (group.get("before") or "").strip()
+    if before:
+        return f"the one after {before[-40:].strip()!r}"
+    context = (group.get("contexts") or [""])[0]
+    if context:
+        return f"the unlabelled one in {context[:50].strip()!r}"
+    return str(group.get("key"))
+
+
+def describe_missing(groups: list[dict], values: dict) -> list[str]:
+    """The same answer as `missing_values`, in words."""
+    by_key = {g["key"]: g for g in groups}
+    return [describe(by_key[k]) for k in missing_values(groups, values) if k in by_key]
+
+
 def values_by_index(groups: list[dict], values: dict) -> dict[int, str]:
     """Flatten {input key: text} onto {field index: text} for the builder."""
     out: dict[int, str] = {}

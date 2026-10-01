@@ -265,12 +265,12 @@ def build_document(
 
     fields = spec.discover_fields(row.content)
     groups = spec.group_fields(fields)
-    missing = spec.missing_values(groups, values)
+    missing = spec.describe_missing(groups, values)
     if missing:
         raise HTTPException(
             400,
             "These are still blank, and a contract never ships a blank: "
-            + ", ".join(missing),
+            + "; ".join(missing),
         )
 
     try:
@@ -548,11 +548,11 @@ def _build_package(db: Session, body: dict) -> dict:
         fields = spec.discover_fields(master.content)
         groups = spec.group_fields(fields)
         per_doc = dict(values.get(doc_type) or {})
-        missing = spec.missing_values(groups, per_doc)
+        missing = spec.describe_missing(groups, per_doc)
         if missing:
             raise HTTPException(
                 400,
-                f"{spec.DOC_TYPES[doc_type]} still has blanks: " + ", ".join(missing),
+                f"{spec.DOC_TYPES[doc_type]} still needs: " + "; ".join(missing),
             )
         try:
             docx = build.fill(

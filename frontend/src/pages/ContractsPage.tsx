@@ -417,9 +417,22 @@ export function ContractsPage() {
                     <FileText className="h-4 w-4 text-ink-dim" />
                     <span className="text-sm font-semibold text-ink">{doc.label}</span>
                     <span className="ml-auto text-xs text-ink-dim">
-                      {doc.uploaded && pf
-                        ? `${pf.filled} of ${pf.total_fields} filled for you`
-                        : 'master not uploaded'}
+                      {doc.uploaded && pf ? (
+                        (() => {
+                          const blanks = doc.fields.filter(
+                            (f) => !(values[doc.doc_type]?.[f.key] ?? '').trim(),
+                          ).length
+                          return blanks > 0 ? (
+                            <span className="font-medium text-warning">
+                              {blanks} still need you
+                            </span>
+                          ) : (
+                            <span className="text-success">all {doc.fields.length} filled</span>
+                          )
+                        })()
+                      ) : (
+                        'master not uploaded'
+                      )}
                     </span>
                   </div>
 
@@ -443,11 +456,23 @@ export function ContractsPage() {
                                   Written into {f.indexes.length} places.
                                 </p>
                               )}
+                              {/* An empty box is marked where it sits, rather
+                                  than named in an error at the bottom of the
+                                  page. Nothing builds until every one is filled. */}
                               <input
-                                className="input mt-1 w-full text-sm"
+                                className={`input mt-1 w-full text-sm ${
+                                  (values[doc.doc_type]?.[f.key] ?? '').trim()
+                                    ? ''
+                                    : 'border-warning bg-warning/5'
+                                }`}
                                 value={values[doc.doc_type]?.[f.key] ?? ''}
                                 onChange={(e) => setValue(doc.doc_type, f.key, e.target.value)}
                               />
+                              {!(values[doc.doc_type]?.[f.key] ?? '').trim() && (
+                                <p className="mt-0.5 text-[11px] font-medium text-warning">
+                                  Needs you. Nothing here could fill it.
+                                </p>
+                              )}
                               {/* Where the value came from. A figure with no
                                   source is a figure nobody can check. */}
                               {source && (

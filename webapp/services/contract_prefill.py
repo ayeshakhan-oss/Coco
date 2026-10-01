@@ -86,9 +86,12 @@ _TAIL_MEANING = (
     ("end_date", re.compile(r"\b(to|until|till|through|ending)\s*[:,]?\s*$", re.I)),
     ("duration", re.compile(r"\bduration\s+of\s*$", re.I)),
     ("cnic", re.compile(r"\bcnic\s*(no\.?|#|number)?\s*[:.]?\s*$", re.I)),
+    # "will join Orenda <date>" puts the employer between the verb and the
+    # field, so the cue is not the last word. Named explicitly rather than
+    # loosening the pattern, which would start matching ordinary nouns.
     ("start_date", re.compile(
         r"\b(from|join|joins|joining|commencing|commences|effective|"
-        r"starting|on)\s*[:,]?\s*$", re.I)),
+        r"starting|on|join\s+orenda)\s*[:,]?\s*$", re.I)),
 )
 
 

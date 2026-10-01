@@ -338,3 +338,49 @@ def test_the_generated_filename_carries_no_identity_number():
     name = build.filename_for(svc.PERMANENT_NDA, "Hajra Noor")
     assert name == "Permanent Employee NDA - Hajra Noor.docx"
     assert "/" not in name and "\\" not in name
+
+
+# --------------------------------------------------------------------------
+# A refusal has to name the field in words
+# --------------------------------------------------------------------------
+
+# "Fellow / Internship Contract still has blanks: f12, f13, f16, f17, f18" was
+# the real message on screen. It is not a sentence anybody can act on, and
+# those keys appear nowhere a person can see.
+
+
+def test_an_unlabelled_field_is_described_by_the_words_before_it():
+    group = {"key": "f16", "opaque": True, "before": "Base Salary: PKR",
+             "contexts": ["Base Salary: PKR XYZ"]}
+    assert c.describe(group) == "the one after 'Base Salary: PKR'"
+
+
+def test_a_labelled_field_is_described_by_its_own_label():
+    group = {"key": "EMPLOYEE'S CNIC", "opaque": False,
+             "placeholder": "EMPLOYEE'S CNIC", "before": "", "contexts": [""]}
+    assert c.describe(group) == "EMPLOYEE'S CNIC"
+
+
+def test_a_field_with_nothing_before_it_falls_back_to_its_sentence():
+    group = {"key": "f13", "opaque": True, "before": "", "contexts": ["xyz"]}
+    assert "unlabelled one in" in c.describe(group)
+
+
+def test_the_blank_report_never_shows_a_bare_key():
+    """The whole point: no f-number reaches the screen."""
+    import re as _re
+
+    groups = c.group_fields(c.discover_fields(
+        _master("Fellow/Template - Project-based Employment Contract.docx")))
+    described = c.describe_missing(groups, {})
+    assert described
+    for item in described:
+        assert not _re.fullmatch(r"f\d+", item), item
+
+
+def test_describe_missing_agrees_with_missing_values():
+    groups = c.group_fields(c.discover_fields(
+        _master("Promotion/Template - NDA Full Time Permanent Employee.docx")))
+    filled = {"EMPLOYEE NAME": "Ali"}
+    assert len(c.describe_missing(groups, filled)) == len(
+        c.missing_values(groups, filled)) == 2
