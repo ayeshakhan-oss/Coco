@@ -67,6 +67,32 @@ def main():
         "NDA master flagged for unfilled placeholders",
     )
 
+    print("\n2b. Joining-email links (Ayesha 2026-10-01): both, always, right entity:")
+    from contract_docx_eval import (  # noqa: E402
+        evaluate_joining_email, OPL_OWT_FORM, NIETE_FORM, WHATSAPP_GROUP)
+
+    def link_blocks(body):
+        b, _ = evaluate_joining_email(body, [])
+        return [x for x in b if "form" in x or "WhatsApp" in x]
+
+    # A Design 3 email uses buttons, never the words "click here".
+    check(link_blocks("<p>Welcome to Taleemabad</p>"),
+          "button email with no links is blocked")
+    check(link_blocks(f'<a href="https://{OPL_OWT_FORM}/viewform">Submit</a>'),
+          "email with the form but no WhatsApp link is blocked")
+    check(link_blocks(f'<p>NIETE</p><a href="https://{OPL_OWT_FORM}">x</a>'
+                      f'<a href="https://{WHATSAPP_GROUP}">y</a>'),
+          "NIETE email sent the OPL/OWT form is blocked")
+    check(link_blocks(f'<p>OPL</p><a href="https://{NIETE_FORM}">x</a>'
+                      f'<a href="https://{WHATSAPP_GROUP}">y</a>'),
+          "OPL email sent the NIETE form is blocked")
+    check(not link_blocks(f'<p>NIETE</p><a href="https://{NIETE_FORM}">x</a>'
+                          f'<a href="https://{WHATSAPP_GROUP}">y</a>'),
+          "NIETE email with NIETE form + WhatsApp passes")
+    check(not link_blocks(f'<p>OPL</p><a href="https://{OPL_OWT_FORM}">x</a>'
+                          f'<a href="https://{WHATSAPP_GROUP}">y</a>'),
+          "OPL/OWT email with OPL/OWT form + WhatsApp passes")
+
     print("\n3. A finished package must pass (if one exists):")
     built = sorted((ROOT / "output" / "contracts").glob("*/Contract - * - Fellow.docx"))
     if not built:

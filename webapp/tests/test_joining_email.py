@@ -43,11 +43,58 @@ def test_every_situation_names_a_template_that_exists():
         assert os.path.isfile(path), f"{key} points at a missing template"
 
 
-def test_a_permanent_hire_is_not_sent_to_a_form_that_does_not_apply():
-    """No onboarding form exists for a permanent hire. Only the Fellow and
-    NIETE forms exist, and sending someone to the wrong programme's form is
-    worse than sending them to none."""
-    assert je.SITUATIONS[spec.PERMANENT_HIRE]["onboarding_form"] is None
+def test_the_form_follows_the_entity_not_the_programme():
+    """Ayesha 2026-10-01: NIETE (and NIETE fellowships) get the NIETE form;
+    OPL, OWT and their fellowships share the other one."""
+    assert je.links_for(spec.NIETE)["ONBOARDING_FORM_URL"] == je.NIETE_FORM_URL
+    assert je.links_for(spec.OPL)["ONBOARDING_FORM_URL"] == je.OPL_OWT_FORM_URL
+    assert je.links_for(spec.OWT)["ONBOARDING_FORM_URL"] == je.OPL_OWT_FORM_URL
+    for entity in (spec.NIETE, spec.OPL, spec.OWT):
+        assert je.links_for(entity)["WHATSAPP_GROUP_URL"] == je.WHATSAPP_URL
+
+
+def test_an_entity_with_no_form_is_refused_not_guessed():
+    with pytest.raises(je.JoiningEmailError, match="no submission form"):
+        je.links_for(spec.INC)
+
+
+def test_both_templates_carry_both_link_slots():
+    """The buttons are part of the layout, so a missing URL fails at render
+    time instead of the buttons quietly disappearing."""
+    import os
+
+    for name in ("niete_joining_design3.html", "permanent_joining_design3.html"):
+        with open(os.path.join(je.TEMPLATE_DIR, name), encoding="utf-8") as fh:
+            html = fh.read()
+        assert "{{ONBOARDING_FORM_URL}}" in html, name
+        assert "{{WHATSAPP_GROUP_URL}}" in html, name
+
+
+def _email(*urls):
+    return "".join(f'<a href="{u}">x</a>' for u in urls)
+
+
+def test_an_email_missing_either_link_is_refused():
+    only_form = je.check_body(_email(je.OPL_OWT_FORM_URL), compensation=None,
+                              start_date=None, entity=spec.OPL)
+    assert any("WhatsApp" in p for p in only_form)
+    only_chat = je.check_body(_email(je.WHATSAPP_URL), compensation=None,
+                              start_date=None, entity=spec.OPL)
+    assert any("submission form link is missing" in p for p in only_chat)
+
+
+def test_a_niete_hire_sent_the_opl_form_is_refused():
+    problems = je.check_body(_email(je.OPL_OWT_FORM_URL, je.WHATSAPP_URL),
+                             compensation=None, start_date=None, entity=spec.NIETE)
+    assert any("Another entity" in p for p in problems)
+
+
+def test_the_right_links_pass():
+    for entity in (spec.NIETE, spec.OPL, spec.OWT):
+        links = je.links_for(entity)
+        html = _email(links["ONBOARDING_FORM_URL"], links["WHATSAPP_GROUP_URL"])
+        assert je.check_body(html, compensation=None, start_date=None,
+                             entity=entity) == []
 
 
 def test_the_transition_email_carries_no_subject_of_its_own():

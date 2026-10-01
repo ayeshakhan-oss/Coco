@@ -221,7 +221,9 @@ def evaluate_contract(path: Path, doc_type: str):
 # ── Joining-email rules (locked verbatim by Ayesha 2026-08-13) ────────────────
 
 # The onboarding form differs by programme — sending the wrong one is a real error.
-FELLOW_FORM = "docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw"
+# OPL, OWT and OPL/OWT fellowships (was FELLOW_FORM; Ayesha 2026-10-01).
+OPL_OWT_FORM = "docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw"
+FELLOW_FORM = OPL_OWT_FORM  # old name, kept so existing imports keep working
 NIETE_FORM = "docs.google.com/forms/d/e/1FAIpQLSdVAYfCZZhusF_tNLn7mxzoK5BFXDa7xfj2FZifRlva-YDBHQ"
 WHATSAPP_GROUP = "chat.whatsapp.com/HglkfuENmLqEbaq8N5jSVq"
 
@@ -331,25 +333,31 @@ def evaluate_joining_email(body: str, attachments: list):
                 f"bold the joining date, compensation and duration"
             )
 
-    # Locked links must be present and hyperlinked, never bare.
-    if "click here" in low:
-        is_niete = "niete" in low
-        has_fellow_form = FELLOW_FORM in body
-        has_niete_form = NIETE_FORM in body
+    # 🔒 EVERY joining email carries both links (Ayesha 2026-10-01): the form
+    # for submitting the signed documents, and the all-employee WhatsApp group.
+    # This used to run only when the body said "click here", so Design 3
+    # emails, which use buttons, were never checked and the permanent-hire
+    # email went out with neither link. The form follows the ENTITY: NIETE
+    # (incl. NIETE fellowships) -> NIETE form; OPL / OWT (incl. their
+    # fellowships) -> OPL_OWT_FORM.
+    is_niete = "niete" in low
+    has_opl_owt_form = OPL_OWT_FORM in body
+    has_niete_form = NIETE_FORM in body
 
-        if not (has_fellow_form or has_niete_form):
-            blocks.append("joining email is missing the locked onboarding form link")
-        elif is_niete and not has_niete_form:
-            blocks.append(
-                "NIETE joining email is using the FELLOW onboarding form — NIETE "
-                "hires get the NIETE form"
-            )
-        elif not is_niete and not has_fellow_form:
-            blocks.append(
-                "non-NIETE joining email is using the NIETE onboarding form"
-            )
-        if WHATSAPP_GROUP not in body:
-            blocks.append("joining email is missing the locked WhatsApp group link")
+    if not (has_opl_owt_form or has_niete_form):
+        blocks.append("joining email is missing the signed-documents submission form link")
+    elif is_niete and not has_niete_form:
+        blocks.append(
+            "NIETE joining email is using the OPL/OWT form — NIETE hires and NIETE "
+            "fellows get the NIETE form"
+        )
+    elif not is_niete and not has_opl_owt_form:
+        blocks.append(
+            "non-NIETE joining email is using the NIETE form — OPL/OWT hires get "
+            "the OPL/OWT form"
+        )
+    if WHATSAPP_GROUP not in body:
+        blocks.append("joining email is missing the WhatsApp group link")
 
     return blocks, warns
 

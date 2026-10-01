@@ -19,17 +19,34 @@ Fellows. Sending a contract to a volunteer Fellow is a hard error.
 
 ---
 
-## Shared links
+## 🔒 The two links — EVERY joining email carries BOTH (Ayesha 2026-10-01)
 
-Always hyperlinked on the words **Click here** / **Click Here** — never paste the raw URL.
+1. **Submit your signed documents** — the form where the joiner uploads the signed contract,
+   signed NDA and their documents.
+2. **Join the WhatsApp group** — the all-employee group.
 
-| Link | URL |
+No joining email goes out without both, whatever the engagement (permanent, project-based,
+paid fellow, volunteer fellow, unpaid→paid transition). Plain-text templates hyperlink them on
+**Click here** / **Click Here**; Design 3 renders them as the two buttons. Never a bare URL.
+
+**🔒 The form follows the ENTITY, not the programme:**
+
+| Entity | Form |
 |---|---|
-| **Onboarding form — Fellows** (Templates 1–3) | `https://docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw/viewform?usp=sharing&ouid=108638480093303713396&urp=gmail_link` |
-| **🔒 Onboarding form — NIETE** (Template 4) | `https://docs.google.com/forms/d/e/1FAIpQLSdVAYfCZZhusF_tNLn7mxzoK5BFXDa7xfj2FZifRlva-YDBHQ/viewform` |
-| **WhatsApp group** (all templates) | `https://chat.whatsapp.com/HglkfuENmLqEbaq8N5jSVq` |
+| **NIETE** and **NIETE fellowships** | `https://docs.google.com/forms/d/e/1FAIpQLSdVAYfCZZhusF_tNLn7mxzoK5BFXDa7xfj2FZifRlva-YDBHQ/viewform` |
+| **OPL, OWT** and **OPL/OWT fellowships** (incl. permanent hires) | `https://docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw/viewform?usp=sharing&ouid=108638480093303713396&urp=gmail_link` |
+| **Inc.** | ⏳ none given. Ask Ayesha; never borrow another entity's form |
 
-⚠️ **The onboarding form differs by programme.** NIETE hires get the NIETE form, not the Fellow one.
+| WhatsApp group (all entities, all employees) | `https://chat.whatsapp.com/HglkfuENmLqEbaq8N5jSVq` |
+|---|---|
+
+⚠️ This replaces the old "Fellow form vs NIETE form" split, and the 2026-09-12 note that a
+permanent hire has no form: permanent OPL/OWT hires use the OPL/OWT form.
+🛡️ Enforced: `contract_docx_eval.evaluate_joining_email` HARD BLOCKS a missing form, a missing
+WhatsApp link, or the wrong entity's form (it used to check only emails that said "click here",
+so Design 3 button emails were never checked). Web app: `joining_email.links_for(entity)` +
+`check_body(..., entity=)`. Both Design 3 templates carry `{{ONBOARDING_FORM_URL}}` +
+`{{WHATSAPP_GROUP_URL}}`, so a missing link fails at render time.
 
 ---
 
@@ -159,7 +176,7 @@ Use In-Reply-To + References headers so it threads correctly.
 > If you have any questions or concerns, please don't hesitate to reach out to the HR team.
 
 **Attachments:** Contract **+** Permanent Employee NDA.
-**Uses the NIETE onboarding form**, not the Fellow one. WhatsApp link is the shared one.
+**Uses the NIETE form** (NIETE entity), not the OPL/OWT one. WhatsApp link is the shared one.
 **"A Few Important Things to Know:" must be bold**, and the three items beneath it are a
 **bulleted list** (`<ul><li>`), not plain paragraphs (Ayesha 2026-08-13).
 ⚠️ The returning-member sentence is **conditional** — always ask whether the person is returning.
@@ -206,4 +223,6 @@ Use In-Reply-To + References headers so it threads correctly.
 
 ## Still pending from Ayesha ⏳
 
-Permanent Full-Time joining · Part-Time joining · Addendum / promotion · Internal team-move.
+Part-Time joining · Addendum / promotion · Internal team-move.
+
+(Permanent Full-Time exists since 2026-09-12: `templates/permanent_joining_design3.html`, rendered by `scripts/contracts/send_gm_opl_joining.py`. Start date, no end date, 3-month probation. See memory/opl_permanent_contract_and_joining_email_2026_09_12.md.)

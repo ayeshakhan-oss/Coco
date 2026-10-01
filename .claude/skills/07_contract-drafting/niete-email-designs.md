@@ -103,7 +103,7 @@ clients that ignore background images fall back to flat navy, which is graceful.
 ## Constraints every design must respect
 
 1. **Wording is Template 4** — only presentation changes.
-2. **NIETE onboarding form**, not the Fellow form. Harness blocks a mismatch.
+2. **Both links, always:** the entity's signed-documents form (NIETE form for NIETE, OPL/OWT form for OPL/OWT) + the WhatsApp group. Buttons read "Submit your signed documents" / "Join the WhatsApp group". Harness blocks a missing link or a mismatch (Ayesha 2026-10-01).
 3. **Bold** the joining date, compensation, duration, designation, hours, probation.
 4. Table layout + inline CSS only. **No flexbox, no grid, no web fonts, no SVG** (Gmail).
 5. Icons are **CID-embedded PNGs** from `assets/email_icons/`; attach only those referenced.

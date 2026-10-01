@@ -53,7 +53,6 @@ SITUATIONS: dict[str, dict] = {
         "label": "Paid Fellowship",
         "template": "niete_joining_design3.html",
         "subject": "Welcome to Taleemabad - {role} Fellow",
-        "onboarding_form": "fellow",
         "attachments": "Contract and Non-Disclosure Agreement (NDA)",
         "project": "Fellowship",
     },
@@ -61,7 +60,6 @@ SITUATIONS: dict[str, dict] = {
         "label": "Volunteer Fellowship",
         "template": "niete_joining_design3.html",
         "subject": "Welcome to Taleemabad - {role} Fellow",
-        "onboarding_form": "fellow",
         "attachments": "Non-Disclosure Agreement (NDA)",
         "project": "Fellowship",
         # No compensation line at all for an unpaid fellowship.
@@ -74,7 +72,6 @@ SITUATIONS: dict[str, dict] = {
         # subject of its own.
         "subject": None,
         "in_thread": True,
-        "onboarding_form": "fellow",
         "attachments": "Contract",
         "project": "Fellowship",
     },
@@ -82,7 +79,6 @@ SITUATIONS: dict[str, dict] = {
         "label": "NIETE Coach",
         "template": "niete_joining_design3.html",
         "subject": "Congratulations {first_name} on Your Selection as a Coach for the NIETE Project!",
-        "onboarding_form": "niete",
         "attachments": "Contract and Non-Disclosure Agreement (NDA)",
         "project": "NIETE",
     },
@@ -90,10 +86,6 @@ SITUATIONS: dict[str, dict] = {
         "label": "Permanent Full-Time",
         "template": "permanent_joining_design3.html",
         "subject": "Welcome to Taleemabad, {first_name}!",
-        # 🔴 No onboarding form exists for a permanent hire. Only the Fellow
-        #    and NIETE forms exist, so this one links to neither rather than
-        #    sending someone to a form for a programme they are not on.
-        "onboarding_form": None,
         "attachments": "Contract and Non-Disclosure Agreement (NDA)",
         "project": None,
     },
@@ -105,11 +97,30 @@ NO_TEMPLATE = {
     spec.TEAM_MOVE: "Internal team move",
 }
 
+#: 🔒 Ayesha 2026-10-01: EVERY joining email carries two links, the form for
+#:    submitting the signed documents and the all-employee WhatsApp group.
+#:    The form is chosen by ENTITY, not by programme: NIETE and NIETE
+#:    fellowships get the NIETE form; OPL, OWT and OPL/OWT fellowships get the
+#:    other one. Inc. has no form yet and is refused rather than guessed.
+OPL_OWT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw/viewform?usp=sharing&ouid=108638480093303713396&urp=gmail_link"
+NIETE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdVAYfCZZhusF_tNLn7mxzoK5BFXDa7xfj2FZifRlva-YDBHQ/viewform"
 FORM_URLS = {
-    "fellow": "https://docs.google.com/forms/d/e/1FAIpQLSf70SM4jlx4muDMLlN1ZMqHqVEQjJQgCBga-oRM-M1OZXCePw/viewform?usp=sharing&ouid=108638480093303713396&urp=gmail_link",
-    "niete": "https://docs.google.com/forms/d/e/1FAIpQLSdVAYfCZZhusF_tNLn7mxzoK5BFXDa7xfj2FZifRlva-YDBHQ/viewform",
+    spec.NIETE: NIETE_FORM_URL,
+    spec.OPL: OPL_OWT_FORM_URL,
+    spec.OWT: OPL_OWT_FORM_URL,
 }
 WHATSAPP_URL = "https://chat.whatsapp.com/HglkfuENmLqEbaq8N5jSVq"
+
+
+def links_for(entity: str) -> dict:
+    """The two links every joining email carries, as Design 3 variables."""
+    if entity not in FORM_URLS:
+        raise JoiningEmailError(
+            f"There is no submission form for {entity!r} yet. Ayesha has given "
+            "the NIETE form and the OPL/OWT form only, and sending someone to "
+            "another entity's form is worse than asking."
+        )
+    return {"ONBOARDING_FORM_URL": FORM_URLS[entity], "WHATSAPP_GROUP_URL": WHATSAPP_URL}
 
 PILOT_RECIPIENT = "ayesha.khan@taleemabad.com"
 
@@ -150,9 +161,28 @@ _META = (
 
 
 def check_body(html: str, *, compensation: Optional[str],
-               start_date: Optional[str]) -> list[str]:
+               start_date: Optional[str], entity: Optional[str] = None) -> list[str]:
     """Every reason this email must not be sent. Empty means it may."""
     problems: list[str] = []
+
+    # Both links, and the RIGHT form for the entity (Ayesha 2026-10-01).
+    if entity is not None:
+        right = links_for(entity)["ONBOARDING_FORM_URL"]
+        wrong = {u for u in FORM_URLS.values() if u != right}
+        if _html.escape(right) not in (html or "") and right not in (html or ""):
+            problems.append(
+                f"The {entity} submission form link is missing. Every joining "
+                "email carries the form for the signed documents."
+            )
+        if any(u in (html or "") or _html.escape(u) in (html or "") for u in wrong):
+            problems.append(
+                f"Another entity's submission form is linked. {entity} hires use "
+                "their own entity's form."
+            )
+        if WHATSAPP_URL not in (html or ""):
+            problems.append(
+                "The WhatsApp group link is missing. Every joining email carries it."
+            )
     text = re.sub(r"<[^>]+>", " ", html or "")
 
     if _WEEKDAY.search(text):
