@@ -5,6 +5,14 @@
 
 ---
 
+## 🔴 Candidate Queue: "All" now means all (2026-10-05)
+
+- [The queue hid 216 of 416 CPD Coach candidates](lesson_queue_shows_every_candidate_2026_10_05.md) — "All" was a comms-only filter (151 hidden: new/hired/offer) AND a silent 200-row cap (65 more). Fixed for every position (`8cb9b14`, `3506f5b`): pages to the end, shows the count, every Markaz status labelled, an unknown one shows Markaz's own word. **A filter labelled All must be all; never cap a list without a count.**
+
+## ⏰ SMG decision promised by Fri 9 Oct (2026-10-02)
+
+- [SMG decision-pending follow-up](project_smg_decision_pending_followup_2026_10_02.md) — 6 candidates told "a decision by the end of next week" after we missed end-of-September. Junaid + Furqan excluded. Arshan chasing (other offers).
+
 ## 🔒 Contract Drafting on Railway (2026-10-01)
 
 - [Name the person, not the fields](contract_drafting_webapp_2026_10_01.md) — Skill 07 live at `/contracts`; 16 of 19 fields fill from Markaz + the offer thread, 3 of 3 on an NDA. Masters live in `coco.contract_masters`, never git; builds store no document and no field values.
