@@ -76,6 +76,14 @@ export function suggestedAction(row: QueueRow): string {
       return 'Case study sent'
     case 'awaiting_scorecard':
       return 'Awaiting decision'
+    case 'hired':
+      return 'Hired'
+    case 'offer':
+      return 'Offer made'
+    case 'withdrawn':
+      return 'Withdrew'
+    case 'not_screened':
+      return 'Screen CV'
     default:
       return 'Review'
   }

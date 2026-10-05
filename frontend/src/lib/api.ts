@@ -133,13 +133,22 @@ export const api = {
   stats: () => get<QueueStats>('/api/candidates/stats'),
   positions: () => get<PositionSummary[]>('/api/positions'),
   jobs: () => get<JobItem[]>('/api/jobs'),
-  candidates: (p: CandidateQuery = {}) => {
-    const qs = new URLSearchParams()
-    if (p.status) qs.set('status', p.status)
-    if (p.job != null) qs.set('job', String(p.job))
-    if (p.q) qs.set('q', p.q)
-    qs.set('limit', String(p.limit ?? 200))
-    return get<QueueRow[]>(`/api/candidates?${qs.toString()}`)
+  // Pages until a short page comes back, so the list is never silently cut.
+  // It used to stop at 200 with no count, which hid 65 CPD Coach candidates.
+  candidates: async (p: CandidateQuery = {}) => {
+    const pageSize = p.limit ?? 500
+    const rows: QueueRow[] = []
+    for (let offset = 0; ; offset += pageSize) {
+      const qs = new URLSearchParams()
+      if (p.status) qs.set('status', p.status)
+      if (p.job != null) qs.set('job', String(p.job))
+      if (p.q) qs.set('q', p.q)
+      qs.set('limit', String(pageSize))
+      qs.set('offset', String(offset))
+      const page = await get<QueueRow[]>(`/api/candidates?${qs.toString()}`)
+      rows.push(...page)
+      if (page.length < pageSize) return rows
+    }
   },
   candidate: (id: number) => get<ApplicationDetail>(`/api/candidates/${id}`),
   scorecard: (id: number) => get<ScorecardResponse>(`/api/candidates/${id}/scorecard`),

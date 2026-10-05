@@ -18,7 +18,7 @@ export function HomePage() {
   function onSearch(e: FormEvent) {
     e.preventDefault()
     const term = q.trim()
-    navigate(term ? `/queue?status=relevant&q=${encodeURIComponent(term)}` : '/queue')
+    navigate(term ? `/queue?status=all&q=${encodeURIComponent(term)}` : '/queue')
   }
 
   return (

@@ -11,6 +11,10 @@ const STATUS_STYLES: Record<DisplayStatus, { label: string; cls: string }> = {
   interview_scheduled: { label: 'Interview scheduled', cls: 'bg-blurple/15 text-blurple-600' },
   case_study: { label: 'Case study sent', cls: 'bg-blurple/15 text-blurple-600' },
   awaiting_scorecard: { label: 'Awaiting scorecard', cls: 'bg-elevated text-ink-dim' },
+  hired: { label: 'Hired', cls: 'bg-green/15 text-green' },
+  offer: { label: 'Offer', cls: 'bg-green/15 text-green' },
+  withdrawn: { label: 'Withdrawn', cls: 'bg-elevated text-ink-dim' },
+  not_screened: { label: 'Not screened', cls: 'bg-surface-2 text-ink-muted' },
   ignored: { label: 'Ignored', cls: 'bg-elevated text-ink-dim line-through decoration-ink-dim/40' },
 }
 

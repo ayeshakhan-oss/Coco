@@ -43,15 +43,21 @@ _BUCKETS = {
     "case_study",
     "awaiting_scorecard",
     "ignored",
+    "hired",
+    "offer",
+    "withdrawn",
+    "not_screened",
 }
 
 
 @router.get("/candidates", response_model=list[QueueRow])
 def list_candidates(
-    status_filter: str = Query("relevant", alias="status"),
+    # Default is EVERY candidate. "relevant" (comms-only) is still accepted for
+    # old links, but the page never hides people by default (Ayesha 2026-10-05).
+    status_filter: str = Query("all", alias="status"),
     job_pk: Optional[int] = Query(None, alias="job"),
     q: Optional[str] = Query(None),
-    limit: int = Query(100, le=500),
+    limit: int = Query(500, le=1000),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
     _user: dict = Depends(get_current_user),

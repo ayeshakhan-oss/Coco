@@ -29,7 +29,7 @@ import { EMAIL_TYPES } from '../lib/types'
 import type { GmailStatus, PositionSummary, QueueRow } from '../lib/types'
 
 type Filter =
-  | 'relevant'
+  | 'all'
   | 'needs_comms'
   | 'high_priority'
   | 'already_sent'
@@ -37,14 +37,20 @@ type Filter =
   | 'awaiting_scorecard'
   | 'needs_review'
   | 'ignored'
+  | 'hired'
+  | 'offer'
+  | 'not_screened'
 
 const FILTER_CHIPS: { key: Filter; label: string }[] = [
-  { key: 'relevant', label: 'All' },
+  { key: 'all', label: 'All' },
   { key: 'needs_comms', label: 'Needs comms' },
   { key: 'high_priority', label: 'High priority' },
   { key: 'already_sent', label: 'Sent' },
   { key: 'shortlisted', label: 'Shortlisted' },
   { key: 'awaiting_scorecard', label: 'Awaiting' },
+  { key: 'not_screened', label: 'Not screened' },
+  { key: 'offer', label: 'Offer' },
+  { key: 'hired', label: 'Hired' },
   { key: 'needs_review', label: 'Needs review' },
   { key: 'ignored', label: 'Ignored' },
 ]
@@ -151,7 +157,7 @@ function PositionsView() {
       {positionsQuery.isLoading ? (
         <Spinner label="Loading positions…" />
       ) : !positionsQuery.data?.length ? (
-        <div className="card p-12 text-center text-sm text-ink-dim">No positions with comms-relevant candidates yet.</div>
+        <div className="card p-12 text-center text-sm text-ink-dim">No positions with applications yet.</div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {positionsQuery.data.map((p) => (
@@ -183,6 +189,7 @@ function PositionCard({ p, onClick }: { p: PositionSummary; onClick: () => void 
         {p.shortlisted > 0 && <span className="text-violet">{p.shortlisted} shortlisted</span>}
         {p.awaiting_scorecard > 0 && <span className="text-ink-dim">{p.awaiting_scorecard} awaiting</span>}
       </div>
+      <div className="mt-2 pl-10 text-xs text-ink-muted">{p.total} candidate{p.total === 1 ? '' : 's'} in total</div>
       <div className="mt-3 pl-10 text-[11px] text-ink-dim">Gmail synced {relativeTime(p.last_gmail_sync_at)}</div>
     </button>
   )
@@ -196,7 +203,7 @@ function CandidatesView({ job }: { job: number | null }) {
   const meQ = useQuery({ queryKey: ['me'], queryFn: api.me, retry: false })
   const role = meQ.data?.app_role
   const global = job == null
-  const bucket = ((params.get('status') as Filter) || 'relevant') as Filter
+  const bucket = ((params.get('status') as Filter) || 'all') as Filter
   const [match, setMatch] = useState<{ appId: number; name: string } | null>(null)
   const [selected, setSelected] = useState<Set<number>>(new Set())
   const bulk = useBulk()
@@ -226,7 +233,7 @@ function CandidatesView({ job }: { job: number | null }) {
 
   function setBucket(next: Filter) {
     const p = new URLSearchParams(params)
-    if (next === 'relevant' && !global) p.delete('status')
+    if (next === 'all' && !global) p.delete('status')
     else p.set('status', next)
     setParams(p, { replace: true })
   }
@@ -304,6 +311,11 @@ function CandidatesView({ job }: { job: number | null }) {
             </button>
           ))}
         </div>
+        {!candidatesQuery.isLoading && !candidatesQuery.isError && (
+          <span className="text-sm text-ink-dim">
+            {rows.length} candidate{rows.length === 1 ? '' : 's'}
+          </span>
+        )}
         <div className="relative ml-auto">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-dim" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name or email…" className="input h-9 w-64 pl-9" />
@@ -448,6 +460,10 @@ const BORDER_TONE: Record<string, string> = {
   case_study: 'border-l-blurple',
   awaiting_scorecard: 'border-l-ink-dim',
   ignored: 'border-l-ink-dim',
+  hired: 'border-l-green',
+  offer: 'border-l-green',
+  withdrawn: 'border-l-ink-dim',
+  not_screened: 'border-l-ink-dim',
 }
 
 function Row({

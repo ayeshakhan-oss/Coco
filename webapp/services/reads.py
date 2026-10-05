@@ -121,6 +121,11 @@ _STAGE_DISPLAY = {
     "shortlisted": "shortlisted",
     "gwc_scheduled": "interview_scheduled",
     "case_study_sent": "case_study",
+    "hired": "hired",
+    "offer": "offer",
+    "withdrawn": "withdrawn",
+    "new": "not_screened",
+    "applied": "not_screened",
 }
 
 
@@ -262,6 +267,12 @@ displayed AS (
       WHEN status = 'shortlisted' THEN 'shortlisted'
       WHEN status = 'gwc_scheduled' THEN 'interview_scheduled'
       WHEN status = 'case_study_sent' THEN 'case_study'
+      -- Every Markaz status gets its own label: "All" shows everyone, and a hire
+      -- or an unscreened applicant labelled "Awaiting scorecard" is false data.
+      WHEN status = 'hired' THEN 'hired'
+      WHEN status = 'offer' THEN 'offer'
+      WHEN status = 'withdrawn' THEN 'withdrawn'
+      WHEN status IN ('new','applied') THEN 'not_screened'
       ELSE 'awaiting_scorecard'
     END AS display_status
   FROM flagged
@@ -333,8 +344,10 @@ LIMIT :limit OFFSET :offset
 
 
 def positions_summary(db: Session) -> list[dict]:
-    """Per-position rollup for the queue's top level: positions with at least one
-    comms-relevant candidate, with display-status counts + last Gmail sync."""
+    """Per-position rollup for the queue's top level: EVERY position with at least
+    one application, with display-status counts + last Gmail sync. `total` counts
+    every application, not only the comms-relevant ones (Ayesha 2026-10-05:
+    "it should show all regardless of anything otherwise we have false data")."""
     sql = _ENRICHED_CTE + """
 SELECT job_pk, job_code, job_title,
   count(*) FILTER (WHERE display_status IN ('needs_comms','high_priority')) AS needs_comms,
@@ -348,7 +361,6 @@ SELECT job_pk, job_code, job_title,
   count(*) AS total,
   max(evidence_checked_at) AS last_gmail_sync_at
 FROM displayed
-WHERE comms_relevant
 GROUP BY job_pk, job_code, job_title
 ORDER BY high_priority DESC, needs_comms DESC, total DESC
 """

@@ -190,3 +190,33 @@ def test_high_priority_requires_all_conditions():
     assert _hp(ignored=True) is False  # dismissed
     assert _hp(days_waiting=None) is False  # no clock
     assert _hp(markaz_comms=1) is False  # a Markaz email exists -> communicated
+
+
+# ── every Markaz status has its own label (Ayesha 2026-10-05) ────────────────
+# "All" shows every candidate; a hire or an unscreened applicant must not read
+# as "Awaiting scorecard", which would be false data.
+
+def test_each_undecided_markaz_status_gets_its_own_label():
+    expected = {
+        "hired": "hired",
+        "offer": "offer",
+        "withdrawn": "withdrawn",
+        "new": "not_screened",
+        "applied": "not_screened",
+        "shortlisted": "shortlisted",
+        "gwc_scheduled": "interview_scheduled",
+        "case_study_sent": "case_study",
+    }
+    for status, label in expected.items():
+        assert _d(status=status) == label, status
+
+
+def test_a_deliberate_send_still_wins_over_the_stage_label():
+    assert _d(status="hired", sent_count=1) == "sent"
+
+
+def test_the_sql_and_python_stage_maps_agree():
+    from webapp.services import reads
+    for status, label in reads._STAGE_DISPLAY.items():
+        assert f"'{label}'" in reads._ENRICHED_CTE, label
+        assert f"'{status}'" in reads._ENRICHED_CTE, status

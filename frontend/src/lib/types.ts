@@ -8,6 +8,10 @@ export type DisplayStatus =
   | 'shortlisted'
   | 'interview_scheduled'
   | 'case_study'
+  | 'hired'
+  | 'offer'
+  | 'withdrawn'
+  | 'not_screened'
 export type GmailStatus = 'not_checked' | 'none' | 'found' | 'uncertain'
 
 export interface CurrentUser {
