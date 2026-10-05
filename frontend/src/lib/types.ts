@@ -12,6 +12,7 @@ export type DisplayStatus =
   | 'offer'
   | 'withdrawn'
   | 'not_screened'
+  | 'unrecognised'
 export type GmailStatus = 'not_checked' | 'none' | 'found' | 'uncertain'
 
 export interface CurrentUser {

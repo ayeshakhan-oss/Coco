@@ -464,6 +464,7 @@ const BORDER_TONE: Record<string, string> = {
   offer: 'border-l-green',
   withdrawn: 'border-l-ink-dim',
   not_screened: 'border-l-ink-dim',
+  unrecognised: 'border-l-ink-dim',
 }
 
 function Row({
@@ -507,7 +508,7 @@ function Row({
         </td>
       )}
       <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
-        <StatusBadge status={row.display_status} />
+        <StatusBadge status={row.display_status} raw={row.status} />
       </td>
       <td className="cursor-pointer px-5 py-3" onClick={onOpen}>
         {row.days_waiting != null ? (

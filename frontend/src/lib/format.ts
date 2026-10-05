@@ -84,6 +84,8 @@ export function suggestedAction(row: QueueRow): string {
       return 'Withdrew'
     case 'not_screened':
       return 'Screen CV'
+    case 'unrecognised':
+      return 'Check status in Markaz'
     default:
       return 'Review'
   }

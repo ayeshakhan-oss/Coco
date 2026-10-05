@@ -15,15 +15,19 @@ const STATUS_STYLES: Record<DisplayStatus, { label: string; cls: string }> = {
   offer: { label: 'Offer', cls: 'bg-green/15 text-green' },
   withdrawn: { label: 'Withdrawn', cls: 'bg-elevated text-ink-dim' },
   not_screened: { label: 'Not screened', cls: 'bg-surface-2 text-ink-muted' },
+  unrecognised: { label: 'Other', cls: 'bg-surface-2 text-ink-muted' },
   ignored: { label: 'Ignored', cls: 'bg-elevated text-ink-dim line-through decoration-ink-dim/40' },
 }
 
-export function StatusBadge({ status }: { status?: DisplayStatus | null }) {
+// `raw` is the Markaz status. A status we have no label for shows Markaz's own
+// word rather than being guessed into one of ours.
+export function StatusBadge({ status, raw }: { status?: DisplayStatus | null; raw?: string | null }) {
   const s = STATUS_STYLES[status ?? 'awaiting_scorecard'] ?? STATUS_STYLES.awaiting_scorecard
+  const label = status === 'unrecognised' && raw ? raw.replace(/_/g, ' ') : s.label
   return (
     <span className={`chip ${s.cls}`}>
       <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
-      {s.label}
+      {label}
     </span>
   )
 }

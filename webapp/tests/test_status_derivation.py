@@ -220,3 +220,9 @@ def test_the_sql_and_python_stage_maps_agree():
     for status, label in reads._STAGE_DISPLAY.items():
         assert f"'{label}'" in reads._ENRICHED_CTE, label
         assert f"'{status}'" in reads._ENRICHED_CTE, status
+
+
+def test_a_status_markaz_adds_later_is_never_guessed_into_one_of_ours():
+    assert _d(status="on_hold") == "unrecognised"
+    assert _d(status="P2") == "awaiting_scorecard"
+    assert _d(status=None) == "awaiting_scorecard"

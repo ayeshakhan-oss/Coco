@@ -160,8 +160,14 @@ def derive_display_status(
         return "high_priority"
     if comm_required:
         return "needs_comms"
-    # Not decided yet -> mirror the Markaz pipeline stage.
-    return _STAGE_DISPLAY.get(status or "", "awaiting_scorecard")
+    # Not decided yet -> mirror the Markaz pipeline stage. A status we have no
+    # label for is 'unrecognised' (shown as Markaz's own word), never guessed.
+    if status in _STAGE_DISPLAY:
+        return _STAGE_DISPLAY[status]
+    if status in (None, "", "P2"):
+        return "awaiting_scorecard"
+    return "unrecognised"
+
 
 
 # ── Shared CTE chain ─────────────────────────────────────────────────────────
@@ -273,7 +279,10 @@ displayed AS (
       WHEN status = 'offer' THEN 'offer'
       WHEN status = 'withdrawn' THEN 'withdrawn'
       WHEN status IN ('new','applied') THEN 'not_screened'
-      ELSE 'awaiting_scorecard'
+      WHEN status IS NULL OR status IN ('', 'P2') THEN 'awaiting_scorecard'
+      -- A status Markaz adds later is shown as Markaz's own word (the page reads
+      -- the raw `status`), never guessed into one of ours.
+      ELSE 'unrecognised'
     END AS display_status
   FROM flagged
 )

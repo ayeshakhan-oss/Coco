@@ -65,7 +65,7 @@ export function ApplicationDetailPage() {
             <span>{d.job_title}</span>
             {d.job_code && <Pill tone="slate">{d.job_code}</Pill>}
             {d.status && <Pill tone="brand">{d.status}</Pill>}
-            {d.display_status && <StatusBadge status={d.display_status} />}
+            {d.display_status && <StatusBadge status={d.display_status} raw={d.status} />}
           </div>
         </div>
         {mayDraft && (
@@ -96,7 +96,7 @@ export function ApplicationDetailPage() {
           <Card title="Communication status">
             <div className="space-y-3 text-sm">
               <div className="flex flex-wrap items-center gap-2">
-                <StatusBadge status={d.display_status} />
+                <StatusBadge status={d.display_status} raw={d.status} />
                 {d.days_waiting != null && (
                   <span className="inline-flex items-center gap-1 text-xs text-ink-dim">
                     <Clock className="h-3.5 w-3.5" /> {d.days_waiting} days since applied
