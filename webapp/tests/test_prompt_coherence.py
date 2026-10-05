@@ -137,6 +137,7 @@ def _stage_prompts() -> dict:
         "review": d._REVIEWER_SYSTEM,
         "translate": d._TRANSLATOR_SYSTEM,
         "plan": d.PLANNER_SYSTEM,
+        "expand": d._EXPANDER_SYSTEM,
     }
     for email_type in EMAIL_TYPES:
         prompts[f"write:{email_type}"] = t.system_prompt(email_type)
@@ -166,7 +167,8 @@ def test_no_stage_prompt_escapes_these_checks():
         name for name, value in vars(d).items()
         if name.endswith("_SYSTEM") and isinstance(value, str)
     }
-    registered = {"_REVIEWER_SYSTEM", "_TRANSLATOR_SYSTEM", "PLANNER_SYSTEM"}
+    registered = {"_REVIEWER_SYSTEM", "_TRANSLATOR_SYSTEM", "PLANNER_SYSTEM",
+                  "_EXPANDER_SYSTEM"}
     assert declared == registered, (
         f"unregistered system prompt(s): {sorted(declared - registered)}. "
         f"Add them to _stage_prompts() so the coherence rules apply to them too."

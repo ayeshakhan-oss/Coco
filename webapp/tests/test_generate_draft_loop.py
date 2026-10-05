@@ -84,6 +84,9 @@ class _ScriptedDrafter:
             self.stages.append("review")
             self.review_calls += 1
             return {"edits": []}
+        if "ADD NEW PARAGRAPHS ONLY" in system:
+            self.stages.append("expand")
+            return {"additions": []}
         if "translate a hiring manager" in system.lower():
             self.stages.append("translate")
             return {"rationale": "We could not establish government experience."}
@@ -144,6 +147,9 @@ def test_a_blocked_draft_is_REPAIRED_not_redrafted(monkeypatch):
             if "ONLY THE SENTENCES YOU ARE CHANGING" in system:
                 self.review_calls += 1
                 return {"edits": []}
+            if "ADD NEW PARAGRAPHS ONLY" in system:
+                # An expander that adds nothing: the letter stays short.
+                return {"additions": []}
             if "translate a hiring manager" in system.lower():
                 return {"rationale": "clean rationale"}
             if "You are NOT writing it" in system:
@@ -171,6 +177,101 @@ def test_a_blocked_draft_is_REPAIRED_not_redrafted(monkeypatch):
         f"attempts 2+ redrafted instead of repairing (draft_calls={d.draft_calls})"
     )
     assert out.get("retries_exhausted") is True
+
+
+ROLE_PARA = (
+    "For this role, much of the work happens alongside teachers in their own "
+    "classrooms, over many months, and the progress is slow and easy to miss. "
+    "What we needed to see was a record of carrying that kind of work through "
+    "to the point where it holds without us in the room. That matters to us "
+    "because the people who depend on this role are teachers who have been "
+    "promised support before, and the trust is built only by staying with them. "
+    "This is the standard we hold the role to, and it is where our decision "
+    "landed."
+)
+
+
+def test_a_short_draft_is_EXPANDED_past_the_floor(monkeypatch):
+    """2026-10-05: every warm bench after the planning stage came out under 800
+    (751, 778, 519), and the sentence-repair retries could never add the
+    missing words. A short draft must now be lengthened, not handed back."""
+    class _Short(_ScriptedDrafter):
+        expand_calls = 0
+        expand_user = None
+
+        def draft(self, *, system, user, email_type, first_name, role,
+                  prior_violations=None, attempt=0):
+            if "ADD NEW PARAGRAPHS ONLY" in system:
+                self.expand_calls += 1
+                self.expand_user = user
+                return {"additions": [{"section": 2, "paragraph": ROLE_PARA}] * 6}
+            return super().draft(system=system, user=user, email_type=email_type,
+                                 first_name=first_name, role=role,
+                                 prior_violations=prior_violations, attempt=attempt)
+
+    d = _Short(paragraphs=2)
+    monkeypatch.setattr(drafting, "get_drafter", lambda: d)
+    out = drafting.generate_draft(
+        scorecard=SCORECARD, first_name="Abdul", role="Growth Manager - Lahore",
+        app_id=None, email_type="warm_bench",
+    )
+    rules = [v["rule"] for v in out["eval"]["violations"] if v["severity"] == "HARD_BLOCK"]
+    assert d.expand_calls >= 1, "a short draft was never expanded"
+    assert not any(r.startswith("Word count minimum") for r in rules), (
+        f"still short after expansion: {out['eval']['word_count']} words"
+    )
+    assert d.draft_calls == 1, "expansion must lengthen the letter, not redraft it"
+    # The expander works from the plan's gap, never from the excluded evidence.
+    assert "intensive care" not in d.expand_user
+    assert GOOD_PLAN["central_gap"] in d.expand_user
+
+
+def test_expand_pass_keeps_every_existing_sentence():
+    content = {
+        "greeting": "Dear Abdul,",
+        "opening": ["This is not a yes for now.", "First."],
+        "sections": [{"subhead": None, "paragraphs": ["A."]},
+                     {"subhead": None, "paragraphs": ["B."]},
+                     {"subhead": None, "paragraphs": ["Close."]}],
+        "ps": "P.",
+    }
+
+    class _D:
+        def draft(self, **kw):
+            return {"additions": [{"section": 2, "paragraph": "New one."},
+                                  {"section": 99, "paragraph": "Clamped."},
+                                  {"section": 1, "paragraph": "  "},
+                                  {"section": 1, "paragraph": "When you spoke, it was right."},
+                                  {"section": 1, "paragraph": "Your answer was clear."}]}
+
+    out, status = drafting._expand_pass(_D(), content, email_type="warm_bench",
+                                        first_name="Abdul", role="R", plan=None,
+                                        words_needed=300)
+    assert status == "applied"
+    assert out["sections"][0]["paragraphs"] == ["A."]
+    # Section 99 is clamped to the last NON-closing section.
+    assert out["sections"][1]["paragraphs"] == ["B.", "New one.", "Clamped."]
+    assert out["sections"][2]["paragraphs"] == ["Close."], "the close was touched"
+    assert content["sections"][1]["paragraphs"] == ["B."], "input was mutated"
+
+
+def test_expand_pass_drops_any_paragraph_about_the_candidate():
+    """The expander never saw the interview. On Haiku it wrote "you described
+    it as a sustained relationship", which she never said."""
+    content = {"greeting": "Dear A,", "opening": ["This is not a yes for now."],
+               "sections": [{"subhead": None, "paragraphs": ["A."]},
+                            {"subhead": None, "paragraphs": ["Close."]}], "ps": ""}
+
+    class _D:
+        def draft(self, **kw):
+            return {"additions": [{"section": 1, "paragraph": "You described it well."},
+                                  {"section": 1, "paragraph": "We know YOU'RE capable."}]}
+
+    out, status = drafting._expand_pass(_D(), content, email_type="warm_bench",
+                                        first_name="A", role="R", plan=None,
+                                        words_needed=300)
+    assert status == "skipped"
+    assert out is content
 
 
 def test_a_dead_model_yields_a_scaffold_not_a_crash(monkeypatch):

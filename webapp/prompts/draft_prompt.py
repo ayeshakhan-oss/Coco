@@ -340,6 +340,11 @@ absence from it):
         "it is not ours to repeat. Do not reach for other material, do not allude "
         "to it, and do not let it shape the subject line. The tag in brackets is "
         "the section each moment belongs in: use each one ONCE, in that section. "
-        "Name one gap only, the one below."
+        "Name one gap only, the one below. "
+        "The list is short on purpose, and the letter must STILL reach the full "
+        "length. Get there by telling each moment properly and by explaining "
+        "what this role involves, what we needed to see and why it matters to "
+        "Taleemabad. Never get there by adding moments, or by adding detail "
+        "that is not in the list."
     )
     return header, evidence

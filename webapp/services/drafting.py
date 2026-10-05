@@ -911,6 +911,187 @@ def _review_pass(drafter, content: dict, *, email_type: str, first_name: str,
         return content, f"failed: {type(exc).__name__}"
 
 
+_EXPANDER_SYSTEM = """
+You are lengthening a candidate letter that came out too short. You are not
+rewriting it and you are not reviewing it. ADD NEW PARAGRAPHS ONLY. Every
+sentence already in the letter stays exactly as it is.
+
+WHY THIS EXISTS
+The letter is written from a deliberately short list of moments, so the writer
+often stops early. A short letter reads as if we did not take the time. The
+missing length must come from EXPLAINING OUR DECISION, never from adding more
+about the candidate.
+
+THE ONE RULE THAT MATTERS MOST
+New paragraphs are about THE ROLE and OUR DECISION. They do not describe the
+candidate at all: not what they said, not what they did, not how they think,
+not what they described. The candidate's moments are already in the letter and
+are told there. You never saw the interview, so anything you write about the
+candidate is invented. A new paragraph should read true for this role whoever
+the candidate was.
+
+WHAT A NEW PARAGRAPH MAY SAY
+- What this role actually involves day to day, and why that work matters to
+  Taleemabad and to the teachers, schools and children it serves.
+- What we needed to see for this role, the bar we hold, and why we hold it.
+- Why a decision like this is hard for us, and that it is a statement about
+  what the role needs, not about the person.
+
+WHAT A NEW PARAGRAPH MUST NEVER DO
+- Use the words "you" or "your" at all. A paragraph containing either is
+  discarded automatically. Write about the role, the work and "we".
+- Grade what was said ("that was right", "the definition was sound") or say
+  what it told us about how they think.
+- Describe what we were "listening for" or "looking for", or list the things
+  we did not hear ("whether you have... whether you can..."). That is a
+  checklist for their next interview.
+- Frame anything as useful to them "going forward", "next time" or "as you
+  think about this work".
+- Invent a fact about Taleemabad: no figures, results, programme names,
+  partners or claims you were not given. Speak about the work in general terms.
+- Coach them, suggest what to learn, build or do next, or point them toward
+  other roles or paths.
+- Grade an answer, list what they failed to show, or judge who they are.
+- Promise to contact them, keep their details, or stay in touch.
+- Use quotation marks, "I", "me" or "my", or em dashes. Speak as "we".
+- Name a second reason for the decision. There is one gap, and it is already
+  in the letter.
+__NO_INTERACTION__
+Each paragraph is 80 to 130 words of plain, warm prose. No headings, no lists.
+
+WHAT TO RETURN
+Return ONLY valid JSON:
+{"additions": [
+   {"section": <the SECTION number shown in the letter>,
+    "paragraph": "<the new paragraph>"}
+]}
+"""
+
+_CV_NO_INTERACTION = (
+    "- This is an APPLICATION-stage letter. There was NO interview, call, "
+    "conversation or meeting. Never mention or imply one. Speak only about the "
+    "written application."
+)
+
+_ADDRESSES_CANDIDATE = re.compile(r"\b(you|your|you're|you've|yours|yourself)\b", re.I)
+
+# The margin above the floor that an expansion aims for, so one short paragraph
+# from the model does not leave the letter a handful of words under.
+_EXPAND_MARGIN = 80
+
+
+def _expand_pass(drafter, content: dict, *, email_type: str, first_name: str,
+                 role: str, plan: Optional[dict], words_needed: int) -> tuple:
+    """Add paragraphs to a letter that is under the word-count floor.
+
+    The repair pass edits sentences in place and cannot grow a letter by three
+    hundred words, so after the planning stage (which hands the writer at most
+    four moments) a short first draft stayed short through every retry. Every
+    warm bench drafted after 19 Sep 2026 came out under 800.
+
+    The new text comes from explaining the role and our bar, never from new
+    material about the candidate: the planner's selection stays the only
+    evidence. The added paragraphs then go through the full eval and the
+    semantic review like any other text.
+
+    Returns (content, status). status is "applied", "skipped" or "failed: ...".
+    """
+    import copy
+    import math
+
+    sections = [s for s in (content.get("sections") or []) if isinstance(s, dict)]
+    if not sections or words_needed <= 0:
+        return content, "skipped"
+    headings = SECTION_HEADINGS.get(email_type, {}).get("required", [])
+
+    parts = [content.get("greeting", "")]
+    parts += [p for p in (content.get("opening") or []) if p]
+    for n, sec in enumerate(sections, start=1):
+        heading = sec.get("subhead") or (headings[n - 1] if n - 1 < len(headings) else "")
+        parts.append(f"[SECTION {n}{': ' + heading if heading else ''}]")
+        parts += [p for p in (sec.get("paragraphs") or []) if p]
+    if content.get("ps"):
+        parts.append("P.S. " + content["ps"])
+
+    target = words_needed + _EXPAND_MARGIN
+    count = max(2, math.ceil(target / 100))
+    user = (
+        f"Candidate first name: {first_name}\nRole: {role}\n\n"
+        f"This letter is {words_needed} words short of the minimum. Add {count} "
+        f"new paragraphs, about {target} words in total, spread across "
+        f"SECTION 1 to SECTION {max(1, len(sections) - 1)}. The final section "
+        f"is the close and stays as it is.\n\n"
+    )
+    if plan:
+        gap = (plan.get("central_gap") or "").strip()
+        why = (plan.get("why_the_requirement_matters") or "").strip()
+        if gap:
+            user += f"THE ONE THING THE DECISION TURNED ON:\n{gap}\n\n"
+        if why:
+            user += f"WHY THE ROLE NEEDS IT:\n{why}\n\n"
+    user += "THE LETTER:\n\n" + "\n\n".join(parts)
+
+    system = _EXPANDER_SYSTEM.replace(
+        "__NO_INTERACTION__", _CV_NO_INTERACTION if email_type == "cv_rejection" else ""
+    )
+    try:
+        reply = drafter.draft(
+            system=system, user=user, email_type=email_type,
+            first_name=first_name, role=role, prior_violations=None, attempt=0,
+        )
+    except Exception as exc:  # noqa: BLE001 - never lose a draft to the expander
+        log.warning("Expand pass failed (%s); keeping the draft.", exc)
+        return content, f"failed: {type(exc).__name__}"
+
+    additions = reply.get("additions") if isinstance(reply, dict) else None
+    if not isinstance(additions, list):
+        return content, "failed: the expander returned an unusable shape"
+
+    out = copy.deepcopy(content)
+    out_sections = [s for s in (out.get("sections") or []) if isinstance(s, dict)]
+    # Never into the closing section: on Haiku that is where added text drifted
+    # into future roles and "who you are". The closing stays as written.
+    last = max(0, len(out_sections) - 2)
+    added = rejected = 0
+    for item in additions:
+        if not isinstance(item, dict):
+            continue
+        para = item.get("paragraph")
+        if not isinstance(para, str) or not para.strip():
+            continue
+        # The expander never saw the interview. Any sentence it writes about
+        # the candidate is invented, so a paragraph that addresses them is
+        # dropped outright. Measured on Haiku with the rule only in the prompt:
+        # it put words in the candidate's mouth, graded the answer and listed
+        # what we did not hear. A filter cannot be talked round.
+        if _ADDRESSES_CANDIDATE.search(para):
+            rejected += 1
+            continue
+        try:
+            idx = int(item.get("section", 1)) - 1
+        except (TypeError, ValueError):
+            idx = 0
+        idx = min(max(idx, 0), last)
+        out_sections[idx].setdefault("paragraphs", []).append(para.strip())
+        added += 1
+    if rejected:
+        log.warning("Expand pass: %d paragraph(s) discarded for addressing the "
+                    "candidate.", rejected)
+    if not added:
+        return content, "skipped"
+    log.info("Expand pass: %d paragraph(s) added for a %d-word shortfall.", added, words_needed)
+    return _normalize_content(out), "applied"
+
+
+def _word_shortfall(result: dict) -> int:
+    """Words missing from the floor, 0 when the letter is long enough."""
+    if not any(v["rule"].startswith("Word count minimum")
+               for v in result.get("violations", []) if v["severity"] == "HARD_BLOCK"):
+        return 0
+    minimum = result.get("word_minimum") or 0
+    return max(0, minimum - (result.get("word_count") or 0))
+
+
 _TRANSLATOR_SYSTEM = """You translate a hiring manager's PRIVATE interview note
 into neutral decision rationale that is safe to build a candidate letter on.
 
@@ -1185,7 +1366,25 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
     for attempt in range(MAX_ATTEMPTS):
         repaired_this_attempt = False
         try:
-            if attempt == 0 or best is None:
+            shortfall = _word_shortfall(best["eval"]) if best is not None else 0
+            expanded = None
+            if attempt > 0 and best is not None and shortfall:
+                # TOO SHORT. A sentence repair cannot add three hundred words,
+                # so lengthen the letter we have with paragraphs explaining the
+                # role and our bar. The review pass below then judges the new
+                # text like any other (repaired_this_attempt stays False).
+                expanded, expand_status = _expand_pass(
+                    drafter, best["content"], email_type=email_type,
+                    first_name=first_name, role=role, plan=plan,
+                    words_needed=shortfall,
+                )
+                log.info("Attempt %d: expanding a letter %d words short (%s).",
+                         attempt + 1, shortfall, expand_status)
+                if expanded is best["content"]:
+                    expanded = None
+            if expanded is not None:
+                content = expanded
+            elif attempt == 0 or best is None:
                 content = drafter.draft(
                     system=system, user=user, email_type=email_type,
                     first_name=first_name, role=role, prior_violations=prior,
@@ -1306,7 +1505,12 @@ def generate_draft(*, scorecard: Optional[dict], first_name: str, role: str, app
         def _hard_count(r):
             return sum(1 for v in r["violations"] if v["severity"] == "HARD_BLOCK")
 
-        if best is None or _hard_count(result) < _hard_count(best["eval"]):
+        # On a tie, the letter nearer the word floor wins, so a partial
+        # expansion is built on next time rather than thrown away.
+        def _rank(r):
+            return (_hard_count(r), _word_shortfall(r))
+
+        if best is None or _rank(result) < _rank(best["eval"]):
             best = candidate
         # An empty scaffold can never satisfy the 800-word rule; retrying would
         # just burn two more failing calls. Stop and let the human write it.
