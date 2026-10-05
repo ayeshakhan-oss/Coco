@@ -1,0 +1,19 @@
+# Who must approve changes to the parts of Coco that are locked.
+# Owners: Ayesha, plus Aymen Abid and Jawwad Ali (add their GitHub usernames
+# on the lines below once known, e.g. "@ayeshakhan-oss @aymen-gh @jawwad-gh").
+
+# Locked candidate-communication rules and layout
+CLAUDE.md                                                   @ayeshakhan-oss
+memory/CANDIDATE_COMMUNICATION_TONE_PHILOSOPHY_LOCKED.md    @ayeshakhan-oss
+scripts/utils/v8_template.py                                @ayeshakhan-oss
+scripts/evals/                                              @ayeshakhan-oss
+webapp/prompts/tone_rules.py                                @ayeshakhan-oss
+
+# CV Screening and Technical Screening never merge (CLAUDE.md Rule 33)
+webapp/tests/test_screening_skills_stay_separate.py         @ayeshakhan-oss
+
+# What ships to production, and the database
+Dockerfile                                                  @ayeshakhan-oss
+alembic/                                                    @ayeshakhan-oss
+.github/                                                    @ayeshakhan-oss
+.claude/settings.json                                       @ayeshakhan-oss

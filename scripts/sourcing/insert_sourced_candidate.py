@@ -25,11 +25,13 @@ import psycopg2
 from datetime import datetime
 
 # Database connection
-DB_CONN = "postgresql://neondb_owner:npg_kBQ10OASHEmd@ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 # Audit logging
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "utils"))
 from audit_log import log_db_query
+from db import database_url
+
+DB_CONN = database_url()
 
 
 def insert_sourced_candidate(

@@ -75,3 +75,6 @@ scripts/send_assessment_center_cpd_coach_batch.py
 # HR contract documents (PII — never track)
 Contracts/
 
+
+# PER-PERSON SESSION SCRATCHPAD (rewritten every session by the hooks; never shared)
+memory/session_active.md

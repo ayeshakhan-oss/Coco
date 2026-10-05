@@ -1,0 +1,43 @@
+name: tests
+
+# Every pull request, and every push to main. A merge to main deploys to
+# production on Railway, so this is the last check before the live app.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"   # matches the Dockerfile
+          cache: pip
+      - run: pip install -r requirements.txt -r webapp/requirements.txt pytest
+      # No DATABASE_URL here on purpose: tests that need the live schema skip
+      # themselves, and nothing in CI can reach production data.
+      #
+      # test_ddl_guard runs on its own: without a database it fails when it
+      # runs after certain other tests (shared app/engine state), and passes
+      # alone and with a database. Separate runs keep it a real check.
+      - run: python -m pytest webapp/tests/test_ddl_guard.py -q
+      - run: python -m pytest webapp/tests -q --ignore=webapp/tests/test_ddl_guard.py
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"       # matches the Dockerfile
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test

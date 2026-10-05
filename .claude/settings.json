@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:/Agent Coco/scripts/memory/session_stop_hook.py\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/memory/session_stop_hook.py\""
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:/Agent Coco/scripts/memory/prompt_submit_hook.py\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/memory/prompt_submit_hook.py\""
           }
         ]
       }
@@ -28,11 +28,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:/Agent Coco/scripts/hooks/pre_send_validation_hook.py\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/pre_send_validation_hook.py\""
           },
           {
             "type": "command",
-            "command": "python \"C:/Agent Coco/scripts/hooks/pre_contract_send_hook.py\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/pre_contract_send_hook.py\""
           }
         ]
       }

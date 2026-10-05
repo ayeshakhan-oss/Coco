@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from datetime import date
 
-MEMORY_DIR = Path("c:/Agent Coco/memory")
+MEMORY_DIR = Path(__file__).resolve().parents[2] / "memory"
 LESSONS_FILE = MEMORY_DIR / "lessons_learned.md"
 SESSION_FILE = MEMORY_DIR / "session_active.md"
 MAX_ENTRIES = 50

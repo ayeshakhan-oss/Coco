@@ -23,6 +23,7 @@ from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from scripts.utils.safe_send import safe_sendmail
+from scripts.utils.db import connect as connect_db
 from scripts.utils.audit_log import log_db_query, log_gmail_read
 
 load_dotenv()
@@ -31,13 +32,6 @@ load_dotenv()
 # SECTION 1: CONFIG
 # ═══════════════════════════════════════════════════════════════════════════════
 
-DB_CONFIG = {
-    "host": "ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech",
-    "dbname": "neondb",
-    "user": "neondb_owner",
-    "password": "npg_kBQ10OASHEmd",
-    "sslmode": "require",
-}
 
 TOKEN_GMAIL = os.path.join(os.path.dirname(__file__), "../..", "token_gmail.json")
 TOKEN_CAL = os.path.join(os.path.dirname(__file__), "../..", "token.json")
@@ -72,7 +66,7 @@ COLOR_BORDER = "#ddd"
 
 def get_open_jobs():
     """Fetch all active job positions with hiring manager emails."""
-    conn = psycopg2.connect(**DB_CONFIG)
+    conn = connect_db()
     cur = conn.cursor()
 
     query = """
@@ -106,7 +100,7 @@ def get_open_jobs():
 
 def get_candidates_for_job(job_id):
     """Fetch all shortlisted+ candidates for a job."""
-    conn = psycopg2.connect(**DB_CONFIG)
+    conn = connect_db()
     cur = conn.cursor()
 
     query = """

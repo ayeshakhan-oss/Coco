@@ -21,8 +21,8 @@ import io
 # Force UTF-8 output encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-MEMORY_DIR = Path("c:/Agent Coco/memory")
-TEMPLATES_DIR = Path("c:/Agent Coco/templates")
+MEMORY_DIR = Path(__file__).resolve().parents[2] / "memory"
+TEMPLATES_DIR = Path(__file__).resolve().parents[2] / "templates"
 
 # LAYER 1 ENHANCEMENT (2026-06-08): Draft detection + template injection
 # When "draft" + candidate communication keyword detected, inject template + checklist

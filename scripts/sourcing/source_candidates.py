@@ -41,11 +41,13 @@ import re
 import slugify
 
 # Database connection
-DB_CONN = "postgresql://neondb_owner:npg_kBQ10OASHEmd@ep-gentle-glitter-adkkn981.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 # Audit logging
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "utils"))
 from audit_log import log_db_query, log_sourcing_action
+from db import database_url
+
+DB_CONN = database_url()
 
 
 # ============================================================================
